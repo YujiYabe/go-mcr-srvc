@@ -1,0 +1,118 @@
+version: '3.6'
+services:
+
+    #  ==================================
+    mysql:
+        container_name:  mysql
+        # build:  ./docker/mysql
+        build:
+            context:  ./db/engine/mysql
+            dockerfile:  Dockerfile
+        restart:  always
+        environment:
+            # MYSQL_DATABASE:  sample_db
+            # MYSQL_USER:  user
+            # MYSQL_PASSWORD: password
+            # MYSQL_ROOT_PASSWORD: password
+            - MYSQL_ROOT_PASSWORD=password
+            - TZ=Asia/Tokyo
+        ports:
+            -  "3306:3306"
+        volumes:
+            - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
+            - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
+            - ./db/engine/mysql/data:/var/lib/mysql
+        #     -  ./log/mysql:/var/log/mysql
+
+    #  ==================================
+    # phpmyadmin:
+    #     container_name:  phpmyadmin
+    #     build:
+    #         context:  ./db/tool/phpmyadmin
+    #         dockerfile:  Dockerfile
+    #     environment:
+    #         -  PMA_ARBITRARY=1
+    #         -  PMA_HOST=mysql
+    #         -  PMA_USER=root
+    #         -  PMA_PASSWORD=password
+    #     links:
+    #         -  mysql
+    #     ports:
+    #         -  "8090:80"
+    #     volumes:
+    #         - "./db/tool/phpmyadmin/sessions:/sessions"
+
+
+
+    # #  ==================================
+    # #  postgres  サービス
+    # postgres:
+    #     container_name:  postgres
+    #     build:
+    #         context:  ./db/engine/postgres
+    #         dockerfile:  Dockerfile
+    #     environment:
+    #         -  POSTGRES_USER=app_user
+    #         -  POSTGRES_PASSWORD=password
+    #         -  POSTGRES_DB=app_db
+    #     hostname:  postgres
+    #     restart:  always
+    #     user:  root
+
+    # #  ==================================
+    # pgadmin:
+    #     container_name:  pgadmin
+    #     build:
+    #         context:  ./db/tool/pgadmin
+    #         dockerfile:  Dockerfile
+    #     ports:
+    #         -  8091:80
+    #     volumes:
+    #         -  ./db/tool/pgadmin:/var/lib/pgadmin/storage
+    #     environment:
+    #         PGADMIN_DEFAULT_EMAIL:  root
+    #         PGADMIN_DEFAULT_PASSWORD:  root
+    #     hostname:  pgadmin
+    #     restart:  always
+
+
+
+    # ==================================
+    # mongo:
+    #     image:  mongo
+    #     restart:  always
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME:  root
+    #         MONGO_INITDB_ROOT_PASSWORD:  example
+    #     ports:
+    #         -  27017:27017
+    #     volumes:
+    #         -  ./db:/data/db
+    #         -  ./configdb:/data/configdb
+
+    # #  ==================================
+    # mongo-express:
+    #     image:  mongo-express
+    #     restart:  always
+    #     ports:
+    #         -  8092:8081
+    #     environment:
+    #         ME_CONFIG_MONGODB_ADMINUSERNAME:  root
+    #         ME_CONFIG_MONGODB_ADMINPASSWORD:  example
+
+    #  ==================================
+    go_api:
+        build:
+            context: ./go_api
+            dockerfile: Dockerfile
+        container_name: go_api
+        volumes:
+            - ./go_api:/go/src/go_api
+        ports:
+            - "1234:4321"
+        command: ["4321", "1234"]
+        environment:
+            PORT: 1234
+            PORTS: 1234
+
+
