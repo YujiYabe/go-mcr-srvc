@@ -103,16 +103,30 @@ services:
     #  ==================================
     go_api:
         build:
-            context: ./go_api
+            context: ./go_src/go_api
             dockerfile: Dockerfile
         container_name: go_api
         volumes:
-            - ./go_api:/go/src/go_api
+            - ./go_src:/go/src
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
         environment:
             PORT: 1234
-            PORTS: 1234
+
+
+    # go_api:
+    #     build:
+    #         context: ./go_api
+    #         dockerfile: Dockerfile
+    #     container_name: go_api
+    #     volumes:
+    #         - ./go_api:/go/src/go_api
+    #     ports:
+    #         - "1234:4321"
+    #     command: ["4321", "1234"]
+    #     environment:
+    #         PORT: 1234
+    #         PORTS: 1234
 
 
