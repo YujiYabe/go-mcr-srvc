@@ -12,7 +12,7 @@ func main() {
     e.GET("/", func(c echo.Context) error {
         return c.String(http.StatusOK, "Hello, World!")
     })
-    port := ":" + os.Getenv("PORTS")
+    port := ":" + os.Getenv("PORT")
     fmt.Println(port)
     e.Logger.Fatal(e.Start(port))
 }

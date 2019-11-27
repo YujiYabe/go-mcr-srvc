@@ -27,4 +27,6 @@
 
 
 /db/engine/mysql/data/*
+gin-bin
+
 

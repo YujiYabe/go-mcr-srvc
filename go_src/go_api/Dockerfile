@@ -1,5 +1,5 @@
 FROM golang:1.13.0
-RUN mkdir -p /go/src/go_api
+# RUN mkdir -p /go/src/go_api
 WORKDIR /go/src/go_api
 
 SHELL ["/bin/bash", "-c"]
