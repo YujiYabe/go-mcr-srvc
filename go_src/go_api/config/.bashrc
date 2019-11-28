@@ -25,3 +25,6 @@ PS1_3='\u@\h \n'
 PS1_4='\[\033[01;36m\]`pwd`\[\033[00m\]\n'
 
 export PS1=$PS1_1$PS1_2$PS1_3$PS1_4
+
+GOROOT=/go
+export GO111MODULE=off

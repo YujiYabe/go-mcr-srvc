@@ -8,7 +8,7 @@ services:
         build:
             context:  ./db/engine/mysql
             dockerfile:  Dockerfile
-        restart:  always
+        restart: always
         environment:
             # MYSQL_DATABASE:  sample_db
             # MYSQL_USER:  user
@@ -111,6 +111,7 @@ services:
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
+        # restart: always
         environment:
             PORT: 1234
 
