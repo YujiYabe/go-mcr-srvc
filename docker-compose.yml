@@ -1,28 +1,28 @@
 version: '3.6'
 services:
 
-    #  ==================================
-    mysql:
-        container_name:  mysql
-        # build:  ./docker/mysql
-        build:
-            context:  ./db/engine/mysql
-            dockerfile:  Dockerfile
-        restart: always
-        environment:
-            # MYSQL_DATABASE:  sample_db
-            # MYSQL_USER:  user
-            # MYSQL_PASSWORD: password
-            # MYSQL_ROOT_PASSWORD: password
-            - MYSQL_ROOT_PASSWORD=password
-            - TZ=Asia/Tokyo
-        ports:
-            -  "3306:3306"
-        volumes:
-            - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
-            - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
-            - ./db/engine/mysql/data:/var/lib/mysql
-        #     -  ./log/mysql:/var/log/mysql
+    # #  ==================================
+    # mysql:
+    #     container_name:  mysql
+    #     # build:  ./docker/mysql
+    #     build:
+    #         context:  ./db/engine/mysql
+    #         dockerfile:  Dockerfile
+    #     restart: always
+    #     environment:
+    #         # MYSQL_DATABASE:  sample_db
+    #         # MYSQL_USER:  user
+    #         # MYSQL_PASSWORD: password
+    #         # MYSQL_ROOT_PASSWORD: password
+    #         - MYSQL_ROOT_PASSWORD=password
+    #         - TZ=Asia/Tokyo
+    #     ports:
+    #         -  "3306:3306"
+    #     volumes:
+    #         - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
+    #         - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
+    #         - ./db/engine/mysql/data:/var/lib/mysql
+    #     #     -  ./log/mysql:/var/log/mysql
 
     #  ==================================
     # phpmyadmin:
