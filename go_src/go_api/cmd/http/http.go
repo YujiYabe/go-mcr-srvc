@@ -1,4 +1,4 @@
-package main
+package http
 
 import (
     "fmt"
@@ -15,7 +15,7 @@ import (
 
 var e = createMux()
 
-func main() {
+func Run() {
     http.Handle("/", e)
 
     port := os.Getenv("PORT")
