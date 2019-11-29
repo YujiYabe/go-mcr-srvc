@@ -29,5 +29,6 @@ go_src/go_api/vendor
 
 /db/engine/mysql/data/*
 gin-bin
-
-
+.envrc
+/direnv/*
+direnv
