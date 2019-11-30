@@ -32,3 +32,4 @@ gin-bin
 .envrc
 /direnv/*
 direnv
+go-docker-template

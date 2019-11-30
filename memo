@@ -28,7 +28,7 @@ echo 'export PATH=$PATH:$GOPATH/bin' >> ${HOME}/.bashrc
 source ${HOME}/.bashrc
 git clone git@github.com/go_api ${GOPATH}/src/go_api
 
-ln -sn ${HOME}/workspace/go/src/go-docker-template/ ${HOME}/workspace/go-docker-template
+ln -sn ${HOME}/workspace/go/src/go-docker-template/ ${HOME}/workspace/github/go-docker-template
 
 git clone git@github.com:YujiYabe/go-docker-template.git
 
