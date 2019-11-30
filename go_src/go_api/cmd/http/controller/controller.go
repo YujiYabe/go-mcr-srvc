@@ -1,10 +1,10 @@
 package controller
 
 import (
-    // "github.com/rema424/hexample/internal/service1"
+    // "go_api/internal/service1"
     "go_api/internal/service1"
 
-    // "github.com/labstack/echo/v4"
+    // "github.com/labstack/echo"
     "github.com/labstack/echo"
 )
 

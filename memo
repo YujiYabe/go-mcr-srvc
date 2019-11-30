@@ -8,6 +8,7 @@ sudo rm -rf go_src/go_api/gin-bin
 
 
 
+docker-compose build --no-cache
 
 docker-compose build --no-cache go_api
 docker-compose up
