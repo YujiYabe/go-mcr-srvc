@@ -36,6 +36,46 @@ curl localhost:1234/people/6891153250004441175
     {"ID":6891153250004441175,"Name":"Bob","Email":"bob@example.com"}
 
 
+curl -X POST -H 'Content-type: application/json' -d '{"ammount": 1000}' localhost:1234/accounts
+
+curl -X POST -H 'Content-type: application/json' -d '{"ammount": 1000}' localhost:1234/accounts
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 3981230161413448155, "toId": 2565931710882465324, "ammount": 300}' localhost:1234/accounts/transfer
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 6604275530202776837, "toId": 8605590474089424096, "ammount": 300}' localhost:1234/accounts/transfer
+{"from":{"ID":6604275530202776837,"Balance":400},"to":{"ID":8605590474089424096,"Balance":1600}}
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 6604275530202776837, "toId": 8605590474089424096, "ammount": 300}' localhost:1234/accounts/transfer
+{"from":{"ID":6604275530202776837,"Balance":100},"to":{"ID":8605590474089424096,"Balance":1900}}
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 6604275530202776837, "toId": 8605590474089424096, "ammount": 300}' localhost:1234/accounts/transfer
+"provider: balance is not sufficient - accountID: 6604275530202776837"
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 6604275530202776837, "toId": 8605590474089424096, "ammount": 100}' localhost:1234/accounts/transfer
+{"from":{"ID":6604275530202776837,"Balance":0},"to":{"ID":8605590474089424096,"Balance":
+
+
+
+curl -X POST -H 'Content-type: application/json' -d '{"ammount": 1000}' localhost:1234/accounts
+{"ID":1,"Balance":1000}
+
+curl -X POST -H 'Content-type: application/json' -d '{"ammount": 1000}' localhost:1234/accounts
+{"ID":2,"Balance":1000}
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 1, "toId": 2, "ammount": 300}' localhost:1234/accounts/transfer
+{"from":{"ID":1,"Balance":700},"to":{"ID":2,"Balance":1300}}
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 1, "toId": 2, "ammount": 300}' localhost:1234/accounts/transfer
+{"from":{"ID":1,"Balance":400},"to":{"ID":2,"Balance":1600}}
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 1, "toId": 2, "ammount": 300}' localhost:1234/accounts/transfer
+{"from":{"ID":1,"Balance":100},"to":{"ID":2,"Balance":1900}}
+
+curl -X POST -H 'Content-type: application/json' -d '{"fromId": 1, "toId": 2, "ammount": 300}' localhost:1234/accounts/transfer
+"provider: balance is not sufficient - accountID: 1"
+
+
+
 
 
 mkdir -p ${HOME}/workspace/go/src

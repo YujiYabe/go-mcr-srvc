@@ -9,7 +9,10 @@ import (
 	"go_api/cmd/http/controller"
 	"go_api/internal/service2"
 	"go_api/internal/service3"
-    // "go_api/pkg/mysql" 
+    // "go_api/pkg/mysql"
+    "go_api/pkg/mysql"
+    "github.com/rema424/sqlxx"
+
 
     "github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -35,19 +38,24 @@ func Run() {
 
 func init() {
     // // Mysql
-    // c := mysql.Config{
-    //     Host:    os.Getenv("DB_HOST"),
-    //     Port:    os.Getenv("DB_PORT"),
-    //     User:    os.Getenv("DB_USER"),
-    //     DBName:  os.Getenv("DB_NAME"),
-    //     Passwd:  os.Getenv("DB_PASSWORD"),
-    //     AllowNativePasswords: true,
-    // }
-    // db, err := mysql.Connect(c)
-    // if err != nil {
-    //     log.Fatalln(err)
-    // }
+    c := mysql.Config{
+        Host:    os.Getenv("DB_HOST"),
+        Port:    os.Getenv("DB_PORT"),
+        User:    os.Getenv("DB_USER"),
+        DBName:  os.Getenv("DB_NAME"),
+        Passwd:  os.Getenv("DB_PASSWORD"),
+        AllowNativePasswords: true,
+    }
 
+    db, err := mysql.Connect(c)
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    acsr, err := sqlxx.Open(db)
+    if err != nil {
+        log.Fatalln(err)
+    }
 
     // // DI
     // gateway2 := service2.NewGateway(db)
@@ -59,10 +67,10 @@ func init() {
     provider2 := service2.NewProvider(mockGateway2)
 
    // Service3
-    // gateway3 := service3.NewGateway(acsr)
-    // provider3 := service3.NewProvider(gateway3)
-    mockGateway3 := service3.NewMockGateway(service3.NewMockDB())
-    provider3 := service3.NewProvider(mockGateway3)
+    gateway3 := service3.NewGateway(acsr)
+    provider3 := service3.NewProvider(gateway3)
+    // mockGateway3 := service3.NewMockGateway(service3.NewMockDB())
+    // provider3 := service3.NewProvider(mockGateway3)
 
     ctrl := &controller.Controller{}
     ctrl2 := controller.NewController2(provider2)
@@ -71,17 +79,17 @@ func init() {
 
 	e.GET("/:message", ctrl.HandleMessage)
     e.GET("/people/:personID", ctrl2.HandlePersonGet)
-    e.POST("/people", ctrl2.HandlePersonRegister) 
+    e.POST("/people", ctrl2.HandlePersonRegister)
     e.POST("/accounts", ctrl3.HandleAccountOpen)
     e.POST("/accounts/transfer", ctrl3.HandleMoneyTransfer)
-}  
+}
 
 func createMux() *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
-	e.Use(middleware.Gzip()) 
+	e.Use(middleware.Gzip())
 
 	return e
 }
