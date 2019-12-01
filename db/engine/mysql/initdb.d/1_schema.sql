@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS app;
 CREATE DATABASE app;
 use app;
 
@@ -9,8 +10,16 @@ use app;
 -- );
 
 create table if not exists person (
+-- create table  person (
     id bigint auto_increment,
     name varchar(255),
     email varchar(255),
     primary key (id)
 );
+
+create table if not exists account (
+  id bigint auto_increment,
+  balance int,
+  primary key (id)
+);
+

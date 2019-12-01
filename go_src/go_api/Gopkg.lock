@@ -77,6 +77,14 @@
   version = "v0.0.10"
 
 [[projects]]
+  branch = "master"
+  digest = "1:6ef15e80fc45b0dd1c8e0230eaefe6757ab10a1dbdf2609323dedbf5595da890"
+  name = "github.com/rema424/sqlxx"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "fda406e032db5db07d0fd2ea0bea1fdb4507c869"
+
+[[projects]]
   digest = "1:e096613fb7cf34743d49af87d197663cfccd61876e2219853005a57baedfa562"
   name = "github.com/spf13/cobra"
   packages = ["."]
@@ -176,6 +184,7 @@
     "github.com/jmoiron/sqlx",
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
+    "github.com/rema424/sqlxx",
     "github.com/spf13/cobra",
   ]
   solver-name = "gps-cdcl"

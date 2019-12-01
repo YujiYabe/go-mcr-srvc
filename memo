@@ -16,9 +16,24 @@ docker-compose up
 
 http://localhost:8090/
 
+curl localhost:1234/こんにちは
+
+curl -X POST -H 'Content-type: application/json' -d '{"name": "Alice", "email": "alice@example.com"}' localhost:1234/people
+
+curl -X POST -H 'Content-type: application/json' -d '{"name": "Bob", "email": "bob@example.com"}' localhost:1234/people
 
 
+curl -X POST -H 'Content-type: application/json' -d '{"name": "Alice", "email": "alice@example.com"}' localhost:1234/people
+    #{"ID":4604021376263565598,"Name":"Alice","Email":"alice@example.com"}
 
+curl -X POST -H 'Content-type: application/json' -d '{"name": "Bob", "email": "bob@example.com"}' localhost:1234/people
+    {"ID":6891153250004441175,"Name":"Bob","Email":"bob@example.com"}
+
+curl localhost:1234/people/4604021376263565598
+    {"ID":4604021376263565598,"Name":"Alice","Email":"alice@example.com"}
+
+curl localhost:1234/people/6891153250004441175
+    {"ID":6891153250004441175,"Name":"Bob","Email":"bob@example.com"}
 
 
 

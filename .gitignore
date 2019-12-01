@@ -33,3 +33,4 @@ gin-bin
 /direnv/*
 direnv
 go-docker-template
+db/tool/phpmyadmin/sessions/sess_36a0c7affbc339a0b2877e68c3433184
