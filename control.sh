@@ -8,41 +8,48 @@
 function ConfirmExecution() {
 
   echo "┌──────────────────────────────"
-  echo "│"
-  echo "│"
-  echo "│"
-  echo "│"
-  echo "スクリプトを実行しますか?"
-  echo "  実行する場合は yes、実行をキャンセルする場合は no と入力して下さい."
+  echo "│ 1 reset"
+  echo "│ 2 build"
+  echo "│ 9 exit"
   echo "└──────────────────────────────"
 
   read input
 
+  # ----------------------------------------------
   if [ -z $input ] ; then
-
-    echo "  yes または no を入力して下さい."
+    echo "not valid input"
     ConfirmExecution
 
-  elif [ $input = 'yes' ] || [ $input = 'YES' ] || [ $input = 'y' ] ; then
+  # ----------------------------------------------
+  elif [ $input = '1' ] ; then
+    docker-compose stop
+    docker system prune
 
-    echo "  スクリプトを実行します."
+    sudo rm -rf db/engine/mysql/var_lib_mysql/
+    sudo rm -rf db/engine/mysql/data/
+    sudo rm -rf db/tool/phpmyadmin/sessions/
+    sudo rm -rf go_src/go_api/gin-bin
 
-  elif [ $input = 'no' ] || [ $input = 'NO' ] || [ $input = 'n' ] ; then
+  # ----------------------------------------------
+  elif [ $input = '2' ] ; then
+    docker-compose build --no-cache
+    docker-compose up
 
-    echo "  スクリプトを終了します."
+  # ----------------------------------------------
+  elif [ $input = '9' ] ; then
+    echo "exit "
     exit 1
 
+  # ----------------------------------------------
   else
-
-    echo "  yes または no を入力して下さい."
+    echo "not valid input"
     ConfirmExecution
-
   fi
+
+ConfirmExecution
 
 }
 
 # シェルスクリプトの実行を継続するか確認します。
 ConfirmExecution
 
-echo "----------------------------"
-echo "hello world!"

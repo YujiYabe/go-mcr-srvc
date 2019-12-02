@@ -7,4 +7,6 @@ if [ ! -f "Gopkg.toml" ]; then
     dep init
 fi
 
+dep ensure
+
 gin -p ${proxy_server_port} -a ${web_server_port}

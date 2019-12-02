@@ -78,8 +78,10 @@ func init() {
 
 
 	e.GET("/:message", ctrl.HandleMessage)
+
     e.GET("/people/:personID", ctrl2.HandlePersonGet)
     e.POST("/people", ctrl2.HandlePersonRegister)
+
     e.POST("/accounts", ctrl3.HandleAccountOpen)
     e.POST("/accounts/transfer", ctrl3.HandleMoneyTransfer)
 }

@@ -13,8 +13,7 @@ RUN \
 
 # install gin
 RUN go get github.com/codegangsta/gin
-RUN go get -u github.com/golang/dep/cmd/dep \
-    && dep ensure
+RUN go get -u github.com/golang/dep/cmd/dep
 
 COPY config/.bashrc /root/.bashrc
 
