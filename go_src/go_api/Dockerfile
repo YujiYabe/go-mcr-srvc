@@ -13,7 +13,15 @@ RUN \
 
 # install gin
 RUN go get github.com/codegangsta/gin
-RUN go get -u github.com/golang/dep/cmd/dep
+
+RUN go get -u github.com/golang/dep/cmd/dep \
+    && go get github.com/mdempsky/gocode \
+    && go get github.com/uudashr/gopkgs/cmd/gopkgs \
+    && go get github.com/ramya-rao-a/go-outline \
+    && go get github.com/stamblerre/gocode \
+    && go get github.com/rogpeppe/godef \
+    && go get golang.org/x/lint/golint
+
 
 COPY config/.bashrc /root/.bashrc
 

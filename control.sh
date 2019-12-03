@@ -4,13 +4,18 @@
 # ユーザからのキーボードの入力を受け取り、
 # yes と入力されたらスクリプトを実行する、no と入力されたらスクリプトを終了します.
 ## ----------------------------
-
 function ConfirmExecution() {
+clear
 
   echo "┌──────────────────────────────"
   echo "│ 1 reset"
   echo "│ 2 build"
+
+  echo "│ 3 stop"
+  echo "│ 4 up"
+
   echo "│ 9 exit"
+
   echo "└──────────────────────────────"
 
   read input
@@ -33,6 +38,14 @@ function ConfirmExecution() {
   # ----------------------------------------------
   elif [ $input = '2' ] ; then
     docker-compose build --no-cache
+    docker-compose up
+
+  # ----------------------------------------------
+  elif [ $input = '3' ] ; then
+    docker-compose stop
+
+  # ----------------------------------------------
+  elif [ $input = '4' ] ; then
     docker-compose up
 
   # ----------------------------------------------
