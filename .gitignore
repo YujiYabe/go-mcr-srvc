@@ -22,7 +22,8 @@
 ### Go Patch ###
 /vendor/
 /Godeps/
-go_src/go_api/vendor
+go_src/go_api1/vendor
+go_src/go_api2/vendor
 
 # End of https://www.gitignore.io/api/go
 

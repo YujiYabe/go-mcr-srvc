@@ -4,7 +4,7 @@ import (
     // "github.com/labstack/echo"
     // "os"
     // "fmt"
-    "go_api/cmd/http"
+    "go_api1/cmd/http"
 )
 
 func main() {

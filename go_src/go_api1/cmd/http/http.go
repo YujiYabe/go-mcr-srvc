@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"os"
 
-	"go_api/cmd/http/controller"
-	"go_api/internal/service2"
-	"go_api/internal/service3"
-    // "go_api/pkg/mysql"
-    "go_api/pkg/mysql"
+	"go_api1/cmd/http/controller"
+	"go_api1/internal/service2"
+	"go_api1/internal/service3"
+    // "go_api1/pkg/mysql"
+    "go_api1/pkg/mysql"
     "github.com/rema424/sqlxx"
 
 

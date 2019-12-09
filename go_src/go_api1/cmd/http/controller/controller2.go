@@ -4,7 +4,7 @@ import (
     "net/http"
     "strconv"
 
-    "go_api/internal/service2"
+    "go_api1/internal/service2"
 
     "github.com/labstack/echo"
 )

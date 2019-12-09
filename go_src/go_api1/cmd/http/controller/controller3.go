@@ -4,7 +4,7 @@ import (
     "net/http"
 
     "github.com/labstack/echo"
-    "go_api/internal/service3"
+    "go_api1/internal/service3"
 )
 
 // Controller3 ...
