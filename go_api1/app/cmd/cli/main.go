@@ -1,6 +1,6 @@
 package main
 
-import "go_api1/cmd/cli/cmd"
+import "app/cmd/cli/cmd"
 
 func main() {
     cmd.Execute()

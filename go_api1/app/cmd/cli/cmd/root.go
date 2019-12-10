@@ -5,7 +5,7 @@ import (
     "fmt"
     "os"
 
-    "go_api1/internal/service1"
+    "app/internal/service1"
     "github.com/spf13/cobra"
 )
 

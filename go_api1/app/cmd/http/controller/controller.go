@@ -1,8 +1,8 @@
 package controller
 
 import (
-    // "go_api1/internal/service1"
-    "go_api1/internal/service1"
+    // "app/internal/service1"
+    "app/internal/service1"
 
     // "github.com/labstack/echo"
     "github.com/labstack/echo"
