@@ -8,7 +8,7 @@ type UserInteractor struct {
 }
 
 func (interactor *UserInteractor) Add(u domain.User) (err error) {
-    _, err := interactor.UserRepository.Store(u)
+    _, err = interactor.UserRepository.Store(u)
     return
 }
 
