@@ -22,25 +22,12 @@ func (repo *UserRepository) Store(u domain.User) (id int, err error) {
     return
 }
 
-func (repo *UserRepository) FindById(identifier int) (user domain.User, err error) {
-    row, err := repo.Query("SELECT id, first_name, last_name FROM users WHERE id = ?", identifier)
-    defer row.Close()
-    if err != nil {
+func (repo *UserRepository) FindById(id int) (user domain.User, err error) {
+    if err = repo.Find(&user, id).Error; err != nil {
         return
     }
-    var id int
-    var firstName string
-    var lastName string
-    row.Next()
-    if err = row.Scan(&id, &firstName, &lastName); err != nil {
-        return
-    }
-    user.ID = id
-    user.FirstName = firstName
-    user.LastName = lastName
     return
 }
-
 func (repo *UserRepository) FindAll() (users domain.Users, err error) {
     rows, err := repo.Query("SELECT id, first_name, last_name FROM users")
     defer rows.Close()

@@ -15,5 +15,5 @@ func main() {
     // port := ":" + os.Getenv("PORT")
     // fmt.Println(port)
     // e.Logger.Fatal(e.Start(port))
-    http.Run()
+    infrastructure.init()
 }

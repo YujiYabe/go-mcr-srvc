@@ -2,6 +2,7 @@ package database
 
 
 type SqlHandler interface {
+    Find(string, ...interface{}) (Result, error)
     Execute(string, ...interface{}) (Result, error)
     Query(string, ...interface{}) (Row, error)
 }

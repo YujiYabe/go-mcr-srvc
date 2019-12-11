@@ -138,6 +138,7 @@ services:
         command: ["4321", "1234"]
         # restart: always
         environment:
+            - GO111MODULE=off
             - PORT=1234
             - DB_HOST=mysql
             - DB_PORT=3306
@@ -146,4 +147,4 @@ services:
             - DB_PASSWORD=user
         depends_on:
             -  mysql
-
+        tty: true #起動させっぱなし

@@ -1,18 +1,18 @@
 package infrastructure
 
 import (
-    "database/sql"
+    "github.com/jinzhu/gorm"
     _ "github.com/go-sql-driver/mysql"
     "app/interfaces/database"
 )
 
 
 type SqlHandler struct {
-    Conn *sql.DB
+    Conn *gorm.DB
 }
 
 func NewSqlHandler() database.SqlHandler {
-    conn, err := sql.Open("mysql", "root:@tcp(db:3306)/sample")
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
     if err != nil {
         panic(err.Error)
     }
@@ -21,50 +21,2734 @@ func NewSqlHandler() database.SqlHandler {
     return sqlHandler
 }
 
-func (handler *SqlHandler) Execute(statement string, args ...interface{}) (database.Result, error) {
-    res := SqlResult{}
-    result, err := handler.Conn.Exec(statement, args...)
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
     if err != nil {
-        return res, err
+        panic(err.Error)
     }
-    res.Result = result
-    return res, nil
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
 }
 
-func (handler *SqlHandler) Query(statement string, args ...interface{}) (database.Row, error) {
-    rows, err := handler.Conn.Query(statement, args...)
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
     if err != nil {
-        return new(SqlRow), err
+        panic(err.Error)
     }
-    row := new(SqlRow)
-    row.Rows = rows
-    return row, nil
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
 }
 
-type SqlResult struct {
-    Result sql.Result
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
 }
 
-func (r SqlResult) LastInsertId() (int64, error) {
-    return r.Result.LastInsertId()
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
 }
 
-func (r SqlResult) RowsAffected() (int64, error) {
-    return r.Result.RowsAffected()
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
 }
 
-type SqlRow struct {
-    Rows *sql.Rows
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
 }
 
-func (r SqlRow) Scan(dest ...interface{}) error {
-    return r.Rows.Scan(dest...)
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
 }
 
-func (r SqlRow) Next() bool {
-    return r.Rows.Next()
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
 }
 
-func (r SqlRow) Close() error {
-    return r.Rows.Close()
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
+}
+type SqlHandler struct {
+    Conn *gorm.DB
+}
+
+func NewSqlHandler() database.SqlHandler {
+    conn, err := gorm.Open("mysql", "root:root@tcp(mysql)/sample?charset=utf8&parseTime=True&loc=Local")
+    if err != nil {
+        panic(err.Error)
+    }
+    sqlHandler := new(SqlHandler)
+    sqlHandler.Conn = conn
+    return sqlHandler
+}
+
+func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.Find(out, where...)
+}
+
+func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Exec(sql, values...)
+}
+
+func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+    return handler.Conn.First(out, where...)
+}
+
+func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+    return handler.Conn.Raw(sql, values...)
+}
+
+func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+    return handler.Conn.Create(value)
+}
+
+func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+    return handler.Conn.Save(value)
+}
+
+func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+    return handler.Conn.Delete(value)
+}
+
+func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+    return handler.Conn.Where(query, args...)
 }
