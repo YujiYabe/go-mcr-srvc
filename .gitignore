@@ -24,6 +24,7 @@
 /Godeps/
 go_api1/app/vendor
 go_api2/app/vendor
+go_api3/app/vendor
 
 # End of https://www.gitignore.io/api/go
 

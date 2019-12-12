@@ -125,14 +125,39 @@ services:
     #     depends_on:
     #         -  mysql
 
+    # #  ==================================
+    # go_api2:
+    #     build:
+    #         context: ./go_api2/app
+    #         dockerfile: Dockerfile
+    #     container_name: go_api2
+    #     volumes:
+    #         - ./go_api2:/go/src
+    #     ports:
+    #         - "1234:4321"
+    #     command: ["4321", "1234"]
+    #     # restart: always
+    #     environment:
+    #         - GO111MODULE=off
+    #         - GOPATH=/go
+    #         - PORT=1234
+    #         - DB_HOST=mysql
+    #         - DB_PORT=3306
+    #         - DB_NAME=app
+    #         - DB_USER=user
+    #         - DB_PASSWORD=user
+    #     tty: true #起動させっぱなし
+    #     links:
+    #         -  mysql
+
     #  ==================================
-    go_api2:
+    go_api3:
         build:
-            context: ./go_api2/app
+            context: ./go_api3/app
             dockerfile: Dockerfile
-        container_name: go_api2
+        container_name: go_api3
         volumes:
-            - ./go_api2:/go/src
+            - ./go_api3:/go/src
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
@@ -149,3 +174,4 @@ services:
         tty: true #起動させっぱなし
         links:
             -  mysql
+
