@@ -12,6 +12,7 @@ RUN \
     && dpkg-reconfigure --frontend noninteractive tzdata
 
 # install gin
+RUN go get github.com/codegangsta/gin
 
 RUN go get -u github.com/golang/dep/cmd/dep \
     && go get github.com/mdempsky/gocode \
