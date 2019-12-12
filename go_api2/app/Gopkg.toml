@@ -25,13 +25,6 @@
 #   unused-packages = true
 
 
-[[constraint]]
-  name = "github.com/labstack/echo"
-  version = "3.3.10"
-
-[[constraint]]
-  name = "github.com/spf13/cobra"
-  version = "0.0.5"
 
 [prune]
   go-tests = true
