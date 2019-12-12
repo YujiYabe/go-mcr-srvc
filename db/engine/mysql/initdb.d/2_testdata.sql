@@ -2,3 +2,4 @@
 use app;
 
 INSERT INTO person (name,email) VALUES ('TOM','xxxx@mail.co.jp');
+INSERT INTO users (first_name, last_name) VALUES ('TOM','sdav');

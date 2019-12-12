@@ -23,3 +23,9 @@ create table if not exists account (
   primary key (id)
 );
 
+create table if not exists users (
+    id bigint auto_increment,
+    first_name varchar(255),
+    last_name varchar(255),
+    primary key (id)
+);

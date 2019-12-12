@@ -14,6 +14,15 @@ docker-compose build --no-cache go_api2
 docker-compose up
 
 
+
+// User登録
+curl -i -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"FirstName": "Susan", "LastName": "Taylor"}' localhost:1234/users
+HTTP/1.1 201 Created
+
+// User一覧
+curl -i -H 'Content-Type:application/json' localhost:1234/users
+
+
 http://localhost:8090/
 
 curl localhost:1234/こんにちは

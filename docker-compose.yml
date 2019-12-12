@@ -2,48 +2,48 @@ version: '3.6'
 services:
 
     #  ==================================
-    # mysql:
-    #     container_name:  mysql
-    #     # build:  ./docker/mysql
-    #     build:
-    #         context:  ./db/engine/mysql
-    #         dockerfile:  Dockerfile
-    #     restart: always
-    #     environment:
-    #         # MYSQL_DATABASE:  sample_db
-    #         # MYSQL_USER:  user
-    #         # MYSQL_PASSWORD: password
-    #         # MYSQL_ROOT_PASSWORD: password
-    #         - MYSQL_DATABASE=app
-    #         - MYSQL_USER=user
-    #         - MYSQL_PASSWORD=user
-    #         - MYSQL_ROOT_PASSWORD=password
-    #         - TZ=Asia/Tokyo
-    #     ports:
-    #         -  "3306:3306"
-    #     volumes:
-    #         - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
-    #         - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
-    #         - ./db/engine/mysql/data:/var/lib/mysql
-    #     #     -  ./log/mysql:/var/log/mysql
+    mysql:
+        container_name:  mysql
+        # build:  ./docker/mysql
+        build:
+            context:  ./db/engine/mysql
+            dockerfile:  Dockerfile
+        restart: always
+        environment:
+            # MYSQL_DATABASE:  sample_db
+            # MYSQL_USER:  user
+            # MYSQL_PASSWORD: password
+            # MYSQL_ROOT_PASSWORD: password
+            - MYSQL_DATABASE=app
+            - MYSQL_USER=user
+            - MYSQL_PASSWORD=user
+            - MYSQL_ROOT_PASSWORD=password
+            - TZ=Asia/Tokyo
+        ports:
+            -  "3306:3306"
+        volumes:
+            - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
+            - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
+            - ./db/engine/mysql/data:/var/lib/mysql
+        #     -  ./log/mysql:/var/log/mysql
 
-    # #  ==================================
-    # phpmyadmin:
-    #     container_name:  phpmyadmin
-    #     build:
-    #         context:  ./db/tool/phpmyadmin
-    #         dockerfile:  Dockerfile
-    #     environment:
-    #         - PMA_ARBITRARY=1
-    #         - PMA_HOST=mysql
-    #         - PMA_USER=root
-    #         - PMA_PASSWORD=password
-    #     depends_on:
-    #         -  mysql
-    #     ports:
-    #         -  "8090:80"
-    #     volumes:
-    #         - "./db/tool/phpmyadmin/sessions:/sessions"
+    #  ==================================
+    phpmyadmin:
+        container_name:  phpmyadmin
+        build:
+            context:  ./db/tool/phpmyadmin
+            dockerfile:  Dockerfile
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_USER=root
+            - PMA_PASSWORD=password
+        ports:
+            -  "8090:80"
+        volumes:
+            - "./db/tool/phpmyadmin/sessions:/sessions"
+        links:
+            -  mysql
 
 
 
@@ -147,5 +147,5 @@ services:
             - DB_USER=user
             - DB_PASSWORD=user
         tty: true #起動させっぱなし
-        # depends_on:
-        #     -  mysql
+        links:
+            -  mysql
