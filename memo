@@ -6,12 +6,12 @@ sudo rm -rf db/engine/mysql/data/
 sudo rm -rf db/tool/phpmyadmin/sessions/
 sudo rm -rf go_src/go_api2/gin-bin
 sudo rm -rf go_src/go_api3/gin-bin
+sudo rm -rf go_src/go_api4/gin-bin
 
 
 
 docker-compose build --no-cache
 
-docker-compose build --no-cache go_api2
 docker-compose up
 
 

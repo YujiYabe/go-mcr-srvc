@@ -2,9 +2,10 @@ package usecase
 
 import "app/domain"
 
-
 type UserRepository interface {
-    Store(domain.User) (int, error)
-    FindById(int) (domain.User, error)
-    FindAll() (domain.Users, error)
+	FindById(id int) (domain.User, error)
+	FindAll() (domain.Users, error)
+	Store(domain.User) (domain.User, error)
+	Update(domain.User) (domain.User, error)
+	DeleteById(domain.User) error
 }

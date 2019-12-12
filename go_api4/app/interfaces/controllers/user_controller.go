@@ -1,20 +1,24 @@
 package controllers
 
 import (
+	// "app/domain"
+	// "app/interfaces/database"
+	// "app/usecase"
+	// "errors"
+	// "github.com/labstack/echo"
+	// "strconv"
+	"strconv"
+
 	"app/domain"
 	"app/interfaces/database"
 	"app/usecase"
-	"errors"
 	"github.com/labstack/echo"
-	"strconv"
 )
 
-// UserController ...
 type UserController struct {
 	Interactor usecase.UserInteractor
 }
 
-// NewUserController ...
 func NewUserController(sqlHandler database.SqlHandler) *UserController {
 	return &UserController{
 		Interactor: usecase.UserInteractor{
@@ -25,37 +29,61 @@ func NewUserController(sqlHandler database.SqlHandler) *UserController {
 	}
 }
 
-// Create ...
-
-func (controller *UserController) Create(c echo.Context) (err error) {
-	u := domain.User{}
-	c.Bind(&u)
-	err = controller.Interactor.Add(u)
-	if err != nil {
-		c.JSON(500, errors.New("err"))
-		return
-	}
-
-	return c.JSON(201, nil)
-}
-
-// Index ...
-func (controller *UserController) Index(c echo.Context) (err error) {
-	users, err := controller.Interactor.Users()
-	if err != nil {
-		c.JSON(500, errors.New("err"))
-		return
-	}
-	return c.JSON(200, users)
-}
-
-// Show ...
 func (controller *UserController) Show(c echo.Context) (err error) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := controller.Interactor.UserById(id)
 	if err != nil {
-		return c.JSON(500, errors.New("err"))
-
+		c.JSON(500, NewError(err))
+		return
 	}
-	return c.JSON(200, user)
+	c.JSON(200, user)
+	return
+}
+
+func (controller *UserController) Index(c echo.Context) (err error) {
+	users, err := controller.Interactor.Users()
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(200, users)
+	return
+}
+
+func (controller *UserController) Create(c echo.Context) (err error) {
+	u := domain.User{}
+	c.Bind(&u)
+	user, err := controller.Interactor.Add(u)
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(201, user)
+	return
+}
+
+func (controller *UserController) Save(c echo.Context) (err error) {
+	u := domain.User{}
+	c.Bind(&u)
+	user, err := controller.Interactor.Update(u)
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(201, user)
+	return
+}
+
+func (controller *UserController) Delete(c echo.Context) (err error) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	user := domain.User{
+		ID: id,
+	}
+	err = controller.Interactor.DeleteById(user)
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(200, user)
+	return
 }
