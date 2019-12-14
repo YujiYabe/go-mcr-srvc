@@ -1,6 +1,8 @@
 package infrastructure
 
 import (
+	"os"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
@@ -14,16 +16,14 @@ func Run() {
 
 	userController := controllers.NewUserController(NewSQLHandler())
 
-
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "time:${time_rfc3339}, status=${status}, method=${method}, uri=${uri}\n",
+		Format: "${time_rfc3339}  ${status}  ${method}\t${uri}\n",
 	}))
-
 
 	// Middleware
 	e.Use(middleware.Recover())
 
-// get
+	// get
 	e.GET("/users", func(c echo.Context) error { return userController.IFCNIndex(c) })
 	e.GET("/user/:id", func(c echo.Context) error { return userController.IFCNShow(c) })
 
@@ -37,6 +37,6 @@ func Run() {
 	e.DELETE("/user/:id", func(c echo.Context) error { return userController.IFCNDelete(c) })
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1234"))
+	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 
 }
