@@ -176,13 +176,39 @@ services:
     #         -  mysql
 
     #  ==================================
-    go_api4:
+    # go_api4:
+    #     build:
+    #         context: ./go_api4/app
+    #         dockerfile: Dockerfile
+    #     container_name: go_api4
+    #     volumes:
+    #         - ./go_api4:/go/src
+    #     ports:
+    #         - "1234:4321"
+    #     command: ["4321", "1234"]
+    #     # restart: always
+    #     environment:
+    #         - GO111MODULE=off
+    #         - GOPATH=/go
+    #         - PORT=1234
+    #         - DB_HOST=mysql
+    #         - DB_PORT=3306
+    #         - DB_NAME=app
+    #         - DB_USER=user
+    #         - DB_PASSWORD=user
+    #     tty: true
+    #     links:
+    #         -  mysql
+
+
+    #  ==================================
+    go_api5:
         build:
-            context: ./go_api4/app
+            context: ./go_api5
             dockerfile: Dockerfile
-        container_name: go_api4
+        container_name: go_api5
         volumes:
-            - ./go_api4:/go/src
+            - ./go_api5:/go/src/app
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
