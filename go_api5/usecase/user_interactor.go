@@ -2,37 +2,37 @@ package usecase
 
 import "app/domain"
 
-// UserInteractor ...
+// UCUserInteractor ...
 type UCUserInteractor struct {
 	UCUserRepository UCUserRepository
 }
 
 // UCUIUserByID ...
-func (UCuserInteractor *UCUserInteractor) UCUIUserByID(id int) (user domain.User, err error) {
-	user, err = UCuserInteractor.UCUserRepository.IFDBFindByID(id)
+func (UCUserInteractor *UCUserInteractor) UCUIUserByID(id int) (user domain.User, err error) {
+	user, err = UCUserInteractor.UCUserRepository.IFDBFindByID(id)
 	return
 }
 
 // UCUIUsers ...
-func (UCuserInteractor *UCUserInteractor) UCUIUsers() (users domain.Users, err error) {
-	users, err = UCuserInteractor.UCUserRepository.IFDBFindAll()
+func (UCUserInteractor *UCUserInteractor) UCUIUsers() (users domain.Users, err error) {
+	users, err = UCUserInteractor.UCUserRepository.IFDBFindAll()
 	return
 }
 
 // UCUIAdd ...
-func (UCuserInteractor *UCUserInteractor) UCUIAdd(u domain.User) (user domain.User, err error) {
-	user, err = UCuserInteractor.UCUserRepository.IFDBStore(u)
+func (UCUserInteractor *UCUserInteractor) UCUIAdd(u domain.User) (user domain.User, err error) {
+	user, err = UCUserInteractor.UCUserRepository.IFDBStore(u)
 	return
 }
 
 // UCUIUpdate ...
-func (UCuserInteractor *UCUserInteractor) UCUIUpdate(u domain.User) (user domain.User, err error) {
-	user, err = UCuserInteractor.UCUserRepository.IFDBUpdate(u)
+func (UCUserInteractor *UCUserInteractor) UCUIUpdate(u domain.User) (user domain.User, err error) {
+	user, err = UCUserInteractor.UCUserRepository.IFDBUpdate(u)
 	return
 }
 
 // UCUIDeleteByID ...
-func (UCuserInteractor *UCUserInteractor) UCUIDeleteByID(u domain.User) (err error) {
-	err = UCuserInteractor.UCUserRepository.IFDBDeleteByID(u)
+func (UCUserInteractor *UCUserInteractor) UCUIDeleteByID(u domain.User) (err error) {
+	err = UCUserInteractor.UCUserRepository.IFDBDeleteByID(u)
 	return
 }

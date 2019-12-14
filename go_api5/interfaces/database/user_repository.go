@@ -9,7 +9,7 @@ type IFDBUserRepository struct {
 
 // IFDBFindByID ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user domain.User, err error) {
-	if err = IFDBUserRepository.Find(&user, id).Error; err != nil {
+	if err = IFDBUserRepository.INFRFind(&user, id).Error; err != nil {
 		return
 	}
 	return
@@ -17,7 +17,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user domain.
 
 // IFDBFindAll ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users domain.Users, err error) {
-	if err = IFDBUserRepository.Find(&users).Error; err != nil {
+	if err = IFDBUserRepository.INFRFind(&users).Error; err != nil {
 		return
 	}
 	return
@@ -25,7 +25,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users domain.Users,
 
 // IFDBStore ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u domain.User) (user domain.User, err error) {
-	if err = IFDBUserRepository.Create(&u).Error; err != nil {
+	if err = IFDBUserRepository.INFRCreate(&u).Error; err != nil {
 		return
 	}
 	user = u
@@ -34,7 +34,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u domain.User) (user dom
 
 // IFDBUpdate ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u domain.User) (user domain.User, err error) {
-	if err = IFDBUserRepository.Save(&u).Error; err != nil {
+	if err = IFDBUserRepository.INFRSave(&u).Error; err != nil {
 		return
 	}
 	user = u
@@ -43,7 +43,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u domain.User) (user do
 
 // IFDBDeleteByID ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBDeleteByID(user domain.User) (err error) {
-	if err = IFDBUserRepository.Delete(&user).Error; err != nil {
+	if err = IFDBUserRepository.INFRDelete(&user).Error; err != nil {
 		return
 	}
 	return

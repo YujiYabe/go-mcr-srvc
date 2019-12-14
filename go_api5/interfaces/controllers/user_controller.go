@@ -10,14 +10,14 @@ import (
 	"github.com/labstack/echo"
 )
 
-// UserController ...
-type UserController struct {
+// IFCNUserController ...
+type IFCNUserController struct {
 	UCUserInteractor usecase.UCUserInteractor
 }
 
 // NewUserController ...
-func NewUserController(SQLHandler database.IFDBSQLHandler) *UserController {
-	return &UserController{
+func NewUserController(SQLHandler database.IFDBSQLHandler) *IFCNUserController {
+	return &IFCNUserController{
 		UCUserInteractor: usecase.UCUserInteractor{
 			UCUserRepository: &database.IFDBUserRepository{
 				IFDBSQLHandler: SQLHandler,
@@ -27,7 +27,7 @@ func NewUserController(SQLHandler database.IFDBSQLHandler) *UserController {
 }
 
 // IFCNShow ...
-func (controller *UserController) IFCNShow(c echo.Context) (err error) {
+func (controller *IFCNUserController) IFCNShow(c echo.Context) (err error) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := controller.UCUserInteractor.UCUIUserByID(id)
 	if err != nil {
@@ -39,7 +39,7 @@ func (controller *UserController) IFCNShow(c echo.Context) (err error) {
 }
 
 // IFCNIndex ...
-func (controller *UserController) IFCNIndex(c echo.Context) (err error) {
+func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
 	users, err := controller.UCUserInteractor.UCUIUsers()
 	if err != nil {
 		c.JSON(500, NewError(err))
@@ -50,7 +50,7 @@ func (controller *UserController) IFCNIndex(c echo.Context) (err error) {
 }
 
 // IFCNCreate ...
-func (controller *UserController) IFCNCreate(c echo.Context) (err error) {
+func (controller *IFCNUserController) IFCNCreate(c echo.Context) (err error) {
 	u := domain.User{}
 	c.Bind(&u)
 	user, err := controller.UCUserInteractor.UCUIAdd(u)
@@ -63,7 +63,7 @@ func (controller *UserController) IFCNCreate(c echo.Context) (err error) {
 }
 
 // IFCNSave ...
-func (controller *UserController) IFCNSave(c echo.Context) (err error) {
+func (controller *IFCNUserController) IFCNSave(c echo.Context) (err error) {
 	u := domain.User{}
 	c.Bind(&u)
 	user, err := controller.UCUserInteractor.UCUIUpdate(u)
@@ -76,7 +76,7 @@ func (controller *UserController) IFCNSave(c echo.Context) (err error) {
 }
 
 // IFCNDelete ...
-func (controller *UserController) IFCNDelete(c echo.Context) (err error) {
+func (controller *IFCNUserController) IFCNDelete(c echo.Context) (err error) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user := domain.User{
 		ID: id,

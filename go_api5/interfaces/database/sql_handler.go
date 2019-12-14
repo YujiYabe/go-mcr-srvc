@@ -4,12 +4,12 @@ import "github.com/jinzhu/gorm"
 
 // IFDBSQLHandler ...
 type IFDBSQLHandler interface {
-	Exec(string, ...interface{}) *gorm.DB
-	Find(interface{}, ...interface{}) *gorm.DB
-	First(interface{}, ...interface{}) *gorm.DB
-	Raw(string, ...interface{}) *gorm.DB
-	Create(interface{}) *gorm.DB
-	Save(interface{}) *gorm.DB
-	Delete(interface{}) *gorm.DB
-	Where(interface{}, ...interface{}) *gorm.DB
+	INFRExec(string, ...interface{}) *gorm.DB
+	INFRFind(interface{}, ...interface{}) *gorm.DB
+	INFRFirst(interface{}, ...interface{}) *gorm.DB
+	INFRRaw(string, ...interface{}) *gorm.DB
+	INFRCreate(interface{}) *gorm.DB
+	INFRSave(interface{}) *gorm.DB
+	INFRDelete(interface{}) *gorm.DB
+	INFRWhere(interface{}, ...interface{}) *gorm.DB
 }

@@ -25,42 +25,42 @@ func NewSQLHandler() database.IFDBSQLHandler {
 	return SQLHandler
 }
 
-// Find ...
-func (handler *SQLHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+// INFRFind ...
+func (handler *SQLHandler) INFRFind(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.Find(out, where...)
 }
 
-// Exec ...
-func (handler *SQLHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+// INFRExec ...
+func (handler *SQLHandler) INFRExec(sql string, values ...interface{}) *gorm.DB {
 	return handler.Conn.Exec(sql, values...)
 }
 
-// First ...
-func (handler *SQLHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+// INFRFirst ...
+func (handler *SQLHandler) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.First(out, where...)
 }
 
-// Raw ...
-func (handler *SQLHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+// INFRRaw ...
+func (handler *SQLHandler) INFRRaw(sql string, values ...interface{}) *gorm.DB {
 	return handler.Conn.Raw(sql, values...)
 }
 
-// Create ...
-func (handler *SQLHandler) Create(value interface{}) *gorm.DB {
+// INFRCreate ...
+func (handler *SQLHandler) INFRCreate(value interface{}) *gorm.DB {
 	return handler.Conn.Create(value)
 }
 
-// Save ...
-func (handler *SQLHandler) Save(value interface{}) *gorm.DB {
+// INFRSave ...
+func (handler *SQLHandler) INFRSave(value interface{}) *gorm.DB {
 	return handler.Conn.Save(value)
 }
 
-// Delete ...
-func (handler *SQLHandler) Delete(value interface{}) *gorm.DB {
+// INFRDelete ...
+func (handler *SQLHandler) INFRDelete(value interface{}) *gorm.DB {
 	return handler.Conn.Delete(value)
 }
 
-// Where ...
-func (handler *SQLHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+// INFRWhere ...
+func (handler *SQLHandler) INFRWhere(query interface{}, args ...interface{}) *gorm.DB {
 	return handler.Conn.Where(query, args...)
 }
