@@ -146,7 +146,7 @@ services:
     #         - DB_NAME=app
     #         - DB_USER=user
     #         - DB_PASSWORD=user
-    #     tty: true #起動させっぱなし
+    #     tty: true
     #     links:
     #         -  mysql
 
@@ -171,7 +171,7 @@ services:
     #         - DB_NAME=app
     #         - DB_USER=user
     #         - DB_PASSWORD=user
-    #     tty: true #起動させっぱなし
+    #     tty: true
     #     links:
     #         -  mysql
 
@@ -196,7 +196,7 @@ services:
             - DB_NAME=app
             - DB_USER=user
             - DB_PASSWORD=user
-        tty: true #起動させっぱなし
+        tty: true
         links:
             -  mysql
 

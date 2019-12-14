@@ -1,6 +1,6 @@
 
 ### ==============================
-http://localhost:1234
+http://localhost:1234/users
 
 ### ==============================
 http://localhost:1234/salkdfjsdlfjds
