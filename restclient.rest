@@ -3,6 +3,32 @@
 http://localhost:1234/users
 
 ### ==============================
+http://localhost:1234/user/6
+
+### ==============================
+POST http://localhost:1234/create HTTP/1.1
+content-type: application/json
+
+{
+    "FirstName": "qwert",
+    "LastName": "99dfg9"
+}
+
+### ==============================
+PUT http://localhost:1234/user/6 HTTP/1.1
+Content-Type: application/json
+
+{
+    "FirstName": "we",
+    "LastName": "sssss"
+}
+
+curl -X PUT \
+    -H 'Content-Type: application/json' \
+    -d '{"FirstName":"Joe"}' \
+    localhost:1234/user/6
+
+### ==============================
 http://localhost:1234/salkdfjsdlfjds
 
 
