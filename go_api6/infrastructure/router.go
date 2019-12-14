@@ -12,37 +12,18 @@ func Run() {
 	// Echo instance
 	e := echo.New()
 
-	//
 	userController := controllers.NewUserController(NewSQLHandler())
 
-	var logFormat string
-	logFormat += "time:${time_rfc3339} "
-	logFormat += "method:${method} "
-	logFormat += "status:${status} "
-	logFormat += "uri:${uri} "
-	// logFormat += "host:${remote_ip} "
-	// logFormat += "forwardedfor:${header:x-forwarded-for} "
-	// logFormat += "req:- "
-	// logFormat += "size:${bytes_out} "
-	// logFormat += "referer:${referer} "
-	// logFormat += "ua:${user_agent} "
-	// logFormat += "reqtime_ns:${latency} "
-	// logFormat += "cache:- "
-	// logFormat += "runtime:- "
-	// logFormat += "apptime:- "
-	// logFormat += "vhost:${host} "
-	// logFormat += "reqtime_human:${latency_human} "
-	// logFormat += "x-request-id:${id} "
-	// logFormat += "host:${host} "
-	logFormat += "n"
+
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "time:${time_rfc3339}, status=${status}, method=${method}, uri=${uri}\n",
+	}))
+
 
 	// Middleware
 	e.Use(middleware.Recover())
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: logFormat,
-	}))
 
-	// get
+// get
 	e.GET("/users", func(c echo.Context) error { return userController.IFCNIndex(c) })
 	e.GET("/user/:id", func(c echo.Context) error { return userController.IFCNShow(c) })
 
