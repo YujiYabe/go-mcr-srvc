@@ -2,53 +2,65 @@ package infrastructure
 
 import (
 	"github.com/jinzhu/gorm"
+
+	// mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"app/interfaces/database"
 )
 
-type SqlHandler struct {
+// SQLHandler ...
+type SQLHandler struct {
 	Conn *gorm.DB
 }
 
-func NewSqlHandler() database.SqlHandler {
+// NewSQLHandler ...
+func NewSQLHandler() database.IFDBSQLHandler {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err.Error)
 	}
-	sqlHandler := new(SqlHandler)
-	sqlHandler.Conn = conn
-	return sqlHandler
+	SQLHandler := new(SQLHandler)
+	SQLHandler.Conn = conn
+	return SQLHandler
 }
 
-func (handler *SqlHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
+// Find ...
+func (handler *SQLHandler) Find(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.Find(out, where...)
 }
 
-func (handler *SqlHandler) Exec(sql string, values ...interface{}) *gorm.DB {
+// Exec ...
+func (handler *SQLHandler) Exec(sql string, values ...interface{}) *gorm.DB {
 	return handler.Conn.Exec(sql, values...)
 }
 
-func (handler *SqlHandler) First(out interface{}, where ...interface{}) *gorm.DB {
+// First ...
+func (handler *SQLHandler) First(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.First(out, where...)
 }
 
-func (handler *SqlHandler) Raw(sql string, values ...interface{}) *gorm.DB {
+// Raw ...
+func (handler *SQLHandler) Raw(sql string, values ...interface{}) *gorm.DB {
 	return handler.Conn.Raw(sql, values...)
 }
 
-func (handler *SqlHandler) Create(value interface{}) *gorm.DB {
+// Create ...
+func (handler *SQLHandler) Create(value interface{}) *gorm.DB {
 	return handler.Conn.Create(value)
 }
 
-func (handler *SqlHandler) Save(value interface{}) *gorm.DB {
+// Save ...
+func (handler *SQLHandler) Save(value interface{}) *gorm.DB {
 	return handler.Conn.Save(value)
 }
 
-func (handler *SqlHandler) Delete(value interface{}) *gorm.DB {
+// Delete ...
+func (handler *SQLHandler) Delete(value interface{}) *gorm.DB {
 	return handler.Conn.Delete(value)
 }
 
-func (handler *SqlHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
+// Where ...
+func (handler *SQLHandler) Where(query interface{}, args ...interface{}) *gorm.DB {
 	return handler.Conn.Where(query, args...)
 }

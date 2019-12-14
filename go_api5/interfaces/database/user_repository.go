@@ -2,42 +2,48 @@ package database
 
 import "app/domain"
 
-type UserRepository struct {
-	SqlHandler
+// IFDBUserRepository ...
+type IFDBUserRepository struct {
+	IFDBSQLHandler
 }
 
-func (repo *UserRepository) FindById(id int) (user domain.User, err error) {
-	if err = repo.Find(&user, id).Error; err != nil {
+// IFDBFindByID ...
+func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user domain.User, err error) {
+	if err = IFDBUserRepository.Find(&user, id).Error; err != nil {
 		return
 	}
 	return
 }
 
-func (repo *UserRepository) FindAll() (users domain.Users, err error) {
-	if err = repo.Find(&users).Error; err != nil {
+// IFDBFindAll ...
+func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users domain.Users, err error) {
+	if err = IFDBUserRepository.Find(&users).Error; err != nil {
 		return
 	}
 	return
 }
 
-func (repo *UserRepository) Store(u domain.User) (user domain.User, err error) {
-	if err = repo.Create(&u).Error; err != nil {
-		return
-	}
-	user = u
-	return
-}
-
-func (repo *UserRepository) Update(u domain.User) (user domain.User, err error) {
-	if err = repo.Save(&u).Error; err != nil {
+// IFDBStore ...
+func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u domain.User) (user domain.User, err error) {
+	if err = IFDBUserRepository.Create(&u).Error; err != nil {
 		return
 	}
 	user = u
 	return
 }
 
-func (repo *UserRepository) DeleteById(user domain.User) (err error) {
-	if err = repo.Delete(&user).Error; err != nil {
+// IFDBUpdate ...
+func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u domain.User) (user domain.User, err error) {
+	if err = IFDBUserRepository.Save(&u).Error; err != nil {
+		return
+	}
+	user = u
+	return
+}
+
+// IFDBDeleteByID ...
+func (IFDBUserRepository *IFDBUserRepository) IFDBDeleteByID(user domain.User) (err error) {
+	if err = IFDBUserRepository.Delete(&user).Error; err != nil {
 		return
 	}
 	return

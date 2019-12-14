@@ -2,7 +2,8 @@ package database
 
 import "github.com/jinzhu/gorm"
 
-type SqlHandler interface {
+// IFDBSQLHandler ...
+type IFDBSQLHandler interface {
 	Exec(string, ...interface{}) *gorm.DB
 	Find(interface{}, ...interface{}) *gorm.DB
 	First(interface{}, ...interface{}) *gorm.DB
