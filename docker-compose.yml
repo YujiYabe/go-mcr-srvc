@@ -252,3 +252,21 @@ services:
         links:
             -  mysql
 
+    #  ==================================
+    go_apit:
+        build:
+            context: ./go_apit
+            dockerfile: Dockerfile
+        container_name: go_apit
+        volumes:
+            - ./go_apit:/go/src/todo
+        ports:
+            - "7070:7070"
+        # command: ["4321", "1234"]
+        # restart: always
+        environment:
+            - GO111MODULE=off
+            - GOPATH=/go
+            - PORT=7070
+        tty: true
+
