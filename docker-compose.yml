@@ -227,14 +227,57 @@ services:
     #         -  mysql
 
 
+    # #  ==================================
+    # go_api6: // test
+    #     build:
+    #         context: ./go_api6
+    #         dockerfile: Dockerfile
+    #     container_name: go_api6
+    #     volumes:
+    #         - ./go_api6:/go/src/app
+    #     ports:
+    #         - "1234:4321"
+    #     command: ["4321", "1234"]
+    #     # restart: always
+    #     environment:
+    #         - GO111MODULE=off
+    #         - GOPATH=/go
+    #         - PORT=1234
+    #         - DB_HOST=mysql
+    #         - DB_PORT=3306
+    #         - DB_NAME=app
+    #         - DB_USER=user
+    #         - DB_PASSWORD=user
+    #     tty: true
+    #     links:
+    #         -  mysql
+
+    # #  ==================================
+    # go_apit:
+    #     build:
+    #         context: ./go_apit
+    #         dockerfile: Dockerfile
+    #     container_name: go_apit
+    #     volumes:
+    #         - ./go_apit:/go/src/todo
+    #     ports:
+    #         - "7070:7171"
+    #     # command: ["4321", "1234"]
+    #     # restart: always
+    #     environment:
+    #         - GO111MODULE=off
+    #         - GOPATH=/go
+    #         - PORT=7070
+    #     tty: true
+
     #  ==================================
-    go_api6:
+    go_api7:
         build:
-            context: ./go_api6
+            context: ./go_api7
             dockerfile: Dockerfile
-        container_name: go_api6
+        container_name: go_api7
         volumes:
-            - ./go_api6:/go/src/app
+            - ./go_api7:/go/src/app
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
@@ -251,22 +294,3 @@ services:
         tty: true
         links:
             -  mysql
-
-    #  ==================================
-    go_apit:
-        build:
-            context: ./go_apit
-            dockerfile: Dockerfile
-        container_name: go_apit
-        volumes:
-            - ./go_apit:/go/src/todo
-        ports:
-            - "7070:7171"
-        # command: ["4321", "1234"]
-        # restart: always
-        environment:
-            - GO111MODULE=off
-            - GOPATH=/go
-            - PORT=7070
-        tty: true
-
