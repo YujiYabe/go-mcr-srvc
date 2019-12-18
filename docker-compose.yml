@@ -261,7 +261,7 @@ services:
         volumes:
             - ./go_apit:/go/src/todo
         ports:
-            - "7070:7070"
+            - "7070:7171"
         # command: ["4321", "1234"]
         # restart: always
         environment:
