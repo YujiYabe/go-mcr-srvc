@@ -8,3 +8,6 @@ insert into users(first_name, last_name) values("Linda", "Johnson");
 insert into users(first_name, last_name) values("Mary", "William");
 insert into users(first_name, last_name) values("Robert", "Jones");
 insert into users(first_name, last_name) values("James", "Brown");
+
+INSERT INTO todos(task,limitDate,status) VALUES ('TOM','xxxx@mail.co.jp', true);
+

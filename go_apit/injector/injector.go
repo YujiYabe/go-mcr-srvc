@@ -7,8 +7,8 @@ import (
 	"todo/usecase"
 )
 
-func InjectDB() infra.SqlHandler {
-	sqlhandler := infra.NewSqlHandler()
+func InjectDB() infra.SQLHandler {
+	sqlhandler := infra.NewSQLHandler()
 	return *sqlhandler
 }
 

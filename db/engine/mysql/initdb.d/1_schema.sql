@@ -9,14 +9,13 @@ use app;
 --     PRIMARY KEY (id)
 -- );
 
-create table if not exists person (
--- create table  person (
+create table if not exists person(
     id bigint auto_increment,
     name varchar(255),
     email varchar(255),
-    primary key (id)
-);
-
+    primary key(id)
+)
+;
 create table if not exists account (
   id bigint auto_increment,
   balance int,
@@ -35,5 +34,19 @@ create table IF not exists `users`
   `created_at`       Datetime DEFAULT NULL,
   `updated_at`       Datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+---- drop ----
+DROP TABLE IF EXISTS `todos`;
+
+---- create ----
+create table IF not exists `todos`
+(
+    id bigint auto_increment,
+    task varchar(255),
+    limitDate varchar(255),
+    status bool,
+    primary key (id)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

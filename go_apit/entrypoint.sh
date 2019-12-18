@@ -9,6 +9,7 @@ fi
 
 dep ensure
 
-bash
-# gin -p 4321 -a 1234
+# bash
+
+gin -p 7171 -a 7070
 # gin -p ${proxy_server_port} -a ${web_server_port}
