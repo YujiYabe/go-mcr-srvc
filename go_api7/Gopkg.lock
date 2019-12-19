@@ -18,14 +18,6 @@
   version = "v1.4.1"
 
 [[projects]]
-  digest = "1:be408f349cae090a7c17a279633d6e62b00068e64af66a582cae0983de8890ea"
-  name = "github.com/golang/mock"
-  packages = ["gomock"]
-  pruneopts = "UT"
-  revision = "9fa652df1129bef0e734c9cf9bf6dbae9ef3b9fa"
-  version = "1.3.1"
-
-[[projects]]
   digest = "1:bf3bd8cc2f7357b8ab72f697bd05f308f7252094195c86872ba1505a644cdb59"
   name = "github.com/jinzhu/gorm"
   packages = [
@@ -164,7 +156,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/golang/mock/gomock",
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/mysql",
     "github.com/labstack/echo",

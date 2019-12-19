@@ -19,14 +19,14 @@ mockgen -source recipe/user_repository.go -destination mock_user/mock_user_repos
 
 =====================================================================
 
-mockgen -source domain/repository/todo.go -destination mock_todo/mock_repository_todo.go
+mockgen -source menu/repository/todo.go -destination mock_todo/mock_repository_todo.go
 
 -----------------------------
-domain/repository/todo.go
+menu/repository/todo.go
 package repository
 
 import (
-    "todo/domain/model"
+    "todo/menu/model"
 )
 
 //TodoRepository is interface for external

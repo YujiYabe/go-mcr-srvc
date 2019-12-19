@@ -1,12 +1,12 @@
 package recipe
 
-import "app/domain"
+import "app/menu"
 
 // PrepareDrink ...
 type PrepareDrink interface {
-	IFDBFindByID(id int) (domain.User, error)
-	IFDBFindAll() (domain.Users, error)
-	IFDBStore(domain.User) (domain.User, error)
-	IFDBUpdate(domain.User) (domain.User, error)
-	IFDBDeleteByID(domain.User) error
+	SupplyCoffee() (menu.Users, error)
+	// IFDBFindByID(id int) (menu.User, error)
+	// IFDBStore(menu.User) (menu.User, error)
+	// IFDBUpdate(menu.User) (menu.User, error)
+	// IFDBDeleteByID(menu.User) error
 }

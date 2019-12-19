@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"strconv"
-
 	"github.com/labstack/echo"
 
-	"app/interfaces/database"
+	"app/interfaces/supplier"
 	"app/recipe"
 )
 
@@ -15,11 +13,11 @@ type DrinkController struct {
 }
 
 // NewDrinkController ...
-func NewDrinkController(SQLHandler database.IFDBSQLHandler) *DrinkController {
+func NewDrinkController(DrinkStocker supplier.ExtractDrink) *DrinkController {
 	return &DrinkController{
 		CookDrink: recipe.CookDrink{
-			PrepareDrink: &database.IFDBUserRepository{
-				IFDBSQLHandler: SQLHandler,
+			PrepareDrink: &supplier.SupplyDrink{
+				ExtractDrink: DrinkStocker,
 			},
 		},
 	}
@@ -27,7 +25,7 @@ func NewDrinkController(SQLHandler database.IFDBSQLHandler) *DrinkController {
 
 // ShowAllDrinks ...
 func (controller *DrinkController) ShowAllDrinks(c echo.Context) (err error) {
-	users, err := controller.CookDrink.UCUIUsers()
+	users, err := controller.CookDrink.CookCoffee()
 	if err != nil {
 		c.JSON(500, NewError(err))
 		return
@@ -36,21 +34,21 @@ func (controller *DrinkController) ShowAllDrinks(c echo.Context) (err error) {
 	return
 }
 
-// ShowDetailDrink ...
-func (controller *DrinkController) ShowDetailDrink(c echo.Context) (err error) {
-	id, _ := strconv.Atoi(c.Param("id"))
-	user, err := controller.CookDrink.UCUIUserByID(id)
-	if err != nil {
-		c.JSON(500, NewError(err))
-		return
-	}
-	c.JSON(200, user)
-	return
-}
+// // ShowDetailDrink ...
+// func (controller *DrinkController) ShowDetailDrink(c echo.Context) (err error) {
+// 	id, _ := strconv.Atoi(c.Param("id"))
+// 	user, err := controller.CookDrink.UCUIUserByID(id)
+// 	if err != nil {
+// 		c.JSON(500, NewError(err))
+// 		return
+// 	}
+// 	c.JSON(200, user)
+// 	return
+// }
 
 // // IFCNCreate ...
 // func (controller *DrinkController) IFCNCreate(c echo.Context) (err error) {
-// 	u := domain.User{}
+// 	u := menu.User{}
 // 	c.Bind(&u)
 // 	user, err := controller.CookDrink.UCUIAdd(u)
 // 	if err != nil {
@@ -63,7 +61,7 @@ func (controller *DrinkController) ShowDetailDrink(c echo.Context) (err error) {
 
 // // IFCNSave ...
 // func (controller *DrinkController) IFCNSave(c echo.Context) (err error) {
-// 	u := domain.User{}
+// 	u := menu.User{}
 // 	c.Bind(&u)
 
 // 	id, _ := strconv.Atoi(c.Param("id"))
@@ -81,7 +79,7 @@ func (controller *DrinkController) ShowDetailDrink(c echo.Context) (err error) {
 // // IFCNDelete ...
 // func (controller *DrinkController) IFCNDelete(c echo.Context) (err error) {
 // 	id, _ := strconv.Atoi(c.Param("id"))
-// 	user := domain.User{
+// 	user := menu.User{
 // 		ID: id,
 // 	}
 // 	err = controller.CookDrink.UCUIDeleteByID(user)

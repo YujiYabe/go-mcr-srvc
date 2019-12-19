@@ -14,7 +14,7 @@ func Register() {
 	// Echo instance
 	e := echo.New()
 
-	drinkController := controllers.NewDrinkController(NewMySQLHandler())
+	drinkController := controllers.NewDrinkController(NewDrinkStocker())
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}  ${status}  ${method}\t${uri}\n",
@@ -24,10 +24,10 @@ func Register() {
 	e.Use(middleware.Recover())
 
 	// get
+	e.GET("/drinks", func(c echo.Context) error { return drinkController.ShowAllDrinks(c) })
 	// e.GET("/drinks", func(c echo.Context) error { return drinkController.IFCNIndex(c) })
 	// e.GET("/drink/:name", func(c echo.Context) error { return drinkController.IFCNShow(c) })
-	e.GET("/drinks", func(c echo.Context) error { return drinkController.ShowAllDrinks(c) })
-	e.GET("/drink/:name", func(c echo.Context) error { return drinkController.ShowDetailDrink(c) })
+	// e.GET("/drink/:name", func(c echo.Context) error { return drinkController.ShowDetailDrink(c) })
 
 	// // post
 	// e.POST("/create", func(c echo.Context) error { return drinkController.IFCNCreate(c) })

@@ -6,62 +6,62 @@ import (
 	// mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
-	"app/interfaces/database"
+	"app/interfaces/supplier"
 )
 
-// SQLHandler ...
-type SQLHandler struct {
+// DrinkStocker ...
+type DrinkStocker struct {
 	Conn *gorm.DB
 }
 
-// NewMySQLHandler ...
-func NewMySQLHandler() database.IFDBSQLHandler {
+// NewDrinkStocker ...
+func NewDrinkStocker() supplier.ExtractDrink {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err.Error)
 	}
-	SQLHandler := new(SQLHandler)
-	SQLHandler.Conn = conn
-	return SQLHandler
+	DrinkStocker := new(DrinkStocker)
+	DrinkStocker.Conn = conn
+	return DrinkStocker
 }
 
-// INFRFind ...
-func (handler *SQLHandler) INFRFind(out interface{}, where ...interface{}) *gorm.DB {
+// extractDrink ...
+func (handler *DrinkStocker) extractDrink(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.Find(out, where...)
 }
 
-// INFRExec ...
-func (handler *SQLHandler) INFRExec(sql string, values ...interface{}) *gorm.DB {
-	return handler.Conn.Exec(sql, values...)
-}
+// // INFRExec ...
+// func (handler *DrinkStocker) INFRExec(sql string, values ...interface{}) *gorm.DB {
+// 	return handler.Conn.Exec(sql, values...)
+// }
 
-// INFRFirst ...
-func (handler *SQLHandler) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
-	return handler.Conn.First(out, where...)
-}
+// // INFRFirst ...
+// func (handler *DrinkStocker) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
+// 	return handler.Conn.First(out, where...)
+// }
 
-// INFRRaw ...
-func (handler *SQLHandler) INFRRaw(sql string, values ...interface{}) *gorm.DB {
-	return handler.Conn.Raw(sql, values...)
-}
+// // INFRRaw ...
+// func (handler *DrinkStocker) INFRRaw(sql string, values ...interface{}) *gorm.DB {
+// 	return handler.Conn.Raw(sql, values...)
+// }
 
-// INFRCreate ...
-func (handler *SQLHandler) INFRCreate(value interface{}) *gorm.DB {
-	return handler.Conn.Create(value)
-}
+// // INFRCreate ...
+// func (handler *DrinkStocker) INFRCreate(value interface{}) *gorm.DB {
+// 	return handler.Conn.Create(value)
+// }
 
-// INFRSave ...
-func (handler *SQLHandler) INFRSave(value interface{}) *gorm.DB {
+// // INFRSave ...
+// func (handler *DrinkStocker) INFRSave(value interface{}) *gorm.DB {
 
-	return handler.Conn.Save(value)
-}
+// 	return handler.Conn.Save(value)
+// }
 
-// INFRDelete ...
-func (handler *SQLHandler) INFRDelete(value interface{}) *gorm.DB {
-	return handler.Conn.Delete(value)
-}
+// // INFRDelete ...
+// func (handler *DrinkStocker) INFRDelete(value interface{}) *gorm.DB {
+// 	return handler.Conn.Delete(value)
+// }
 
-// INFRWhere ...
-func (handler *SQLHandler) INFRWhere(query interface{}, args ...interface{}) *gorm.DB {
-	return handler.Conn.Where(query, args...)
-}
+// // INFRWhere ...
+// func (handler *DrinkStocker) INFRWhere(query interface{}, args ...interface{}) *gorm.DB {
+// 	return handler.Conn.Where(query, args...)
+// }
