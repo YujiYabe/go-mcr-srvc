@@ -1,9 +1,9 @@
-package usecase
+package recipe
 
 import "app/domain"
 
-// UCUserRepository ...
-type UCUserRepository interface {
+// PrepareDrink ...
+type PrepareDrink interface {
 	IFDBFindByID(id int) (domain.User, error)
 	IFDBFindAll() (domain.Users, error)
 	IFDBStore(domain.User) (domain.User, error)

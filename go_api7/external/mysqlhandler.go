@@ -1,4 +1,4 @@
-package infrastructure
+package external
 
 import (
 	"github.com/jinzhu/gorm"
@@ -14,8 +14,8 @@ type SQLHandler struct {
 	Conn *gorm.DB
 }
 
-// NewSQLHandler ...
-func NewSQLHandler() database.IFDBSQLHandler {
+// NewMySQLHandler ...
+func NewMySQLHandler() database.IFDBSQLHandler {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err.Error)
