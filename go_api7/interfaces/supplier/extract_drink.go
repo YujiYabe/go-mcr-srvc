@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 // ExtractDrink ...
 type ExtractDrink interface {
-	extractDrink(interface{}, ...interface{}) *gorm.DB
+	ExtractCoffee(interface{}, ...interface{}) *gorm.DB
 	// INFRExec(string, ...interface{}) *gorm.DB
 	// INFRFirst(interface{}, ...interface{}) *gorm.DB
 	// INFRRaw(string, ...interface{}) *gorm.DB

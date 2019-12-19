@@ -9,7 +9,7 @@ type SupplyDrink struct {
 
 // SupplyCoffee ...
 func (SupplyDrink *SupplyDrink) SupplyCoffee() (users menu.Users, err error) {
-	if err = SupplyDrink.extractDrink(&users).Error; err != nil {
+	if err = SupplyDrink.ExtractCoffee(&users).Error; err != nil {
 		return
 	}
 	return

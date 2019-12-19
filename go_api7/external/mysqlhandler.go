@@ -26,7 +26,7 @@ func NewDrinkStocker() supplier.ExtractDrink {
 }
 
 // extractDrink ...
-func (handler *DrinkStocker) extractDrink(out interface{}, where ...interface{}) *gorm.DB {
+func (handler *DrinkStocker) ExtractCoffee(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.Find(out, where...)
 }
 
