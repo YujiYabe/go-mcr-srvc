@@ -27,23 +27,23 @@ services:
             - ./db/engine/mysql/data:/var/lib/mysql
         #     -  ./log/mysql:/var/log/mysql
 
-    # #  ==================================
-    # phpmyadmin:
-    #     container_name:  phpmyadmin
-    #     build:
-    #         context:  ./db/tool/phpmyadmin
-    #         dockerfile:  Dockerfile
-    #     environment:
-    #         - PMA_ARBITRARY=1
-    #         - PMA_HOST=mysql
-    #         - PMA_USER=root
-    #         - PMA_PASSWORD=password
-    #     ports:
-    #         -  "8090:80"
-    #     volumes:
-    #         - "./db/tool/phpmyadmin/sessions:/sessions"
-    #     links:
-    #         -  mysql
+    #  ==================================
+    phpmyadmin:
+        container_name:  phpmyadmin
+        build:
+            context:  ./db/tool/phpmyadmin
+            dockerfile:  Dockerfile
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_USER=root
+            - PMA_PASSWORD=password
+        ports:
+            -  "8090:80"
+        volumes:
+            - "./db/tool/phpmyadmin/sessions:/sessions"
+        links:
+            -  mysql
 
 
 

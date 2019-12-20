@@ -8,8 +8,8 @@ type CookDrink struct {
 }
 
 // CookCoffee ...
-func (CookDrink *CookDrink) CookCoffee() (users menu.Users, err error) {
-	users, err = CookDrink.PrepareDrink.SupplyCoffee()
+func (CookDrink *CookDrink) CookCoffee() (drink menu.Drink, err error) {
+	drink, err = CookDrink.PrepareDrink.SupplyCoffee()
 	return
 }
 

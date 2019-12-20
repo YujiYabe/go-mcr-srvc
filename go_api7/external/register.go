@@ -24,7 +24,7 @@ func Register() {
 	e.Use(middleware.Recover())
 
 	// get
-	e.GET("/drinks", func(c echo.Context) error { return drinkController.ShowAllDrinks(c) })
+	e.GET("/drinks", func(c echo.Context) error { return drinkController.RequestCoffee(c) })
 	// e.GET("/drinks", func(c echo.Context) error { return drinkController.IFCNIndex(c) })
 	// e.GET("/drink/:name", func(c echo.Context) error { return drinkController.IFCNShow(c) })
 	// e.GET("/drink/:name", func(c echo.Context) error { return drinkController.ShowDetailDrink(c) })

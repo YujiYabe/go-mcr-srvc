@@ -23,8 +23,8 @@ func NewDrinkController(DrinkStocker supplier.ExtractDrink) *DrinkController {
 	}
 }
 
-// ShowAllDrinks ...
-func (controller *DrinkController) ShowAllDrinks(c echo.Context) (err error) {
+// RequestCoffee ...
+func (controller *DrinkController) RequestCoffee(c echo.Context) (err error) {
 	users, err := controller.CookDrink.CookCoffee()
 	if err != nil {
 		c.JSON(500, NewError(err))

@@ -8,8 +8,9 @@ type SupplyDrink struct {
 }
 
 // SupplyCoffee ...
-func (SupplyDrink *SupplyDrink) SupplyCoffee() (users menu.Users, err error) {
-	if err = SupplyDrink.ExtractCoffee(&users).Error; err != nil {
+func (SupplyDrink *SupplyDrink) SupplyCoffee() (drink menu.Drink, err error) {
+	err = SupplyDrink.ExtractDrink.ExtractCoffee(&drink).Error
+	if err != nil {
 		return
 	}
 	return

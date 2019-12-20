@@ -36,7 +36,6 @@ create table IF not exists `users`
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
 ---- drop ----
 DROP TABLE IF EXISTS `todos`;
 
@@ -48,5 +47,30 @@ create table IF not exists `todos`
     limitDate varchar(255),
     status bool,
     primary key (id)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+---- drop ----
+DROP TABLE IF EXISTS `drinks`;
+
+---- create ----
+create table IF not exists `drinks`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`             int,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+---- drop ----
+DROP TABLE IF EXISTS `ingredients`;
+
+---- create ----
+create table IF not exists `ingredients`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`            int,
+  PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
