@@ -1,7 +1,7 @@
 package main
 
-import "app/external"
+import "app/infrastructure"
 
 func main() {
-	external.Register()
+	infrastructure.Run()
 }

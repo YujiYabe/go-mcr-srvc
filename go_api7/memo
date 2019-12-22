@@ -7,7 +7,7 @@ dep ensure -add github.com/pkg/errors  add a dependency to the project
 =====================================================================
 
 
-mockgen -source recipe/user_repository.go -destination mock_user/mock_user_repository.go
+mockgen -source usecase/user_repository.go -destination mock_user/mock_user_repository.go
 
 
 
@@ -19,17 +19,17 @@ mockgen -source recipe/user_repository.go -destination mock_user/mock_user_repos
 
 =====================================================================
 
-mockgen -source menu/repository/todo.go -destination mock_todo/mock_repository_todo.go
+mockgen -source domain/repository/todo.go -destination mock_todo/mock_repository_todo.go
 
 -----------------------------
-menu/repository/todo.go
+domain/repository/todo.go
 package repository
 
 import (
-    "todo/menu/model"
+    "todo/domain/model"
 )
 
-//TodoRepository is interface for external
+//TodoRepository is interface for infrastructure
 type TodoRepository interface {
     FindAll() (todos []*model.Todo, err error)
     Find(word string) (todos []*model.Todo, err error)
