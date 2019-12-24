@@ -27,14 +27,14 @@ func Run() {
 	e.GET("/users", func(c echo.Context) error { return userController.IFCNIndex(c) })
 	e.GET("/user/:id", func(c echo.Context) error { return userController.IFCNShow(c) })
 
-	// post
-	e.POST("/create", func(c echo.Context) error { return userController.IFCNCreate(c) })
+	// // post
+	// e.POST("/create", func(c echo.Context) error { return userController.IFCNCreate(c) })
 
-	// put
-	e.PUT("/user/:id", func(c echo.Context) error { return userController.IFCNSave(c) })
+	// // put
+	// e.PUT("/user/:id", func(c echo.Context) error { return userController.IFCNSave(c) })
 
-	// delete
-	e.DELETE("/user/:id", func(c echo.Context) error { return userController.IFCNDelete(c) })
+	// // delete
+	// e.DELETE("/user/:id", func(c echo.Context) error { return userController.IFCNDelete(c) })
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))

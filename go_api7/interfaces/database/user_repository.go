@@ -9,17 +9,10 @@ type IFDBUserRepository struct {
 	IFDBSQLHandler
 }
 
-
 // NewIFDBUserRepository ...
-func NewIFDBUserRepository(SQLHandler IFDBSQLHandler) &IFDBUserRepository {
-	return IFDBUserRepository{ 
-		IFDBSQLHandler: SQLHandler
-	}
+func NewIFDBUserRepository(SQLHandler IFDBSQLHandler) *IFDBUserRepository {
+	return &IFDBUserRepository{IFDBSQLHandler: SQLHandler}
 }
-
-// UCUserRepository: &database.IFDBUserRepository{
-// 	IFDBSQLHandler: SQLHandler,
-// },
 
 // IFDBFindByID ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user domain.User, err error) {

@@ -4,23 +4,24 @@ import (
 	"app/domain"
 	"app/interfaces/database"
 )
+
 // UCUserInteractor ...
 type UCUserInteractor struct {
 	UCUserRepository UCUserRepository
 }
 
 // NewUCUserInteractor ...
-func NewUCUserInteractor(SQLHandler database.IFDBSQLHandler) UCUserInteractor {
-	return UCUserInteractor{
-		UCUserRepository: &database.IFDBUserRepository{
-			IFDBSQLHandler: SQLHandler,
-		},
-	}
-}
+// func NewUCUserInteractor(SQLHandler database.IFDBSQLHandler) UCUserInteractor {
+// 	return UCUserInteractor{
+// 		UCUserRepository: &database.IFDBUserRepository{
+// 			IFDBSQLHandler: SQLHandler,
+// 		},
+// 	}
+// }
 
 // NewUCUserInteractora ...
-func NewUCUserInteractora(SQLHandler database.IFDBSQLHandler) UCUserInteractor {
-	return UCUserInteractor{ UCUserRepository: &database.NewIFDBUserRepository(SQLHandler) }
+func NewUCUserInteractora(SQLHandler database.IFDBSQLHandler) *UCUserInteractor {
+	return &UCUserInteractor{UCUserRepository: database.NewIFDBUserRepository(SQLHandler)}
 }
 
 // UCUIUserByID ...

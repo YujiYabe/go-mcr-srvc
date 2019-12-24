@@ -5,7 +5,6 @@ import (
 
 	"github.com/labstack/echo"
 
-	"app/domain"
 	"app/interfaces/database"
 	"app/usecase"
 )
@@ -28,9 +27,8 @@ func NewUserController(SQLHandler database.IFDBSQLHandler) *IFCNUserController {
 
 // NewUserControllera ...
 func NewUserControllera(SQLHandler database.IFDBSQLHandler) *IFCNUserController {
-	return &IFCNUserController{ UCUserInteractor: usecase.NewUCUserInteractor(SQLHandler)}
+	return &IFCNUserController{UCUserInteractor: *usecase.NewUCUserInteractora(SQLHandler)}
 }
-
 
 // IFCNShow ...
 func (controller *IFCNUserController) IFCNShow(c echo.Context) (err error) {
