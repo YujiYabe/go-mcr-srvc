@@ -4,7 +4,7 @@
 
 
 ### ==============================
-http://localhost:1234/drinks
+http://localhost:1234/users
 
 ### ==============================
 http://localhost:1234/drinks/1

@@ -1,11 +1,25 @@
 package database
 
-import "app/domain"
+import (
+	"app/domain"
+)
 
 // IFDBUserRepository ...
 type IFDBUserRepository struct {
 	IFDBSQLHandler
 }
+
+
+// NewIFDBUserRepository ...
+func NewIFDBUserRepository(SQLHandler IFDBSQLHandler) &IFDBUserRepository {
+	return IFDBUserRepository{ 
+		IFDBSQLHandler: SQLHandler
+	}
+}
+
+// UCUserRepository: &database.IFDBUserRepository{
+// 	IFDBSQLHandler: SQLHandler,
+// },
 
 // IFDBFindByID ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user domain.User, err error) {
@@ -23,28 +37,28 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users domain.Users,
 	return
 }
 
-// IFDBStore ...
-func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u domain.User) (user domain.User, err error) {
-	if err = IFDBUserRepository.INFRCreate(&u).Error; err != nil {
-		return
-	}
-	user = u
-	return
-}
+// // IFDBStore ...
+// func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u domain.User) (user domain.User, err error) {
+// 	if err = IFDBUserRepository.INFRCreate(&u).Error; err != nil {
+// 		return
+// 	}
+// 	user = u
+// 	return
+// }
 
-// IFDBUpdate ...
-func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u domain.User) (user domain.User, err error) {
-	if err = IFDBUserRepository.INFRSave(&u).Error; err != nil {
-		return
-	}
-	user = u
-	return
-}
+// // IFDBUpdate ...
+// func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u domain.User) (user domain.User, err error) {
+// 	if err = IFDBUserRepository.INFRSave(&u).Error; err != nil {
+// 		return
+// 	}
+// 	user = u
+// 	return
+// }
 
-// IFDBDeleteByID ...
-func (IFDBUserRepository *IFDBUserRepository) IFDBDeleteByID(user domain.User) (err error) {
-	if err = IFDBUserRepository.INFRDelete(&user).Error; err != nil {
-		return
-	}
-	return
-}
+// // IFDBDeleteByID ...
+// func (IFDBUserRepository *IFDBUserRepository) IFDBDeleteByID(user domain.User) (err error) {
+// 	if err = IFDBUserRepository.INFRDelete(&user).Error; err != nil {
+// 		return
+// 	}
+// 	return
+// }

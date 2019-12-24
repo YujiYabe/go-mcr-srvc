@@ -30,38 +30,38 @@ func (handler *SQLHandler) INFRFind(out interface{}, where ...interface{}) *gorm
 	return handler.Conn.Find(out, where...)
 }
 
-// INFRExec ...
-func (handler *SQLHandler) INFRExec(sql string, values ...interface{}) *gorm.DB {
-	return handler.Conn.Exec(sql, values...)
-}
+// // INFRExec ...
+// func (handler *SQLHandler) INFRExec(sql string, values ...interface{}) *gorm.DB {
+// 	return handler.Conn.Exec(sql, values...)
+// }
 
-// INFRFirst ...
-func (handler *SQLHandler) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
-	return handler.Conn.First(out, where...)
-}
+// // INFRFirst ...
+// func (handler *SQLHandler) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
+// 	return handler.Conn.First(out, where...)
+// }
 
-// INFRRaw ...
-func (handler *SQLHandler) INFRRaw(sql string, values ...interface{}) *gorm.DB {
-	return handler.Conn.Raw(sql, values...)
-}
+// // INFRRaw ...
+// func (handler *SQLHandler) INFRRaw(sql string, values ...interface{}) *gorm.DB {
+// 	return handler.Conn.Raw(sql, values...)
+// }
 
-// INFRCreate ...
-func (handler *SQLHandler) INFRCreate(value interface{}) *gorm.DB {
-	return handler.Conn.Create(value)
-}
+// // INFRCreate ...
+// func (handler *SQLHandler) INFRCreate(value interface{}) *gorm.DB {
+// 	return handler.Conn.Create(value)
+// }
 
-// INFRSave ...
-func (handler *SQLHandler) INFRSave(value interface{}) *gorm.DB {
+// // INFRSave ...
+// func (handler *SQLHandler) INFRSave(value interface{}) *gorm.DB {
 
-	return handler.Conn.Save(value)
-}
+// 	return handler.Conn.Save(value)
+// }
 
-// INFRDelete ...
-func (handler *SQLHandler) INFRDelete(value interface{}) *gorm.DB {
-	return handler.Conn.Delete(value)
-}
+// // INFRDelete ...
+// func (handler *SQLHandler) INFRDelete(value interface{}) *gorm.DB {
+// 	return handler.Conn.Delete(value)
+// }
 
-// INFRWhere ...
-func (handler *SQLHandler) INFRWhere(query interface{}, args ...interface{}) *gorm.DB {
-	return handler.Conn.Where(query, args...)
-}
+// // INFRWhere ...
+// func (handler *SQLHandler) INFRWhere(query interface{}, args ...interface{}) *gorm.DB {
+// 	return handler.Conn.Where(query, args...)
+// }
