@@ -29,7 +29,7 @@ import (
     "todo/1_entity/model"
 )
 
-//TodoRepository is interface for framework_driver
+//TodoRepository is interface for 4_framework_driver
 type TodoRepository interface {
     FindAll() (todos []*model.Todo, err error)
     Find(word string) (todos []*model.Todo, err error)
