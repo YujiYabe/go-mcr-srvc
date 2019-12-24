@@ -1,7 +1,7 @@
 package main
 
-import "app/infrastructure"
+import "app/framework_driver/web"
 
 func main() {
-	infrastructure.Run()
+	web.Run()
 }

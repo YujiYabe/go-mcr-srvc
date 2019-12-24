@@ -1,4 +1,4 @@
-package infrastructure
+package web
 
 import (
 	"os"
@@ -6,7 +6,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	"app/interfaces/controllers"
+	"app/3_interface/controllers"
+	"app/framework_driver/db"
 )
 
 // Run ...
@@ -14,7 +15,7 @@ func Run() {
 	// Echo instance
 	e := echo.New()
 
-	userController := controllers.NewUserController(NewSQLHandler())
+	userController := controllers.NewUserController(db.NewSQLHandler())
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}  ${status}  ${method}\t${uri}\n",

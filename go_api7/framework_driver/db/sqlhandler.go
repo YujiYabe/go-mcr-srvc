@@ -1,4 +1,4 @@
-package infrastructure
+package db
 
 import (
 	"github.com/jinzhu/gorm"
@@ -6,7 +6,7 @@ import (
 	// mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
-	"app/interfaces/database"
+	"app/3_interface/database"
 )
 
 // SQLHandler ...

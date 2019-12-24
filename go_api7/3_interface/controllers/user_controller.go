@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo"
 
-	"app/interfaces/database"
-	"app/usecase"
+	usecase "app/2_usecase"
+	"app/3_interface/database"
 )
 
 // IFCNUserController ...
@@ -55,7 +55,7 @@ func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
 
 // // IFCNCreate ...
 // func (controller *IFCNUserController) IFCNCreate(c echo.Context) (err error) {
-// 	u := domain.User{}
+// 	u := 1_entity.User{}
 // 	c.Bind(&u)
 // 	user, err := controller.UCUserInteractor.UCUIAdd(u)
 // 	if err != nil {
@@ -68,7 +68,7 @@ func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
 
 // // IFCNSave ...
 // func (controller *IFCNUserController) IFCNSave(c echo.Context) (err error) {
-// 	u := domain.User{}
+// 	u := 1_entity.User{}
 // 	c.Bind(&u)
 
 // 	id, _ := strconv.Atoi(c.Param("id"))
@@ -86,7 +86,7 @@ func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
 // // IFCNDelete ...
 // func (controller *IFCNUserController) IFCNDelete(c echo.Context) (err error) {
 // 	id, _ := strconv.Atoi(c.Param("id"))
-// 	user := domain.User{
+// 	user := 1_entity.User{
 // 		ID: id,
 // 	}
 // 	err = controller.UCUserInteractor.UCUIDeleteByID(user)
