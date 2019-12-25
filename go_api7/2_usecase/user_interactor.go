@@ -11,16 +11,7 @@ type UCUserInteractor struct {
 }
 
 // NewUCUserInteractor ...
-// func NewUCUserInteractor(SQLHandler database.IFDBSQLHandler) UCUserInteractor {
-// 	return UCUserInteractor{
-// 		UCUserRepository: &database.IFDBUserRepository{
-// 			IFDBSQLHandler: SQLHandler,
-// 		},
-// 	}
-// }
-
-// NewUCUserInteractora ...
-func NewUCUserInteractora(SQLHandler database.IFDBSQLHandler) *UCUserInteractor {
+func NewUCUserInteractor(SQLHandler database.IFDBSQLHandler) *UCUserInteractor {
 	return &UCUserInteractor{UCUserRepository: database.NewIFDBUserRepository(SQLHandler)}
 }
 

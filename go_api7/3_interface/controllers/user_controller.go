@@ -16,18 +16,7 @@ type IFCNUserController struct {
 
 // NewUserController ...
 func NewUserController(SQLHandler database.IFDBSQLHandler) *IFCNUserController {
-	return &IFCNUserController{
-		UCUserInteractor: usecase.UCUserInteractor{
-			UCUserRepository: &database.IFDBUserRepository{
-				IFDBSQLHandler: SQLHandler,
-			},
-		},
-	}
-}
-
-// NewUserControllera ...
-func NewUserControllera(SQLHandler database.IFDBSQLHandler) *IFCNUserController {
-	return &IFCNUserController{UCUserInteractor: *usecase.NewUCUserInteractora(SQLHandler)}
+	return &IFCNUserController{UCUserInteractor: *usecase.NewUCUserInteractor(SQLHandler)}
 }
 
 // IFCNShow ...
