@@ -11,8 +11,8 @@ type UCUserInteractor struct {
 }
 
 // NewUCUserInteractor ...
-func NewUCUserInteractor(SQLHandler database.IFDBSQLHandler) *UCUserInteractor {
-	return &UCUserInteractor{UCUserRepository: database.NewIFDBUserRepository(SQLHandler)}
+func NewUCUserInteractor() *UCUserInteractor {
+	return &UCUserInteractor{UCUserRepository: database.NewIFDBUserRepository()}
 }
 
 // UCUIUserByID ...

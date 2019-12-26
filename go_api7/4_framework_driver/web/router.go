@@ -7,7 +7,6 @@ import (
 	"github.com/labstack/echo/middleware"
 
 	"app/3_interface/controllers"
-	"app/4_framework_driver/db"
 )
 
 // Run ...
@@ -15,7 +14,7 @@ func Run() {
 	// Echo instance
 	e := echo.New()
 
-	userController := controllers.NewUserController(db.NewSQLHandler())
+	userController := controllers.NewUserController()
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}  ${status}  ${method}\t${uri}\n",

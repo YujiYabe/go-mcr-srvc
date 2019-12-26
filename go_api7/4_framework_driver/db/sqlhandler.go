@@ -5,8 +5,6 @@ import (
 
 	// mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-
-	"app/3_interface/database"
 )
 
 // SQLHandler ...
@@ -15,7 +13,7 @@ type SQLHandler struct {
 }
 
 // NewSQLHandler ...
-func NewSQLHandler() database.IFDBSQLHandler {
+func NewSQLHandler() *SQLHandler {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err.Error)

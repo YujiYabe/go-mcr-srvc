@@ -2,6 +2,7 @@ package database
 
 import (
 	entity "app/1_entity"
+	"app/4_framework_driver/db"
 )
 
 // IFDBUserRepository ...
@@ -10,8 +11,8 @@ type IFDBUserRepository struct {
 }
 
 // NewIFDBUserRepository ...
-func NewIFDBUserRepository(SQLHandler IFDBSQLHandler) *IFDBUserRepository {
-	return &IFDBUserRepository{IFDBSQLHandler: SQLHandler}
+func NewIFDBUserRepository() *IFDBUserRepository {
+	return &IFDBUserRepository{IFDBSQLHandler: db.NewSQLHandler()}
 }
 
 // IFDBFindByID ...

@@ -6,7 +6,6 @@ import (
 	"github.com/labstack/echo"
 
 	usecase "app/2_usecase"
-	"app/3_interface/database"
 )
 
 // IFCNUserController ...
@@ -15,8 +14,8 @@ type IFCNUserController struct {
 }
 
 // NewUserController ...
-func NewUserController(SQLHandler database.IFDBSQLHandler) *IFCNUserController {
-	return &IFCNUserController{UCUserInteractor: *usecase.NewUCUserInteractor(SQLHandler)}
+func NewUserController() *IFCNUserController {
+	return &IFCNUserController{UCUserInteractor: *usecase.NewUCUserInteractor()}
 }
 
 // IFCNShow ...
