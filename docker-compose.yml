@@ -270,27 +270,46 @@ services:
     #         - PORT=7070
     #     tty: true
 
+    # #  ==================================
+    # go_api7:
+    #     build:
+    #         context: ./go_api7
+    #         dockerfile: Dockerfile
+    #     container_name: go_api7
+    #     volumes:
+    #         - ./go_api7:/go/src/app
+    #     ports:
+    #         - "1234:4321"
+    #     command: ["4321", "1234"]
+    #     # restart: always
+    #     environment:
+    #         - GO111MODULE=off
+    #         - GOPATH=/go
+    #         - PORT=1234
+    #         - DB_HOST=mysql
+    #         - DB_PORT=3306
+    #         - DB_NAME=app
+    #         - DB_USER=user
+    #         - DB_PASSWORD=user
+    #     tty: true
+    #     links:
+    #         -  mysql
+
     #  ==================================
-    go_api7:
+    go_api8:
         build:
-            context: ./go_api7
+            context: ./go_api8
             dockerfile: Dockerfile
-        container_name: go_api7
+        container_name: go_api8
         volumes:
-            - ./go_api7:/go/src/app
+            - ./go_api8:/go/src/app
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
-        # restart: always
         environment:
             - GO111MODULE=off
             - GOPATH=/go
             - PORT=1234
-            - DB_HOST=mysql
-            - DB_PORT=3306
-            - DB_NAME=app
-            - DB_USER=user
-            - DB_PASSWORD=user
         tty: true
         links:
             -  mysql
