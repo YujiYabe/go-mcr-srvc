@@ -1,4 +1,4 @@
-package web
+package register
 
 import (
 	"os"
@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	"app/3_interface/controllers"
+	controllers "app/2_controllers"
 )
 
 // Run ...

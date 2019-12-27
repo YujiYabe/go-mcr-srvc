@@ -1,7 +1,6 @@
 package database
 
 import (
-	entity "app/1_entity"
 	"app/4_framework_driver/db"
 )
 
@@ -16,7 +15,7 @@ func NewIFDBUserRepository() *IFDBUserRepository {
 }
 
 // IFDBFindByID ...
-func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user entity.User, err error) {
+func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user User, err error) {
 	if err = IFDBUserRepository.INFRFind(&user, id).Error; err != nil {
 		return
 	}
@@ -24,7 +23,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user entity.
 }
 
 // IFDBFindAll ...
-func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users entity.Users, err error) {
+func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users Users, err error) {
 	if err = IFDBUserRepository.INFRFind(&users).Error; err != nil {
 		return
 	}
@@ -32,7 +31,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users entity.Users,
 }
 
 // // IFDBStore ...
-// func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u entity.User) (user entity.User, err error) {
+// func (IFDBUserRepository *IFDBUserRepository) IFDBStore(u User) (user User, err error) {
 // 	if err = IFDBUserRepository.INFRCreate(&u).Error; err != nil {
 // 		return
 // 	}
@@ -41,7 +40,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users entity.Users,
 // }
 
 // // IFDBUpdate ...
-// func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u entity.User) (user entity.User, err error) {
+// func (IFDBUserRepository *IFDBUserRepository) IFDBUpdate(u User) (user User, err error) {
 // 	if err = IFDBUserRepository.INFRSave(&u).Error; err != nil {
 // 		return
 // 	}
@@ -50,7 +49,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users entity.Users,
 // }
 
 // // IFDBDeleteByID ...
-// func (IFDBUserRepository *IFDBUserRepository) IFDBDeleteByID(user entity.User) (err error) {
+// func (IFDBUserRepository *IFDBUserRepository) IFDBDeleteByID(user User) (err error) {
 // 	if err = IFDBUserRepository.INFRDelete(&user).Error; err != nil {
 // 		return
 // 	}

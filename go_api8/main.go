@@ -1,7 +1,7 @@
 package main
 
-import "app/4_framework_driver/web"
+import register "app/1_register"
 
 func main() {
-	web.Run()
+	register.Run()
 }

@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	usecase "app/2_usecase"
+	usecase "app/3_usecase"
 )
 
 // IFCNUserController ...
