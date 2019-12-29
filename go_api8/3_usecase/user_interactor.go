@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	database "app/4_database"
+	deliver "app/4_deliver"
 )
 
 // UCUserInteractor ...
@@ -11,35 +11,35 @@ type UCUserInteractor struct {
 
 // NewUCUserInteractor ...
 func NewUCUserInteractor() *UCUserInteractor {
-	return &UCUserInteractor{UCUserRepository: database.NewIFDBUserRepository()}
+	return &UCUserInteractor{UCUserRepository: deliver.NewIFDBUserRepository()}
 }
 
 // UCUIUserByID ...
-func (UCUserInteractor *UCUserInteractor) UCUIUserByID(id int) (user database.User, err error) {
+func (UCUserInteractor *UCUserInteractor) UCUIUserByID(id int) (user deliver.User, err error) {
 	user, err = UCUserInteractor.UCUserRepository.IFDBFindByID(id)
 	return
 }
 
 // UCUIUsers ...
-func (UCUserInteractor *UCUserInteractor) UCUIUsers() (users database.Users, err error) {
+func (UCUserInteractor *UCUserInteractor) UCUIUsers() (users deliver.Users, err error) {
 	users, err = UCUserInteractor.UCUserRepository.IFDBFindAll()
 	return
 }
 
 // // UCUIAdd ...
-// func (UCUserInteractor *UCUserInteractor) UCUIAdd(u database.User) (user database.User, err error) {
+// func (UCUserInteractor *UCUserInteractor) UCUIAdd(u deliver.User) (user deliver.User, err error) {
 // 	user, err = UCUserInteractor.UCUserRepository.IFDBStore(u)
 // 	return
 // }
 
 // // UCUIUpdate ...
-// func (UCUserInteractor *UCUserInteractor) UCUIUpdate(u database.User) (user database.User, err error) {
+// func (UCUserInteractor *UCUserInteractor) UCUIUpdate(u deliver.User) (user deliver.User, err error) {
 // 	user, err = UCUserInteractor.UCUserRepository.IFDBUpdate(u)
 // 	return
 // }
 
 // // UCUIDeleteByID ...
-// func (UCUserInteractor *UCUserInteractor) UCUIDeleteByID(u database.User) (err error) {
+// func (UCUserInteractor *UCUserInteractor) UCUIDeleteByID(u deliver.User) (err error) {
 // 	err = UCUserInteractor.UCUserRepository.IFDBDeleteByID(u)
 // 	return
 // }

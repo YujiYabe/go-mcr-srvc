@@ -1,4 +1,4 @@
-package database
+package deliver
 
 import "github.com/jinzhu/gorm"
 

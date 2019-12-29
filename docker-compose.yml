@@ -10,11 +10,11 @@ services:
             dockerfile:  Dockerfile
         restart: always
         environment:
-            # MYSQL_DATABASE:  sample_db
+            # MYSQL_deliver:  sample_db
             # MYSQL_USER:  user
             # MYSQL_PASSWORD: password
             # MYSQL_ROOT_PASSWORD: password
-            - MYSQL_DATABASE=app
+            - MYSQL_deliver=app
             - MYSQL_USER=user
             - MYSQL_PASSWORD=user
             - MYSQL_ROOT_PASSWORD=password

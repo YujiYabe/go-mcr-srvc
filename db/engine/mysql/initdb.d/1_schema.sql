@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS app;
-CREATE DATABASE app;
+DROP deliver IF EXISTS app;
+CREATE deliver app;
 use app;
 
 -- CREATE TABLE users (

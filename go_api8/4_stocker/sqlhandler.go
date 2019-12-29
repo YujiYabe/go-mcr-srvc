@@ -1,4 +1,4 @@
-package db
+package stocker
 
 import (
 	"github.com/jinzhu/gorm"

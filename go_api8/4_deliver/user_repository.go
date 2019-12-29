@@ -1,7 +1,7 @@
-package database
+package deliver
 
 import (
-	"app/4_framework_driver/db"
+	stocker "app/4_stocker"
 )
 
 // IFDBUserRepository ...
@@ -11,7 +11,7 @@ type IFDBUserRepository struct {
 
 // NewIFDBUserRepository ...
 func NewIFDBUserRepository() *IFDBUserRepository {
-	return &IFDBUserRepository{IFDBSQLHandler: db.NewSQLHandler()}
+	return &IFDBUserRepository{IFDBSQLHandler: stocker.NewSQLHandler()}
 }
 
 // IFDBFindByID ...

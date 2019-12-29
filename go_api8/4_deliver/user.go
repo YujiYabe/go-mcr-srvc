@@ -1,4 +1,4 @@
-package database
+package deliver
 
 // User ...
 type User struct {
