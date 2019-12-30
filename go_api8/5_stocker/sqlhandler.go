@@ -13,7 +13,7 @@ type SQLHandler struct {
 }
 
 // NewSQLHandler ...
-func NewSQLHandler() *SQLHandler {
+func NewMySQLHandler() *SQLHandler {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err.Error)

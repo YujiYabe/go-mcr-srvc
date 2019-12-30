@@ -14,7 +14,7 @@ func Run() {
 	// Echo instance
 	e := echo.New()
 
-	userController := controller.NewUserController()
+	controllerUser := controller.NewControllerUser()
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}  ${status}  ${method}\t${uri}\n",
@@ -24,17 +24,17 @@ func Run() {
 	e.Use(middleware.Recover())
 
 	// get
-	e.GET("/users", func(c echo.Context) error { return userController.IFCNIndex(c) })
-	e.GET("/user/:id", func(c echo.Context) error { return userController.IFCNShow(c) })
+	e.GET("/users", func(c echo.Context) error { return controllerUser.Index(c) })
+	e.GET("/user/:id", func(c echo.Context) error { return controllerUser.Show(c) })
 
 	// // post
-	// e.POST("/create", func(c echo.Context) error { return userController.IFCNCreate(c) })
+	// e.POST("/create", func(c echo.Context) error { return controllerUser.IFCNCreate(c) })
 
 	// // put
-	// e.PUT("/user/:id", func(c echo.Context) error { return userController.IFCNSave(c) })
+	// e.PUT("/user/:id", func(c echo.Context) error { return controllerUser.IFCNSave(c) })
 
 	// // delete
-	// e.DELETE("/user/:id", func(c echo.Context) error { return userController.IFCNDelete(c) })
+	// e.DELETE("/user/:id", func(c echo.Context) error { return controllerUser.IFCNDelete(c) })
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))

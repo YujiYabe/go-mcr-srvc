@@ -5,21 +5,32 @@ import (
 
 	"github.com/labstack/echo"
 
-	usecase "app/3_usecase"
+	kitchen "app/3_kitchen"
 )
 
-// IFCNUserController ...
-type IFCNUserController struct {
-	UCUserInteractor usecase.UCUserInteractor
+// ControllerUser ...
+type ControllerUser struct {
+	UCUserInteractor kitchen.UCUserInteractor
 }
 
-// NewUserController ...
-func NewUserController() *IFCNUserController {
-	return &IFCNUserController{UCUserInteractor: *usecase.NewUCUserInteractor()}
+// NewControllerUser ...
+func NewControllerUser() *ControllerUser {
+	return &ControllerUser{UCUserInteractor: *kitchen.NewUCUserInteractor()}
+}
+
+// IFCNIndex ...
+func (controller *ControllerUser) Index(c echo.Context) (err error) {
+	users, err := controller.UCUserInteractor.UCUIUsers()
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(200, users)
+	return
 }
 
 // IFCNShow ...
-func (controller *IFCNUserController) IFCNShow(c echo.Context) (err error) {
+func (controller *ControllerUser) Show(c echo.Context) (err error) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := controller.UCUserInteractor.UCUIUserByID(id)
 	if err != nil {
@@ -30,19 +41,8 @@ func (controller *IFCNUserController) IFCNShow(c echo.Context) (err error) {
 	return
 }
 
-// IFCNIndex ...
-func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
-	users, err := controller.UCUserInteractor.UCUIUsers()
-	if err != nil {
-		c.JSON(500, NewError(err))
-		return
-	}
-	c.JSON(200, users)
-	return
-}
-
 // // IFCNCreate ...
-// func (controller *IFCNUserController) IFCNCreate(c echo.Context) (err error) {
+// func (controller *ControllerUser) IFCNCreate(c echo.Context) (err error) {
 // 	u := 1_entity.User{}
 // 	c.Bind(&u)
 // 	user, err := controller.UCUserInteractor.UCUIAdd(u)
@@ -55,7 +55,7 @@ func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
 // }
 
 // // IFCNSave ...
-// func (controller *IFCNUserController) IFCNSave(c echo.Context) (err error) {
+// func (controller *ControllerUser) IFCNSave(c echo.Context) (err error) {
 // 	u := 1_entity.User{}
 // 	c.Bind(&u)
 
@@ -72,7 +72,7 @@ func (controller *IFCNUserController) IFCNIndex(c echo.Context) (err error) {
 // }
 
 // // IFCNDelete ...
-// func (controller *IFCNUserController) IFCNDelete(c echo.Context) (err error) {
+// func (controller *ControllerUser) IFCNDelete(c echo.Context) (err error) {
 // 	id, _ := strconv.Atoi(c.Param("id"))
 // 	user := 1_entity.User{
 // 		ID: id,
