@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 // Context ...
 type Context interface {
