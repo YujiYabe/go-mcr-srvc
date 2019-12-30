@@ -1,4 +1,4 @@
-package deliver
+package supplier
 
 import (
 	stocker "app/5_stocker"
@@ -16,7 +16,7 @@ func NewIFDBUserRepository() *IFDBUserRepository {
 
 // IFDBFindByID ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user User, err error) {
-	if err = IFDBUserRepository.INFRFind(&user, id).Error; err != nil {
+	if err = IFDBUserRepository.StockFind(&user, id).Error; err != nil {
 		return
 	}
 	return
@@ -24,7 +24,7 @@ func (IFDBUserRepository *IFDBUserRepository) IFDBFindByID(id int) (user User, e
 
 // IFDBFindAll ...
 func (IFDBUserRepository *IFDBUserRepository) IFDBFindAll() (users Users, err error) {
-	if err = IFDBUserRepository.INFRFind(&users).Error; err != nil {
+	if err = IFDBUserRepository.StockFind(&users).Error; err != nil {
 		return
 	}
 	return

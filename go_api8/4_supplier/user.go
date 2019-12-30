@@ -1,4 +1,4 @@
-package deliver
+package supplier
 
 // User ...
 type User struct {

@@ -1,5 +1,5 @@
-DROP deliver IF EXISTS app;
-CREATE deliver app;
+DROP supplier IF EXISTS app;
+CREATE supplier app;
 use app;
 
 -- CREATE TABLE users (

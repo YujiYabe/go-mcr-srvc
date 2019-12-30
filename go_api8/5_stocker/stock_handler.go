@@ -12,7 +12,7 @@ type SQLHandler struct {
 	Conn *gorm.DB
 }
 
-// NewSQLHandler ...
+// NewMySQLHandler ...
 func NewMySQLHandler() *SQLHandler {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
@@ -23,8 +23,8 @@ func NewMySQLHandler() *SQLHandler {
 	return SQLHandler
 }
 
-// INFRFind ...
-func (handler *SQLHandler) INFRFind(out interface{}, where ...interface{}) *gorm.DB {
+// StockFind ...
+func (handler *SQLHandler) StockFind(out interface{}, where ...interface{}) *gorm.DB {
 	return handler.Conn.Find(out, where...)
 }
 
