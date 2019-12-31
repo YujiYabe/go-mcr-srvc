@@ -14,7 +14,7 @@ services:
             # MYSQL_USER:  user
             # MYSQL_PASSWORD: password
             # MYSQL_ROOT_PASSWORD: password
-            - MYSQL_supplier=app
+            - MYSQL_DATABASE=app
             - MYSQL_USER=user
             - MYSQL_PASSWORD=user
             - MYSQL_ROOT_PASSWORD=password
