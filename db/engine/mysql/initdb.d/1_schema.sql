@@ -1,5 +1,5 @@
-DROP supplier IF EXISTS app;
-CREATE supplier app;
+DROP DATABASE IF EXISTS app;
+CREATE DATABASE app;
 use app;
 
 -- CREATE TABLE users (
