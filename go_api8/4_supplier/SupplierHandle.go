@@ -6,12 +6,12 @@ import (
 
 // IFDBUserRepository ...
 type IFDBUserRepository struct {
-	IFDBSQLHandler
+	SupplierToStocker
 }
 
 // NewIFDBUserRepository ...
 func NewIFDBUserRepository() *IFDBUserRepository {
-	return &IFDBUserRepository{IFDBSQLHandler: stocker.NewMySQLHandler()}
+	return &IFDBUserRepository{SupplierToStocker: stocker.NewMySQLHandler()}
 }
 
 // IFDBFindByID ...

@@ -2,8 +2,8 @@ package supplier
 
 import "github.com/jinzhu/gorm"
 
-// IFDBSQLHandler ...
-type IFDBSQLHandler interface {
+// SupplierToStocker ...
+type SupplierToStocker interface {
 	StockFind(interface{}, ...interface{}) *gorm.DB
 	// INFRExec(string, ...interface{}) *gorm.DB
 	// INFRFirst(interface{}, ...interface{}) *gorm.DB
