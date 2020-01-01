@@ -14,7 +14,7 @@ func Run() {
 	// Echo instance
 	e := echo.New()
 
-	controllerUser := controller.NewControllerUser()
+	controllerUser := controller.NewUserController()
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}  ${status}  ${method}\t${uri}\n",

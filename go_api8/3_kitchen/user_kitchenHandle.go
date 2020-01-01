@@ -14,14 +14,14 @@ func NewUserKitchenHandle() *UserKitchenHandle {
 	return &UserKitchenHandle{KitchenToSupplier: supplier.NewUserSupplierHandle()}
 }
 
-// UCUIUserByID ...
-func (UserKitchenHandle *UserKitchenHandle) UCUIUserByID(id int) (user supplier.User, err error) {
+// FindUserByID ...
+func (UserKitchenHandle *UserKitchenHandle) FindUserByID(id int) (user supplier.User, err error) {
 	user, err = UserKitchenHandle.KitchenToSupplier.IFDBFindByID(id)
 	return
 }
 
-// UCUIUsers ...
-func (UserKitchenHandle *UserKitchenHandle) UCUIUsers() (users supplier.Users, err error) {
+// FindAllUsers ...
+func (UserKitchenHandle *UserKitchenHandle) FindAllUsers() (users supplier.Users, err error) {
 	users, err = UserKitchenHandle.KitchenToSupplier.IFDBFindAll()
 	return
 }
