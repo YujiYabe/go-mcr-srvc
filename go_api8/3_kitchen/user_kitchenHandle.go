@@ -11,7 +11,7 @@ type UserKitchenHandle struct {
 
 // NewUserKitchenHandle ...
 func NewUserKitchenHandle() *UserKitchenHandle {
-	return &UserKitchenHandle{KitchenToSupplier: supplier.NewIFDBUserRepository()}
+	return &UserKitchenHandle{KitchenToSupplier: supplier.NewUserSupplierHandle()}
 }
 
 // UCUIUserByID ...

@@ -9,8 +9,8 @@ type UserSupplierHandle struct {
 	SupplierToStocker
 }
 
-// NewIFDBUserRepository ...
-func NewIFDBUserRepository() *UserSupplierHandle {
+// NewUserSupplierHandle ...
+func NewUserSupplierHandle() *UserSupplierHandle {
 	return &UserSupplierHandle{SupplierToStocker: stocker.NewMySQLHandler()}
 }
 
