@@ -7,7 +7,10 @@
 http://localhost:1234/users
 
 ### ==============================
-http://localhost:1234/drinks/1
+http://localhost:1234/user/1
+
+### ==============================
+http://localhost:1234/hambargar/normal
 
 ### ==============================
 POST http://localhost:1234/create HTTP/1.1

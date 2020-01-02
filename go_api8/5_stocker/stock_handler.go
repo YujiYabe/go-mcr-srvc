@@ -1,8 +1,10 @@
 package stocker
 
 import (
-	"github.com/jinzhu/gorm"
+	"log"
+	"runtime"
 
+	"github.com/jinzhu/gorm"
 	// mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -15,6 +17,8 @@ type SQLHandler struct {
 // NewMySQLHandler ...
 func NewMySQLHandler() *SQLHandler {
 	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
+	conn.LogMode(true)
+
 	if err != nil {
 		panic(err.Error)
 	}
@@ -28,15 +32,37 @@ func (handler *SQLHandler) StockFind(out interface{}, where ...interface{}) *gor
 	return handler.Conn.Find(out, where...)
 }
 
+// StockFindByName ...
+func (handler *SQLHandler) StockFindByName(out interface{}, where ...interface{}) *gorm.DB {
+	debug := where
+	pc := make([]uintptr, 10) // at least 1 entry needed
+	runtime.Callers(2, pc)
+	f := runtime.FuncForPC(pc[0])
+	file, line := f.FileLine(pc[0])
+	log.Println("====================================")
+	log.Printf("%s:%d %s\n", file, line, f.Name())
+	log.Printf("%v\n", debug)
+	log.Println("------------------------------------")
+	log.Printf("%+v\n", debug)
+	log.Println("------------------------------------")
+	log.Printf("%+v\n", debug)
+	log.Println("------------------------------------")
+	log.Printf("%#v\n", debug)
+	log.Println("====================================")
+
+	// return handler.Conn.Where("name = ?", name).First(out)
+	return handler.Conn.First(out, where...)
+}
+
 // // INFRExec ...
 // func (handler *SQLHandler) INFRExec(sql string, values ...interface{}) *gorm.DB {
 // 	return handler.Conn.Exec(sql, values...)
 // }
 
-// // INFRFirst ...
-// func (handler *SQLHandler) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
-// 	return handler.Conn.First(out, where...)
-// }
+// INFRFirst ...
+func (handler *SQLHandler) INFRFirst(out interface{}, where ...interface{}) *gorm.DB {
+	return handler.Conn.First(out, where...)
+}
 
 // // INFRRaw ...
 // func (handler *SQLHandler) INFRRaw(sql string, values ...interface{}) *gorm.DB {

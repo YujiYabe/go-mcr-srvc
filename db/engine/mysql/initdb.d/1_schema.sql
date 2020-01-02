@@ -74,3 +74,16 @@ create table IF not exists `ingredients`
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+
+---- drop ----
+DROP TABLE IF EXISTS `hambargars`;
+
+---- create ----
+create table IF not exists `hambargars`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`            int,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+

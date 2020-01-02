@@ -21,3 +21,5 @@ insert into ingredients(name, stock) values("hamburg", 100);
 insert into ingredients(name, stock) values("cheese", 100);
 
 
+insert into hambargars(name, stock) values("normal", 100);
+insert into hambargars(name, stock) values("cheese", 100);
