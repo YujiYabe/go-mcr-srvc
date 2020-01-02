@@ -54,6 +54,29 @@ func (handler *SQLHandler) StockFindByName(out interface{}, where ...interface{}
 	return handler.Conn.First(out, where...)
 }
 
+// StockFindByNames ...
+func (handler *SQLHandler) StockFindByNames(out interface{}, where ...interface{}) *gorm.DB {
+	debug := where
+	pc := make([]uintptr, 10) // at least 1 entry needed
+	runtime.Callers(2, pc)
+	f := runtime.FuncForPC(pc[0])
+	file, line := f.FileLine(pc[0])
+	log.Println("====================================")
+	log.Printf("%s:%d %s\n", file, line, f.Name())
+	log.Printf("%v\n", debug)
+	log.Println("------------------------------------")
+	log.Printf("%+v\n", debug)
+	log.Println("------------------------------------")
+	log.Printf("%+v\n", debug)
+	log.Println("------------------------------------")
+	log.Printf("%#v\n", debug)
+	log.Println("====================================")
+
+	// db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+	// return handler.Conn.Where("name = ?", name).First(out)
+	return handler.Conn.Where("name IN (?)", []string{"tomato", "lettuce"}).Find(out)
+}
+
 // // INFRExec ...
 // func (handler *SQLHandler) INFRExec(sql string, values ...interface{}) *gorm.DB {
 // 	return handler.Conn.Exec(sql, values...)

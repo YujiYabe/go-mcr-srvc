@@ -6,3 +6,6 @@ type Vegetable struct {
 	Name  string
 	Stock string
 }
+
+// Vegetables ...
+type Vegetables []Vegetable

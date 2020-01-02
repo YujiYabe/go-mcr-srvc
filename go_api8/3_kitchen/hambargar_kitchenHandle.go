@@ -3,7 +3,6 @@ package kitchen
 import (
 	supplier "app/4_supplier"
 	"log"
-	"runtime"
 )
 
 // HambargarKitchenHandle ...
@@ -14,7 +13,10 @@ type HambargarKitchenHandle struct {
 
 // NewHambargarKitchenHandle ...
 func NewHambargarKitchenHandle() *HambargarKitchenHandle {
-	return &HambargarKitchenHandle{HambargarKitchenToSupplier: supplier.NewHambargarSupplierHandle()}
+	return &HambargarKitchenHandle{
+		HambargarKitchenToSupplier: supplier.NewHambargarSupplierHandle(),
+		VegetableKitchenToSupplier: supplier.NewVegetableSupplierHandle(),
+	}
 }
 
 // FindAllHambargars ...
@@ -30,24 +32,26 @@ func (HambargarKitchenHandle *HambargarKitchenHandle) FindHambargarByName(name s
 }
 
 // Cook ...
-func (HambargarKitchenHandle *HambargarKitchenHandle) Cook(name string) (hambargar supplier.Hambargar, err error) {
-	// hambargar, err = HambargarKitchenHandle.HambargarKitchenToSupplier.IFDBFindByName(name)
-	vegetables, err := HambargarKitchenHandle.VegetableKitchenToSupplier.extractByName(name)
+// func (HambargarKitchenHandle *HambargarKitchenHandle) Cook(hambargarName string) (hambargar supplier.Hambargar, err error) {
+func (HambargarKitchenHandle *HambargarKitchenHandle) Cook(hambargarName string) (hambargar supplier.Hambargar, err error) {
+	// 材料の取り出し
+	// 調理
+	// パッキング
 
-	debug := vegetables
-	pc := make([]uintptr, 10) // at least 1 entry needed
-	runtime.Callers(2, pc)
-	f := runtime.FuncForPC(pc[0])
-	file, line := f.FileLine(pc[0])
-	log.Println("====================================")
-	log.Printf("%s:%d %s\n", file, line, f.Name())
-	log.Println("====================================")
-	log.Printf("%v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%+v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%#v\n", debug)
-	log.Println("====================================")
+	RequestVegetables := []string{}
+	if hambargarName == "normal" {
+		RequestVegetables = []string{"tomato", "lettuce"}
+	}
+	log.Println("========================= Cook")
 
+	vegetables, err := HambargarKitchenHandle.VegetableKitchenToSupplier.ExtractByNames(RequestVegetables)
+
+	log.Println("====================================")
+	log.Printf("%v\n", vegetables)
+	log.Println("------------------------------------")
+	log.Printf("%+v\n", vegetables)
+	log.Println("------------------------------------")
+	log.Printf("%#v\n", vegetables)
+	log.Println("====================================")
 	return
 }

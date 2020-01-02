@@ -13,6 +13,9 @@ http://localhost:1234/user/1
 http://localhost:1234/hambargar/normal
 
 ### ==============================
+http://localhost:1234/hambargar_request/normal
+
+### ==============================
 POST http://localhost:1234/create HTTP/1.1
 content-type: application/json
 

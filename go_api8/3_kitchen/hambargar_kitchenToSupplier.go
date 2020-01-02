@@ -17,5 +17,6 @@ type HambargarKitchenToSupplier interface {
 
 // VegetableKitchenToSupplier ...
 type VegetableKitchenToSupplier interface {
-	extractByName(name string) (supplier.Vegetable, error)
+	ExtractByName(name string) (supplier.Vegetable, error)
+	ExtractByNames(RequestVegetables []string) (supplier.Vegetables, error)
 }

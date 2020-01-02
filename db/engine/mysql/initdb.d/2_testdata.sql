@@ -22,7 +22,6 @@ insert into hambargars(name, stock) values("cheese", 100);
 
 insert into ingredients(name, stock) values("bans", 100);
 insert into ingredients(name, stock) values("cheese", 100);
-insert into ingredients(name, stock) values("hamburg", 100);
 
 insert into vegetables(name, stock) values("tomato", 100);
 insert into vegetables(name, stock) values("lettuce", 100);

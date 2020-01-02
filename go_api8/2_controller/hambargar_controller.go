@@ -43,9 +43,9 @@ func (controller *HambargarController) Show(c echo.Context) (err error) {
 
 // Request ...
 func (controller *HambargarController) Request(c echo.Context) (err error) {
-	name := c.Param("name")
+	hambargarName := c.Param("hambargarName")
 
-	hambargar, err := controller.HambargarKitchenHandle.Cook(name)
+	hambargar, err := controller.HambargarKitchenHandle.Cook(hambargarName)
 	if err != nil {
 		c.JSON(500, NewError(err))
 		return
