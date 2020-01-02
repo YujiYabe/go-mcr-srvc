@@ -14,3 +14,8 @@ type HambargarKitchenToSupplier interface {
 	// IFDBUpdate(1_supplier.hambargar) (supplier.hambargar, error)
 	// IFDBDeleteByID(1_supplier.hambargar) error
 }
+
+// VegetableKitchenToSupplier ...
+type VegetableKitchenToSupplier interface {
+	extractByName(name string) (supplier.Vegetable, error)
+}

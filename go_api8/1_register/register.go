@@ -30,6 +30,8 @@ func Run() {
 
 	e.GET("/hambargar/:name", func(c echo.Context) error { return hambargarController.Show(c) })
 
+	e.GET("/hambargar_request/:name", func(c echo.Context) error { return hambargarController.Request(c) })
+
 	// // post
 	// e.POST("/create", func(c echo.Context) error { return userController.IFCNCreate(c) })
 

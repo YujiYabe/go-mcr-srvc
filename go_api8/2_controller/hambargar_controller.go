@@ -41,47 +41,15 @@ func (controller *HambargarController) Show(c echo.Context) (err error) {
 	return
 }
 
-// // IFCNCreate ...
-// func (controller *HambargarController) IFCNCreate(c echo.Context) (err error) {
-// 	u := 1_entity.Hambargar{}
-// 	c.Bind(&u)
-// 	hambargar, err := controller.HambargarKitchenHandle.UCUIAdd(u)
-// 	if err != nil {
-// 		c.JSON(500, NewError(err))
-// 		return
-// 	}
-// 	c.JSON(201, hambargar)
-// 	return
-// }
+// Request ...
+func (controller *HambargarController) Request(c echo.Context) (err error) {
+	name := c.Param("name")
 
-// // IFCNSave ...
-// func (controller *HambargarController) IFCNSave(c echo.Context) (err error) {
-// 	u := 1_entity.Hambargar{}
-// 	c.Bind(&u)
-
-// 	id, _ := strconv.Atoi(c.Param("id"))
-// 	u.ID = id
-
-// 	hambargar, err := controller.HambargarKitchenHandle.UCUIUpdate(u)
-// 	if err != nil {
-// 		c.JSON(500, NewError(err))
-// 		return
-// 	}
-// 	c.JSON(201, hambargar)
-// 	return
-// }
-
-// // IFCNDelete ...
-// func (controller *HambargarController) IFCNDelete(c echo.Context) (err error) {
-// 	id, _ := strconv.Atoi(c.Param("id"))
-// 	hambargar := 1_entity.Hambargar{
-// 		ID: id,
-// 	}
-// 	err = controller.HambargarKitchenHandle.UCUIDeleteByID(hambargar)
-// 	if err != nil {
-// 		c.JSON(500, NewError(err))
-// 		return
-// 	}
-// 	c.JSON(200, hambargar)
-// 	return
-// }
+	hambargar, err := controller.HambargarKitchenHandle.Cook(name)
+	if err != nil {
+		c.JSON(500, NewError(err))
+		return
+	}
+	c.JSON(200, hambargar)
+	return
+}

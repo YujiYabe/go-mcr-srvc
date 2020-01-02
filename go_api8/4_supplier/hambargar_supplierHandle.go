@@ -32,29 +32,3 @@ func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBFindAll() (hambargar
 	}
 	return
 }
-
-// // IFDBStore ...
-// func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBStore(u Hambargar) (hambargar Hambargar, err error) {
-// 	if err = HambargarSupplierHandle.INFRCreate(&u).Error; err != nil {
-// 		return
-// 	}
-// 	hambargar = u
-// 	return
-// }
-
-// // IFDBUpdate ...
-// func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBUpdate(u Hambargar) (hambargar Hambargar, err error) {
-// 	if err = HambargarSupplierHandle.INFRSave(&u).Error; err != nil {
-// 		return
-// 	}
-// 	hambargar = u
-// 	return
-// }
-
-// // IFDBDeleteByID ...
-// func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBDeleteByID(hambargar Hambargar) (err error) {
-// 	if err = HambargarSupplierHandle.INFRDelete(&hambargar).Error; err != nil {
-// 		return
-// 	}
-// 	return
-// }
