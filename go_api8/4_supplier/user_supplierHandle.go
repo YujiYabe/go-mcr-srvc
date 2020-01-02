@@ -6,7 +6,7 @@ import (
 
 // UserSupplierHandle ...
 type UserSupplierHandle struct {
-	SupplierToStocker
+	SupplierToStocker SupplierToStocker
 }
 
 // NewUserSupplierHandle ...
@@ -16,7 +16,7 @@ func NewUserSupplierHandle() *UserSupplierHandle {
 
 // IFDBFindByID ...
 func (UserSupplierHandle *UserSupplierHandle) IFDBFindByID(id int) (user User, err error) {
-	if err = UserSupplierHandle.StockFind(&user, id).Error; err != nil {
+	if err = UserSupplierHandle.SupplierToStocker.StockFind(&user, id).Error; err != nil {
 		return
 	}
 	return
@@ -24,7 +24,7 @@ func (UserSupplierHandle *UserSupplierHandle) IFDBFindByID(id int) (user User, e
 
 // IFDBFindAll ...
 func (UserSupplierHandle *UserSupplierHandle) IFDBFindAll() (users Users, err error) {
-	if err = UserSupplierHandle.StockFind(&users).Error; err != nil {
+	if err = UserSupplierHandle.SupplierToStocker.StockFind(&users).Error; err != nil {
 		return
 	}
 	return
