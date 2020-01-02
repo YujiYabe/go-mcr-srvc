@@ -6,17 +6,17 @@ import (
 
 // UserSupplierHandle ...
 type UserSupplierHandle struct {
-	SupplierToStocker SupplierToStocker
+	UserSupplierToStocker UserSupplierToStocker
 }
 
 // NewUserSupplierHandle ...
 func NewUserSupplierHandle() *UserSupplierHandle {
-	return &UserSupplierHandle{SupplierToStocker: stocker.NewMySQLHandler()}
+	return &UserSupplierHandle{UserSupplierToStocker: stocker.NewMySQLHandler()}
 }
 
 // IFDBFindByID ...
 func (UserSupplierHandle *UserSupplierHandle) IFDBFindByID(id int) (user User, err error) {
-	if err = UserSupplierHandle.SupplierToStocker.StockFind(&user, id).Error; err != nil {
+	if err = UserSupplierHandle.UserSupplierToStocker.StockFind(&user, id).Error; err != nil {
 		return
 	}
 	return
@@ -24,7 +24,7 @@ func (UserSupplierHandle *UserSupplierHandle) IFDBFindByID(id int) (user User, e
 
 // IFDBFindAll ...
 func (UserSupplierHandle *UserSupplierHandle) IFDBFindAll() (users Users, err error) {
-	if err = UserSupplierHandle.SupplierToStocker.StockFind(&users).Error; err != nil {
+	if err = UserSupplierHandle.UserSupplierToStocker.StockFind(&users).Error; err != nil {
 		return
 	}
 	return

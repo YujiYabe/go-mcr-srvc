@@ -2,8 +2,8 @@ package supplier
 
 import "github.com/jinzhu/gorm"
 
-// SupplierToStocker ...
-type SupplierToStocker interface {
+// UserSupplierToStocker ...
+type UserSupplierToStocker interface {
 	StockFind(interface{}, ...interface{}) *gorm.DB
 	// INFRExec(string, ...interface{}) *gorm.DB
 	// INFRFirst(interface{}, ...interface{}) *gorm.DB
