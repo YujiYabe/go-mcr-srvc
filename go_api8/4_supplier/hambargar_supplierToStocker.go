@@ -1,11 +1,9 @@
 package supplier
 
-import "github.com/jinzhu/gorm"
-
 // HambargarSupplierToStocker ...
 type HambargarSupplierToStocker interface {
-	StockFind(interface{}, ...interface{}) *gorm.DB
-	StockFindByName(interface{}, ...interface{}) *gorm.DB
+	// StockFind(interface{}, ...interface{}) *gorm.DB
+	// StockFindByName(interface{}, ...interface{}) *gorm.DB
 	// INFRExec(string, ...interface{}) *gorm.DB
 	// INFRFirst(interface{}, ...interface{}) *gorm.DB
 	// INFRRaw(string, ...interface{}) *gorm.DB

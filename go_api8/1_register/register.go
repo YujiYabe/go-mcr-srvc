@@ -28,7 +28,7 @@ func Run() {
 	e.GET("/users", func(c echo.Context) error { return userController.Index(c) })
 	e.GET("/user/:id", func(c echo.Context) error { return userController.Show(c) })
 
-	e.GET("/hambargar/:name", func(c echo.Context) error { return hambargarController.Show(c) })
+	// e.GET("/hambargar/:name", func(c echo.Context) error { return hambargarController.Show(c) })
 
 	e.GET("/hambargar_request/:hambargarName", func(c echo.Context) error { return hambargarController.Request(c) })
 

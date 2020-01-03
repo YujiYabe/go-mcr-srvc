@@ -21,17 +21,17 @@ func NewHambargarKitchenHandle() *HambargarKitchenHandle {
 	}
 }
 
-// FindAllHambargars ...
-func (HambargarKitchenHandle *HambargarKitchenHandle) FindAllHambargars() (hambargars supplier.StandardHambargars, err error) {
-	hambargars, err = HambargarKitchenHandle.HambargarKitchenToSupplier.IFDBFindAll()
-	return
-}
+// // FindAllHambargars ...
+// func (HambargarKitchenHandle *HambargarKitchenHandle) FindAllHambargars() (hambargars supplier.StandardHambargars, err error) {
+// 	hambargars, err = HambargarKitchenHandle.HambargarKitchenToSupplier.IFDBFindAll()
+// 	return
+// }
 
-// FindHambargarByName ...
-func (HambargarKitchenHandle *HambargarKitchenHandle) FindHambargarByName(name string) (hambargar supplier.StandardHambargar, err error) {
-	hambargar, err = HambargarKitchenHandle.HambargarKitchenToSupplier.IFDBFindByName(name)
-	return
-}
+// // FindHambargarByName ...
+// func (HambargarKitchenHandle *HambargarKitchenHandle) FindHambargarByName(name string) (hambargar supplier.StandardHambargar, err error) {
+// 	hambargar, err = HambargarKitchenHandle.HambargarKitchenToSupplier.IFDBFindByName(name)
+// 	return
+// }
 
 // Cook ...
 // func (HambargarKitchenHandle *HambargarKitchenHandle) Cook(hambargarName string) (hambargar supplier.Hambargar, err error) {
