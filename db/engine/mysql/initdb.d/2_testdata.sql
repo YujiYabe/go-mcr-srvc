@@ -16,7 +16,7 @@ insert into drinks(name, stock) values("apple juice", 100);
 
 
 
-insert into hambargars(name, stock) values("normal", 100);
+insert into hambargars(name, stock) values("standard", 100);
 insert into hambargars(name, stock) values("cheese", 100);
 
 

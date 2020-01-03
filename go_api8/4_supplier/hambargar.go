@@ -1,11 +1,11 @@
 package supplier
 
-// Hambargar ...
-type Hambargar struct {
+// StandardHambargar ...
+type StandardHambargar struct {
 	ID    int
 	Name  string
 	Stock string
 }
 
-// Hambargars ...
-type Hambargars []Hambargar
+// StandardHambargars ...
+type StandardHambargars []StandardHambargar

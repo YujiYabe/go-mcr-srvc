@@ -2,7 +2,6 @@ package supplier
 
 import (
 	stocker "app/5_stocker"
-	"log"
 )
 
 // VegetableSupplierHandle ...
@@ -28,9 +27,7 @@ func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByName(name strin
 
 // ExtractByNames ...
 func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByNames(RequestVegetables []string) (vegetables Vegetables, err error) {
-	log.Println("========================= ExtractByNames")
 	whereParam := RequestVegetables
-
 	if err = VegetableSupplierHandle.VegetableSupplierToStocker.StockFindByNames(&vegetables, whereParam).Error; err != nil {
 		return
 	}

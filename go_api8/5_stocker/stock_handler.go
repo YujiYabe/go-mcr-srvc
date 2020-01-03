@@ -34,28 +34,14 @@ func (handler *SQLHandler) StockFind(out interface{}, where ...interface{}) *gor
 
 // StockFindByName ...
 func (handler *SQLHandler) StockFindByName(out interface{}, where ...interface{}) *gorm.DB {
-	debug := where
-	pc := make([]uintptr, 10) // at least 1 entry needed
-	runtime.Callers(2, pc)
-	f := runtime.FuncForPC(pc[0])
-	file, line := f.FileLine(pc[0])
-	log.Println("====================================")
-	log.Printf("%s:%d %s\n", file, line, f.Name())
-	log.Printf("%v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%+v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%+v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%#v\n", debug)
-	log.Println("====================================")
 
 	// return handler.Conn.Where("name = ?", name).First(out)
 	return handler.Conn.First(out, where...)
 }
 
 // StockFindByNames ...
-func (handler *SQLHandler) StockFindByNames(out interface{}, where ...interface{}) *gorm.DB {
+// func (handler *SQLHandler) StockFindByNames(out interface{}, where ...interface{}) *gorm.DB {
+func (handler *SQLHandler) StockFindByNames(out interface{}, where []string) *gorm.DB {
 	debug := where
 	pc := make([]uintptr, 10) // at least 1 entry needed
 	runtime.Callers(2, pc)
@@ -64,8 +50,6 @@ func (handler *SQLHandler) StockFindByNames(out interface{}, where ...interface{
 	log.Println("====================================")
 	log.Printf("%s:%d %s\n", file, line, f.Name())
 	log.Printf("%v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%+v\n", debug)
 	log.Println("------------------------------------")
 	log.Printf("%+v\n", debug)
 	log.Println("------------------------------------")
@@ -74,7 +58,8 @@ func (handler *SQLHandler) StockFindByNames(out interface{}, where ...interface{
 
 	// db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 	// return handler.Conn.Where("name = ?", name).First(out)
-	return handler.Conn.Where("name IN (?)", []string{"tomato", "lettuce"}).Find(out)
+	// return handler.Conn.Where("name IN (?)", []string{"tomato", "lettuce"}).Find(out)
+	return handler.Conn.Where("name IN (?)", where).Find(out)
 }
 
 // // INFRExec ...

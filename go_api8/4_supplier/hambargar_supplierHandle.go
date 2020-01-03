@@ -15,8 +15,8 @@ func NewHambargarSupplierHandle() *HambargarSupplierHandle {
 }
 
 // IFDBFindByName ...
-func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBFindByName(name string) (hambargar Hambargar, err error) {
-	whereParam := new(Hambargar)
+func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBFindByName(name string) (hambargar StandardHambargar, err error) {
+	whereParam := new(StandardHambargar)
 	whereParam.Name = name
 
 	if err = HambargarSupplierHandle.HambargarSupplierToStocker.StockFindByName(&hambargar, whereParam).Error; err != nil {
@@ -26,7 +26,7 @@ func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBFindByName(name stri
 }
 
 // IFDBFindAll ...
-func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBFindAll() (hambargars Hambargars, err error) {
+func (HambargarSupplierHandle *HambargarSupplierHandle) IFDBFindAll() (hambargars StandardHambargars, err error) {
 	if err = HambargarSupplierHandle.HambargarSupplierToStocker.StockFind(&hambargars).Error; err != nil {
 		return
 	}
