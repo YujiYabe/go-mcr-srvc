@@ -1,9 +1,6 @@
 package stocker
 
 import (
-	"log"
-	"runtime"
-
 	"github.com/jinzhu/gorm"
 	// mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -41,25 +38,12 @@ func (handler *SQLHandler) StockFindByName(out interface{}, where ...interface{}
 
 // StockFindByNames ...
 // func (handler *SQLHandler) StockFindByNames(out interface{}, where ...interface{}) *gorm.DB {
-func (handler *SQLHandler) StockFindByNames(out interface{}, where []string) *gorm.DB {
-	debug := where
-	pc := make([]uintptr, 10) // at least 1 entry needed
-	runtime.Callers(2, pc)
-	f := runtime.FuncForPC(pc[0])
-	file, line := f.FileLine(pc[0])
-	log.Println("====================================")
-	log.Printf("%s:%d %s\n", file, line, f.Name())
-	log.Printf("%v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%+v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%#v\n", debug)
-	log.Println("====================================")
-
-	// db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
-	// return handler.Conn.Where("name = ?", name).First(out)
-	// return handler.Conn.Where("name IN (?)", []string{"tomato", "lettuce"}).Find(out)
-	return handler.Conn.Where("name IN (?)", where).Find(out)
+// func (handler *SQLHandler) StockFindByNames(out interface{}, where []string) *gorm.DB {
+func (handler *SQLHandler) StockFindByNames(where map[string]int) *gorm.DB {
+	for item, num := range where {
+		handler.Conn.Table("vegetables").Where("name IN (?)", item).UpdateColumn("stock", gorm.Expr("stock - ?", num))
+	}
+	return handler.Conn
 }
 
 // // INFRExec ...

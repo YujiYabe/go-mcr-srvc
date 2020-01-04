@@ -38,20 +38,21 @@ func (HambargarKitchenHandle *HambargarKitchenHandle) Cook(hambargarName string)
 	// 調理
 	// パッキング
 
-	RequestVegetables := []string{}
+	RequestVegetables := map[string]int{}
 	// RequestIngredients := []string{}
 	if hambargarName == "standard" {
-		RequestVegetables = []string{"tomato", "lettuce"}
+		// RequestVegetables = []string{"tomato", "lettuce"}
+		RequestVegetables = map[string]int{"tomato": 1, "lettuce": 2}
+
 		// RequestIngredients = []string{"bans", "cheese"}
 	}
 
-	vegetables, err := HambargarKitchenHandle.VegetableKitchenToSupplier.ExtractByNames(RequestVegetables)
+	receiveVegetables, err := HambargarKitchenHandle.VegetableKitchenToSupplier.ExtractByNames(RequestVegetables)
 
 	if err != nil {
 		return
 	}
-	hambargar, err = recipe.Combine(vegetables)
-
+	hambargar, err = recipe.Combine(receiveVegetables)
 
 	return
 }

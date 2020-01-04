@@ -2,7 +2,6 @@ package supplier
 
 import (
 	stocker "app/5_stocker"
-	"log"
 	"reflect"
 )
 
@@ -28,23 +27,17 @@ func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByName(name strin
 }
 
 // ExtractByNames ...
-func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByNames(RequestVegetables []string) (vegetables Vegetables, err error) {
-	// func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByNames(RequestVegetables []string) (map[string]string, err error) {
+// func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByNames(RequestVegetables []string) (map[string]string, err error) {
+func (VegetableSupplierHandle *VegetableSupplierHandle) ExtractByNames(RequestVegetables map[string]int) (receiveVegetables map[string]int, err error) {
 	whereParam := RequestVegetables
 
-	err = VegetableSupplierHandle.VegetableSupplierToStocker.StockFindByNames(&vegetables, whereParam).Error
+	// err = VegetableSupplierHandle.VegetableSupplierToStocker.StockFindByNames(&vegetables, whereParam).Error
+	err = VegetableSupplierHandle.VegetableSupplierToStocker.StockFindByNames(whereParam).Error
 
 	if err != nil {
 		return
 	}
-	log.Println("------------------------------------")
-	log.Printf("%#v\n", vegetables)
-	log.Println("====================================")
-
-	// hoge := Hoge{100, "hello"}
-	// m := StructToMap(vegetables)
-
-	// fmt.Println(m)
+	receiveVegetables = RequestVegetables
 
 	return
 }
