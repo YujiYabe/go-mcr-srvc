@@ -2,39 +2,34 @@ package recipe
 
 import (
 	supplier "app/4_supplier"
-	"log"
-	"reflect"
+	// "reflect"
 )
 
+// Combine ...
 func Combine(vegetables supplier.Vegetables) (hambargar supplier.StandardHambargar, err error) {
+	// hambargar.Tomato = vegetables.
 
-	v := reflect.Indirect(reflect.ValueOf(hambargar))
-	t := v.Type()
+	// v := reflect.Indirect(reflect.ValueOf(hambargar))
 
-	for i := 0; i < t.NumField(); i++ {
-		// フィールド名
-		println("Field: " + t.Field(i).Name)
+	// t := v.Type()
+	// debug := t
+	// log.Println("====================================")
+	// log.Printf("%v\n", debug)
+	// log.Println("------------------------------------")
+	// log.Printf("%+v\n", debug)
+	// log.Println("------------------------------------")
+	// log.Printf("%#v\n", debug)
+	// log.Println("====================================")
 
-		// 値
-		f := v.Field(i)
-		println("Value: " + f.String())
+	// for i := 0; i < t.NumField(); i++ {
+	// 	// フィールド名
+	// 	println("Field: " + t.Field(i).Name)
 
-		// if value, ok := i.(int); ok {
-		// 	println("Value: " + strconv.Itoa(value))
-		// } else {
-		// 	println("Value: " + f.String())
-		// }
-	}
+	// 	// 値
+	// 	f := v.Field(i)
+	// 	println("Value: " + f.String())
 
-	debug := vegetables
-
-	log.Println("====================================")
-	log.Printf("%v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%+v\n", debug)
-	log.Println("------------------------------------")
-	log.Printf("%#v\n", debug)
-	log.Println("====================================")
+	// }
 
 	// hambargar, err = HambargarKitchenHandle.HambargarKitchenToSupplier.IFDBFindByName(name)
 	return

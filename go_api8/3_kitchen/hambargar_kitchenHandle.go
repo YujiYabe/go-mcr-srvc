@@ -1,8 +1,6 @@
 package kitchen
 
 import (
-	"log"
-
 	recipe "app/3_kitchen/recipe"
 	supplier "app/4_supplier"
 )
@@ -54,9 +52,6 @@ func (HambargarKitchenHandle *HambargarKitchenHandle) Cook(hambargarName string)
 	}
 	hambargar, err = recipe.Combine(vegetables)
 
-	log.Println("====================================")
-	log.Printf("%v\n", vegetables)
-	log.Println("====================================")
 
 	return
 }

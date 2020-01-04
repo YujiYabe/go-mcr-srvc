@@ -8,10 +8,10 @@ package supplier
 
 // StandardHambargar ...
 type StandardHambargar struct {
-	bans    bool
-	cheese  bool
-	tomato  bool
-	lettuce bool
+	Bans    int
+	Cheese  int
+	Tomato  int
+	Lettuce int
 }
 
 // StandardHambargars ...

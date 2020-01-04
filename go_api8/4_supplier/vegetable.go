@@ -2,7 +2,7 @@ package supplier
 
 // Vegetable ...
 type Vegetable struct {
-	ID    int
+	// ID    int
 	Name  string
 	Stock string
 }
