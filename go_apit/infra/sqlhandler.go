@@ -13,7 +13,7 @@ type SQLHandler struct {
 
 // NewSQLHandler ...
 func NewSQLHandler() *SQLHandler {
-	conn, err := sql.Open("mysql", "user:user@tcp(mysql:3306)/app")
+	conn, err := sql.Open("mysql", "user:user@tcp(mysql:13306)/app")
 	if err != nil {
 		panic(err.Error)
 	}

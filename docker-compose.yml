@@ -20,7 +20,7 @@ services:
             - MYSQL_ROOT_PASSWORD=password
             - TZ=Asia/Tokyo
         ports:
-            -  "3306:3306"
+            -  "13306:13306"
         volumes:
             - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
             - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
