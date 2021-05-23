@@ -22,7 +22,8 @@
 ### Go Patch ###
 /vendor/
 /Godeps/
-go_src/go_api/vendor
+go_api*/app/vendor
+go_api*/vendor
 
 # End of https://www.gitignore.io/api/go
 
@@ -33,4 +34,6 @@ gin-bin
 /direnv/*
 direnv
 go-docker-template
-db/tool/phpmyadmin/sessions/sess_36a0c7affbc339a0b2877e68c3433184
+db/tool/phpmyadmin/sessions/*
+go.mod
+go.sum

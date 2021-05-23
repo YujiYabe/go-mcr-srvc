@@ -9,17 +9,93 @@ use app;
 --     PRIMARY KEY (id)
 -- );
 
-create table if not exists person (
--- create table  person (
+create table if not exists person(
     id bigint auto_increment,
     name varchar(255),
     email varchar(255),
-    primary key (id)
-);
-
+    primary key(id)
+)
+;
 create table if not exists account (
   id bigint auto_increment,
   balance int,
   primary key (id)
 );
+
+---- drop ----
+DROP TABLE IF EXISTS `users`;
+
+---- create ----
+create table IF not exists `users`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `first_name`             VARCHAR(20) NOT NULL,
+  `last_name`             VARCHAR(20) NOT NULL,
+  `created_at`       Datetime DEFAULT NULL,
+  `updated_at`       Datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+---- drop ----
+DROP TABLE IF EXISTS `todos`;
+
+---- create ----
+create table IF not exists `todos`
+(
+    id bigint auto_increment,
+    task varchar(255),
+    limitDate varchar(255),
+    status bool,
+    primary key (id)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+---- drop ----
+DROP TABLE IF EXISTS `drinks`;
+
+---- create ----
+create table IF not exists `drinks`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`             int,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+---- drop ----
+DROP TABLE IF EXISTS `ingredients`;
+
+---- create ----
+create table IF not exists `ingredients`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`            int,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+---- drop ----
+DROP TABLE IF EXISTS `hambargars`;
+
+---- create ----
+create table IF not exists `hambargars`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`            int,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+---- drop ----
+DROP TABLE IF EXISTS `vegetables`;
+
+---- create ----
+create table IF not exists `vegetables`
+(
+  `id`               INT(20) AUTO_INCREMENT,
+  `name`             VARCHAR(20) NOT NULL,
+  `stock`            int,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
