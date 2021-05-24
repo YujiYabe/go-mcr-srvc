@@ -296,20 +296,18 @@ services:
     #         -  mysql
 
     #  ==================================
-    go_api8:
+    backend:
         build:
-            context: ./go_api8
+            context: ./backend
             dockerfile: Dockerfile
-        container_name: go_api8
+        container_name: backend
         volumes:
-            - ./go_api8:/go/src/app
+            - ./backend:/go/src/app
         ports:
             - "1234:4321"
         command: ["4321", "1234"]
         environment:
-            - GO111MODULE=off
-            - GOPATH=/go
             - PORT=1234
         tty: true
-        links:
-            -  mysql
+        # links:
+        #     -  mysql
