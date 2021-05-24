@@ -41,7 +41,6 @@ func NewEcho() *echo.Echo {
 	e.Use(middleware.Recover())
 
 	// e.Static("/", "public")
-	e.GET("/", func(c echo.Context) error { return Index(c) })
 
 	return e
 }
@@ -59,12 +58,6 @@ func NewEcho() *echo.Echo {
 // 	// Start server
 // 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 // }
-
-// Index ...
-func Index(c echo.Context) (err error) {
-	c.JSON(200, "users")
-	return
-}
 
 // Start ...
 // func (mb *Mobile) Start(address, port string) {
