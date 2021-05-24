@@ -17,6 +17,13 @@ type (
 
 	// ToStocker ...
 	ToStocker interface {
+		StockFind(out interface{}, where ...interface{}) (string, error)
 		Dummy(ctx context.Context) error
 	}
+
+	// // DatabaseResult ...
+	// DatabaseResult interface {
+	// 	LastInsertId() (int64, error)
+	// 	RowsAffected() (int64, error)
+	// }
 )
