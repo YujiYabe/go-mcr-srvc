@@ -308,7 +308,6 @@ services:
         command: ["4321", "1234"]
         # restart: always
         environment:
-            # - GO111MODULE=off
             - GOPATH=/go
             - PORT=1234
             - DB_HOST=mysql

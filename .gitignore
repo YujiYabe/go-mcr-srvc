@@ -35,5 +35,3 @@ gin-bin
 direnv
 go-docker-template
 db/tool/phpmyadmin/sessions/*
-go.mod
-go.sum
