@@ -1,5 +1,11 @@
 package controller
 
+import (
+	"app/internal/2_adapter/service"
+	"app/internal/3_usecase/usecase"
+	"app/internal/4_domain/domain"
+)
+
 // var myErr *shared.MyErr
 
 func init() {
@@ -9,21 +15,22 @@ func init() {
 type (
 	// Controller ...
 	Controller struct {
-		// UseCase usecase.UseCase
+		UseCase usecase.UseCase
 	}
 )
 
 // NewController ...
 // func NewController(toGrpcOut service.ToGrpcOut, toWsOrder service.ToWsOrder) *Controller {
-func NewController() *Controller {
+func NewController(toStocker service.ToStocker) *Controller {
 	ct := &Controller{
-		// UseCase: usecase.UseCase{
-		// ToDomain: domain.NewDomain(),
-		// ToService: &service.Service{
-		// 	ToGrpcOut: toGrpcOut,
-		// 	ToWsOrder: toWsOrder,
-		// },
-		// },
+		UseCase: usecase.UseCase{
+			ToDomain: domain.NewDomain(),
+			ToService: &service.Service{
+				// 	ToGrpcOut: toGrpcOut,
+				// 	ToWsOrder: toWsOrder,
+				ToStocker: toStocker,
+			},
+		},
 	}
 
 	return ct

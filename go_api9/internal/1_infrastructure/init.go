@@ -8,6 +8,7 @@ import (
 	// 	"app/internal/1_infrastructure/ws/wsorder"
 
 	"app/internal/1_infrastructure/mobile"
+	"app/internal/1_infrastructure/stocker"
 	"app/internal/2_adapter/controller"
 	// 	"app/pkg/shared"
 )
@@ -29,8 +30,9 @@ func NewApp() *app {
 
 	// grpcOut := grpcout.NewToGrpcOut()
 	// wsOrder := wsorder.NewToWsOrder()
+	stocker := stocker.NewToStocker()
 	// ctrl := controller.NewController(grpcOut, wsOrder)
-	ctrl := controller.NewController()
+	ctrl := controller.NewController(stocker)
 	// a.GrpcIn = grpcin.NewGrpcIn(ctrl)
 	a.mobile = mobile.NewMobile(ctrl)
 

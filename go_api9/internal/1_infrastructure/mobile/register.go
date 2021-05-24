@@ -80,7 +80,9 @@ func (mb *Mobile) Start() {
 
 // Index ...
 func (mb *Mobile) Index(c echo.Context) (err error) {
+
 	c.JSON(200, "users")
+
 	return
 }
 
