@@ -1,6 +1,9 @@
 package stocker
 
-import "app/internal/2_adapter/service"
+import (
+	"app/internal/2_adapter/service"
+	"context"
+)
 
 type stocker struct{}
 
@@ -11,6 +14,6 @@ func NewToStocker() service.ToStocker {
 }
 
 // Dummy ...
-func (out *stocker) Dummy() error {
+func (out *stocker) Dummy(ctx context.Context) error {
 	return nil
 }

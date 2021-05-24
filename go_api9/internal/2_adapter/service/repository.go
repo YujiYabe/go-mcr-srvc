@@ -1,5 +1,7 @@
 package service
 
+import "context"
+
 type (
 	// ToGrpcOut ...
 	ToGrpcOut interface {
@@ -15,6 +17,6 @@ type (
 
 	// ToStocker ...
 	ToStocker interface {
-		Dummy() error
+		Dummy(ctx context.Context) error
 	}
 )

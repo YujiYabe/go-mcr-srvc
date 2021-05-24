@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 type (
 	domain struct{}
 )
@@ -10,6 +12,6 @@ func NewDomain() *domain {
 }
 
 // Dummy ...
-func (domain *domain) Dummy() error {
+func (domain *domain) Dummy(ctx context.Context) error {
 	return nil
 }

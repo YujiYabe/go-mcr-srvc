@@ -80,7 +80,8 @@ func (mb *Mobile) Start() {
 
 // Index ...
 func (mb *Mobile) Index(c echo.Context) (err error) {
-
+	ctx := c.Request().Context()
+	mb.Controller.Dummy(ctx)
 	c.JSON(200, "users")
 
 	return

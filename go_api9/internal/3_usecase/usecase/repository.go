@@ -1,5 +1,7 @@
 package usecase
 
+import "context"
+
 type (
 	// UseCase ...
 	UseCase struct {
@@ -9,11 +11,11 @@ type (
 
 	// ToService ...
 	ToService interface {
-		Dummy() error
+		Dummy(ctx context.Context) error
 	}
 
 	// ToDomain ...
 	ToDomain interface {
-		Dummy() error
+		Dummy(ctx context.Context) error
 	}
 )

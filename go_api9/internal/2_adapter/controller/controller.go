@@ -4,6 +4,7 @@ import (
 	"app/internal/2_adapter/service"
 	"app/internal/3_usecase/usecase"
 	"app/internal/4_domain/domain"
+	"context"
 )
 
 // var myErr *shared.MyErr
@@ -104,3 +105,9 @@ func NewController(toStocker service.ToStocker) *Controller {
 // 		myErr.Logging(err, fileName)
 // 	}
 // }
+
+// Dummy ...
+func (ctrl *Controller) Dummy(ctx context.Context) error {
+	ctrl.UseCase.Dummy(ctx)
+	return nil
+}
