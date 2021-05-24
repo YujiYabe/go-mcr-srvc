@@ -1,0 +1,38 @@
+dep init                               set up a new project
+dep ensure                             install the project's dependencies
+dep ensure -update                     update the locked versions of all dependencies
+dep ensure -add github.com/pkg/errors  add a dependency to the project
+
+
+=====================================================================
+
+
+mockgen -source 2_usecase/user_repository.go -destination mock_user/mock_user_repository.go
+
+
+
+
+
+
+
+
+
+=====================================================================
+
+mockgen -source 1_entity/repository/todo.go -destination mock_todo/mock_repository_todo.go
+
+-----------------------------
+1_entity/repository/todo.go
+package repository
+
+import (
+    "todo/1_entity/model"
+)
+
+//TodoRepository is interface for 4_stocker
+type TodoRepository interface {
+    FindAll() (todos []*model.Todo, err error)
+    Find(word string) (todos []*model.Todo, err error)
+    Create(todo *model.Todo) (*model.Todo, error)
+    Update(todo *model.Todo) (*model.Todo, error)
+}
