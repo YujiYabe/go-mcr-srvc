@@ -7,8 +7,6 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-// go mod init github.com/YujiYabe/go-docker-template
-
 // Run ...
 func Run() {
 	e := echo.New()

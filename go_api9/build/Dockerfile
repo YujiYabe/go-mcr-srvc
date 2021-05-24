@@ -10,9 +10,8 @@ RUN \
     && ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && dpkg-reconfigure --frontend noninteractive tzdata
 
-
 COPY config/.bashrc /root/.bashrc
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./scripts/entrypoint.sh"]
 
 

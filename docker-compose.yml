@@ -299,7 +299,7 @@ services:
     go_api9:
         build:
             context: ./go_api9
-            dockerfile: Dockerfile
+            dockerfile: build/Dockerfile
         container_name: go_api9
         volumes:
             - ./go_api9:/go/src/app
