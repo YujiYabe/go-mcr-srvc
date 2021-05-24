@@ -13,13 +13,8 @@ import (
 	// 	"app/pkg/shared"
 )
 
-// func init() {
-// 	shared.CheckDirectory(shared.LogPath)
-// }
-
 type (
 	app struct {
-		// GrpcIn *grpcin.GrpcIn
 		mobile *mobile.Mobile
 	}
 )
@@ -42,7 +37,4 @@ func NewApp() *app {
 // Start ...
 func (a *app) Start() {
 	a.mobile.Start()
-
-	// go a.WsApp.Start(network.GetSelfAddress(), shared.EchoPort)
-	// a.GrpcIn.Start()
 }
