@@ -1,0 +1,46 @@
+package app
+
+import (
+	// 	"app/internal/1_infrastructure/grpc/grpcin"
+	// 	"app/internal/1_infrastructure/grpc/grpcout"
+	// 	"app/internal/1_infrastructure/network"
+	// "app/internal/1_infrastructure/mobile"
+	// 	"app/internal/1_infrastructure/ws/wsorder"
+
+	"app/internal/1_infrastructure/mobile"
+	"app/internal/2_adapter/controller"
+	// 	"app/pkg/shared"
+)
+
+// func init() {
+// 	shared.CheckDirectory(shared.LogPath)
+// }
+
+type (
+	app struct {
+		// GrpcIn *grpcin.GrpcIn
+		mobile *mobile.Mobile
+	}
+)
+
+// NewApp ...
+func NewApp() *app {
+	a := &app{}
+
+	// grpcOut := grpcout.NewToGrpcOut()
+	// wsOrder := wsorder.NewToWsOrder()
+	// ctrl := controller.NewController(grpcOut, wsOrder)
+	ctrl := controller.NewController()
+	// a.GrpcIn = grpcin.NewGrpcIn(ctrl)
+	a.mobile = mobile.NewMobile(ctrl)
+
+	return a
+}
+
+// Start ...
+func (a *app) Start() {
+	a.mobile.Start()
+
+	// go a.WsApp.Start(network.GetSelfAddress(), shared.EchoPort)
+	// a.GrpcIn.Start()
+}
