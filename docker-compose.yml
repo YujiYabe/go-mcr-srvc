@@ -78,8 +78,6 @@ services:
     #     hostname:  pgadmin
     #     restart:  always
 
-
-
     # ==================================
     # mongo:
     #     image:  mongo

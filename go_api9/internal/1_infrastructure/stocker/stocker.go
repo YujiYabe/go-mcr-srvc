@@ -13,10 +13,19 @@ import (
 	"app/internal/2_adapter/service"
 )
 
-// Stocker ...
-type Stocker struct {
-	Conn *gorm.DB
-}
+type (
+	// Stocker ...
+	Stocker struct {
+		Conn *gorm.DB
+	}
+
+	// Vegetables ...
+	Vegetables struct {
+		ID    int
+		Name  string
+		Stock int
+	}
+)
 
 // NewToStocker ...
 func NewToStocker() service.ToStocker {
@@ -40,13 +49,15 @@ func (s *Stocker) Dummy(ctx context.Context) (string, error) {
 
 // StockFind ...
 func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, error) {
-	res := s.Conn.Find(out, where...)
+	vegetables := &Vegetables{}
+
+	res := s.Conn.First(vegetables)
 	if res.Error != nil {
 		return "", res.Error
 	}
 
 	fmt.Println(" ============================== ")
-	fmt.Printf("%+v\n", res)
+	fmt.Printf("%+v\n", vegetables)
 	fmt.Println(" ============================== ")
 
 	return "ok", nil

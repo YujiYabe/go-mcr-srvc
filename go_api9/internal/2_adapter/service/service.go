@@ -10,7 +10,7 @@ type Service struct {
 
 // Order ...
 func (sv *Service) Order(ctx context.Context) (string, error) {
-	res, _ := sv.ToStocker.Dummy(ctx)
+	res, _ := sv.ToStocker.StockFind(ctx)
 
 	return res, nil
 }
