@@ -1,6 +1,8 @@
 package mobile
 
 import (
+	"fmt"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
@@ -39,16 +41,18 @@ func NewEcho() *echo.Echo {
 
 // Start ...
 func (mb *Mobile) Start() {
-
 	mb.EchoEcho.GET("/", mb.Index)
-
 	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(":1234"))
 }
 
 // Index ...
 func (mb *Mobile) Index(c echo.Context) (err error) {
 	ctx := c.Request().Context()
-	mb.Controller.Dummy(ctx)
+	res, _ := mb.Controller.Dummy(ctx)
+	fmt.Println(" ============================== ")
+	fmt.Printf("%+v\n", res)
+	fmt.Println(" ============================== ")
+
 	c.JSON(200, "users")
 
 	return

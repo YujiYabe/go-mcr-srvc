@@ -18,7 +18,7 @@ type (
 	// ToStocker ...
 	ToStocker interface {
 		StockFind(out interface{}, where ...interface{}) (string, error)
-		Dummy(ctx context.Context) error
+		Dummy(ctx context.Context) (string, error)
 	}
 
 	// // DatabaseResult ...

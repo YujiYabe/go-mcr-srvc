@@ -1,14 +1,14 @@
 package controller
 
 import (
+	"context"
+
 	"app/internal/2_adapter/service"
 	"app/internal/3_usecase/usecase"
 	"app/internal/4_domain/domain"
-	"context"
 )
 
-func init() {
-}
+func init() {}
 
 type (
 	// Controller ...
@@ -35,7 +35,7 @@ func NewController(toStocker service.ToStocker) *Controller {
 }
 
 // Dummy ...
-func (ctrl *Controller) Dummy(ctx context.Context) error {
-	ctrl.UseCase.Dummy(ctx)
-	return nil
+func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
+	res, _ := ctrl.UseCase.Dummy(ctx)
+	return res, nil
 }

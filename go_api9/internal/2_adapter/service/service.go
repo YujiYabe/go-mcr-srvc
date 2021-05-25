@@ -9,7 +9,8 @@ type Service struct {
 }
 
 // Dummy ...
-func (sv *Service) Dummy(ctx context.Context) error {
-	sv.ToStocker.Dummy(ctx)
-	return nil
+func (sv *Service) Dummy(ctx context.Context) (string, error) {
+	res, _ := sv.ToStocker.Dummy(ctx)
+
+	return res, nil
 }
