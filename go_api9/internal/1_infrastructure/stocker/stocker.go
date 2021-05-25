@@ -2,10 +2,13 @@ package stocker
 
 import (
 	"context"
-
-	"github.com/jinzhu/gorm"
 	// mysql
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	// _ "github.com/jinzhu/gorm/dialects/mysql"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+
+	"app/internal/2_adapter/service"
 )
 
 // Stocker ...
@@ -14,13 +17,15 @@ type Stocker struct {
 }
 
 // NewToStocker ...
-func NewToStocker() *Stocker {
-	conn, err := gorm.Open("mysql", "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local")
-	conn.LogMode(true)
+func NewToStocker() service.ToStocker {
+	dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
+	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic(err.Error)
 	}
+	// conn.LogMode(true)
+
 	s := new(Stocker)
 	s.Conn = conn
 	return s
@@ -33,10 +38,10 @@ func (s *Stocker) Dummy(ctx context.Context) error {
 
 // StockFind ...
 func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, error) {
-	_, err := s.Conn.Find(out, where...)
-	if err != nil {
-		return "", err
-	}
+	// 	_, err := s.Conn.Find(out, where...)
+	// 	if err != nil {
+	// 		return "", err
+	// 	}
 
 	return "ok", nil
 }
