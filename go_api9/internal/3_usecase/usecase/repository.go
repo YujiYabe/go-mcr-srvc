@@ -12,6 +12,7 @@ type (
 	// ToService ...
 	ToService interface {
 		Dummy(ctx context.Context) (string, error)
+		Order(ctx context.Context) (string, error)
 	}
 
 	// ToDomain ...

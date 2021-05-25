@@ -39,3 +39,9 @@ func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
 	res, _ := ctrl.UseCase.Dummy(ctx)
 	return res, nil
 }
+
+// Order ...
+func (ctrl *Controller) Order(ctx context.Context) (string, error) {
+	res, _ := ctrl.UseCase.Order(ctx)
+	return res, nil
+}

@@ -33,7 +33,7 @@ func NewToStocker() service.ToStocker {
 
 // Dummy ...
 func (s *Stocker) Dummy(ctx context.Context) (string, error) {
-	return "dumvvvmy ok", nil
+	return "dummy ok", nil
 }
 
 // StockFind ...
