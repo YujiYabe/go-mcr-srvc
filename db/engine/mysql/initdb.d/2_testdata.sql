@@ -1,27 +1,14 @@
--- INSERT INTO users (id,name,email) VALUES (1, 'TOM','xxxx@mail.co.jp');
 use app;
 
-INSERT INTO person (name,email) VALUES ('TOM','xxxx@mail.co.jp');
 
-insert into users(first_name, last_name) values("Patricia", "Smith");
-insert into users(first_name, last_name) values("Linda", "Johnson");
-insert into users(first_name, last_name) values("Mary", "William");
-insert into users(first_name, last_name) values("Robert", "Jones");
-insert into users(first_name, last_name) values("James", "Brown");
+insert into bans(name, stock) values("top", 100);
+insert into bans(name, stock) values("middle", 100);
+insert into bans(name, stock) values("bottom", 100);
 
-INSERT INTO todos(task,limitDate,status) VALUES ('TOM','xxxx@mail.co.jp', true);
+insert into patties(name, stock) values("beef", 100);
+insert into patties(name, stock) values("chicken", 100);
+insert into patties(name, stock) values("fish", 100);
 
-insert into drinks(name, stock) values("coffee", 100);
-insert into drinks(name, stock) values("apple juice", 100);
-
-
-
-insert into hambargars(name, stock) values("standard", 100);
-insert into hambargars(name, stock) values("cheese", 100);
-
-
-insert into ingredients(name, stock) values("bans", 100);
-insert into ingredients(name, stock) values("cheese", 100);
-
-insert into vegetables(name, stock) values("tomato", 100);
 insert into vegetables(name, stock) values("lettuce", 100);
+insert into vegetables(name, stock) values("tomato", 100);
+insert into vegetables(name, stock) values("pickles", 100);

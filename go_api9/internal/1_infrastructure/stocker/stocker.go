@@ -2,6 +2,8 @@ package stocker
 
 import (
 	"context"
+	"fmt"
+
 	// mysql
 	// _ "github.com/jinzhu/gorm/dialects/mysql"
 
@@ -38,10 +40,14 @@ func (s *Stocker) Dummy(ctx context.Context) (string, error) {
 
 // StockFind ...
 func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, error) {
-	// 	_, err := s.Conn.Find(out, where...)
-	// 	if err != nil {
-	// 		return "", err
-	// 	}
+	res := s.Conn.Find(out, where...)
+	if res.Error != nil {
+		return "", res.Error
+	}
+
+	fmt.Println(" ============================== ")
+	fmt.Printf("%+v\n", res)
+	fmt.Println(" ============================== ")
 
 	return "ok", nil
 }

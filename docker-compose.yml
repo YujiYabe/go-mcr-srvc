@@ -3,12 +3,12 @@ services:
 
     #  ==================================
     mysql:
-        container_name:  mysql
+        restart: always
+        container_name: mysql
         # build:  ./docker/mysql
         build:
             context:  ./db/engine/mysql
             dockerfile:  Dockerfile
-        restart: always
         environment:
             # MYSQL_supplier:  sample_db
             # MYSQL_USER:  user
@@ -27,23 +27,23 @@ services:
             - ./db/engine/mysql/data:/var/lib/mysql
         #     -  ./log/mysql:/var/log/mysql
 
-    # #  ==================================
-    # phpmyadmin:
-    #     container_name:  phpmyadmin
-    #     build:
-    #         context:  ./db/tool/phpmyadmin
-    #         dockerfile:  Dockerfile
-    #     environment:
-    #         - PMA_ARBITRARY=1
-    #         - PMA_HOST=mysql
-    #         - PMA_USER=root
-    #         - PMA_PASSWORD=password
-    #     ports:
-    #         -  "8090:80"
-    #     volumes:
-    #         - "./db/tool/phpmyadmin/sessions:/sessions"
-    #     links:
-    #         -  mysql
+    #  ==================================
+    phpmyadmin:
+        container_name:  phpmyadmin
+        build:
+            context:  ./db/tool/phpmyadmin
+            dockerfile:  Dockerfile
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_USER=root
+            - PMA_PASSWORD=password
+        ports:
+            -  "8090:80"
+        volumes:
+            - "./db/tool/phpmyadmin/sessions:/sessions"
+        links:
+            -  mysql
 
 
 
@@ -103,200 +103,9 @@ services:
     #         ME_CONFIG_MONGODB_ADMINUSERNAME:  root
     #         ME_CONFIG_MONGODB_ADMINPASSWORD:  example
 
-    # #  ==================================
-    # go_api1:
-    #     build:
-    #         context: ./go_api1/app
-    #         dockerfile: Dockerfile
-    #     container_name: go_api1
-    #     volumes:
-    #         - ./go_api1:/go/src
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     depends_on:
-    #         -  mysql
-
-    # #  ==================================
-    # go_api2:
-    #     build:
-    #         context: ./go_api2/app
-    #         dockerfile: Dockerfile
-    #     container_name: go_api2
-    #     volumes:
-    #         - ./go_api2:/go/src
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     tty: true
-    #     links:
-    #         -  mysql
-
-    # #  ==================================
-    # go_api3:
-    #     build:
-    #         context: ./go_api3/app
-    #         dockerfile: Dockerfile
-    #     container_name: go_api3
-    #     volumes:
-    #         - ./go_api3:/go/src
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     tty: true
-    #     links:
-    #         -  mysql
-
-    #  ==================================
-    # go_api4:
-    #     build:
-    #         context: ./go_api4/app
-    #         dockerfile: Dockerfile
-    #     container_name: go_api4
-    #     volumes:
-    #         - ./go_api4:/go/src
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     tty: true
-    #     links:
-    #         -  mysql
-
-
-    # #  ==================================
-    # go_api5:
-    #     build:
-    #         context: ./go_api5
-    #         dockerfile: Dockerfile
-    #     container_name: go_api5
-    #     volumes:
-    #         - ./go_api5:/go/src/app
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     tty: true
-    #     links:
-    #         -  mysql
-
-
-    # #  ==================================
-    # go_api6: // test
-    #     build:
-    #         context: ./go_api6
-    #         dockerfile: Dockerfile
-    #     container_name: go_api6
-    #     volumes:
-    #         - ./go_api6:/go/src/app
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     tty: true
-    #     links:
-    #         -  mysql
-
-    # #  ==================================
-    # go_apit:
-    #     build:
-    #         context: ./go_apit
-    #         dockerfile: Dockerfile
-    #     container_name: go_apit
-    #     volumes:
-    #         - ./go_apit:/go/src/todo
-    #     ports:
-    #         - "7070:7171"
-    #     # command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=7070
-    #     tty: true
-
-    # #  ==================================
-    # go_api7:
-    #     build:
-    #         context: ./go_api7
-    #         dockerfile: Dockerfile
-    #     container_name: go_api7
-    #     volumes:
-    #         - ./go_api7:/go/src/app
-    #     ports:
-    #         - "1234:4321"
-    #     command: ["4321", "1234"]
-    #     # restart: always
-    #     environment:
-    #         - GO111MODULE=off
-    #         - GOPATH=/go
-    #         - PORT=1234
-    #         - DB_HOST=mysql
-    #         - DB_PORT=3306
-    #         - DB_NAME=app
-    #         - DB_USER=user
-    #         - DB_PASSWORD=user
-    #     tty: true
-    #     links:
-    #         -  mysql
-
     #  ==================================
     go_api9:
+        restart: always
         build:
             context: ./go_api9
             dockerfile: build/Dockerfile
@@ -306,12 +115,11 @@ services:
         ports:
             - "1234:1234"
         command: ["4321", "1234"]
-        # restart: always
         environment:
             - GOPATH=/go
             - PORT=1234
             - DB_HOST=mysql
-            - DB_PORT=3306
+            - DB_PORT=13306
             - DB_NAME=app
             - DB_USER=user
             - DB_PASSWORD=user

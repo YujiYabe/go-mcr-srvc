@@ -22,14 +22,18 @@ type (
 
 	// Hamburger ...
 	Hamburger struct {
-		BansTop      int
-		BansMiddle   int
-		BansBottom   int
-		BeefPatty    int
-		ChickenPatty int
-		FishPatty    int
-		lettuce      int
-		pickles      int
+		// bans
+		Top    int
+		Middle int
+		Bottom int
+		// patty
+		Beef    int
+		Chicken int
+		Fish    int
+		//vegetable
+		lettuce int
+		tomato  int
+		pickles int
 	}
 
 	// SideMenu ...
