@@ -21,7 +21,6 @@ type (
 
 // NewApp ...
 func NewApp() *app {
-
 	a := &app{}
 
 	// grpcOut := grpcout.NewToGrpcOut()

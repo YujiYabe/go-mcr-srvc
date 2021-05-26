@@ -35,3 +35,9 @@ gin-bin
 direnv
 go-docker-template
 db/tool/phpmyadmin/sessions/*
+
+*.log
+
+*/tmp/main
+
+
