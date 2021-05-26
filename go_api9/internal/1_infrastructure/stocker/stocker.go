@@ -3,9 +3,7 @@ package stocker
 import (
 	"context"
 	"fmt"
-
-	// mysql
-	// _ "github.com/jinzhu/gorm/dialects/mysql"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -29,17 +27,35 @@ type (
 
 // NewToStocker ...
 func NewToStocker() service.ToStocker {
-	dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
-	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
+	conn, err := open(30)
 	if err != nil {
-		panic(err.Error)
+		panic(err)
 	}
-	// conn.LogMode(true)
 
 	s := new(Stocker)
 	s.Conn = conn
 	return s
+}
+
+func open(count uint) (*gorm.DB, error) {
+	dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		if count == 0 {
+			return nil, fmt.Errorf("Retry count over")
+		}
+		time.Sleep(time.Second)
+		fmt.Println(" ============================== ")
+		fmt.Println(" wait db ...")
+		fmt.Println(" ============================== ")
+
+		// カウントダウンさせるようにする
+		count--
+		return open(count)
+	}
+
+	return db, nil
 }
 
 // Dummy ...

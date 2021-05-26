@@ -1,7 +1,7 @@
 
 # ----------------------------
-.PHONY: resetall
-resetall:
+.PHONY: removeall
+removeall:
 	docker-compose stop
 	docker system prune
 	sudo rm -rf db/engine/mysql/var_lib_mysql/
@@ -20,5 +20,5 @@ up:
 
 
 # ----------------------------
-.PHONY: reup
-reup: build up
+.PHONY: resetall
+resetall: removeall build up
