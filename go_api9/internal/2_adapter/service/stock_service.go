@@ -4,7 +4,6 @@ import "context"
 
 // Service ...
 type Service struct {
-	// ToGrpcOut ToGrpcOut
 	ToStocker ToStocker
 }
 

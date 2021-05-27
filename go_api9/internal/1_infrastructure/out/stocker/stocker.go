@@ -46,10 +46,6 @@ func open(count uint) (*gorm.DB, error) {
 			return nil, fmt.Errorf("Retry count over")
 		}
 		time.Sleep(time.Second)
-		fmt.Println(" ============================== ")
-		fmt.Println(" wait db ...")
-		fmt.Println(" ============================== ")
-
 		// カウントダウンさせるようにする
 		count--
 		return open(count)
@@ -65,6 +61,22 @@ func (s *Stocker) Dummy(ctx context.Context) (string, error) {
 
 // StockFind ...
 func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, error) {
+	vegetables := &Vegetables{}
+
+	res := s.Conn.First(vegetables)
+	if res.Error != nil {
+		return "", res.Error
+	}
+
+	fmt.Println(" ============================== ")
+	fmt.Printf("%+v\n", vegetables)
+	fmt.Println(" ============================== ")
+
+	return "ok", nil
+}
+
+// StockPull ...
+func (s *Stocker) StockPull(out interface{}, where ...interface{}) (string, error) {
 	vegetables := &Vegetables{}
 
 	res := s.Conn.First(vegetables)
