@@ -17,8 +17,8 @@ type (
 		Conn *gorm.DB
 	}
 
-	// Vegetables ...
-	Vegetables struct {
+	// Vegetable ...
+	Vegetable struct {
 		ID    int
 		Name  string
 		Stock int
@@ -61,9 +61,9 @@ func (s *Stocker) Dummy(ctx context.Context) (string, error) {
 
 // StockFind ...
 func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, error) {
-	vegetables := &Vegetables{}
+	vegetables := &[]Vegetable{}
 
-	res := s.Conn.First(vegetables)
+	res := s.Conn.Find(vegetables)
 	if res.Error != nil {
 		return "", res.Error
 	}
@@ -76,17 +76,36 @@ func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, erro
 }
 
 // StockPull ...
-func (s *Stocker) StockPull(out interface{}, where ...interface{}) (string, error) {
-	vegetables := &Vegetables{}
+func (s *Stocker) StockPull(ctx context.Context, items map[string]int) (bool, error) {
+	// vegetables := &[]Vegetable{}
 
-	res := s.Conn.First(vegetables)
-	if res.Error != nil {
-		return "", res.Error
+	// res := s.Conn.First(vegetables)
+	// if res.Error != nil {
+	// 	return "", res.Error
+	// }
+
+	// fmt.Println(" ============================== ")
+	// fmt.Printf("%+v\n", vegetables)
+	// fmt.Println(" ============================== ")
+	for item, num := range items {
+		s.Conn.Table("vegetables").Where("name IN (?)", item).UpdateColumn("stock", gorm.Expr("stock - ?", num))
 	}
 
-	fmt.Println(" ============================== ")
-	fmt.Printf("%+v\n", vegetables)
-	fmt.Println(" ============================== ")
+	return true, nil
+}
 
-	return "ok", nil
+// GetVegetables ...
+func (s *Stocker) GetVegetables(ctx context.Context, items map[string]int) error {
+	for item, num := range items {
+		res := s.Conn.
+			Table("vegetables").
+			Where("name IN (?)", item).
+			UpdateColumn("stock", gorm.Expr("stock - ?", num))
+
+		if res.Error != nil {
+			return res.Error
+		}
+	}
+
+	return nil
 }

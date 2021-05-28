@@ -45,13 +45,17 @@ func (mb *Mobile) Start() {
 }
 
 // Index ...
-func (mb *Mobile) Index(c echo.Context) (err error) {
+func (mb *Mobile) Index(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	res, _ := mb.Controller.Order(ctx)
+	// id := c.Param("id")
+	// name := c.QueryParam("name")
+	// name := c.FormValue("name")
 
-	c.JSON(200, res)
-	return
+	err := mb.Controller.Order(ctx)
+	c.JSON(200, err)
+
+	return err
 }
 
 // Index2 ...

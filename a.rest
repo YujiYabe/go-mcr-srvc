@@ -3,13 +3,35 @@
 GET http://localhost:1234/ HTTP/1.1
 
 
+
+### ==============================
+POST http://localhost:1234/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "top": 1 ,
+    "middle": ,
+    "bottom":1 ,
+    "beef":1 ,
+    "chicken": ,
+    "fish": ,
+    "lettuce": ,
+    "tomato": 1,
+    "onion": ,
+    "cheese": 1,
+    "pickles": 1,
+    "dummy": 0
+
+}
+
+
 ### ==============================
 PUT http://localhost:1234/hambargar_request/standard HTTP/1.1
 Content-Type: application/json
 
 {
 }
-    ### "name": "{{name}}",
+    ### "name": "{{name}}" ,
     ### "address": "{{address}}"
 
 

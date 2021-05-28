@@ -3,10 +3,28 @@ package usecase
 import "context"
 
 // Order ...
-func (uc *UseCase) Order(ctx context.Context) (string, error) {
-	res, _ := uc.ToService.Order(ctx)
+func (uc *UseCase) Order(ctx context.Context) error {
+	requestVegetables := map[string]int{"tomato": 1, "lettuce": 1}
 
-	return res, nil
+	// 材料取り出し
+	err := uc.ToService.GetVegetables(ctx, requestVegetables)
+	if err != nil {
+		return err
+	}
+
+	// // 調理
+	// err = uc.ToService.(ctx, requestVegetables)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// 返却
+	err = uc.ToService.GetVegetables(ctx, requestVegetables)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Dummy ...

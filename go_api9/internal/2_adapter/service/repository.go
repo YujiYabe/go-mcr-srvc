@@ -1,6 +1,8 @@
 package service
 
-import "context"
+import (
+	"context"
+)
 
 type (
 	// ToGrpcOut ...
@@ -15,10 +17,15 @@ type (
 		// IsSendToAgent(agentID string, cc *shared.CommonContent)
 	}
 
+	// ToClient ...
+	ToClient interface {
+		HandOver(ctx context.Context) error
+	}
 	// ToStocker ...
 	ToStocker interface {
 		StockFind(out interface{}, where ...interface{}) (string, error)
-		StockPull(out interface{}, where ...interface{}) (string, error)
+		StockPull(ctx context.Context, items map[string]int) (bool, error)
+		GetVegetables(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}
 

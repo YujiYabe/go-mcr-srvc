@@ -11,4 +11,7 @@ insert into patties(name, stock) values("fish", 100);
 
 insert into vegetables(name, stock) values("lettuce", 100);
 insert into vegetables(name, stock) values("tomato", 100);
-insert into vegetables(name, stock) values("pickles", 100);
+insert into vegetables(name, stock) values("onion", 100);
+
+insert into ingredients(name, stock) values("cheese", 100);
+insert into ingredients(name, stock) values("pickles", 100);

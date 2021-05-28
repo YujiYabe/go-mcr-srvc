@@ -13,6 +13,7 @@ type (
 	ToService interface {
 		Dummy(ctx context.Context) (string, error)
 		Order(ctx context.Context) (string, error)
+		GetVegetables(ctx context.Context, requestVegetables map[string]int) error
 	}
 
 	// ToDomain ...
