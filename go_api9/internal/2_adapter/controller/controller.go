@@ -41,8 +41,8 @@ func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
 }
 
 // Order ...
-func (ctrl *Controller) Order(ctx context.Context) error {
-	err := ctrl.UseCase.Order(ctx)
+func (ctrl *Controller) Order(ctx context.Context, order domain.Order) error {
+	err := ctrl.UseCase.Order(ctx, order)
 	if err != nil {
 		return err
 	}

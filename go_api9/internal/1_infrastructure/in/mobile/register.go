@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/middleware"
 
 	"app/internal/2_adapter/controller"
+	"app/internal/4_domain/domain"
 )
 
 type (
@@ -39,23 +40,29 @@ func NewEcho() *echo.Echo {
 
 // Start ...
 func (mb *Mobile) Start() {
-	mb.EchoEcho.GET("/", mb.Index)
+	// mb.EchoEcho.GET("/", mb.Index)
+	mb.EchoEcho.POST("/", mb.IndexPost)
 	mb.EchoEcho.GET("/2", mb.Index2)
 	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(":1234"))
 }
 
-// Index ...
-func (mb *Mobile) Index(c echo.Context) error {
+// IndexPost ...
+func (mb *Mobile) IndexPost(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	// id := c.Param("id")
-	// name := c.QueryParam("name")
-	// name := c.FormValue("name")
+	param := new(domain.Order)
+	if err := c.Bind(param); err != nil {
+		return err
+	}
 
-	err := mb.Controller.Order(ctx)
-	c.JSON(200, err)
+	err := mb.Controller.Order(ctx, *param)
+	if err != nil {
+		c.JSON(200, err)
+		return err
+	}
 
-	return err
+	c.JSON(200, "ok")
+	return nil
 }
 
 // Index2 ...

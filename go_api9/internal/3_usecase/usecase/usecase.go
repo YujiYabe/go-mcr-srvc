@@ -1,9 +1,19 @@
 package usecase
 
-import "context"
+import (
+	"app/internal/4_domain/domain"
+	"context"
+	"fmt"
+)
 
 // Order ...
-func (uc *UseCase) Order(ctx context.Context) error {
+func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
+
+	fmt.Println("==============================")
+	debugTarget := order
+	fmt.Printf("%#v\n", debugTarget)
+	fmt.Println("==============================")
+
 	requestVegetables := map[string]int{"tomato": 1, "lettuce": 1}
 
 	// 材料取り出し
@@ -18,11 +28,11 @@ func (uc *UseCase) Order(ctx context.Context) error {
 	// 	return err
 	// }
 
-	// 返却
-	err = uc.ToService.GetVegetables(ctx, requestVegetables)
-	if err != nil {
-		return err
-	}
+	// // 返却
+	// err = uc.ToService.GetVegetables(ctx, requestVegetables)
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

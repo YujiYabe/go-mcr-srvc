@@ -7,43 +7,46 @@ type (
 
 	// Order ...
 	Order struct {
-		Combos     []Combo
-		Hamburgers []Hamburger
-		SideMenus  []SideMenu
-		Drinks     []Drink
+		Combos     []Combo     `json:"combos"`
+		Hamburgers []Hamburger `json:"hamburgers"`
+		SideMenus  []SideMenu  `json:"side_menus"`
+		Drinks     []Drink     `json:"drinks"`
 	}
 
 	// Combo ...
 	Combo struct {
-		Hamburger *Hamburger
-		SideMenu  *SideMenu
-		Drink     *Drink
+		Hamburger *Hamburger `json:"hamburger"`
+		SideMenu  *SideMenu  `json:"side_menu"`
+		Drink     *Drink     `json:"drink"`
 	}
 
 	// Hamburger ...
 	Hamburger struct {
 		// bans
-		Top    int
-		Middle int
-		Bottom int
+		Top    int `json:"top"`
+		Middle int `json:"middle"`
+		Bottom int `json:"bottom"`
 		// patty
-		Beef    int
-		Chicken int
-		Fish    int
+		Beef    int `json:"beef"`
+		Chicken int `json:"chicken"`
+		Fish    int `json:"fish"`
 		//vegetable
-		lettuce int
-		tomato  int
-		pickles int
+		Lettuce int `json:"lettuce"`
+		Tomato  int `json:"tomato"`
+		Onion   int `json:"onion"`
+		//ingredient
+		Cheese  int `json:"cheese"`
+		Pickles int `json:"pickles"`
 	}
 
 	// SideMenu ...
 	SideMenu struct {
-		name string
+		Name string `json:"name"`
 	}
 
 	// Drink ...
 	Drink struct {
-		name string
+		Name string `json:"name"`
 	}
 )
 
