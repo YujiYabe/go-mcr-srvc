@@ -10,5 +10,8 @@ var user = {
 };
 
 db.createUser(user);
-db.createCollection('staffs')
+db.createCollection('bans')
+db.createCollection('patties')
+db.createCollection('vegetables')
+db.createCollection('ingredients')
 

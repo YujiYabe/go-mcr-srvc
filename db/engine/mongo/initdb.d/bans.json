@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "top",
+        "stock": 100
+    },
+    {
+        "id": 2,
+        "name": "middle",
+        "stock": 100
+    },
+    {
+        "id": 3,
+        "name": "bottom",
+        "stock": 100
+    }
+]
