@@ -3,7 +3,7 @@ WORKDIR /go/src/app
 
 SHELL ["/bin/bash", "-c"]
 
-RUN go get -u github.com/cosmtrek/air
+# RUN go get -u github.com/cosmtrek/air
 
 # change timezone
 RUN \
