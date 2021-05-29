@@ -59,41 +59,6 @@ func (s *Stocker) Dummy(ctx context.Context) (string, error) {
 	return "dummy ok", nil
 }
 
-// StockFind ...
-func (s *Stocker) StockFind(out interface{}, where ...interface{}) (string, error) {
-	vegetables := &[]Vegetable{}
-
-	res := s.Conn.Find(vegetables)
-	if res.Error != nil {
-		return "", res.Error
-	}
-
-	fmt.Println(" ============================== ")
-	fmt.Printf("%+v\n", vegetables)
-	fmt.Println(" ============================== ")
-
-	return "ok", nil
-}
-
-// StockPull ...
-func (s *Stocker) StockPull(ctx context.Context, items map[string]int) (bool, error) {
-	// vegetables := &[]Vegetable{}
-
-	// res := s.Conn.First(vegetables)
-	// if res.Error != nil {
-	// 	return "", res.Error
-	// }
-
-	// fmt.Println(" ============================== ")
-	// fmt.Printf("%+v\n", vegetables)
-	// fmt.Println(" ============================== ")
-	for item, num := range items {
-		s.Conn.Table("vegetables").Where("name IN (?)", item).UpdateColumn("stock", gorm.Expr("stock - ?", num))
-	}
-
-	return true, nil
-}
-
 // GetVegetables ...
 func (s *Stocker) GetVegetables(ctx context.Context, items map[string]int) error {
 	for item, num := range items {

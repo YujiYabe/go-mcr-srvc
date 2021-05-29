@@ -21,10 +21,9 @@ type (
 	ToClient interface {
 		HandOver(ctx context.Context) error
 	}
+
 	// ToStocker ...
 	ToStocker interface {
-		StockFind(out interface{}, where ...interface{}) (string, error)
-		StockPull(ctx context.Context, items map[string]int) (bool, error)
 		GetVegetables(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}
