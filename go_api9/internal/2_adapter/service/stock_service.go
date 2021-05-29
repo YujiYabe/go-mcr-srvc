@@ -6,12 +6,12 @@ import (
 
 // Service ...
 type Service struct {
-	ToStocker ToStocker
+	ToRefrigerator ToRefrigerator
 }
 
 // GetVegetables ...
 func (sv *Service) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
-	err := sv.ToStocker.GetVegetables(ctx, requestVegetables)
+	err := sv.ToRefrigerator.GetVegetables(ctx, requestVegetables)
 	if err != nil {
 		return err
 	}
@@ -21,7 +21,7 @@ func (sv *Service) GetVegetables(ctx context.Context, requestVegetables map[stri
 
 // Dummy ...
 func (sv *Service) Dummy(ctx context.Context) (string, error) {
-	res, _ := sv.ToStocker.Dummy(ctx)
+	res, _ := sv.ToRefrigerator.Dummy(ctx)
 
 	return res, nil
 }

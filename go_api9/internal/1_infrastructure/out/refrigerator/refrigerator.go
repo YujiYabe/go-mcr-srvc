@@ -1,4 +1,4 @@
-package stocker
+package refrigerator
 
 import (
 	"context"
@@ -12,8 +12,8 @@ import (
 )
 
 type (
-	// Stocker ...
-	Stocker struct {
+	// Refrigerator ...
+	Refrigerator struct {
 		Conn *gorm.DB
 	}
 
@@ -25,14 +25,14 @@ type (
 	}
 )
 
-// NewToStocker ...
-func NewToStocker() service.ToStocker {
+// NewToRefrigerator ...
+func NewToRefrigerator() service.ToRefrigerator {
 	conn, err := open(30)
 	if err != nil {
 		panic(err)
 	}
 
-	s := new(Stocker)
+	s := new(Refrigerator)
 	s.Conn = conn
 	return s
 }
@@ -55,12 +55,12 @@ func open(count uint) (*gorm.DB, error) {
 }
 
 // Dummy ...
-func (s *Stocker) Dummy(ctx context.Context) (string, error) {
+func (s *Refrigerator) Dummy(ctx context.Context) (string, error) {
 	return "dummy ok", nil
 }
 
 // GetVegetables ...
-func (s *Stocker) GetVegetables(ctx context.Context, items map[string]int) error {
+func (s *Refrigerator) GetVegetables(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := s.Conn.
 			Table("vegetables").

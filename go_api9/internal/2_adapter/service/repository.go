@@ -22,8 +22,8 @@ type (
 		HandOver(ctx context.Context) error
 	}
 
-	// ToStocker ...
-	ToStocker interface {
+	// ToRefrigerator ...
+	ToRefrigerator interface {
 		GetVegetables(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}
