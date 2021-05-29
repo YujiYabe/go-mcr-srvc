@@ -4,6 +4,12 @@ import (
 	"context"
 )
 
+// Service ...
+type Service struct {
+	ToRefrigerator ToRefrigerator
+	ToFreezer      ToFreezer
+}
+
 type (
 	// ToGrpcOut ...
 	ToGrpcOut interface {
@@ -24,6 +30,12 @@ type (
 
 	// ToRefrigerator ...
 	ToRefrigerator interface {
+		GetVegetables(ctx context.Context, items map[string]int) error
+		Dummy(ctx context.Context) (string, error)
+	}
+
+	// ToFreezer ...
+	ToFreezer interface {
 		GetVegetables(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}

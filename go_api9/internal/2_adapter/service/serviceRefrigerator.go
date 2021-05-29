@@ -4,11 +4,6 @@ import (
 	"context"
 )
 
-// Service ...
-type Service struct {
-	ToRefrigerator ToRefrigerator
-}
-
 // GetVegetables ...
 func (sv *Service) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
 	err := sv.ToRefrigerator.GetVegetables(ctx, requestVegetables)
