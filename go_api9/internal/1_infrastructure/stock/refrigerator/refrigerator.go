@@ -38,9 +38,6 @@ func NewToRefrigerator() service.ToRefrigerator {
 }
 
 func open(count uint) (*gorm.DB, error) {
-	// dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
-	// db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
 	dsn := "host=postgres user=user password=user dbname=app port=5432 sslmode=disable TimeZone=Asia/Tokyo"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
@@ -49,7 +46,6 @@ func open(count uint) (*gorm.DB, error) {
 			return nil, fmt.Errorf("Retry count over")
 		}
 		time.Sleep(time.Second)
-		// カウントダウンさせるようにする
 		count--
 		return open(count)
 	}

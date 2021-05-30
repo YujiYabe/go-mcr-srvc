@@ -8,9 +8,29 @@ import (
 type Service struct {
 	ToRefrigerator ToRefrigerator
 	ToFreezer      ToFreezer
+	ToShelf        ToShelf
 }
 
 type (
+
+	// ToRefrigerator ...
+	ToRefrigerator interface {
+		GetVegetables(ctx context.Context, items map[string]int) error
+		Dummy(ctx context.Context) (string, error)
+	}
+
+	// ToFreezer ...
+	ToFreezer interface {
+		GetVegetables(ctx context.Context, items map[string]int) error
+		Dummy(ctx context.Context) (string, error)
+	}
+
+	// ToShelf ...
+	ToShelf interface {
+		GetVegetables(ctx context.Context, items map[string]int) error
+		Dummy(ctx context.Context) (string, error)
+	}
+
 	// ToGrpcOut ...
 	ToGrpcOut interface {
 		// IsSendContent(address string, cc *shared.CommonContent) (string, error)
@@ -26,18 +46,6 @@ type (
 	// ToClient ...
 	ToClient interface {
 		HandOver(ctx context.Context) error
-	}
-
-	// ToRefrigerator ...
-	ToRefrigerator interface {
-		GetVegetables(ctx context.Context, items map[string]int) error
-		Dummy(ctx context.Context) (string, error)
-	}
-
-	// ToFreezer ...
-	ToFreezer interface {
-		GetVegetables(ctx context.Context, items map[string]int) error
-		Dummy(ctx context.Context) (string, error)
 	}
 
 	// // DatabaseResult ...

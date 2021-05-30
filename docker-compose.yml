@@ -88,22 +88,22 @@ services:
     #     depends_on:
     #         - postgres
 
-    # # ==================================
-    # mongo:
-    #     restart: always
-    #     container_name: mongo
-    #     build:
-    #         context: ./db/engine/mongo
-    #         dockerfile: Dockerfile
-    #     environment:
-    #         MONGO_INITDB_DATABASE: app
-    #         MONGO_INITDB_ROOT_USERNAME: user
-    #         MONGO_INITDB_ROOT_PASSWORD: user
-    #         TZ: Asia/Tokyo
-    #     ports:
-    #         - 27017:27017
-    #     volumes:
-    #         - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
+    # ==================================
+    mongo:
+        restart: always
+        container_name: mongo
+        build:
+            context: ./db/engine/mongo
+            dockerfile: Dockerfile
+        environment:
+            MONGO_INITDB_DATABASE: app
+            MONGO_INITDB_ROOT_USERNAME: user
+            MONGO_INITDB_ROOT_PASSWORD: user
+            TZ: Asia/Tokyo
+        ports:
+            - 27017:27017
+        volumes:
+            - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
 
 
     # #  ==================================
