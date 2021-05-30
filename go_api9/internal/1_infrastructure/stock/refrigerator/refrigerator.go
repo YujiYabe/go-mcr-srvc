@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
 	"app/internal/2_adapter/service"
@@ -38,9 +38,12 @@ func NewToRefrigerator() service.ToRefrigerator {
 }
 
 func open(count uint) (*gorm.DB, error) {
-	dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
+	// dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
+	// db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := "host=postgres user=user password=user dbname=app port=5432 sslmode=disable TimeZone=Asia/Tokyo"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
 	if err != nil {
 		if count == 0 {
 			return nil, fmt.Errorf("Retry count over")
