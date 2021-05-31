@@ -1,30 +1,30 @@
 version: '3.6'
 services:
 
-    #  ==================================
-    mysql:
-        restart: always
-        container_name: mysql
-        build:
-            context: ./db/engine/mysql
-            dockerfile: Dockerfile
-        environment:
-            # MYSQL_supplier: sample_db
-            # MYSQL_USER: user
-            # MYSQL_PASSWORD: password
-            # MYSQL_ROOT_PASSWORD: password
-            - MYSQL_DATABASE=app
-            - MYSQL_USER=user
-            - MYSQL_PASSWORD=user
-            - MYSQL_ROOT_PASSWORD=password
-            - TZ=Asia/Tokyo
-        ports:
-            - "13306:13306"
-        volumes:
-            - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
-            - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
-            - ./db/engine/mysql/data:/var/lib/mysql
-        #     - ./log/mysql:/var/log/mysql
+    # #  ==================================
+    # mysql:
+    #     restart: always
+    #     container_name: mysql
+    #     build:
+    #         context: ./db/engine/mysql
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         # MYSQL_supplier: sample_db
+    #         # MYSQL_USER: user
+    #         # MYSQL_PASSWORD: password
+    #         # MYSQL_ROOT_PASSWORD: password
+    #         - MYSQL_DATABASE=app
+    #         - MYSQL_USER=user
+    #         - MYSQL_PASSWORD=user
+    #         - MYSQL_ROOT_PASSWORD=password
+    #         - TZ=Asia/Tokyo
+    #     ports:
+    #         - "13306:13306"
+    #     volumes:
+    #         - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
+    #         - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
+    #         - ./db/engine/mysql/data:/var/lib/mysql
+    #     #     - ./log/mysql:/var/log/mysql
 
     # #  ==================================
     # phpmyadmin:
@@ -48,26 +48,26 @@ services:
 
 
     #  ==================================
-    postgres:
-        restart: always
-        container_name: postgres
-        hostname: postgres
-        build:
-            context: ./db/engine/postgres
-            dockerfile: Dockerfile
-        ports:
-            - "15432:5432"
-        environment:
-            # - POSTGRES_DB=postgres
-            # - POSTGRES_USER=root
-            # - POSTGRES_PASSWORD=root
-            - POSTGRES_DB=app
-            - POSTGRES_USER=user
-            - POSTGRES_PASSWORD=user
-        user: root
-        volumes:
-            - ./db/engine/postgres/initdb.d:/docker-entrypoint-initdb.d
-            - ./db/engine/postgres/data:/var/lib/postgres/data
+    # postgres:
+    #     restart: always
+    #     container_name: postgres
+    #     hostname: postgres
+    #     build:
+    #         context: ./db/engine/postgres
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - "15432:5432"
+    #     environment:
+    #         # - POSTGRES_DB=postgres
+    #         # - POSTGRES_USER=root
+    #         # - POSTGRES_PASSWORD=root
+    #         - POSTGRES_DB=app
+    #         - POSTGRES_USER=user
+    #         - POSTGRES_PASSWORD=user
+    #     user: root
+    #     volumes:
+    #         - ./db/engine/postgres/initdb.d:/docker-entrypoint-initdb.d
+    #         - ./db/engine/postgres/data:/var/lib/postgres/data
 
 
     # #  ==================================
@@ -117,26 +117,26 @@ services:
             ME_CONFIG_MONGODB_ADMINPASSWORD: user
 
     #  ==================================
-    go_api9:
-        restart: always
-        build:
-            context: ./go_api9
-            dockerfile: build/Dockerfile
-        container_name: go_api9
-        volumes:
-            - ./go_api9:/go/src/app
-        ports:
-            - "1234:1234"
-        command: ["4321", "1234"]
-        environment:
-            - GOPATH=/go
-            - PORT=1234
-        tty: true
-        links:
-            - mysql
-            - postgres
-            - mongo
-        depends_on:
-            - mysql
-            - postgres
-            - mongo
+    # go_api9:
+    #     restart: always
+    #     build:
+    #         context: ./go_api9
+    #         dockerfile: build/Dockerfile
+    #     container_name: go_api9
+    #     volumes:
+    #         - ./go_api9:/go/src/app
+    #     ports:
+    #         - "1234:1234"
+    #     command: ["4321", "1234"]
+    #     environment:
+    #         - GOPATH=/go
+    #         - PORT=1234
+    #     tty: true
+    #     links:
+    #         - mysql
+    #         - postgres
+    #         - mongo
+    #     depends_on:
+    #         - mysql
+    #         - postgres
+    #         - mongo
