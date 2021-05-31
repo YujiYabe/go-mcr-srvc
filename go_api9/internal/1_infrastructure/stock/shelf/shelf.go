@@ -2,7 +2,6 @@ package shelf
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -16,6 +15,13 @@ type (
 	// Shelf ...
 	Shelf struct {
 		Conn *mongo.Client
+	}
+
+	// Stock ...
+	Stock struct {
+		ID    int
+		Name  string
+		Stock int
 	}
 )
 
@@ -55,25 +61,20 @@ func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
 
 	for item, num := range items {
 		filter := bson.M{"name": item}
-		change := bson.M{"$set": bson.M{"stock": num}}
-		res, err := bans.UpdateOne(ctx, filter, change)
+		stock := &Stock{}
+
+		err := bans.FindOne(ctx, filter).Decode(stock)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		change := bson.M{"$set": bson.M{"stock": stock.Stock - num}}
+		_, err = bans.UpdateOne(ctx, filter, change)
 
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("mongo==============================")
-		debugTarget := res
-		fmt.Printf("%#v\n", debugTarget)
-		fmt.Println("==============================")
 
-		// res := s.Conn.
-		// 	Table("vegetables").
-		// 	Where("name IN (?)", item).
-		// 	UpdateColumn("stock", gorm.Expr("stock - ?", num))
-
-		// if res.Error != nil {
-		// 	return res.Error
-		// }
 	}
 
 	return nil
