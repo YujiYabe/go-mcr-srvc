@@ -66,6 +66,8 @@ func (s *Refrigerator) GetVegetables(ctx context.Context, items map[string]int) 
 			Where("name IN (?)", item).
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
 
+		fmt.Println("postgres==============================")
+
 		if res.Error != nil {
 			return res.Error
 		}

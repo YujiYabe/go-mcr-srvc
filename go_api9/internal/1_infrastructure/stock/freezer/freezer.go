@@ -59,13 +59,14 @@ func (s *Freezer) Dummy(ctx context.Context) (string, error) {
 	return "dummy ok", nil
 }
 
-// GetVegetables ...
-func (s *Freezer) GetVegetables(ctx context.Context, items map[string]int) error {
+// GetPatties ...
+func (s *Freezer) GetPatties(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := s.Conn.
-			Table("vegetables").
+			Table("patties").
 			Where("name IN (?)", item).
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
+		fmt.Println("mysql==============================")
 
 		if res.Error != nil {
 			return res.Error

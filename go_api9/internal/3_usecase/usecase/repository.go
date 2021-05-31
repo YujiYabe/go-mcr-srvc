@@ -14,6 +14,8 @@ type (
 
 	// ToService ...
 	ToService interface {
+		GetBans(ctx context.Context, requestBans map[string]int) error
+		GetPatties(ctx context.Context, requestPatties map[string]int) error
 		GetVegetables(ctx context.Context, requestVegetables map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}

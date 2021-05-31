@@ -21,13 +21,13 @@ type (
 
 	// ToFreezer ...
 	ToFreezer interface {
-		GetVegetables(ctx context.Context, items map[string]int) error
+		GetPatties(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}
 
 	// ToShelf ...
 	ToShelf interface {
-		GetVegetables(ctx context.Context, items map[string]int) error
+		GetBans(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}
 

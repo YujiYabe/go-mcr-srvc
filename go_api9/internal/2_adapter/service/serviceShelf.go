@@ -4,9 +4,9 @@ import (
 	"context"
 )
 
-// GetVegetables3 ...
-func (sv *Service) GetVegetables3(ctx context.Context, requestVegetables map[string]int) error {
-	err := sv.ToShelf.GetVegetables(ctx, requestVegetables)
+// GetBans ...
+func (sv *Service) GetBans(ctx context.Context, requestBans map[string]int) error {
+	err := sv.ToShelf.GetBans(ctx, requestBans)
 	if err != nil {
 		return err
 	}

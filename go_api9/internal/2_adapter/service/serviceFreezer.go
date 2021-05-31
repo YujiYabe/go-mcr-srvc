@@ -4,9 +4,9 @@ import (
 	"context"
 )
 
-// GetVegetables2 ...
-func (sv *Service) GetVegetables2(ctx context.Context, requestVegetables map[string]int) error {
-	err := sv.ToRefrigerator.GetVegetables(ctx, requestVegetables)
+// GetPatties ...
+func (sv *Service) GetPatties(ctx context.Context, requestPatties map[string]int) error {
+	err := sv.ToFreezer.GetPatties(ctx, requestPatties)
 	if err != nil {
 		return err
 	}

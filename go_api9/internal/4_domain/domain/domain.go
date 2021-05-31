@@ -97,22 +97,22 @@ func (dm *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble
 	for _, hamburger := range hamburgers {
 		// bans
 		assemble.Bans["top"] += hamburger.Top
-		assemble.Bans["Middle"] += hamburger.Middle
-		assemble.Bans["Bottom"] += hamburger.Bottom
+		assemble.Bans["middle"] += hamburger.Middle
+		assemble.Bans["bottom"] += hamburger.Bottom
 
 		// patty
-		assemble.Patties["Beef"] += hamburger.Beef
-		assemble.Patties["Chicken"] += hamburger.Chicken
-		assemble.Patties["Fish"] += hamburger.Fish
+		assemble.Patties["beef"] += hamburger.Beef
+		assemble.Patties["chicken"] += hamburger.Chicken
+		assemble.Patties["fish"] += hamburger.Fish
 
 		//vegetable
-		assemble.Vegetables["Lettuce"] += hamburger.Lettuce
-		assemble.Vegetables["Tomato"] += hamburger.Tomato
-		assemble.Vegetables["Onion"] += hamburger.Onion
+		assemble.Vegetables["lettuce"] += hamburger.Lettuce
+		assemble.Vegetables["tomato"] += hamburger.Tomato
+		assemble.Vegetables["onion"] += hamburger.Onion
 
 		//ingredient
-		assemble.Ingredients["Cheese"] += hamburger.Cheese
-		assemble.Ingredients["Pickles"] += hamburger.Pickles
+		assemble.Ingredients["cheese"] += hamburger.Cheese
+		assemble.Ingredients["pickles"] += hamburger.Pickles
 	}
 
 	return

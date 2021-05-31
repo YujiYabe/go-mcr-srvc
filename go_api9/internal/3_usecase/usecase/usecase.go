@@ -3,6 +3,7 @@ package usecase
 import (
 	"app/internal/4_domain/domain"
 	"context"
+	"fmt"
 	"sync"
 )
 
@@ -22,11 +23,13 @@ func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
 	}()
 	go func() {
 		defer wg.Done()
-		// err := ctrl.UseCase.SendIsDownloadingToAgent(agentID)
+		err = uc.ToService.GetPatties(ctx, assemble.Patties)
 	}()
 	go func() {
 		defer wg.Done()
-		// err = uc.ToService.GetVegetables(ctx, assemble.Vegetables)
+		fmt.Println("Order==============================")
+
+		err = uc.ToService.GetBans(ctx, assemble.Bans)
 	}()
 	wg.Wait()
 
