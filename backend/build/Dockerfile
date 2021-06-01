@@ -1,4 +1,4 @@
-FROM golang:1.15.12
+FROM golang:1.15.11
 WORKDIR /go/src/app
 
 SHELL ["/bin/bash", "-c"]
