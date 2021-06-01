@@ -54,4 +54,4 @@ message DeliveryRequest {
   Order Order = 1;
 }
 
-message DeliveryResponse { int32 message = 1;}
+message DeliveryResponse { string message = 1;}
