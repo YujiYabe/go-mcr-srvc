@@ -8,6 +8,7 @@ import (
 	// 	"app/internal/1_infrastructure/ws/wsorder"
 
 	"app/internal/1_infrastructure/in/mobile"
+	"app/internal/1_infrastructure/in/pc"
 	"app/internal/1_infrastructure/stock/freezer"
 	"app/internal/1_infrastructure/stock/refrigerator"
 	"app/internal/1_infrastructure/stock/shelf"
@@ -17,6 +18,7 @@ import (
 type (
 	app struct {
 		mobile *mobile.Mobile
+		pc     *pc.PC
 	}
 )
 
@@ -33,11 +35,13 @@ func NewApp() *app {
 	ctrl := controller.NewController(refrigerator, freezer, shelf)
 	// a.GrpcIn = grpcin.NewGrpcIn(ctrl)
 	a.mobile = mobile.NewMobile(ctrl)
+	a.pc = pc.NewPC(ctrl)
 
 	return a
 }
 
 // Start ...
 func (a *app) Start() {
-	a.mobile.Start()
+	go a.mobile.Start()
+	a.pc.Start()
 }

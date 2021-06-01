@@ -40,7 +40,6 @@ func NewEcho() *echo.Echo {
 
 // Start ...
 func (mb *Mobile) Start() {
-	// mb.EchoEcho.GET("/", mb.Index)
 	mb.EchoEcho.POST("/", mb.IndexPost)
 	mb.EchoEcho.GET("/2", mb.Index2)
 	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(":1234"))
