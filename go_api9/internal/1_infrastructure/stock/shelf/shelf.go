@@ -2,7 +2,6 @@ package shelf
 
 import (
 	"context"
-	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -38,11 +37,9 @@ func NewToShelf() service.ToShelf {
 }
 
 func open(count uint) (*mongo.Client, error) {
-	// uri := "mongodb+srv://<username>:<password>@<cluster-address>/test?w=majority"
 	uri := "mongodb://user:user@mongo:27017"
 
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
 	if err != nil {
 		panic(err)
 	}
@@ -65,16 +62,14 @@ func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
 
 		err := bans.FindOne(ctx, filter).Decode(stock)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
 		change := bson.M{"$set": bson.M{"stock": stock.Stock - num}}
 		_, err = bans.UpdateOne(ctx, filter, change)
-
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
-
 	}
 
 	return nil
