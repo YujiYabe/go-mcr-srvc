@@ -128,7 +128,8 @@ services:
         ports:
             - "1234:1234"
             - "2345:2345"
-        command: ["4321", "1234"]
+            - "3456:3456"
+        # command: ["4321", "1234"]
         environment:
             - GOPATH=/go
         tty: true

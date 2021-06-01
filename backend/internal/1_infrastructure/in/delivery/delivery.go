@@ -2,14 +2,14 @@ package delivery
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 
+	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 
 	"app/internal/2_adapter/controller"
-	"app/internal/4_domain/domain"
-
 )
 
 // Delivery ...
@@ -36,7 +36,7 @@ func NewDelivery(ctrl *controller.Controller) *Delivery {
 // Start ...
 func (dlvr *Delivery) Start() {
 	log.Println("start GRPC ------------------------- ")
-	lis, err := net.Listen("tcp", "3456")
+	lis, err := net.Listen("tcp", ":3456")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -51,14 +51,23 @@ func (dlvr *Delivery) Start() {
 
 // SendContentRPC ...
 func (s *Server) SendContentRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
-	param := &domain.Order{
-		// Room:   in.GetRoom(),
-		// Object: in.GetObject(),
-		// Key:    in.GetKey(),
-		// Value:  in.GetValue(),
-	}
+	// param := &domain.Order{
+	// 	// Room:   in.GetRoom(),
+	// 	// Object: in.GetObject(),
+	// 	// Key:    in.GetKey(),
+	// 	// Value:  in.GetValue(),
+	// }
 
-	s.Controller.Order(ctx, *param)
+	param := proto.Clone(in)
+	fmt.Println("==============================")
+	debugTarget := param
+	fmt.Printf("%#v\n", debugTarget)
+	// fmt.Printf("%v\n", debugTarget)
+	// fmt.Printf("%+v\n", debugTarget)
+	// fmt.Printf("%T\n", debugTarget)
+	fmt.Println("==============================")
+
+	// s.Controller.Order(ctx, *param)
 
 	return &DeliveryResponse{Message: "ok"}, nil
 }

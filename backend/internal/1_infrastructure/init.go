@@ -45,5 +45,6 @@ func NewApp() *app {
 // Start ...
 func (a *app) Start() {
 	go a.mobile.Start()
-	a.pc.Start()
+	go a.pc.Start()
+	a.delivery.Start()
 }
