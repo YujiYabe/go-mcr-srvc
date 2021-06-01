@@ -1,6 +1,6 @@
 module order
 
-go 1.14
+go 1.15.12
 
 require (
 	google.golang.org/grpc v1.38.0

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"delivery"
-
 	grpc "google.golang.org/grpc"
+
+	"order/delivery"
 )
 
 func main() {
