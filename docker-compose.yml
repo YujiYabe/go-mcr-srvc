@@ -117,21 +117,20 @@ services:
     #         ME_CONFIG_MONGODB_ADMINPASSWORD: user
 
     #  ==================================
-    go_api9:
+    backend:
         restart: always
         build:
-            context: ./go_api9
+            context: ./backend
             dockerfile: build/Dockerfile
-        container_name: go_api9
+        container_name: backend
         volumes:
-            - ./go_api9:/go/src/app
+            - ./backend:/go/src/app
         ports:
             - "1234:1234"
             - "2345:2345"
         command: ["4321", "1234"]
         environment:
             - GOPATH=/go
-            # - PORT=1234
         tty: true
         links:
             - mysql
