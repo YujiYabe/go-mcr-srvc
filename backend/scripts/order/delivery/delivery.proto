@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_infrastructure/in/delivery";
+option go_package = "github.com/YujiYabe/go-docker-template/backend/scripts/order/delivery";
 
 package delivery;
 
