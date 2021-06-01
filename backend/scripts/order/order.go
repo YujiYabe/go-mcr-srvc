@@ -7,7 +7,7 @@ import (
 
 	grpc "google.golang.org/grpc"
 
-	"order/delivery"
+	delivery "order/delivery"
 )
 
 func main() {
@@ -24,8 +24,11 @@ func main() {
 
 	var request = &delivery.DeliveryRequest{
 		Order: &delivery.Order{
-			Hamburger: &delivery.Hamburger{
-				Top: 1,
+			Hamburger: []*delivery.Hamburger{
+				{
+					Top:    1,
+					Cheese: 1,
+				},
 			},
 		},
 	}
