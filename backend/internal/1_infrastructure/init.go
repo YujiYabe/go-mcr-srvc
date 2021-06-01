@@ -35,7 +35,7 @@ func NewApp() *app {
 	shelf := shelf.NewToShelf()
 	// ctrl := controller.NewController(grpcOut, wsOrder)
 	ctrl := controller.NewController(refrigerator, freezer, shelf)
-	a.GrpcIn = delivery.NewDelivery(ctrl)
+	a.delivery = delivery.NewDelivery(ctrl)
 	a.mobile = mobile.NewMobile(ctrl)
 	a.pc = pc.NewPC(ctrl)
 
