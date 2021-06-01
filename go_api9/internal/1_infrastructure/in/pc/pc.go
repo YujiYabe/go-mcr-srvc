@@ -2,6 +2,7 @@ package pc
 
 import (
 	"app/internal/2_adapter/controller"
+	"app/internal/4_domain/domain"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,25 +34,36 @@ func NewGin() *gin.Engine {
 
 // Start ...
 func (pc *PC) Start() {
-	// mb.EchoEcho.POST("/", mb.IndexPost)
-	// mb.EchoEcho.GET("/2", mb.Index2)
-	// mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(":1234"))
-
-	pc.GinEngine.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	pc.GinEngine.POST("/", pc.IndexPost)
+	pc.GinEngine.GET("/2", pc.Index2)
 
 	pc.GinEngine.Run(":2345")
 }
 
+// IndexPost ...
+func (pc *PC) IndexPost(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	param := new(domain.Order)
+	if err := c.Bind(param); err != nil {
+		return
+	}
+
+	err := pc.Controller.Order(ctx, *param)
+	if err != nil {
+		c.JSON(200, err)
+		return
+	}
+
+	c.JSON(200, "ok")
+	return
+}
+
 // Index2 ...
-func (pc *PC) Index2(c *gin.Context) error {
-	c.JSON(200, gin.H{
-		"message": "pong",
-	})
+func (pc *PC) Index2(c *gin.Context) {
+	ctx := c.Request.Context()
+	res, _ := pc.Controller.Dummy(ctx)
 
-	return nil
-
+	c.JSON(200, res)
+	return
 }
