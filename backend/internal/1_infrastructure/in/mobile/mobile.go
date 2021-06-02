@@ -49,12 +49,12 @@ func (mb *Mobile) Start() {
 func (mb *Mobile) IndexPost(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	param := new(domain.Order)
-	if err := c.Bind(param); err != nil {
+	order := &domain.Order{}
+	if err := c.Bind(order); err != nil {
 		return err
 	}
 
-	err := mb.Controller.Order(ctx, *param)
+	err := mb.Controller.Order(ctx, *order)
 	if err != nil {
 		c.JSON(200, err)
 		return err

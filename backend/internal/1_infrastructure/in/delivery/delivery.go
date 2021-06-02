@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 
@@ -55,26 +54,12 @@ func (dlvr *Delivery) Start() {
 
 // DeliveryRPC ...
 func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
-	// fmt.Println("==============================")
-	// debugTarget := in.String()
-	// fmt.Printf("%#v\n", debugTarget)
-	// fmt.Println("==============================")
-
-	param := &domain.Order{
+	order := &domain.Order{
 		Hamburgers: []domain.Hamburger{},
 	}
 
-	copier.Copy(param, in.Order)
-	// copier.Copy(order, in.Order)
-	// err := json.Unmarshal([]byte(in.String()), order)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return &DeliveryResponse{Message: "ng"}, err
-	// }
-
-	fmt.Printf("%#v\n", param)
-
-	s.Controller.Order(ctx, *param)
+	copier.Copy(order, in.Order)
+	s.Controller.Order(ctx, *order)
 
 	return &DeliveryResponse{Message: "ok"}, nil
 }

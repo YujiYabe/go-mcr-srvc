@@ -3,7 +3,6 @@ package usecase
 import (
 	"app/internal/4_domain/domain"
 	"context"
-	"fmt"
 	"sync"
 )
 
@@ -27,8 +26,6 @@ func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
 	}()
 	go func() {
 		defer wg.Done()
-		fmt.Println("Order==============================")
-
 		err = uc.ToService.GetBans(ctx, assemble.Bans)
 	}()
 	wg.Wait()

@@ -1,17 +1,27 @@
 package register
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 
 	"app/internal/2_adapter/controller"
+	"app/internal/4_domain/domain"
 )
 
-// Register ...
-type Register struct {
-	Controller *controller.Controller
-}
+const targetPath = "scripts/order/register"
+
+type (
+	// Register ...
+	Register struct {
+		Controller *controller.Controller
+	}
+)
 
 // NewRegister ...
 func NewRegister(ctrl *controller.Controller) *Register {
@@ -26,6 +36,7 @@ func (rgstr *Register) Start() {
 		log.Fatal(err)
 	}
 	defer watcher.Close()
+	rgstr.OrderAccept(targetPath)
 
 	done := make(chan bool)
 	go func() {
@@ -38,8 +49,11 @@ func (rgstr *Register) Start() {
 				switch {
 				case event.Op&fsnotify.Create == fsnotify.Create:
 					log.Println("Created file: ", event.Name)
+					rgstr.OrderAccept(targetPath)
 
 				case event.Op&fsnotify.Write == fsnotify.Write:
+					rgstr.OrderAccept(targetPath)
+
 				case event.Op&fsnotify.Remove == fsnotify.Remove:
 				case event.Op&fsnotify.Rename == fsnotify.Rename:
 				case event.Op&fsnotify.Chmod == fsnotify.Chmod:
@@ -54,9 +68,65 @@ func (rgstr *Register) Start() {
 		}
 	}()
 
-	err = watcher.Add("scripts/order/register")
+	err = watcher.Add(targetPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	<-done
+}
+
+func dirwalk(dir string) []string {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		panic(err)
+	}
+
+	var paths []string
+	for _, file := range files {
+		if file.IsDir() {
+			paths = append(paths, dirwalk(filepath.Join(dir, file.Name()))...)
+			continue
+		}
+		paths = append(paths, filepath.Join(dir, file.Name()))
+	}
+
+	return paths
+}
+
+func (rgstr *Register) OrderAccept(dir string) []string {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		panic(err)
+	}
+
+	var paths []string
+	for _, file := range files {
+		if file.IsDir() {
+			paths = append(paths, dirwalk(filepath.Join(dir, file.Name()))...)
+			continue
+		}
+		paths = append(paths, filepath.Join(dir, file.Name()))
+	}
+
+	for _, path := range paths {
+		raw, err := ioutil.ReadFile(path)
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+
+		order := &domain.Order{}
+
+		err = json.Unmarshal(raw, order)
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+
+		ctx := context.Background()
+		rgstr.Controller.Order(ctx, *order)
+
+	}
+
+	return paths
 }

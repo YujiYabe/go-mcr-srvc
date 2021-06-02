@@ -66,7 +66,6 @@ func (s *Freezer) GetPatties(ctx context.Context, items map[string]int) error {
 			Table("patties").
 			Where("name IN (?)", item).
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
-		fmt.Println("mysql==============================")
 
 		if res.Error != nil {
 			return res.Error

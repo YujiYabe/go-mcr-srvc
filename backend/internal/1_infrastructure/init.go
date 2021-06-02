@@ -30,13 +30,12 @@ type (
 func NewApp() *app {
 	a := &app{}
 
-	// grpcOut := grpcout.NewToGrpcOut()
-	// wsOrder := wsorder.NewToWsOrder()
 	refrigerator := refrigerator.NewToRefrigerator()
 	freezer := freezer.NewToFreezer()
 	shelf := shelf.NewToShelf()
-	// ctrl := controller.NewController(grpcOut, wsOrder)
+
 	ctrl := controller.NewController(refrigerator, freezer, shelf)
+
 	a.delivery = delivery.NewDelivery(ctrl)
 	a.mobile = mobile.NewMobile(ctrl)
 	a.pc = pc.NewPC(ctrl)
@@ -49,6 +48,6 @@ func NewApp() *app {
 func (a *app) Start() {
 	go a.mobile.Start()
 	go a.pc.Start()
-	go a.delivery.Start()
-	a.register.Start()
+	go a.register.Start()
+	a.delivery.Start()
 }
