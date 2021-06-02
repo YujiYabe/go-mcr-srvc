@@ -21,11 +21,11 @@ type (
 )
 
 // NewController ...
-// func NewController(toGrpcOut service.ToGrpcOut, toWsOrder service.ToWsOrder) *Controller {
 func NewController(
 	toRefrigerator service.ToRefrigerator,
 	toFreezer service.ToFreezer,
 	toShelf service.ToShelf,
+	toShipment service.ToShipment,
 ) *Controller {
 	ct := &Controller{
 		UseCase: usecase.UseCase{
@@ -36,6 +36,7 @@ func NewController(
 				ToRefrigerator: toRefrigerator,
 				ToFreezer:      toFreezer,
 				ToShelf:        toShelf,
+				ToShipment:     toShipment,
 			},
 		},
 	}
