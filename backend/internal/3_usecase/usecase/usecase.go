@@ -7,11 +7,11 @@ import (
 )
 
 // Order ...
-func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
+func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	var err error
 
 	// オーダー解析
-	assemble := uc.ToDomain.ParseOrder(ctx, order)
+	assemble := uc.ToDomain.ParseOrder(ctx, *order)
 
 	// 材料取り出し
 	var wg sync.WaitGroup
@@ -57,7 +57,7 @@ func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
 	// }
 
 	// 出荷よー
-	err = uc.ToService.Shipment(ctx)
+	err = uc.ToService.Shipment(ctx, order)
 	if err != nil {
 		return err
 	}

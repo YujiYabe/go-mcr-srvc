@@ -3,6 +3,8 @@ package out
 import (
 	"context"
 	"fmt"
+
+	"app/internal/4_domain/domain"
 )
 
 type shipment struct{}
@@ -14,15 +16,15 @@ func NewToShipment() service.ToShipment {
 }
 
 // HandOver ...
-func (s *Shipment) HandOver(ctx context.Context) error {
+func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 	return nil
 }
 
 // Logging ...
-func (s *Shipment) Logging(ctx context.Context) error {
+func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
 
 	fmt.Println(" ============================== ")
-	fmt.Printf("%+v\n", ctx.Value(key))
+	fmt.Printf("%+v\n", order.OrderNumber)
 	fmt.Println(" ============================== ")
 
 	return nil

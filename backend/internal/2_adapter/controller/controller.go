@@ -61,7 +61,7 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderT
 }
 
 // Order ...
-func (ctrl *Controller) Order(ctx context.Context, order domain.Order) error {
+func (ctrl *Controller) Order(ctx context.Context, order *domain.Order) error {
 	err := ctrl.UseCase.Order(ctx, order)
 	if err != nil {
 		return err

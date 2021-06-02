@@ -113,7 +113,7 @@ func (rgstr *Register) OrderAccept(dir string) {
 
 		rgstr.Controller.Reserve(ctx, order, orderType)
 
-		go rgstr.Controller.Order(ctx, *order)
+		go rgstr.Controller.Order(ctx, order)
 
 		newPath := strings.Replace(path, "json", order.OrderNumber, 1)
 		if err := os.Rename(path, newPath); err != nil {

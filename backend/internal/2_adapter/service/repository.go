@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+
+	"app/internal/4_domain/domain"
 )
 
 // Service ...
@@ -15,8 +17,8 @@ type Service struct {
 type (
 	// ToRefrigerator ...
 	ToShipment interface {
-		HandOver(ctx context.Context) error
-		Logging(ctx context.Context) error
+		HandOver(ctx context.Context, order *domain.Order) error
+		Logging(ctx context.Context, order *domain.Order) error
 	}
 
 	// ToRefrigerator ...
