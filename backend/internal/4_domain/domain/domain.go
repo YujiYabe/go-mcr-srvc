@@ -13,8 +13,8 @@ type (
 type (
 	// Order ...
 	Order struct {
+		OrderNumber string
 		OrderType   string
-		OrderNumber int
 		OrderTime   time.Time
 		PassTime    time.Time
 		Combos      []Combo     `json:"combos"`

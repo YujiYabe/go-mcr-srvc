@@ -62,9 +62,9 @@ func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*Deliver
 
 	copier.Copy(order, in.Order)
 
-	orderNumber := s.Controller.Reserve(ctx)
+	s.Controller.Reserve(ctx, order, orderType)
 
 	go s.Controller.Order(ctx, *order)
 
-	return &DeliveryResponse{OrderNumber: orderNumber}, nil
+	return &DeliveryResponse{OrderNumber: order.OrderNumber}, nil
 }

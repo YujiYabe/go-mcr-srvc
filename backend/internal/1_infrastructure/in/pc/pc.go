@@ -51,11 +51,11 @@ func (pc *PC) IndexPost(c *gin.Context) {
 		return
 	}
 
-	orderNumber := pc.Controller.Reserve(ctx)
+	pc.Controller.Reserve(ctx, order, orderType)
 
 	go pc.Controller.Order(ctx, *order)
 
-	c.JSON(200, orderNumber)
+	c.JSON(200, order.OrderNumber)
 	return
 }
 
