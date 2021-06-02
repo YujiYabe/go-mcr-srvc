@@ -1,8 +1,8 @@
 package main
 
-import app "app/internal/1_infrastructure"
+import backend "backend/internal/1_infrastructure"
 
 func main() {
-	a := app.NewApp()
+	a := backend.NewApp()
 	a.Start()
 }

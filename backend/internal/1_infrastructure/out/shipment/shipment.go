@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"app/internal/2_adapter/service"
-	"app/internal/4_domain/domain"
+	"backend/internal/2_adapter/service"
+	"backend/internal/4_domain/domain"
 )
 
 type Shipment struct{}

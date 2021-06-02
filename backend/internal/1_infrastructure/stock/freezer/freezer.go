@@ -8,7 +8,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"app/internal/2_adapter/service"
+	"backend/internal/2_adapter/service"
 )
 
 type (

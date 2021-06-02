@@ -1,5 +1,5 @@
 FROM golang:1.15.11
-WORKDIR /go/src/app
+WORKDIR /go/src/backend
 
 SHELL ["/bin/bash", "-c"]
 

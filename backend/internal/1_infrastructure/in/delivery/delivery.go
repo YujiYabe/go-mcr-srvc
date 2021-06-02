@@ -7,8 +7,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"app/internal/2_adapter/controller"
-	"app/internal/4_domain/domain"
+	"backend/internal/2_adapter/controller"
+	"backend/internal/4_domain/domain"
 
 	"github.com/jinzhu/copier"
 	"google.golang.org/grpc/reflection"

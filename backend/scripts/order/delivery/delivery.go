@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"order/delivery"
 	"time"
 
 	"google.golang.org/grpc"
+
+	"delivery/pb"
 )
 
 func main() {
@@ -17,17 +18,17 @@ func main() {
 	}
 	defer dial.Close()
 
-	conn := delivery.NewDeliveryServiceClient(dial)
+	conn := pb.NewDeliveryServiceClient(dial)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	var request = &delivery.DeliveryRequest{
-		Order: &delivery.Order{
-			Combos:    []*delivery.Combo{},
-			SideMenus: []*delivery.SideMenu{},
-			Drinks:    []*delivery.Drink{},
-			Hamburgers: []*delivery.Hamburger{
+	var request = &pb.DeliveryRequest{
+		Order: &pb.Order{
+			Combos:    []*pb.Combo{},
+			SideMenus: []*pb.SideMenu{},
+			Drinks:    []*pb.Drink{},
+			Hamburgers: []*pb.Hamburger{
 				{
 					Top:     1,
 					Cheese:  1,

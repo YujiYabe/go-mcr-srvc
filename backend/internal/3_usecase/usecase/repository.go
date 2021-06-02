@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"app/internal/4_domain/domain"
+	"backend/internal/4_domain/domain"
 	"context"
 )
 

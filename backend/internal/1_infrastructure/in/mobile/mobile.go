@@ -4,8 +4,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	"app/internal/2_adapter/controller"
-	"app/internal/4_domain/domain"
+	"backend/internal/2_adapter/controller"
+	"backend/internal/4_domain/domain"
 )
 
 var orderType = "mobile"

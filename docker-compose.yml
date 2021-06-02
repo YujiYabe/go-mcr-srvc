@@ -124,7 +124,7 @@ services:
             dockerfile: build/Dockerfile
         container_name: backend
         volumes:
-            - ./backend:/go/src/app
+            - ./backend:/go/src/backend
         ports:
             - "1234:1234"
             - "2345:2345"

@@ -1,15 +1,15 @@
 package app
 
 import (
-	"app/internal/1_infrastructure/in/delivery"
-	"app/internal/1_infrastructure/in/mobile"
-	"app/internal/1_infrastructure/in/pc"
-	"app/internal/1_infrastructure/in/register"
-	"app/internal/1_infrastructure/out/shipment"
-	"app/internal/1_infrastructure/stock/freezer"
-	"app/internal/1_infrastructure/stock/refrigerator"
-	"app/internal/1_infrastructure/stock/shelf"
-	"app/internal/2_adapter/controller"
+	"backend/internal/1_infrastructure/in/delivery"
+	"backend/internal/1_infrastructure/in/mobile"
+	"backend/internal/1_infrastructure/in/pc"
+	"backend/internal/1_infrastructure/in/register"
+	"backend/internal/1_infrastructure/out/shipment"
+	"backend/internal/1_infrastructure/stock/freezer"
+	"backend/internal/1_infrastructure/stock/refrigerator"
+	"backend/internal/1_infrastructure/stock/shelf"
+	"backend/internal/2_adapter/controller"
 )
 
 type (

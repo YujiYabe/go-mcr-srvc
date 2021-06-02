@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"app/internal/2_adapter/service"
-	"app/internal/3_usecase/usecase"
-	"app/internal/4_domain/domain"
+	"backend/internal/2_adapter/service"
+	"backend/internal/3_usecase/usecase"
+	"backend/internal/4_domain/domain"
 )
 
 func init() {}

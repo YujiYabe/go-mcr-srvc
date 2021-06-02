@@ -15,6 +15,7 @@ removeall:
 	sudo rm -rf db/engine/postgres/data
 	sudo rm -rf db/tool/phpmyadmin/sessions/
 	sudo rm -rf db/tool/pgadmin/root/
+	sudo rm -rf backend/yummy/*
 
 
 # ----------------------------

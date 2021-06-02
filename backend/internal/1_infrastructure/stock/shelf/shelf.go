@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"app/internal/2_adapter/service"
+	"backend/internal/2_adapter/service"
 )
 
 type (

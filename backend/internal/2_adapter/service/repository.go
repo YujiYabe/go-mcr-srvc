@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"app/internal/4_domain/domain"
+	"backend/internal/4_domain/domain"
 )
 
 // Service ...
