@@ -16,6 +16,7 @@ type (
 	// ToRefrigerator ...
 	ToRefrigerator interface {
 		GetVegetables(ctx context.Context, items map[string]int) error
+		GetIngredients(ctx context.Context, items map[string]int) error
 		Dummy(ctx context.Context) (string, error)
 	}
 

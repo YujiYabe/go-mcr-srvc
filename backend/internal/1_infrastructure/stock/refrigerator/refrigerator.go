@@ -73,3 +73,19 @@ func (s *Refrigerator) GetVegetables(ctx context.Context, items map[string]int) 
 
 	return nil
 }
+
+// GetIngredients ...
+func (s *Refrigerator) GetIngredients(ctx context.Context, items map[string]int) error {
+	for item, num := range items {
+		res := s.Conn.
+			Table("ingredients").
+			Where("name IN (?)", item).
+			UpdateColumn("stock", gorm.Expr("stock - ?", num))
+
+		if res.Error != nil {
+			return res.Error
+		}
+	}
+
+	return nil
+}

@@ -48,7 +48,6 @@ func (rgstr *Register) Start() {
 				}
 				switch {
 				case event.Op&fsnotify.Create == fsnotify.Create:
-					log.Println("Created file: ", event.Name)
 					rgstr.OrderAccept(targetPath)
 
 				case event.Op&fsnotify.Write == fsnotify.Write:

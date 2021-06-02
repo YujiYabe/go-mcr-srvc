@@ -14,6 +14,16 @@ func (sv *Service) GetVegetables(ctx context.Context, requestVegetables map[stri
 	return nil
 }
 
+// GetIngredients ...
+func (sv *Service) GetIngredients(ctx context.Context, requestIngredients map[string]int) error {
+	err := sv.ToRefrigerator.GetIngredients(ctx, requestIngredients)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Dummy ...
 func (sv *Service) Dummy(ctx context.Context) (string, error) {
 	res, _ := sv.ToRefrigerator.Dummy(ctx)
