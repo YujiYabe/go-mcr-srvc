@@ -13,7 +13,8 @@ func init() {}
 type (
 	// Controller ...
 	Controller struct {
-		UseCase usecase.UseCase
+		UseCase     usecase.UseCase
+		OrderNumber int
 	}
 )
 
@@ -44,6 +45,12 @@ func NewController(
 func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
 	res, _ := ctrl.UseCase.Dummy(ctx)
 	return res, nil
+}
+
+// Reserve ...
+func (ctrl *Controller) Reserve(ctx context.Context) int {
+	ctrl.OrderNumber++
+	return ctrl.OrderNumber
 }
 
 // Order ...

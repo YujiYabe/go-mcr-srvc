@@ -5,7 +5,9 @@ import (
 )
 
 type (
-	domain struct{}
+	domain      struct{}
+	OrderType   string
+	OrderNumber int
 )
 
 // infrastructure から来た用
