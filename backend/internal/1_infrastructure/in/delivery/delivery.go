@@ -9,6 +9,8 @@ import (
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 
+	"google.golang.org/grpc/reflection"
+
 	"app/internal/2_adapter/controller"
 )
 
@@ -43,20 +45,21 @@ func (dlvr *Delivery) Start() {
 	s := grpc.NewServer()
 
 	RegisterDeliveryServiceServer(s, &dlvr.Server)
+	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
-// SendContentRPC ...
-func (s *Server) SendContentRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
+// DeliveryRPC ...
+func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
 	// param := &domain.Order{
 	// 	// Room:   in.GetRoom(),
 	// 	// Object: in.GetObject(),
 	// 	// Key:    in.GetKey(),
 	// 	// Value:  in.GetValue(),
-	// }
+	// }xdx
 
 	param := proto.Clone(in)
 	fmt.Println("==============================")

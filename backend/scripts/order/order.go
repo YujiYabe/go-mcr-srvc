@@ -3,19 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
+	"order/delivery"
 	"time"
 
-	grpc "google.golang.org/grpc"
-
-	delivery "order/delivery"
+	"google.golang.org/grpc"
 )
 
 func main() {
 	dial, err := grpc.Dial("localhost:3456", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		fmt.Println(" ============================== ")
 		fmt.Printf("%+v\n", err)
-		fmt.Println(" ============================== ")
 		return
 	}
 	defer dial.Close()
@@ -42,16 +39,10 @@ func main() {
 
 	res, err := conn.DeliveryRPC(ctx, request)
 	if err != nil {
-		fmt.Println(" ============================== ")
 		fmt.Printf("%+v\n", err)
-		fmt.Println(" ============================== ")
-
 		return
 	}
 
-	fmt.Println(" ============================== ")
 	fmt.Printf("%+v\n", res.String())
-	fmt.Println(" ============================== ")
-
 	return
 }
