@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/YujiYabe/go-docker-template/backend/scripts/order/delivery/pb";
 
-package delivery;
+package pb;
 
 message Order {
   repeated Combo Combos = 1;

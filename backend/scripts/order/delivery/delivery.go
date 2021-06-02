@@ -11,18 +11,19 @@ import (
 )
 
 func main() {
+	fmt.Println("1==============================")
 	dial, err := grpc.Dial("localhost:3456", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		fmt.Printf("%+v\n", err)
 		return
 	}
 	defer dial.Close()
-
+	fmt.Println("2==============================")
 	conn := pb.NewDeliveryServiceClient(dial)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-
+	fmt.Println("3==============================")
 	var request = &pb.DeliveryRequest{
 		Order: &pb.Order{
 			Combos:    []*pb.Combo{},
@@ -38,13 +39,13 @@ func main() {
 			},
 		},
 	}
-
+	fmt.Println("4==============================")
 	res, err := conn.DeliveryRPC(ctx, request)
 	if err != nil {
 		fmt.Printf("%+v\n", err)
 		return
 	}
-
+	fmt.Println("5==============================")
 	fmt.Printf("%+v\n", res.String())
 	return
 }
