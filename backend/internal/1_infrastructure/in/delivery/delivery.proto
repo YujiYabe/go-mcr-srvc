@@ -55,5 +55,5 @@ message DeliveryRequest {
 }
 
 message DeliveryResponse {
-  int32 OrderNumber = 1;
+  string OrderNumber = 1;
 }

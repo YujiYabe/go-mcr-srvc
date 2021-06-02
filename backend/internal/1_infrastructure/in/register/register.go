@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/fsnotify/fsnotify"
@@ -111,13 +110,12 @@ func (rgstr *Register) OrderAccept(dir string) {
 		}
 
 		ctx := context.Background()
-		reserveNumber := rgstr.Controller.Reserve(ctx)
-		orderCtx := context.WithValue(ctx, reserveNumber, orderType)
 
-		rgstr.Controller.Order(orderCtx, *order)
+		orderNumber, ctxValue := rgstr.Controller.Reserve(ctx, orderType)
+		orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
+		go rgstr.Controller.Order(orderCtx, *order)
 
-		// TODO orderNumber出力
-		newPath := strings.Replace(path, "json", strconv.Itoa(reserveNumber), 1)
+		newPath := strings.Replace(path, "json", orderNumber, 1)
 		if err := os.Rename(path, newPath); err != nil {
 			fmt.Println(err)
 		}

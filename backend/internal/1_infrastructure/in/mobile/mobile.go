@@ -58,16 +58,11 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 		return err
 	}
 
-	reserveNumber := mb.Controller.Reserve(ctx)
-	orderCtx := context.WithValue(ctx, reserveNumber, orderType)
+	orderNumber, ctxValue := mb.Controller.Reserve(ctx, orderType)
+	orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
+	go mb.Controller.Order(orderCtx, *order)
 
-	err := mb.Controller.Order(orderCtx, *order)
-	if err != nil {
-		c.JSON(200, err)
-		return err
-	}
-
-	c.JSON(200, reserveNumber)
+	c.JSON(200, orderNumber)
 	return nil
 }
 

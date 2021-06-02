@@ -60,11 +60,11 @@ func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*Deliver
 		Hamburgers: []domain.Hamburger{},
 	}
 
-	reserveNumber := s.Controller.Reserve(ctx)
-	orderCtx := context.WithValue(ctx, reserveNumber, orderType)
-
 	copier.Copy(order, in.Order)
+
+	orderNumber, ctxValue := s.Controller.Reserve(ctx, orderType)
+	orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
 	go s.Controller.Order(orderCtx, *order)
 
-	return &DeliveryResponse{OrderNumber: int32(reserveNumber)}, nil
+	return &DeliveryResponse{OrderNumber: orderNumber}, nil
 }

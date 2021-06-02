@@ -2,6 +2,8 @@ package controller
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"app/internal/2_adapter/service"
 	"app/internal/3_usecase/usecase"
@@ -48,9 +50,16 @@ func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
 }
 
 // Reserve ...
-func (ctrl *Controller) Reserve(ctx context.Context) int {
+func (ctrl *Controller) Reserve(ctx context.Context, orderType domain.OrderType) (string, string) {
 	ctrl.OrderNumber++
-	return ctrl.OrderNumber
+	orderNumber := fmt.Sprintf("%03d", ctrl.OrderNumber)
+
+	t := time.Now()
+	orderTime := fmt.Sprint(t.Format("2006-01-02 15:04:05"))
+
+	ctxValue := fmt.Sprintf("%s,%s", orderTime, orderType)
+
+	return orderNumber, ctxValue
 }
 
 // Order ...
