@@ -56,11 +56,12 @@ func (dlvr *Delivery) Start() {
 
 // DeliveryRPC ...
 func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
-	order := &domain.Order{
-		// Hamburgers: []domain.Hamburger{},
-	}
+	order := &domain.Order{}
+	product := &domain.Product{}
 
-	copier.Copy(order, in.Order)
+	copier.Copy(product, in.Order)
+
+	order.Product = *product
 
 	s.Controller.Reserve(ctx, order, orderType)
 

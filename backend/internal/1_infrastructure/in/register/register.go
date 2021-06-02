@@ -103,11 +103,13 @@ func (rgstr *Register) OrderAccept(dir string) {
 		}
 
 		order := &domain.Order{}
-		err = json.Unmarshal(raw, order)
+		product := &domain.Product{}
+		err = json.Unmarshal(raw, product)
 		if err != nil {
 			fmt.Println(err.Error())
 			continue
 		}
+		order.Product = *product
 
 		ctx := context.Background()
 
