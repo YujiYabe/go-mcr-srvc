@@ -1,12 +1,16 @@
 package mobile
 
 import (
+	"context"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
 	"app/internal/2_adapter/controller"
 	"app/internal/4_domain/domain"
 )
+
+var orderType domain.OrderType = "mobile"
 
 type (
 	// Mobile ...
@@ -54,13 +58,16 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 		return err
 	}
 
-	err := mb.Controller.Order(ctx, *order)
+	reserveNumber := mb.Controller.Reserve(ctx)
+	orderCtx := context.WithValue(ctx, reserveNumber, orderType)
+
+	err := mb.Controller.Order(orderCtx, *order)
 	if err != nil {
 		c.JSON(200, err)
 		return err
 	}
 
-	c.JSON(200, "ok")
+	c.JSON(200, reserveNumber)
 	return nil
 }
 

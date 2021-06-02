@@ -3,9 +3,12 @@ package pc
 import (
 	"app/internal/2_adapter/controller"
 	"app/internal/4_domain/domain"
+	"context"
 
 	"github.com/gin-gonic/gin"
 )
+
+var orderType domain.OrderType = "pc"
 
 type (
 	// PC ...
@@ -49,13 +52,16 @@ func (pc *PC) IndexPost(c *gin.Context) {
 		return
 	}
 
-	err := pc.Controller.Order(ctx, *order)
+	reserveNumber := pc.Controller.Reserve(ctx)
+	orderCtx := context.WithValue(ctx, reserveNumber, orderType)
+
+	err := pc.Controller.Order(orderCtx, *order)
 	if err != nil {
 		c.JSON(200, err)
 		return
 	}
 
-	c.JSON(200, "ok")
+	c.JSON(200, reserveNumber)
 	return
 }
 

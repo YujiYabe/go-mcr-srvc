@@ -6,13 +6,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 
 	"app/internal/2_adapter/controller"
 	"app/internal/4_domain/domain"
 )
+
+var orderType domain.OrderType = "register"
 
 const targetPath = "scripts/order/register"
 
@@ -74,18 +79,24 @@ func (rgstr *Register) Start() {
 	<-done
 }
 
-func (rgstr *Register) OrderAccept(dir string) []string {
+func (rgstr *Register) OrderAccept(dir string) {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		panic(err)
 	}
 
-	var paths []string
 	for _, file := range files {
-		paths = append(paths, filepath.Join(dir, file.Name()))
-	}
+		fileName := file.Name()
 
-	for _, path := range paths {
+		if strings.Count(fileName, ".") != 1 {
+			continue
+		}
+		pos := strings.LastIndex(fileName, ".")
+		if fileName[pos:] != ".json" {
+			continue
+		}
+
+		path := filepath.Join(dir, file.Name())
 		raw, err := ioutil.ReadFile(filepath.Clean(path))
 		if err != nil {
 			fmt.Println(err.Error())
@@ -93,7 +104,6 @@ func (rgstr *Register) OrderAccept(dir string) []string {
 		}
 
 		order := &domain.Order{}
-
 		err = json.Unmarshal(raw, order)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -101,9 +111,17 @@ func (rgstr *Register) OrderAccept(dir string) []string {
 		}
 
 		ctx := context.Background()
-		rgstr.Controller.Order(ctx, *order)
+		reserveNumber := rgstr.Controller.Reserve(ctx)
+		orderCtx := context.WithValue(ctx, reserveNumber, orderType)
 
+		rgstr.Controller.Order(orderCtx, *order)
+
+		// TODO orderNumber出力
+		newPath := strings.Replace(path, "json", strconv.Itoa(reserveNumber), 1)
+		if err := os.Rename(path, newPath); err != nil {
+			fmt.Println(err)
+		}
 	}
 
-	return paths
+	return
 }
