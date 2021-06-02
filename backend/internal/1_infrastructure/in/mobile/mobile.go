@@ -52,15 +52,17 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	order := &domain.Order{}
-	if err := c.Bind(order); err != nil {
+	product := &domain.Product{}
+	if err := c.Bind(product); err != nil {
 		return err
 	}
+	order.Product = *product
 
 	mb.Controller.Reserve(ctx, order, orderType)
 
 	go mb.Controller.Order(ctx, order)
 
-	c.JSON(200, order.OrderNumber)
+	c.JSON(200, order.OrderInfo.OrderNumber)
 
 	return nil
 }

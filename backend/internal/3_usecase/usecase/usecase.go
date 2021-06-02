@@ -3,15 +3,23 @@ package usecase
 import (
 	"app/internal/4_domain/domain"
 	"context"
+	"fmt"
 	"sync"
 )
 
 // Order ...
 func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	var err error
+	fmt.Println("==============================")
+	debugTarget := order.Product
+	fmt.Printf("%#v\n", debugTarget)
+	// fmt.Printf("%v\n", debugTarget)
+	// fmt.Printf("%+v\n", debugTarget)
+	// fmt.Printf("%T\n", debugTarget)
+	fmt.Println("==============================")
 
 	// オーダー解析
-	assemble := uc.ToDomain.ParseOrder(ctx, *order)
+	assemble := uc.ToDomain.ParseOrder(ctx, order)
 
 	// 材料取り出し
 	var wg sync.WaitGroup

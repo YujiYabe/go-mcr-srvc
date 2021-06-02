@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -13,14 +14,24 @@ type (
 type (
 	// Order ...
 	Order struct {
+		OrderInfo OrderInfo
+		Product   Product
+	}
+
+	// OrderInfo ...
+	OrderInfo struct {
 		OrderNumber string
 		OrderType   string
 		OrderTime   time.Time
 		PassTime    time.Time
-		Combos      []Combo     `json:"combos"`
-		Hamburgers  []Hamburger `json:"hamburgers"`
-		SideMenus   []SideMenu  `json:"side_menus"`
-		Drinks      []Drink     `json:"drinks"`
+	}
+
+	// Product ...
+	Product struct {
+		Combos     []Combo     `json:"combos"`
+		Hamburgers []Hamburger `json:"hamburgers"`
+		SideMenus  []SideMenu  `json:"side_menus"`
+		Drinks     []Drink     `json:"drinks"`
 	}
 
 	// Combo ...
@@ -83,22 +94,24 @@ func (dm *domain) Dummy(ctx context.Context) error {
 }
 
 // ParseOrder ...
-func (dm *domain) ParseOrder(ctx context.Context, order Order) *Assemble {
+func (dm *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
 	assemble := &Assemble{
 		Bans:        map[string]int{},
 		Patties:     map[string]int{},
 		Vegetables:  map[string]int{},
 		Ingredients: map[string]int{},
 	}
+	fmt.Println("==============================")
 
-	if len(order.Hamburgers) != 0 {
-		dm.countAssembleHamburger(ctx, assemble, order.Hamburgers)
+	if len(order.Product.Hamburgers) != 0 {
+		dm.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
 	}
 
 	return assemble
 }
 
 func (dm *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
+
 	for _, hamburger := range hamburgers {
 		// bans
 		assemble.Bans["top"] += hamburger.Top
@@ -119,6 +132,13 @@ func (dm *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble
 		assemble.Ingredients["cheese"] += hamburger.Cheese
 		assemble.Ingredients["pickles"] += hamburger.Pickles
 	}
+	fmt.Println("==============================")
+	debugTarget := assemble
+	fmt.Printf("%#v\n", debugTarget)
+	// fmt.Printf("%v\n", debugTarget)
+	// fmt.Printf("%+v\n", debugTarget)
+	// fmt.Printf("%T\n", debugTarget)
+	fmt.Println("==============================")
 
 	return
 }

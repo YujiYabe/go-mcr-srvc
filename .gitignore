@@ -39,5 +39,5 @@ db/tool/phpmyadmin/sessions/*
 *.log
 
 */tmp/main
-
-
+backend/yummy/*.json
+backend/scripts/order/register/*

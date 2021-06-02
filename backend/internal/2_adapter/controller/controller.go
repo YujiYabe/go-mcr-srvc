@@ -54,9 +54,9 @@ func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
 func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderType string) {
 	ctrl.OrderNumber++
 
-	order.OrderNumber = fmt.Sprintf("%03d", ctrl.OrderNumber)
-	order.OrderType = orderType
-	order.OrderTime = time.Now()
+	order.OrderInfo.OrderNumber = fmt.Sprintf("%03d", ctrl.OrderNumber)
+	order.OrderInfo.OrderType = orderType
+	order.OrderInfo.OrderTime = time.Now()
 
 	return
 }

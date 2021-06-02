@@ -66,5 +66,5 @@ func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*Deliver
 
 	go s.Controller.Order(ctx, order)
 
-	return &DeliveryResponse{OrderNumber: order.OrderNumber}, nil
+	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil
 }

@@ -47,15 +47,17 @@ func (pc *PC) IndexPost(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	order := &domain.Order{}
-	if err := c.Bind(order); err != nil {
+	product := &domain.Product{}
+	if err := c.Bind(product); err != nil {
 		return
 	}
+	order.Product = *product
 
 	pc.Controller.Reserve(ctx, order, orderType)
 
 	go pc.Controller.Order(ctx, order)
 
-	c.JSON(200, order.OrderNumber)
+	c.JSON(200, order.OrderInfo.OrderNumber)
 	return
 }
 

@@ -24,7 +24,7 @@ type (
 
 	// ToDomain ...
 	ToDomain interface {
-		ParseOrder(ctx context.Context, order domain.Order) *domain.Assemble
+		ParseOrder(ctx context.Context, order *domain.Order) *domain.Assemble
 		Dummy(ctx context.Context) error
 	}
 )
