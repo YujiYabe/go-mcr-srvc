@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var orderType domain.OrderType = "delivery"
+var orderType = "delivery"
 
 // Delivery ...
 type Delivery struct {
@@ -57,14 +57,14 @@ func (dlvr *Delivery) Start() {
 // DeliveryRPC ...
 func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
 	order := &domain.Order{
-		Hamburgers: []domain.Hamburger{},
+		// Hamburgers: []domain.Hamburger{},
 	}
 
 	copier.Copy(order, in.Order)
 
-	orderNumber, ctxValue := s.Controller.Reserve(ctx, orderType)
-	orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
-	go s.Controller.Order(orderCtx, *order)
+	orderNumber := s.Controller.Reserve(ctx)
+
+	go s.Controller.Order(ctx, *order)
 
 	return &DeliveryResponse{OrderNumber: orderNumber}, nil
 }

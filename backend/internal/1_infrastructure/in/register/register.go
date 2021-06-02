@@ -16,7 +16,7 @@ import (
 	"app/internal/4_domain/domain"
 )
 
-var orderType domain.OrderType = "register"
+var orderType = "register"
 
 const targetPath = "scripts/order/register"
 
@@ -111,9 +111,9 @@ func (rgstr *Register) OrderAccept(dir string) {
 
 		ctx := context.Background()
 
-		orderNumber, ctxValue := rgstr.Controller.Reserve(ctx, orderType)
-		orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
-		go rgstr.Controller.Order(orderCtx, *order)
+		orderNumber := rgstr.Controller.Reserve(ctx)
+
+		go rgstr.Controller.Order(ctx, *order)
 
 		newPath := strings.Replace(path, "json", orderNumber, 1)
 		if err := os.Rename(path, newPath); err != nil {

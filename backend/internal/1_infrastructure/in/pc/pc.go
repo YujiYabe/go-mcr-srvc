@@ -3,12 +3,11 @@ package pc
 import (
 	"app/internal/2_adapter/controller"
 	"app/internal/4_domain/domain"
-	"context"
 
 	"github.com/gin-gonic/gin"
 )
 
-var orderType domain.OrderType = "pc"
+var orderType = "pc"
 
 type (
 	// PC ...
@@ -52,9 +51,9 @@ func (pc *PC) IndexPost(c *gin.Context) {
 		return
 	}
 
-	orderNumber, ctxValue := pc.Controller.Reserve(ctx, orderType)
-	orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
-	go pc.Controller.Order(orderCtx, *order)
+	orderNumber := pc.Controller.Reserve(ctx)
+
+	go pc.Controller.Order(ctx, *order)
 
 	c.JSON(200, orderNumber)
 	return

@@ -1,8 +1,6 @@
 package mobile
 
 import (
-	"context"
-
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
@@ -10,7 +8,7 @@ import (
 	"app/internal/4_domain/domain"
 )
 
-var orderType domain.OrderType = "mobile"
+var orderType = "mobile"
 
 type (
 	// Mobile ...
@@ -58,9 +56,9 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 		return err
 	}
 
-	orderNumber, ctxValue := mb.Controller.Reserve(ctx, orderType)
-	orderCtx := context.WithValue(ctx, orderNumber, ctxValue)
-	go mb.Controller.Order(orderCtx, *order)
+	orderNumber := mb.Controller.Reserve(ctx)
+
+	go mb.Controller.Order(ctx, *order)
 
 	c.JSON(200, orderNumber)
 	return nil

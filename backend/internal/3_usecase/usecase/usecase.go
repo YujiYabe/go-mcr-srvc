@@ -56,11 +56,11 @@ func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
 	// 	return err
 	// }
 
-	// // 返却
-	// err = uc.ToService.GetVegetables(ctx, requestVegetables)
-	// if err != nil {
-	// 	return err
-	// }
+	// 出荷よー
+	err = uc.ToService.Shipment(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

@@ -9,9 +9,15 @@ type Service struct {
 	ToRefrigerator ToRefrigerator
 	ToFreezer      ToFreezer
 	ToShelf        ToShelf
+	ToShipment     ToShipment
 }
 
 type (
+	// ToRefrigerator ...
+	ToShipment interface {
+		HandOver(ctx context.Context) error
+		Logging(ctx context.Context) error
+	}
 
 	// ToRefrigerator ...
 	ToRefrigerator interface {

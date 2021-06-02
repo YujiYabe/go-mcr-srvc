@@ -2,22 +2,25 @@ package domain
 
 import (
 	"context"
+	"time"
 )
 
 type (
-	domain      struct{}
-	OrderType   string
-	OrderNumber int
+	domain struct{}
 )
 
 // infrastructure から来た用
 type (
 	// Order ...
 	Order struct {
-		Combos     []Combo     `json:"combos"`
-		Hamburgers []Hamburger `json:"hamburgers"`
-		SideMenus  []SideMenu  `json:"side_menus"`
-		Drinks     []Drink     `json:"drinks"`
+		OrderType   string
+		OrderNumber int
+		OrderTime   time.Time
+		PassTime    time.Time
+		Combos      []Combo     `json:"combos"`
+		Hamburgers  []Hamburger `json:"hamburgers"`
+		SideMenus   []SideMenu  `json:"side_menus"`
+		Drinks      []Drink     `json:"drinks"`
 	}
 
 	// Combo ...
