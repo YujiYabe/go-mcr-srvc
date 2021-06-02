@@ -24,16 +24,17 @@ func main() {
 
 	var request = &delivery.DeliveryRequest{
 		Order: &delivery.Order{
-			Combo:     []*delivery.Combo{},
-			Hamburger: []*delivery.Hamburger{},
-			SideMenu:  []*delivery.SideMenu{},
-			Drink:     []*delivery.Drink{},
-			// Hamburger: []*delivery.Hamburger{
-			// 	{
-			// 		Top:    1,
-			// 		Cheese: 1,
-			// 	},
-			// },
+			Combos:    []*delivery.Combo{},
+			SideMenus: []*delivery.SideMenu{},
+			Drinks:    []*delivery.Drink{},
+			Hamburgers: []*delivery.Hamburger{
+				{
+					Top:     1,
+					Cheese:  1,
+					Lettuce: 1,
+					Tomato:  1,
+				},
+			},
 		},
 	}
 

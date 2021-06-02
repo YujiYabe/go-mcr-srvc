@@ -6,12 +6,13 @@ import (
 	"log"
 	"net"
 
-	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 
-	"google.golang.org/grpc/reflection"
-
 	"app/internal/2_adapter/controller"
+	"app/internal/4_domain/domain"
+
+	"github.com/jinzhu/copier"
+	"google.golang.org/grpc/reflection"
 )
 
 // Delivery ...
@@ -35,7 +36,7 @@ func NewDelivery(ctrl *controller.Controller) *Delivery {
 	return dlvr
 }
 
-// Start ...
+// Start ....
 func (dlvr *Delivery) Start() {
 	log.Println("start GRPC ------------------------- ")
 	lis, err := net.Listen("tcp", ":3456")
@@ -54,23 +55,26 @@ func (dlvr *Delivery) Start() {
 
 // DeliveryRPC ...
 func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
-	// param := &domain.Order{
-	// 	// Room:   in.GetRoom(),
-	// 	// Object: in.GetObject(),
-	// 	// Key:    in.GetKey(),
-	// 	// Value:  in.GetValue(),
-	// }xdx
+	// fmt.Println("==============================")
+	// debugTarget := in.String()
+	// fmt.Printf("%#v\n", debugTarget)
+	// fmt.Println("==============================")
 
-	param := proto.Clone(in)
-	fmt.Println("==============================")
-	debugTarget := param
-	fmt.Printf("%#v\n", debugTarget)
-	// fmt.Printf("%v\n", debugTarget)
-	// fmt.Printf("%+v\n", debugTarget)
-	// fmt.Printf("%T\n", debugTarget)
-	fmt.Println("==============================")
+	param := &domain.Order{
+		Hamburgers: []domain.Hamburger{},
+	}
 
-	// s.Controller.Order(ctx, *param)
+	copier.Copy(param, in.Order)
+	// copier.Copy(order, in.Order)
+	// err := json.Unmarshal([]byte(in.String()), order)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return &DeliveryResponse{Message: "ng"}, err
+	// }
+
+	fmt.Printf("%#v\n", param)
+
+	s.Controller.Order(ctx, *param)
 
 	return &DeliveryResponse{Message: "ok"}, nil
 }

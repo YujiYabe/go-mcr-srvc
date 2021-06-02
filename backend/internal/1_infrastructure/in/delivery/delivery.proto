@@ -5,10 +5,10 @@ option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_i
 package delivery;
 
 message Order {
-  repeated Combo Combo = 1;
-  repeated Hamburger Hamburger = 2;
-  repeated SideMenu SideMenu = 3;
-  repeated Drink Drink = 4;
+  repeated Combo Combos = 1;
+  repeated Hamburger Hamburgers = 2;
+  repeated SideMenu SideMenus = 3;
+  repeated Drink Drinks = 4;
 }
 
 message Combo {
