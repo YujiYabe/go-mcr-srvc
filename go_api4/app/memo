@@ -1,4 +1,0 @@
-dep init                               set up a new project
-dep ensure                             install the project's dependencies
-dep ensure -update                     update the locked versions of all dependencies
-dep ensure -add github.com/pkg/errors  add a dependency to the project
