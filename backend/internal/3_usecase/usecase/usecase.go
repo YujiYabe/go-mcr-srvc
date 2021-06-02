@@ -15,7 +15,7 @@ func (uc *UseCase) Order(ctx context.Context, order domain.Order) error {
 
 	// 材料取り出し
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(4)
 
 	go func() {
 		defer wg.Done()

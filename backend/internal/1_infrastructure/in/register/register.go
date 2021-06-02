@@ -74,24 +74,6 @@ func (rgstr *Register) Start() {
 	<-done
 }
 
-func dirwalk(dir string) []string {
-	files, err := ioutil.ReadDir(dir)
-	if err != nil {
-		panic(err)
-	}
-
-	var paths []string
-	for _, file := range files {
-		if file.IsDir() {
-			paths = append(paths, dirwalk(filepath.Join(dir, file.Name()))...)
-			continue
-		}
-		paths = append(paths, filepath.Join(dir, file.Name()))
-	}
-
-	return paths
-}
-
 func (rgstr *Register) OrderAccept(dir string) []string {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
@@ -100,10 +82,6 @@ func (rgstr *Register) OrderAccept(dir string) []string {
 
 	var paths []string
 	for _, file := range files {
-		if file.IsDir() {
-			paths = append(paths, dirwalk(filepath.Join(dir, file.Name()))...)
-			continue
-		}
 		paths = append(paths, filepath.Join(dir, file.Name()))
 	}
 

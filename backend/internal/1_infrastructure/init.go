@@ -1,12 +1,6 @@
 package app
 
 import (
-	// 	"app/internal/1_infrastructure/grpc/grpcin"
-	// 	"app/internal/1_infrastructure/grpc/grpcout"
-	// 	"app/internal/1_infrastructure/network"
-	// "app/internal/1_infrastructure/mobile"
-	// 	"app/internal/1_infrastructure/ws/wsorder"
-
 	"app/internal/1_infrastructure/in/delivery"
 	"app/internal/1_infrastructure/in/mobile"
 	"app/internal/1_infrastructure/in/pc"
