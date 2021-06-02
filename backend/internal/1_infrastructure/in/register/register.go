@@ -86,7 +86,7 @@ func (rgstr *Register) OrderAccept(dir string) []string {
 	}
 
 	for _, path := range paths {
-		raw, err := ioutil.ReadFile(path)
+		raw, err := ioutil.ReadFile(filepath.Clean(path))
 		if err != nil {
 			fmt.Println(err.Error())
 			continue

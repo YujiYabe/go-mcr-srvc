@@ -40,7 +40,7 @@ func NewDelivery(ctrl *controller.Controller) *Delivery {
 // Start ....
 func (dlvr *Delivery) Start() {
 	log.Println("start GRPC ------------------------- ")
-	lis, err := net.Listen("tcp", ":3456")
+	lis, err := net.Listen("tcp", "localhost:3456")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

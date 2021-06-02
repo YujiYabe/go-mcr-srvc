@@ -36,3 +36,10 @@ reup: build up
 # ----------------------------
 .PHONY: resetall
 resetall: removeall build up
+
+
+# ----------------------------
+# github.com/securego/gosec/v2/cmd/gosec
+.PHONY: gosec
+gosec:
+	gosec -exclude=G303 ./...
