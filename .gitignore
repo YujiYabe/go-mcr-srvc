@@ -41,3 +41,4 @@ db/tool/phpmyadmin/sessions/*
 */tmp/main
 backend/yummy/*.json
 backend/scripts/order/register/*
+backend/scripts/order/delivery/vendor/*
