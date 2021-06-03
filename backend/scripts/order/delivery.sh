@@ -1,2 +1,3 @@
 
-go run ./delivery/delivery.go
+cd delivery
+go run ./*.go

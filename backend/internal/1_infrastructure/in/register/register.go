@@ -78,25 +78,27 @@ func (rgstr *Register) Start() {
 	<-done
 }
 
-func (rgstr *Register) OrderAccept(dir string) {
-	files, err := ioutil.ReadDir(dir)
+func (rgstr *Register) OrderAccept(currentDir string) {
+	files, err := ioutil.ReadDir(currentDir)
 	if err != nil {
 		panic(err)
 	}
 
 	for _, file := range files {
-		fileName := file.Name()
+		currentFileName := file.Name()
 
-		if strings.Count(fileName, ".") != 1 {
+		if strings.Count(currentFileName, ".") != 1 {
 			continue
 		}
-		pos := strings.LastIndex(fileName, ".")
-		if fileName[pos:] != ".json" {
+		pos := strings.LastIndex(currentFileName, ".")
+		if currentFileName[pos:] != ".json" {
 			continue
 		}
 
-		path := filepath.Join(dir, file.Name())
-		raw, err := ioutil.ReadFile(filepath.Clean(path))
+		currentFilePath := filepath.Join(currentDir, file.Name())
+		newDir := filepath.Join(currentDir, "reserved")
+
+		raw, err := ioutil.ReadFile(filepath.Clean(currentFilePath))
 		if err != nil {
 			fmt.Println(err.Error())
 			continue
@@ -117,8 +119,9 @@ func (rgstr *Register) OrderAccept(dir string) {
 
 		go rgstr.Controller.Order(ctx, order)
 
-		newPath := strings.Replace(path, "json", order.OrderInfo.OrderNumber, 1)
-		if err := os.Rename(path, newPath); err != nil {
+		newFileName := strings.Replace(currentFileName, "json", order.OrderInfo.OrderNumber, 1)
+		newFilePath := filepath.Join(newDir, newFileName)
+		if err := os.Rename(currentFilePath, newFilePath); err != nil {
 			fmt.Println(err)
 		}
 	}
