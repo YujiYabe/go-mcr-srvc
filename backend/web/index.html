@@ -1,13 +1,11 @@
-{{define "index"}}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-	<link rel="manifest" href="/public/manifest.json">
-	<link rel="icon" href="/public/image/favicon.ico">
+	<link rel="icon" href="/web/image/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<noscript>
 		<h1>Welcome To The App</h1>
@@ -18,43 +16,39 @@
 	<meta name="description" content="home control">
 	<meta name="theme-color" content="#333333" />
 	<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"> -->
-	<link rel="stylesheet" href="public/css/externalpackage/fontawesome-all.css">
+	<link rel="stylesheet" href="web/css/externalpackage/fontawesome-all.css">
 
 
-	<link type="text/css" rel="stylesheet" href="public/css/externalpackage/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet" href="public/css/externalpackage/bootstrap-vue.css" />
-	<link type="text/css" rel="stylesheet" href="public/css/index.css" media="all">
+	<link type="text/css" rel="stylesheet" href="web/css/externalpackage/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="web/css/externalpackage/bootstrap-vue.css" />
+	<link type="text/css" rel="stylesheet" href="web/css/index.css" media="all">
 </head>
 
-<!-- <body > -->
-
 <body style="background-color: #333333;">
-	<div id="app">
-		<div id="server_address" data-address={{.ServerInfo.Address}}></div>
-		<div id="server_port" data-port={{.ServerInfo.Port}}></div>
+<!--
+-->
 
+	<div id="app">
 		<br>
+
 		<b-container fluid class="text-light text-center">
-			<home :common-class="commonClass" :files="files" :room="room" :device="device"
-				:device-bed="deviceBed" :device-living="deviceLiving" :light-status="lightStatus" :aircon-status="airconStatus"
-				:aircon-warm="airconWarm" :aircon-cool="airconCool" :is-downloading="isDownloading" :is-uploading="isUploading"
-				:is-online="isOnline" :vlc-progress="vlcProgress"
-				@change-room="methodChangeRoom" @change-device="methodChangeDevice"
-				@send-command="methodSendCommand" @file-upload="methodFileUpload"
+			<home
+				:common-class="commonClass"
 			>
 		</home>
 		</b-container>
+
 	</div>
 
 	<br>
 	<br>
 	<br>
-	<script src="public/js/externalpackage/axios.min.js"></script>
-	<script src="public/js/externalpackage/vue.js"></script>
-	<script src="public/js/externalpackage/bootstrap-vue.js"></script>
-	<script src="public/js/externalpackage/httpVueLoader.js"></script>
-	<script src="public/js/externalpackage/vue-awesome.js"></script>
-	<script src="public/js/index.js" type="module"></script>
+	<script src="web/js/externalpackage/axios.min.js"></script>
+	<script src="web/js/externalpackage/vue.js"></script>
+	<script src="web/js/externalpackage/bootstrap-vue.js"></script>
+	<script src="web/js/externalpackage/httpVueLoader.js"></script>
+	<script src="web/js/externalpackage/vue-awesome.js"></script>
+	<script src="web/js/index.js" type="module"></script>
 
 	<script>
 		// PWA設定
@@ -66,7 +60,8 @@
 		// 	});
 		// }
 	</script>
+
+
 </body>
 
 </html>
-{{end}}

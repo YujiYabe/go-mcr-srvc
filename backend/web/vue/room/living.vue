@@ -72,19 +72,19 @@
 <script>
 module.exports = {
 	components: {
-		'icon-device-light': httpVueLoader('public/vue/icon/device-light.vue'),
-		'icon-device-aircon': httpVueLoader('public/vue/icon/device-aircon.vue'),
-		'icon-device-ambient': httpVueLoader('public/vue/icon/device-ambient.vue'),
-		'icon-device-monitor': httpVueLoader('public/vue/icon/device-monitor.vue'),
-		'icon-device-tv': httpVueLoader('public/vue/icon/device-tv.vue'),
-		'icon-device-raspi': httpVueLoader('public/vue/icon/device-raspi.vue'),
+		'icon-device-light': httpVueLoader('web/vue/icon/device-light.vue'),
+		'icon-device-aircon': httpVueLoader('web/vue/icon/device-aircon.vue'),
+		'icon-device-ambient': httpVueLoader('web/vue/icon/device-ambient.vue'),
+		'icon-device-monitor': httpVueLoader('web/vue/icon/device-monitor.vue'),
+		'icon-device-tv': httpVueLoader('web/vue/icon/device-tv.vue'),
+		'icon-device-raspi': httpVueLoader('web/vue/icon/device-raspi.vue'),
 
-		'device-light': httpVueLoader('public/vue/device/light.vue'),
-		'device-aircon': httpVueLoader('public/vue/device/aircon.vue'),
-		'device-ambient': httpVueLoader('public/vue/device/ambient.vue'),
-		'device-monitor': httpVueLoader('public/vue/device/monitor.vue'),
-		'device-tv': httpVueLoader('public/vue/device/tv.vue'),
-		'device-raspi': httpVueLoader('public/vue/device/raspi.vue'),
+		'device-light': httpVueLoader('web/vue/device/light.vue'),
+		'device-aircon': httpVueLoader('web/vue/device/aircon.vue'),
+		'device-ambient': httpVueLoader('web/vue/device/ambient.vue'),
+		'device-monitor': httpVueLoader('web/vue/device/monitor.vue'),
+		'device-tv': httpVueLoader('web/vue/device/tv.vue'),
+		'device-raspi': httpVueLoader('web/vue/device/raspi.vue'),
 	},
 
 	props: {

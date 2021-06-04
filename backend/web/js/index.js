@@ -3,8 +3,8 @@
 var app = new Vue({
   el: "#app",
   components: {
-    "home": httpVueLoader("public/vue/home.vue"),
-    "icon-power": httpVueLoader("public/vue/icon/common-powerOnOff.vue"),
+    "home": httpVueLoader("web/vue/home.vue"),
+    "icon-power": httpVueLoader("web/vue/icon/common-powerOnOff.vue"),
   }, // --- End of components --- //
 
   data: {
@@ -50,13 +50,13 @@ var app = new Vue({
   }, // --- End of data --- //
 
   created: function () {
-    this.serverAddress = document.getElementById("server_address").dataset.address;
-    this.serverPort = document.getElementById("server_port").dataset.port;
-    this.baseHost = this.serverAddress + ":" + this.serverPort;
-    this.httpBase = "http://" + this.baseHost;
-    this.wsBase = "ws://" + this.baseHost + "/ws";
-    this.room = localStorage.getItem("room") == null ? this.room : localStorage.getItem("room");
-    this.device = localStorage.getItem("device") == null ? this.device : localStorage.getItem("device");
+    // this.serverAddress = document.getElementById("server_address").dataset.address;
+    // this.serverPort = document.getElementById("server_port").dataset.port;
+    // this.baseHost = this.serverAddress + ":" + this.serverPort;
+    // this.httpBase = "http://" + this.baseHost;
+    // this.wsBase = "ws://" + this.baseHost + "/ws";
+    // this.room = localStorage.getItem("room") == null ? this.room : localStorage.getItem("room");
+    // this.device = localStorage.getItem("device") == null ? this.device : localStorage.getItem("device");
   }, // --- End of created --- //
 
 
@@ -200,63 +200,63 @@ var app = new Vue({
 
 
   mounted: function () {
-    let _this = this
+  //   let _this = this
 
-    console.log("## mounted()");
-    this.ws = new WebSocket(this.wsBase);
-    this.ws.onopen = function (event) {
-      _this.isOnline = true;
-      console.log("### websocket.onopen()");
-    };
+  //   console.log("## mounted()");
+  //   this.ws = new WebSocket(this.wsBase);
+  //   this.ws.onopen = function (event) {
+  //     _this.isOnline = true;
+  //     console.log("### websocket.onopen()");
+  //   };
 
-    this.ws.onmessage = function (event) {
-      const eventData = JSON.parse(event.data);
-      let enableLog = true
+  //   this.ws.onmessage = function (event) {
+  //     const eventData = JSON.parse(event.data);
+  //     let enableLog = true
 
-      if (eventData.Key == "progress") {
-        _this.methodVlcProgress(eventData.Value)
-        enableLog = false
-      }
+  //     if (eventData.Key == "progress") {
+  //       _this.methodVlcProgress(eventData.Value)
+  //       enableLog = false
+  //     }
 
-      if (eventData.Key == "isDownloading") {
-        _this.methodFileIsDownloading(eventData.Value)
-      }
+  //     if (eventData.Key == "isDownloading") {
+  //       _this.methodFileIsDownloading(eventData.Value)
+  //     }
 
-      if (eventData.Key == "files") {
-        _this.methodFiles(eventData.Value)
-      }
+  //     if (eventData.Key == "files") {
+  //       _this.methodFiles(eventData.Value)
+  //     }
 
-      if (eventData.Key == "devices") {
-        _this.methodDevices(eventData.Value)
-      }
+  //     if (eventData.Key == "devices") {
+  //       _this.methodDevices(eventData.Value)
+  //     }
 
-      if (enableLog) {
-        let message = {};
-        message["📱＜ー💻"] = eventData.Room +" : "+ eventData.Object +" : "+ eventData.Key +" : "+ eventData.Value ;
-        console.log(message);
-      }
-    };
+  //     if (enableLog) {
+  //       let message = {};
+  //       message["📱＜ー💻"] = eventData.Room +" : "+ eventData.Object +" : "+ eventData.Key +" : "+ eventData.Value ;
+  //       console.log(message);
+  //     }
+  //   };
 
-    // websocketでエラーが発生した時
-    this.ws.onerror = function (event) {
-      console.log("### websocket.onerror()");
-    };
+  //   // websocketでエラーが発生した時
+  //   this.ws.onerror = function (event) {
+  //     console.log("### websocket.onerror()");
+  //   };
 
-    // websocketをクローズした時
-    this.ws.onclose = function (event) {
-      console.log("### websocket.onclose()");
-      _this.isOnline = false;
-      _this.timer = setInterval(function () {
-        axios
-          .get("")
-          .then(function (response) {
-            window.location.reload();
-          })
-          .catch(function (error) {
-            console.log(error)
-          })
-      }, 1000);
-    }
+  //   // websocketをクローズした時
+  //   this.ws.onclose = function (event) {
+  //     console.log("### websocket.onclose()");
+  //     _this.isOnline = false;
+  //     _this.timer = setInterval(function () {
+  //       axios
+  //         .get("")
+  //         .then(function (response) {
+  //           window.location.reload();
+  //         })
+  //         .catch(function (error) {
+  //           console.log(error)
+  //         })
+  //     }, 1000);
+  //   }
   }
 
 })

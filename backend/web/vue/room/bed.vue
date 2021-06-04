@@ -44,15 +44,15 @@
 <script>
 module.exports = {
 	components: {
-		'icon-device-light': httpVueLoader('public/vue/icon/device-light.vue'),
-		'icon-device-aircon': httpVueLoader('public/vue/icon/device-aircon.vue'),
-		'icon-device-ambient': httpVueLoader('public/vue/icon/device-ambient.vue'),
-		'icon-device-projector': httpVueLoader('public/vue/icon/device-projector.vue'),
+		'icon-device-light': httpVueLoader('web/vue/icon/device-light.vue'),
+		'icon-device-aircon': httpVueLoader('web/vue/icon/device-aircon.vue'),
+		'icon-device-ambient': httpVueLoader('web/vue/icon/device-ambient.vue'),
+		'icon-device-projector': httpVueLoader('web/vue/icon/device-projector.vue'),
 
-		'device-light': httpVueLoader('public/vue/device/light.vue'),
-		'device-aircon': httpVueLoader('public/vue/device/aircon.vue'),
-		'device-ambient': httpVueLoader('public/vue/device/ambient.vue'),
-		'device-projector': httpVueLoader('public/vue/device/projector.vue'),
+		'device-light': httpVueLoader('web/vue/device/light.vue'),
+		'device-aircon': httpVueLoader('web/vue/device/aircon.vue'),
+		'device-ambient': httpVueLoader('web/vue/device/ambient.vue'),
+		'device-projector': httpVueLoader('web/vue/device/projector.vue'),
 
 },
 	props: {

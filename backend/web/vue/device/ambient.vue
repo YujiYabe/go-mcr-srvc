@@ -177,17 +177,17 @@
 <script>
 module.exports = {
 	components: {
-		'icon-device-aircon': httpVueLoader('public/vue/icon/device-aircon.vue'),
-		'icon-device-light': httpVueLoader('public/vue/icon/device-light.vue'),
+		'icon-device-aircon': httpVueLoader('web/vue/icon/device-aircon.vue'),
+		'icon-device-light': httpVueLoader('web/vue/icon/device-light.vue'),
 
-		'icon-cool': httpVueLoader('public/vue/icon/temperature-cool.vue'),
-		'icon-warm': httpVueLoader('public/vue/icon/temperature-warm.vue'),
-		'icon-up': httpVueLoader('public/vue/icon/chevron-up.vue'),
-		'icon-down': httpVueLoader('public/vue/icon/chevron-down.vue'),
+		'icon-cool': httpVueLoader('web/vue/icon/temperature-cool.vue'),
+		'icon-warm': httpVueLoader('web/vue/icon/temperature-warm.vue'),
+		'icon-up': httpVueLoader('web/vue/icon/chevron-up.vue'),
+		'icon-down': httpVueLoader('web/vue/icon/chevron-down.vue'),
 
-		'icon-power': httpVueLoader('public/vue/icon/common-powerOnOff.vue'),
-		'icon-night': httpVueLoader('public/vue/icon/light-night.vue'),
-		'icon-full': httpVueLoader('public/vue/icon/light-full.vue'),
+		'icon-power': httpVueLoader('web/vue/icon/common-powerOnOff.vue'),
+		'icon-night': httpVueLoader('web/vue/icon/light-night.vue'),
+		'icon-full': httpVueLoader('web/vue/icon/light-full.vue'),
 
 	},
 	methods: {
