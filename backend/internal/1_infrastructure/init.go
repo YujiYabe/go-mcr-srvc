@@ -5,6 +5,7 @@ import (
 	"backend/internal/1_infrastructure/in/mobile"
 	"backend/internal/1_infrastructure/in/pc"
 	"backend/internal/1_infrastructure/in/register"
+	"backend/internal/1_infrastructure/out/monitor"
 	"backend/internal/1_infrastructure/out/shipment"
 	"backend/internal/1_infrastructure/stock/freezer"
 	"backend/internal/1_infrastructure/stock/refrigerator"
@@ -18,6 +19,7 @@ type (
 		pc       *pc.PC
 		delivery *delivery.Delivery
 		register *register.Register
+		monitor  *monitor.Monitor
 	}
 )
 
@@ -37,11 +39,14 @@ func NewApp() *app {
 	a.pc = pc.NewPC(ctrl)
 	a.register = register.NewRegister(ctrl)
 
+	a.monitor = monitor.NewMonitor()
+
 	return a
 }
 
 // Start ...
 func (a *app) Start() {
+	go a.monitor.Start()
 	go a.mobile.Start()
 	go a.pc.Start()
 	go a.register.Start()
