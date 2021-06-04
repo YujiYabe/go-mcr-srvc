@@ -3,8 +3,8 @@
 var app = new Vue({
   el: "#app",
   components: {
-    "home": httpVueLoader("web/vue/home.vue"),
-    "icon-power": httpVueLoader("web/vue/icon/common-powerOnOff.vue"),
+    "home": httpVueLoader("web/asset/vue/home.vue"),
+    "icon-power": httpVueLoader("web/asset/vue/icon/common-powerOnOff.vue"),
   }, // --- End of components --- //
 
   data: {

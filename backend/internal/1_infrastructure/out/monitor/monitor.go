@@ -1,49 +1,89 @@
 package monitor
 
 import (
-	"net/http"
+	"io"
 	"os"
+	"path/filepath"
+	"sync"
 	"text/template"
+
+	"github.com/gorilla/websocket"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
-type Monitor struct{}
 type (
-	// ServerInfo ...
-	ServerInfo struct {
-		Address string
-		Port    string
+	// Template ...
+	Template struct {
+		templates *template.Template
+	}
+
+	// Monitor ...
+	Monitor struct {
+		EchoEcho *echo.Echo
+		Agents   map[string]*Agent
+		Mutex    sync.RWMutex
+		// Member     []string
+		// Controller *controller.Controller
+	}
+
+	// Agent ...
+	Agent struct {
+		ID     string
+		Socket *websocket.Conn
 	}
 )
+
+// Render ...
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
 
 // NewMonitor ...
 func NewMonitor() *Monitor {
 	mntr := &Monitor{}
+	mntr.EchoEcho = NewEcho()
+	mntr.Agents = make(map[string]*Agent)
+
 	return mntr
 }
 
-// Start ...
-func (mb *Monitor) Start() {
-	dir, _ := os.Getwd()
-	http.Handle("/web/css/", http.StripPrefix("/web/css/", http.FileServer(http.Dir(dir+"/web/css/"))))
-	http.Handle("/web/js/", http.StripPrefix("/web/js/", http.FileServer(http.Dir(dir+"/web/js/"))))
-	http.Handle("/web/vue/", http.StripPrefix("/web/vue/", http.FileServer(http.Dir(dir+"/web/vue/"))))
+// NewEcho ...
+func NewEcho() *echo.Echo {
+	e := echo.New()
+	e.HideBanner = true
 
-	http.HandleFunc("/", handler) // ハンドラを登録してウェブページを表示させる
-	http.ListenAndServe(":4567", nil)
+	// 	http.Handle("/web/css/", http.StripPrefix("/web/css/", http.FileServer(http.Dir(dir+"/web/css/"))))
+	// http.Handle("/web/js/", http.StripPrefix("/web/js/", http.FileServer(http.Dir(dir+"/web/js/"))))
+	// http.Handle("/web/vue/", http.StripPrefix("/web/vue/", http.FileServer(http.Dir(dir+"/web/vue/"))))
+
+	// http.HandleFunc("/", handler) // ハンドラを登録してウェブページを表示させる
+	// tmpl, err := template.ParseFiles("web/index.html") // ParseFilesを使う
+
+	currentPath, _ := os.Getwd()
+	WebPath := filepath.Join(currentPath, "web")
+	IndexFilePath := filepath.Join(WebPath, "*.html")
+	e.Renderer = &Template{
+		templates: template.Must(template.ParseGlob(IndexFilePath)),
+	}
+
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "${time_rfc3339}__${status}__${method}__${uri}\n",
+	}))
+
+	// rootPath       = filepath.Dir(currentPath)
+
+	e.Use(middleware.Recover())
+	e.Static("/web/css/", filepath.Join(WebPath, "css"))
+	e.Static("/web/js/", filepath.Join(WebPath, "js"))
+	e.Static("/web/vue/", filepath.Join(WebPath, "vue"))
+
+	return e
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("web/index.html") // ParseFilesを使う
-	if err != nil {
-		panic(err)
-	}
-
-	serverInfo := &ServerInfo{
-		Port: "4567",
-	}
-
-	err = tmpl.Execute(w, serverInfo)
-	if err != nil {
-		panic(err)
-	}
+// Start ...
+func (mntr *Monitor) Start() {
+	mntr.EchoEcho.GET("/monitor", mntr.Monitor)
+	mntr.EchoEcho.GET("/ws", mntr.WebSocket)
+	mntr.EchoEcho.Logger.Fatal(mntr.EchoEcho.Start(":4567"))
 }
