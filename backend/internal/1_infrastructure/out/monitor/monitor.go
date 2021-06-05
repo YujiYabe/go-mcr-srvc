@@ -33,9 +33,9 @@ type (
 
 	// Orders ...
 	Orders struct {
-		Assembled []string
-		Completed []string
-		Passed    []string
+		Assemble []string
+		Complete []string
+		Pass     []string
 	}
 
 	// Agent ...
@@ -44,6 +44,8 @@ type (
 		Socket *websocket.Conn
 	}
 )
+
+var OrdersChan = make(chan Orders)
 
 // Render ...
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -90,6 +92,7 @@ func NewEcho() *echo.Echo {
 // Start ...
 func (monitor *Monitor) Start() {
 	go monitor.Watching()
+	go monitor.SendToAgents()
 
 	currentPath, _ := os.Getwd()
 	WebPath := filepath.Join(currentPath, "web")
@@ -102,7 +105,27 @@ func (monitor *Monitor) Start() {
 }
 
 // UpdateOrders ...
-func (monitor *Monitor) UpdateOrders(context.Context, *domain.Order) error {
+func (monitor *Monitor) UpdateOrders(ctx context.Context, order *domain.Order, phase string) error {
+
+	switch phase {
+	case "assemble":
+		monitor.Orders.Assemble = append(monitor.Orders.Assemble, order.OrderInfo.OrderNumber)
+	case "complete":
+		monitor.Orders.Assemble = remove(monitor.Orders.Assemble, order.OrderInfo.OrderNumber)
+		monitor.Orders.Complete = append(monitor.Orders.Assemble, order.OrderInfo.OrderNumber)
+	}
+
+	OrdersChan <- monitor.Orders
 
 	return nil
+}
+
+func remove(strings []string, search string) []string {
+	result := []string{}
+	for _, v := range strings {
+		if v != search {
+			result = append(result, v)
+		}
+	}
+	return result
 }

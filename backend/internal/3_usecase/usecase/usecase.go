@@ -3,14 +3,16 @@ package usecase
 import (
 	"backend/internal/4_domain/domain"
 	"context"
+	"fmt"
 	"sync"
 )
 
 // Order ...
 func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	var err error
+	fmt.Println(" assemble============================== ")
 
-	err = uc.ToService.UpdateOrders(ctx, order)
+	err = uc.ToService.UpdateOrders(ctx, order, "assemble")
 
 	// オーダー解析
 	assemble := uc.ToDomain.ParseOrder(ctx, order)
@@ -58,6 +60,10 @@ func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Println(" complete============================== ")
+
+	err = uc.ToService.UpdateOrders(ctx, order, "complete")
 
 	return nil
 }

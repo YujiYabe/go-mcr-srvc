@@ -7,16 +7,11 @@ import (
 )
 
 // Monitor ...
-func (sv *Service) UpdateOrders(ctx context.Context, order *domain.Order) error {
-	err := sv.ToMonitor.UpdateOrders(ctx, order)
+func (sv *Service) UpdateOrders(ctx context.Context, order *domain.Order, phase string) error {
+	err := sv.ToMonitor.UpdateOrders(ctx, order, phase)
 	if err != nil {
 		return err
 	}
-
-	// err = sv.ToMonitor.Logging(ctx, order)
-	// if err != nil {
-	// 	return err
-	// }
 
 	return nil
 }

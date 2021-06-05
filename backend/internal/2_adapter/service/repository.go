@@ -48,7 +48,7 @@ type (
 
 	// ToMonitor ...
 	ToMonitor interface {
-		UpdateOrders(ctx context.Context, order *domain.Order) error
+		UpdateOrders(ctx context.Context, order *domain.Order, phase string) error
 	}
 
 	// // DatabaseResult ...
