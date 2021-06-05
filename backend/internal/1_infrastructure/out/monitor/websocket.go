@@ -12,9 +12,8 @@ import (
 )
 
 // Index ...
-func (mntr *Monitor) Monitor(c echo.Context) error {
-	c.Render(http.StatusOK, "monitor", "")
-	return nil
+func (mntr *Monitor) Index(c echo.Context) error {
+	return c.Render(http.StatusOK, "index", "")
 }
 
 // WebSocket ...

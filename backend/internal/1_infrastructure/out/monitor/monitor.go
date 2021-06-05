@@ -59,10 +59,10 @@ func NewEcho() *echo.Echo {
 
 	// http.HandleFunc("/", handler) // ハンドラを登録してウェブページを表示させる
 	// tmpl, err := template.ParseFiles("web/index.html") // ParseFilesを使う
-
 	currentPath, _ := os.Getwd()
 	WebPath := filepath.Join(currentPath, "web")
 	IndexFilePath := filepath.Join(WebPath, "*.html")
+
 	e.Renderer = &Template{
 		templates: template.Must(template.ParseGlob(IndexFilePath)),
 	}
@@ -71,19 +71,18 @@ func NewEcho() *echo.Echo {
 		Format: "${time_rfc3339}__${status}__${method}__${uri}\n",
 	}))
 
-	// rootPath       = filepath.Dir(currentPath)
-
 	e.Use(middleware.Recover())
-	e.Static("/web/css/", filepath.Join(WebPath, "css"))
-	e.Static("/web/js/", filepath.Join(WebPath, "js"))
-	e.Static("/web/vue/", filepath.Join(WebPath, "vue"))
 
 	return e
 }
 
 // Start ...
 func (mntr *Monitor) Start() {
-	mntr.EchoEcho.GET("/monitor", mntr.Monitor)
+	currentPath, _ := os.Getwd()
+	WebPath := filepath.Join(currentPath, "web")
+	mntr.EchoEcho.Static("/web", WebPath)
+
+	mntr.EchoEcho.GET("/", mntr.Index)
 	mntr.EchoEcho.GET("/ws", mntr.WebSocket)
 	mntr.EchoEcho.Logger.Fatal(mntr.EchoEcho.Start(":4567"))
 }
