@@ -1,6 +1,9 @@
 package monitor
 
 import (
+	"backend/internal/2_adapter/service"
+	"backend/internal/4_domain/domain"
+	"context"
 	"io"
 	"os"
 	"path/filepath"
@@ -25,6 +28,14 @@ type (
 		Mutex    sync.RWMutex
 		// Member     []string
 		// Controller *controller.Controller
+		Orders Orders
+	}
+
+	// Orders ...
+	Orders struct {
+		Assembled []string
+		Completed []string
+		Passed    []string
 	}
 
 	// Agent ...
@@ -41,11 +52,17 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 // NewMonitor ...
 func NewMonitor() *Monitor {
-	mntr := &Monitor{}
-	mntr.EchoEcho = NewEcho()
-	mntr.Agents = make(map[string]*Agent)
+	monitor := &Monitor{}
+	monitor.EchoEcho = NewEcho()
+	monitor.Agents = make(map[string]*Agent)
 
-	return mntr
+	return monitor
+}
+
+// NewToMonitor ...
+func NewToMonitor() service.ToMonitor {
+	s := new(Monitor)
+	return s
 }
 
 // NewEcho ...
@@ -53,12 +70,6 @@ func NewEcho() *echo.Echo {
 	e := echo.New()
 	e.HideBanner = true
 
-	// 	http.Handle("/web/css/", http.StripPrefix("/web/css/", http.FileServer(http.Dir(dir+"/web/css/"))))
-	// http.Handle("/web/js/", http.StripPrefix("/web/js/", http.FileServer(http.Dir(dir+"/web/js/"))))
-	// http.Handle("/web/vue/", http.StripPrefix("/web/vue/", http.FileServer(http.Dir(dir+"/web/vue/"))))
-
-	// http.HandleFunc("/", handler) // ハンドラを登録してウェブページを表示させる
-	// tmpl, err := template.ParseFiles("web/index.html") // ParseFilesを使う
 	currentPath, _ := os.Getwd()
 	WebPath := filepath.Join(currentPath, "web")
 	IndexFilePath := filepath.Join(WebPath, "*.html")
@@ -77,12 +88,21 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (mntr *Monitor) Start() {
+func (monitor *Monitor) Start() {
+	go monitor.Watching()
+
 	currentPath, _ := os.Getwd()
 	WebPath := filepath.Join(currentPath, "web")
-	mntr.EchoEcho.Static("/web", WebPath)
 
-	mntr.EchoEcho.GET("/", mntr.Index)
-	mntr.EchoEcho.GET("/ws", mntr.WebSocket)
-	mntr.EchoEcho.Logger.Fatal(mntr.EchoEcho.Start(":4567"))
+	monitor.EchoEcho.Static("/web", WebPath)
+
+	monitor.EchoEcho.GET("/", monitor.Index)
+	monitor.EchoEcho.GET("/ws", monitor.WebSocket)
+	monitor.EchoEcho.Logger.Fatal(monitor.EchoEcho.Start(":4567"))
+}
+
+// UpdateOrders ...
+func (monitor *Monitor) UpdateOrders(context.Context, *domain.Order) error {
+
+	return nil
 }

@@ -27,12 +27,13 @@ type (
 func NewApp() *app {
 	a := &app{}
 
-	refrigerator := refrigerator.NewToRefrigerator()
-	freezer := freezer.NewToFreezer()
-	shelf := shelf.NewToShelf()
-	shipment := shipment.NewToShipment()
+	rfrgrtr := refrigerator.NewToRefrigerator()
+	frzr := freezer.NewToFreezer()
+	shlf := shelf.NewToShelf()
+	shpmnt := shipment.NewToShipment()
+	mntr := monitor.NewToMonitor()
 
-	ctrl := controller.NewController(refrigerator, freezer, shelf, shipment)
+	ctrl := controller.NewController(rfrgrtr, frzr, shlf, shpmnt, mntr)
 
 	a.delivery = delivery.NewDelivery(ctrl)
 	a.mobile = mobile.NewMobile(ctrl)

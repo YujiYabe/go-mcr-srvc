@@ -12,12 +12,12 @@ import (
 )
 
 // Index ...
-func (mntr *Monitor) Index(c echo.Context) error {
+func (monitor *Monitor) Index(c echo.Context) error {
 	return c.Render(http.StatusOK, "index", "")
 }
 
 // WebSocket ...
-func (mntr *Monitor) WebSocket(c echo.Context) error {
+func (monitor *Monitor) WebSocket(c echo.Context) error {
 	var err error
 	var upgrader = websocket.Upgrader{}
 
@@ -31,34 +31,34 @@ func (mntr *Monitor) WebSocket(c echo.Context) error {
 	agent.Socket = webSocket
 	agent.ID = id.String()
 
-	mntr.Mutex.Lock()
-	mntr.Agents[agent.ID] = agent
-	mntr.Mutex.Unlock()
+	monitor.Mutex.Lock()
+	monitor.Agents[agent.ID] = agent
+	monitor.Mutex.Unlock()
 
-	// go mntr.Controller.InitialInfo(agent.ID)
-	mntr.ReceiveFromAgent(agent.ID)
+	// go monitor.Controller.InitialInfo(agent.ID)
+	monitor.ReceiveFromAgent(agent.ID)
 
 	return nil
 }
 
 // ReceiveFromAgent ...
-func (mntr *Monitor) ReceiveFromAgent(agentID string) {
+func (monitor *Monitor) ReceiveFromAgent(agentID string) {
 	log.Println("------------------------------ ")
 	log.Println("start web socket")
 	for {
 		// cc := &shared.CommonContent{}
-		// err := mntr.Agents[agentID].Socket.ReadJSON(cc)
+		// err := monitor.Agents[agentID].Socket.ReadJSON(cc)
 
 		// if err != nil {
 		// 	myErr.Logging(err, agentID)
-		// 	mntr.Disconnect(agentID)
+		// 	monitor.Disconnect(agentID)
 		// 	return
 		// }
 
 		// switch cc.Object {
 		// case shared.DataObjectVlc, shared.DataObjectFile, shared.DeviceContain(cc.Object):
 		// 	// 他のappへ渡す
-		// 	mntr.Controller.PassOtherApp(cc)
+		// 	monitor.Controller.PassOtherApp(cc)
 		// default:
 		// 	err = errors.New("not found object")
 		// }
@@ -71,26 +71,26 @@ func (mntr *Monitor) ReceiveFromAgent(agentID string) {
 }
 
 // SendToAgents ....
-func (mntr *Monitor) SendToAgents() {
+func (monitor *Monitor) SendToAgents() {
 	for {
 		// content := <-wschannel.Cc
 		// switch content.AgentID {
 		// case "":
 		// 	// クライアントの数だけループ
-		// 	for _, agent := range mntr.Agents {
-		// 		mntr.sendToAgent(agent.ID, content.Content)
+		// 	for _, agent := range monitor.Agents {
+		// 		monitor.sendToAgent(agent.ID, content.Content)
 		// 	}
 		// default:
-		// 	mntr.sendToAgent(content.AgentID, content.Content)
+		// 	monitor.sendToAgent(content.AgentID, content.Content)
 		// }
 	}
 }
 
 // Disconnect ...
-func (mntr *Monitor) Disconnect(agentID string) {
-	mntr.Mutex.Lock()
-	delete(mntr.Agents, agentID)
-	mntr.Mutex.Unlock()
+func (monitor *Monitor) Disconnect(agentID string) {
+	monitor.Mutex.Lock()
+	delete(monitor.Agents, agentID)
+	monitor.Mutex.Unlock()
 
 	// cc := &shared.CommonContent{
 	// 	Room:   shared.DataRoomCommon,
@@ -99,11 +99,11 @@ func (mntr *Monitor) Disconnect(agentID string) {
 	// 	Value:  agentID,
 	// }
 
-	// mntr.sendToAgent("", cc)
+	// monitor.sendToAgent("", cc)
 }
 
-// func (mntr *Monitor) sendToAgent(agentID string, cc *shared.CommonContent) {
-// 	err := mntr.Agents[agentID].Socket.WriteJSON(cc)
+// func (monitor *Monitor) sendToAgent(agentID string, cc *shared.CommonContent) {
+// 	err := monitor.Agents[agentID].Socket.WriteJSON(cc)
 // 	if err != nil {
 // 		myErr.Logging(err, agentID, cc)
 // 	}

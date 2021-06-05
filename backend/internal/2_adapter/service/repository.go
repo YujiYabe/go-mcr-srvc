@@ -12,10 +12,11 @@ type Service struct {
 	ToFreezer      ToFreezer
 	ToShelf        ToShelf
 	ToShipment     ToShipment
+	ToMonitor      ToMonitor
 }
 
 type (
-	// ToRefrigerator ...
+	// ToShipment ...
 	ToShipment interface {
 		HandOver(ctx context.Context, order *domain.Order) error
 		Logging(ctx context.Context, order *domain.Order) error
@@ -40,21 +41,14 @@ type (
 		Dummy(ctx context.Context) (string, error)
 	}
 
-	// ToGrpcOut ...
-	ToGrpcOut interface {
-		// IsSendContent(address string, cc *shared.CommonContent) (string, error)
-		// IsReceiveContent(address, funcName string) (string, error)
-		// IsFileUpload(address, fileName string, fileBody *bytes.Buffer) (string, error)
-	}
-
-	// ToWsOrder ...
-	ToWsOrder interface {
-		// IsSendToAgent(agentID string, cc *shared.CommonContent)
-	}
-
 	// ToClient ...
 	ToClient interface {
 		HandOver(ctx context.Context) error
+	}
+
+	// ToMonitor ...
+	ToMonitor interface {
+		UpdateOrders(ctx context.Context, order *domain.Order) error
 	}
 
 	// // DatabaseResult ...

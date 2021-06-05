@@ -26,17 +26,17 @@ func NewController(
 	toFreezer service.ToFreezer,
 	toShelf service.ToShelf,
 	toShipment service.ToShipment,
+	toMonitor service.ToMonitor,
 ) *Controller {
 	ct := &Controller{
 		UseCase: usecase.UseCase{
 			ToDomain: domain.NewDomain(),
 			ToService: &service.Service{
-				// 	ToGrpcOut: toGrpcOut,
-				// 	ToWsOrder: toWsOrder,
 				ToRefrigerator: toRefrigerator,
 				ToFreezer:      toFreezer,
 				ToShelf:        toShelf,
 				ToShipment:     toShipment,
+				ToMonitor:      toMonitor,
 			},
 		},
 	}

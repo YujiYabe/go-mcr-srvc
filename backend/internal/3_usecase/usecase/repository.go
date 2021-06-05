@@ -19,6 +19,7 @@ type (
 		GetVegetables(ctx context.Context, requestVegetables map[string]int) error
 		GetIngredients(ctx context.Context, requestIngredients map[string]int) error
 		Shipment(ctx context.Context, order *domain.Order) error
+		UpdateOrders(ctx context.Context, order *domain.Order) error
 		Dummy(ctx context.Context) (string, error)
 	}
 

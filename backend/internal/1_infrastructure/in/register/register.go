@@ -40,9 +40,8 @@ func (rgstr *Register) Start() {
 		log.Fatal(err)
 	}
 	defer watcher.Close()
-	rgstr.OrderAccept(targetPath)
-
 	done := make(chan bool)
+
 	go func() {
 		for {
 			select {
