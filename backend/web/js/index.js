@@ -3,11 +3,16 @@
 var app = new Vue({
   el: "#app",
   components: {
-    "home": httpVueLoader("web/vue/home.vue"),
+    "monitor": httpVueLoader("web/vue/monitor.vue"),
   }, // --- End of components --- //
 
   data: {
-    orders: [],
+    assembles: ["a1", "a2", "a3", "a5", "a7"],
+    // completes: ["12","22","32"],
+    // passes:    ["13","23","33"],
+    completes: [],
+    passes: [],
+
     commonClass: "btn p-3 border add-button-style",
   }, // --- End of data --- //
 
@@ -38,34 +43,12 @@ var app = new Vue({
     this.ws.onmessage = function (event) {
       console.log(event);
 
-
-
-
       const eventData = JSON.parse(event.data);
-      let enableLog = true
+      _this.assembles = eventData.Assembles;
+      _this.completes = eventData.Completes;
+      _this.passes = eventData.Passes;
 
-      if (eventData.Key == "progress") {
-        _this.methodVlcProgress(eventData.Value)
-        enableLog = false
-      }
 
-      if (eventData.Key == "isDownloading") {
-        _this.methodFileIsDownloading(eventData.Value)
-      }
-
-      if (eventData.Key == "files") {
-        _this.methodFiles(eventData.Value)
-      }
-
-      if (eventData.Key == "devices") {
-        _this.methodDevices(eventData.Value)
-      }
-
-      if (enableLog) {
-        let message = {};
-        message["📱＜ー💻"] = eventData.Room +" : "+ eventData.Object +" : "+ eventData.Key +" : "+ eventData.Value ;
-        console.log(message);
-      }
     };
 
     // websocketでエラーが発生した時

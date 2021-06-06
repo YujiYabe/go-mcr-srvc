@@ -1,9 +1,11 @@
 package monitor
 
 import (
+	"context"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -45,9 +47,13 @@ func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) []string {
 				continue
 			}
 		}
+
 		if !isExist {
-			monitor.Orders.Completes = remove(monitor.Orders.Completes, currentfile)
-			monitor.Orders.Passes = append(monitor.Orders.Passes, currentfile)
+			ctx := context.Background()
+			monitor.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
+			// monitor.Orders.Completes = remove(monitor.Orders.Completes, strings.TrimRight(currentfile, ".json"))
+			// monitor.Orders.Passes = append(monitor.Orders.Passes, strings.TrimRight(currentfile, ".json"))
+
 		}
 	}
 	return passedFiles

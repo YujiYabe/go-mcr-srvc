@@ -2,8 +2,8 @@ package monitor
 
 import (
 	"backend/internal/2_adapter/service"
-	"backend/internal/4_domain/domain"
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -57,6 +57,11 @@ func NewMonitor() *Monitor {
 	monitor := &Monitor{}
 	monitor.EchoEcho = NewEcho()
 	monitor.Agents = make(map[string]*Agent)
+	monitor.Orders = Orders{
+		Assembles: []string{},
+		Completes: []string{},
+		Passes:    []string{},
+	}
 
 	return monitor
 }
@@ -105,15 +110,21 @@ func (monitor *Monitor) Start() {
 }
 
 // UpdateOrders ...
-func (monitor *Monitor) UpdateOrders(ctx context.Context, order *domain.Order, phase string) error {
+func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) error {
 
 	switch phase {
 	case "assemble":
-		monitor.Orders.Assembles = append(monitor.Orders.Assembles, order.OrderInfo.OrderNumber)
+		monitor.Orders.Assembles = append(monitor.Orders.Assembles, orderNumber)
 	case "complete":
-		monitor.Orders.Assembles = remove(monitor.Orders.Assembles, order.OrderInfo.OrderNumber)
-		monitor.Orders.Completes = append(monitor.Orders.Completes, order.OrderInfo.OrderNumber)
+		monitor.Orders.Assembles = remove(monitor.Orders.Assembles, orderNumber)
+		monitor.Orders.Completes = append(monitor.Orders.Completes, orderNumber)
+	case "pass":
+		monitor.Orders.Assembles = remove(monitor.Orders.Completes, orderNumber)
+		monitor.Orders.Passes = append(monitor.Orders.Passes, orderNumber)
 	}
+
+	fmt.Println("==============================")
+	fmt.Println("==============================")
 
 	OrdersChan <- monitor.Orders
 

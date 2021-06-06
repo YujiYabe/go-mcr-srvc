@@ -8,6 +8,7 @@
 					:class="[commonClass]"
 				>
 					assemble
+					{{assembles}}
 				</b-col>
 				<b-col
 					cols="4"
@@ -15,13 +16,15 @@
 					:class="[commonClass]"
 				>
 					complete
+					{{completes}}
 				</b-col>
 				<b-col
 					cols="4"
 					class="btn-primary"
 					:class="[commonClass]"
 				>
-					passed
+					pass
+					{{passes}}
 				</b-col>
 			</b-row>
 		</b-container>
@@ -30,36 +33,42 @@
 			<b-row>
 				<b-col
 					cols="4"
+					v-for="(assemble, index) in assembles"
 				>
 					<b-row>
-						<b-col cols="12"
-						class="btn-info"
-						:class="[commonClass]">
-							a
+						<b-col
+							cols="12"
+							class="btn-info"
+							:class="[commonClass]"
+						>
+							{{ assemble }}
 						</b-col>
 					</b-row>
 				</b-col>
 
 				<b-col
 					cols="4"
+					v-for="(complete, index) in completes"
 				>
 					<b-row>
 						<b-col cols="12"
 						class="btn-info"
 						:class="[commonClass]">
-							b
+							{{ complete }}
 						</b-col>
 					</b-row>
 				</b-col>
 
 				<b-col
 					cols="4"
+					cols="4"
+					v-for="(pass, index) in passes"
 				>
 					<b-row>
 						<b-col cols="12"
 						class="btn-info"
 						:class="[commonClass]">
-							c
+							{{ pass }}
 						</b-col>
 					</b-row>
 				</b-col>
@@ -73,6 +82,9 @@
 module.exports = {
 	props: {
 		'commonClass': {type: String, default: ''},
+		'assembles': { type: Array, default: ["1","2","3"]    },
+		'completes': { type: Array, default: ["12","22","32"] },
+		'passes': { type: Array, default:    ["13","23","33"] },
 	},
 
 	methods: {

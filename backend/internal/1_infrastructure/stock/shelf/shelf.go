@@ -2,6 +2,7 @@ package shelf
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -70,6 +71,8 @@ func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
 		if err != nil {
 			return err
 		}
+
+		time.Sleep(2 * time.Second)
 	}
 
 	return nil

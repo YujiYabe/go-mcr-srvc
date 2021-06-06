@@ -70,7 +70,7 @@ func (s *Freezer) GetPatties(ctx context.Context, items map[string]int) error {
 		if res.Error != nil {
 			return res.Error
 		}
+		time.Sleep(2 * time.Second)
 	}
-
 	return nil
 }

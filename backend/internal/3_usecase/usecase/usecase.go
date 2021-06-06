@@ -10,7 +10,7 @@ import (
 func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	var err error
 
-	err = uc.ToService.UpdateOrders(ctx, order, "assemble")
+	err = uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "assemble")
 
 	// オーダー解析
 	assemble := uc.ToDomain.ParseOrder(ctx, order)
@@ -59,7 +59,7 @@ func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 		return err
 	}
 
-	err = uc.ToService.UpdateOrders(ctx, order, "complete")
+	err = uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "complete")
 
 	return nil
 }

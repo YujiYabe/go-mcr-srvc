@@ -16,7 +16,7 @@
 | -- | ------------------ | ---- |
 | 1  | index.html         | トップページ | 
 | 2  | js/index.js        | メインjs | 
-| 3  | home.vue           | ルートコンポーネント。4のXXX.vueを切り替え | 
+| 3  | monitor.vue           | ルートコンポーネント。4のXXX.vueを切り替え | 
 | 4  | vue/room/XXX.vue   | 部屋コンポーネント。5のYYY.vueを切り替え| 
 | 5  | vue/device/YYY.vue | 家電コンポーネント。 | 
 | 6  | vue/icon/ZZZ.vue   | アイコンコンポーネント。3,4,5で使われる | 

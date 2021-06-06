@@ -69,6 +69,8 @@ func (s *Refrigerator) GetVegetables(ctx context.Context, items map[string]int) 
 		if res.Error != nil {
 			return res.Error
 		}
+
+		time.Sleep(2 * time.Second)
 	}
 
 	return nil
