@@ -133,3 +133,59 @@ func (dm *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble
 
 	return
 }
+
+func (dm *domain) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
+	var err error
+	for _, hamburger := range hamburgers {
+
+		err = dm.cutVegetables(ctx, hamburger)
+		if err != nil {
+			return err
+		}
+
+		err = dm.grillPatties(ctx, hamburger)
+		if err != nil {
+			return err
+		}
+
+		err = dm.assembleHamburger(ctx, hamburger)
+		if err != nil {
+			return err
+		}
+
+	}
+
+	return nil
+}
+
+func (dm *domain) cutVegetables(ctx context.Context, hamburger Hamburger) error {
+	if hamburger.Lettuce > 0 {
+		time.Sleep(2 * time.Second)
+	}
+	if hamburger.Onion > 0 {
+		time.Sleep(3 * time.Second)
+	}
+	if hamburger.Pickles > 0 {
+		time.Sleep(2 * time.Second)
+	}
+	return nil
+}
+
+func (dm *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) error {
+	time.Sleep(3 * time.Second)
+	return nil
+}
+
+func (dm *domain) grillPatties(ctx context.Context, hamburger Hamburger) error {
+	if hamburger.Beef > 0 {
+		time.Sleep(time.Duration(hamburger.Beef*6) * time.Second)
+	}
+	if hamburger.Chicken > 0 {
+		time.Sleep(time.Duration(hamburger.Chicken*6) * time.Second)
+	}
+	if hamburger.Fish > 0 {
+		time.Sleep(time.Duration(hamburger.Fish*6) * time.Second)
+	}
+
+	return nil
+}

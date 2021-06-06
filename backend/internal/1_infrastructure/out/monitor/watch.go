@@ -31,7 +31,7 @@ func (monitor *Monitor) RemoveYummy() {
 func (monitor *Monitor) Watching() {
 	currentPath, _ := os.Getwd()
 	yummyPath := filepath.Join(currentPath, targetPath)
-	// var err error
+
 	var currentfiles []string
 
 	for {
@@ -53,9 +53,8 @@ func (monitor *Monitor) Watching() {
 	}
 }
 
-func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) []string {
+func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) {
 	//最新のリストからファイルが削除されていれば渡しずみ判断
-	var passedFiles []string
 	for _, currentfile := range currentfiles {
 		isExist := false
 		for _, newFile := range newFiles {
@@ -70,5 +69,6 @@ func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) []string {
 			monitor.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
 		}
 	}
-	return passedFiles
+
+	return
 }

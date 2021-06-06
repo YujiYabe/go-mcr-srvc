@@ -26,6 +26,7 @@ type (
 	// ToDomain ...
 	ToDomain interface {
 		ParseOrder(ctx context.Context, order *domain.Order) *domain.Assemble
+		CookHamburgers(ctx context.Context, hamburgers []domain.Hamburger) error
 		Dummy(ctx context.Context) error
 	}
 )
