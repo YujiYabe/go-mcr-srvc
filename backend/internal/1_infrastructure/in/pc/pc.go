@@ -37,7 +37,6 @@ func NewGin() *gin.Engine {
 // Start ...
 func (pc *PC) Start() {
 	pc.GinEngine.POST("/", pc.IndexPost)
-	pc.GinEngine.GET("/2", pc.Index2)
 
 	pc.GinEngine.Run(":2345")
 }
@@ -58,14 +57,5 @@ func (pc *PC) IndexPost(c *gin.Context) {
 	go pc.Controller.Order(ctx, order)
 
 	c.JSON(200, order.OrderInfo.OrderNumber)
-	return
-}
-
-// Index2 ...
-func (pc *PC) Index2(c *gin.Context) {
-	ctx := c.Request.Context()
-	res, _ := pc.Controller.Dummy(ctx)
-
-	c.JSON(200, res)
 	return
 }

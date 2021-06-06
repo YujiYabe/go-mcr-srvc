@@ -23,10 +23,3 @@ func (sv *Service) GetIngredients(ctx context.Context, requestIngredients map[st
 
 	return nil
 }
-
-// Dummy ...
-func (sv *Service) Dummy(ctx context.Context) (string, error) {
-	res, _ := sv.ToRefrigerator.Dummy(ctx)
-
-	return res, nil
-}

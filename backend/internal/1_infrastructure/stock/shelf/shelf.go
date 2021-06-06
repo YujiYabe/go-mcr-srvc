@@ -48,11 +48,6 @@ func open(count uint) (*mongo.Client, error) {
 	return client, nil
 }
 
-// Dummy ...
-func (s *Shelf) Dummy(ctx context.Context) (string, error) {
-	return "dummy ok", nil
-}
-
 // GetBans ...
 func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
 	bans := s.Conn.Database("app").Collection("bans")

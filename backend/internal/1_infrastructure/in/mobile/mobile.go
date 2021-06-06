@@ -43,7 +43,6 @@ func NewEcho() *echo.Echo {
 // Start ...
 func (mb *Mobile) Start() {
 	mb.EchoEcho.POST("/", mb.IndexPost)
-	mb.EchoEcho.GET("/2", mb.Index2)
 	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(":1234"))
 }
 
@@ -64,14 +63,5 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 
 	c.JSON(200, order.OrderInfo.OrderNumber)
 
-	return nil
-}
-
-// Index2 ...
-func (mb *Mobile) Index2(c echo.Context) error {
-	ctx := c.Request().Context()
-	res, _ := mb.Controller.Dummy(ctx)
-
-	c.JSON(200, res)
 	return nil
 }

@@ -54,11 +54,6 @@ func open(count uint) (*gorm.DB, error) {
 	return db, nil
 }
 
-// Dummy ...
-func (s *Freezer) Dummy(ctx context.Context) (string, error) {
-	return "dummy ok", nil
-}
-
 // GetPatties ...
 func (s *Freezer) GetPatties(ctx context.Context, items map[string]int) error {
 	for item, num := range items {

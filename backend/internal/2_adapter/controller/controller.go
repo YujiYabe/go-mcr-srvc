@@ -44,12 +44,6 @@ func NewController(
 	return ct
 }
 
-// Dummy ...
-func (ctrl *Controller) Dummy(ctx context.Context) (string, error) {
-	res, _ := ctrl.UseCase.Dummy(ctx)
-	return res, nil
-}
-
 // Reserve ...
 func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderType string) {
 	ctrl.OrderNumber++

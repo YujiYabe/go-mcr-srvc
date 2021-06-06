@@ -20,13 +20,11 @@ type (
 		GetIngredients(ctx context.Context, requestIngredients map[string]int) error
 		Shipment(ctx context.Context, order *domain.Order) error
 		UpdateOrders(ctx context.Context, orderNumber string, phase string) error
-		Dummy(ctx context.Context) (string, error)
 	}
 
 	// ToDomain ...
 	ToDomain interface {
 		ParseOrder(ctx context.Context, order *domain.Order) *domain.Assemble
 		CookHamburgers(ctx context.Context, hamburgers []domain.Hamburger) error
-		Dummy(ctx context.Context) error
 	}
 )

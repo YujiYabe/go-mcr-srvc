@@ -29,29 +29,12 @@ func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	if err != nil {
 		return err
 	}
-	// limit := 3
-	// slots := make(chan struct{}, limit)
-	// var wg sync.WaitGroup
-	// for {
-	// 	slots <- struct{}{}
-	// 	wg.Add(1)
-	// 	go func() {
-	// 		err := uc.cookFoodstuff(ctx, order, assemble)
-	// 		if err != nil {
-	// 			fmt.Printf("%+v\n\n", err)
-	// 		}
-	// 		<-slots
-	// 		wg.Done()
-	// 	}()
-	// }
-	// wg.Wait()
 
 	// 出荷よー
 	err = uc.ToService.Shipment(ctx, order)
 	if err != nil {
 		return err
 	}
-
 	err = uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "complete")
 
 	return nil
@@ -104,11 +87,4 @@ func (uc *UseCase) cookFoodstuff(ctx context.Context, order *domain.Order, assem
 	}
 
 	return nil
-}
-
-// Dummy ...
-func (uc *UseCase) Dummy(ctx context.Context) (string, error) {
-	res, _ := uc.ToService.Dummy(ctx)
-
-	return res, nil
 }

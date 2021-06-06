@@ -87,11 +87,6 @@ func NewDomain() *domain {
 	return &domain{}
 }
 
-// Dummy ...
-func (dm *domain) Dummy(ctx context.Context) error {
-	return nil
-}
-
 // ParseOrder ...
 func (dm *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
 	assemble := &Assemble{

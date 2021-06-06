@@ -26,19 +26,16 @@ type (
 	ToRefrigerator interface {
 		GetVegetables(ctx context.Context, items map[string]int) error
 		GetIngredients(ctx context.Context, items map[string]int) error
-		Dummy(ctx context.Context) (string, error)
 	}
 
 	// ToFreezer ...
 	ToFreezer interface {
 		GetPatties(ctx context.Context, items map[string]int) error
-		Dummy(ctx context.Context) (string, error)
 	}
 
 	// ToShelf ...
 	ToShelf interface {
 		GetBans(ctx context.Context, items map[string]int) error
-		Dummy(ctx context.Context) (string, error)
 	}
 
 	// ToClient ...
