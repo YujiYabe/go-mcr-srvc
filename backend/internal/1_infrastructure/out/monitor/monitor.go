@@ -93,6 +93,8 @@ func NewEcho() *echo.Echo {
 
 // Start ...
 func (monitor *Monitor) Start() {
+	monitor.RemoveYummy()
+
 	go monitor.Watching()
 	go monitor.SendToAgents()
 

@@ -19,6 +19,10 @@
   border-color: #6c757d !important;
 }
 
+.border_color_transparent {
+  border-color: transparent !important;
+}
+
 
 .text-left {
   text-align: left;

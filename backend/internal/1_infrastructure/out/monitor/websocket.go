@@ -33,6 +33,8 @@ func (monitor *Monitor) WebSocket(c echo.Context) error {
 	monitor.Agents[agent.ID] = agent
 	monitor.Mutex.Unlock()
 
+	ordersChan <- *orders
+
 	return nil
 }
 
@@ -54,7 +56,6 @@ func (monitor *Monitor) Disconnect(agentID string) {
 }
 
 func (monitor *Monitor) sendToAgent(agentID string, orders Orders) {
-
 	err := monitor.Agents[agentID].Socket.WriteJSON(orders)
 	if err != nil {
 		fmt.Printf("%+v\n", err)

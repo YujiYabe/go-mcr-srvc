@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -10,6 +11,22 @@ import (
 )
 
 const targetPath = "yummy"
+
+func (monitor *Monitor) RemoveYummy() {
+	currentPath, _ := os.Getwd()
+	yummyPath := filepath.Join(currentPath, targetPath)
+
+	yummyFiles, err := ioutil.ReadDir(yummyPath)
+	if err != nil {
+		panic(err)
+	}
+	for _, yummyFile := range yummyFiles {
+		if err := os.Remove(filepath.Join(yummyPath, yummyFile.Name())); err != nil {
+			fmt.Println(err)
+		}
+	}
+
+}
 
 func (monitor *Monitor) Watching() {
 	currentPath, _ := os.Getwd()
