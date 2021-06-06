@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 
@@ -50,7 +49,6 @@ func (dlvr *Delivery) Start() {
 	RegisterDeliveryServiceServer(s, &dlvr.Server)
 	reflection.Register(s)
 
-	fmt.Println(" ■■■■■■■■■■ ")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
