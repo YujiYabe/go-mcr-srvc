@@ -3,7 +3,6 @@ package monitor
 import (
 	"backend/internal/2_adapter/service"
 	"context"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -26,9 +25,6 @@ type (
 		EchoEcho *echo.Echo
 		Agents   map[string]*Agent
 		Mutex    sync.RWMutex
-		// Member     []string
-		// Controller *controller.Controller
-		Orders Orders
 	}
 
 	// Orders ...
@@ -45,7 +41,13 @@ type (
 	}
 )
 
-var OrdersChan = make(chan Orders)
+var orders = &Orders{
+	Assembles: []string{},
+	Completes: []string{},
+	Passes:    []string{},
+}
+
+var ordersChan = make(chan Orders)
 
 // Render ...
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -57,11 +59,6 @@ func NewMonitor() *Monitor {
 	monitor := &Monitor{}
 	monitor.EchoEcho = NewEcho()
 	monitor.Agents = make(map[string]*Agent)
-	monitor.Orders = Orders{
-		Assembles: []string{},
-		Completes: []string{},
-		Passes:    []string{},
-	}
 
 	return monitor
 }
@@ -114,19 +111,16 @@ func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, ph
 
 	switch phase {
 	case "assemble":
-		monitor.Orders.Assembles = append(monitor.Orders.Assembles, orderNumber)
+		orders.Assembles = append(orders.Assembles, orderNumber)
 	case "complete":
-		monitor.Orders.Assembles = remove(monitor.Orders.Assembles, orderNumber)
-		monitor.Orders.Completes = append(monitor.Orders.Completes, orderNumber)
+		orders.Assembles = remove(orders.Assembles, orderNumber)
+		orders.Completes = append(orders.Completes, orderNumber)
 	case "pass":
-		monitor.Orders.Assembles = remove(monitor.Orders.Completes, orderNumber)
-		monitor.Orders.Passes = append(monitor.Orders.Passes, orderNumber)
+		orders.Completes = remove(orders.Completes, orderNumber)
+		orders.Passes = append(orders.Passes, orderNumber)
 	}
 
-	fmt.Println("==============================")
-	fmt.Println("==============================")
-
-	OrdersChan <- monitor.Orders
+	ordersChan <- *orders
 
 	return nil
 }

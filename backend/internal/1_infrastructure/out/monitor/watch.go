@@ -51,9 +51,6 @@ func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) []string {
 		if !isExist {
 			ctx := context.Background()
 			monitor.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
-			// monitor.Orders.Completes = remove(monitor.Orders.Completes, strings.TrimRight(currentfile, ".json"))
-			// monitor.Orders.Passes = append(monitor.Orders.Passes, strings.TrimRight(currentfile, ".json"))
-
 		}
 	}
 	return passedFiles

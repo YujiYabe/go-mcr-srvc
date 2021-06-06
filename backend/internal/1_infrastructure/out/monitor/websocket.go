@@ -39,10 +39,7 @@ func (monitor *Monitor) WebSocket(c echo.Context) error {
 // SendToAgents ....
 func (monitor *Monitor) SendToAgents() {
 	for {
-		content := <-OrdersChan
-
-		fmt.Printf("%+v\n", content)
-
+		content := <-ordersChan
 		for _, agent := range monitor.Agents {
 			monitor.sendToAgent(agent.ID, content)
 		}
