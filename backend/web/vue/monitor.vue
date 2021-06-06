@@ -113,9 +113,9 @@
 module.exports = {
 	props: {
 		'commonClass': {type: String, default: ''},
-		'assembles': { type: Array, default: ["1","2","3"]    },
-		'completes': { type: Array, default: ["12","22","32"] },
-		'passes': { type: Array, default:    ["13","23","33"] },
+		'assembles': { type: Array, default: [] },
+		'completes': { type: Array, default: [] },
+		'passes': { type: Array, default: [] },
 	},
 
 	methods: {

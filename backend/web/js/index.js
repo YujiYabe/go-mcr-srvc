@@ -7,9 +7,7 @@ var app = new Vue({
   }, // --- End of components --- //
 
   data: {
-    assembles: ["a1", "a2", "a3", "a5", "a7"],
-    // completes: ["12","22","32"],
-    // passes:    ["13","23","33"],
+    assembles: [],
     completes: [],
     passes: [],
 
