@@ -58,20 +58,16 @@ func (dlvr *Delivery) Start() {
 
 // DeliveryRPC ...
 func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
-	fmt.Println(" ============================== ")
 	order := &domain.Order{}
 	product := &domain.Product{}
 
-	fmt.Println(" ============================== ")
 	copier.Copy(product, in.Order)
 
 	order.Product = *product
 
 	s.Controller.Reserve(ctx, order, orderType)
 
-	fmt.Println(" ============================== ")
 	go s.Controller.Order(ctx, order)
 
-	fmt.Println(" ============================== ")
 	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil
 }

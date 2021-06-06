@@ -35,7 +35,7 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 		log.Fatal(err)
 	}
 
-	err = ioutil.WriteFile(yummyPath, product, 600)
+	err = ioutil.WriteFile(yummyPath, product, 0777)
 	if err != nil {
 		return err
 	}

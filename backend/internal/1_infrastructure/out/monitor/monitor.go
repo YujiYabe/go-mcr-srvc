@@ -33,9 +33,9 @@ type (
 
 	// Orders ...
 	Orders struct {
-		Assemble []string
-		Complete []string
-		Pass     []string
+		Assembles []string
+		Completes []string
+		Passes    []string
 	}
 
 	// Agent ...
@@ -109,10 +109,10 @@ func (monitor *Monitor) UpdateOrders(ctx context.Context, order *domain.Order, p
 
 	switch phase {
 	case "assemble":
-		monitor.Orders.Assemble = append(monitor.Orders.Assemble, order.OrderInfo.OrderNumber)
+		monitor.Orders.Assembles = append(monitor.Orders.Assembles, order.OrderInfo.OrderNumber)
 	case "complete":
-		monitor.Orders.Assemble = remove(monitor.Orders.Assemble, order.OrderInfo.OrderNumber)
-		monitor.Orders.Complete = append(monitor.Orders.Assemble, order.OrderInfo.OrderNumber)
+		monitor.Orders.Assembles = remove(monitor.Orders.Assembles, order.OrderInfo.OrderNumber)
+		monitor.Orders.Completes = append(monitor.Orders.Completes, order.OrderInfo.OrderNumber)
 	}
 
 	OrdersChan <- monitor.Orders

@@ -1,55 +1,54 @@
 package monitor
 
 import (
-	"log"
-
-	"github.com/fsnotify/fsnotify"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"time"
 )
 
 const targetPath = "yummy"
 
 func (monitor *Monitor) Watching() {
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer watcher.Close()
-	done := make(chan bool)
+	currentPath, _ := os.Getwd()
+	yummyPath := filepath.Join(currentPath, targetPath)
+	// var err error
+	var currentfiles []string
 
-	go func() {
-		for {
-			select {
-			case event, ok := <-watcher.Events:
-				if !ok {
-					return
-				}
-				switch {
-				case event.Op&fsnotify.Create == fsnotify.Create:
-				case event.Op&fsnotify.Write == fsnotify.Write:
-				case event.Op&fsnotify.Remove == fsnotify.Remove:
-					monitor.Passed(targetPath)
-
-				case event.Op&fsnotify.Rename == fsnotify.Rename:
-				case event.Op&fsnotify.Chmod == fsnotify.Chmod:
-				}
-
-			case err, ok := <-watcher.Errors:
-				if !ok {
-					return
-				}
-				log.Println("error:", err)
-			}
+	for {
+		files, err := ioutil.ReadDir(yummyPath)
+		if err != nil {
+			panic(err)
 		}
-	}()
 
-	err = watcher.Add(targetPath)
-	if err != nil {
-		log.Fatal(err)
+		var newFiles []string
+		for _, file := range files {
+			newFiles = append(newFiles, file.Name())
+		}
+
+		monitor.passedCheck(currentfiles, newFiles)
+
+		currentfiles = newFiles
+
+		time.Sleep(1 * time.Second)
 	}
-	<-done
 }
 
-func (monitor *Monitor) Passed(currentDir string) {
-
-	return
+func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) []string {
+	//最新のリストからファイルが削除されていれば渡しずみ判断
+	var passedFiles []string
+	for _, currentfile := range currentfiles {
+		isExist := false
+		for _, newFile := range newFiles {
+			if currentfile == newFile {
+				isExist = true
+				continue
+			}
+		}
+		if !isExist {
+			monitor.Orders.Completes = remove(monitor.Orders.Completes, currentfile)
+			monitor.Orders.Passes = append(monitor.Orders.Passes, currentfile)
+		}
+	}
+	return passedFiles
 }

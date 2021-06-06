@@ -60,8 +60,6 @@ func (monitor *Monitor) sendToAgent(agentID string, orders Orders) {
 
 	err := monitor.Agents[agentID].Socket.WriteJSON(orders)
 	if err != nil {
-		fmt.Println(" ============================== ")
 		fmt.Printf("%+v\n", err)
-		fmt.Println(" ============================== ")
 	}
 }

@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fsnotify/fsnotify"
-
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/domain"
+
+	"github.com/fsnotify/fsnotify"
 )
 
 var orderType = "register"

@@ -2,7 +2,6 @@ package domain
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -101,7 +100,6 @@ func (dm *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
 		Vegetables:  map[string]int{},
 		Ingredients: map[string]int{},
 	}
-	fmt.Println("==============================")
 
 	if len(order.Product.Hamburgers) != 0 {
 		dm.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
@@ -132,13 +130,6 @@ func (dm *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble
 		assemble.Ingredients["cheese"] += hamburger.Cheese
 		assemble.Ingredients["pickles"] += hamburger.Pickles
 	}
-	fmt.Println("==============================")
-	debugTarget := assemble
-	fmt.Printf("%#v\n", debugTarget)
-	// fmt.Printf("%v\n", debugTarget)
-	// fmt.Printf("%+v\n", debugTarget)
-	// fmt.Printf("%T\n", debugTarget)
-	fmt.Println("==============================")
 
 	return
 }
