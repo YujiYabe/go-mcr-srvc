@@ -55,12 +55,12 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 // Logging ...
 func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
 	fileName := time.Now().Format("2006-01-02") + ".log"
-	LogName := filepath.Join(pkg.LogPath, fileName)
+	LogFilePath := filepath.Join(pkg.LogPath, fileName)
 
 	// ファイルが存在しなければ作成
-	_, err := os.Stat(LogName)
+	_, err := os.Stat(LogFilePath)
 	if err != nil {
-		_, err := os.Create(LogName)
+		_, err := os.Create(LogFilePath)
 		if err != nil {
 			myErr.Logging(err)
 			return err
@@ -84,7 +84,7 @@ func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
 	row := strings.Join(rowData, "\t")                                                 // タブ区切り
 
 	// ファイル書き込み
-	f, err := os.OpenFile(filepath.Clean(LogName), os.O_APPEND|os.O_WRONLY, 0600)
+	f, err := os.OpenFile(filepath.Clean(LogFilePath), os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		myErr.Logging(err)
 		return err
