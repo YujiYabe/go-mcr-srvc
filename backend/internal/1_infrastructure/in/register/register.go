@@ -85,8 +85,8 @@ func (rgstr *Register) Start() {
 	<-done
 }
 
-func (rgstr *Register) OrderAccept(currentDir string) {
-	files, err := ioutil.ReadDir(currentDir)
+func (rgstr *Register) OrderAccept(registerPath string) {
+	files, err := ioutil.ReadDir(registerPath)
 	if err != nil {
 		myErr.Logging(err)
 	}
@@ -102,8 +102,8 @@ func (rgstr *Register) OrderAccept(currentDir string) {
 			continue
 		}
 
-		currentFilePath := filepath.Join(currentDir, file.Name())
-		newDir := filepath.Join(currentDir, "reserved")
+		currentFilePath := filepath.Join(registerPath, file.Name())
+		newDir := filepath.Join(registerPath, "reserved")
 
 		raw, err := ioutil.ReadFile(filepath.Clean(currentFilePath))
 		if err != nil {

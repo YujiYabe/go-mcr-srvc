@@ -3,8 +3,6 @@ package monitor
 import (
 	"context"
 	"io"
-	"os"
-	"path/filepath"
 	"sync"
 	"text/template"
 
@@ -83,17 +81,6 @@ func NewEcho() *echo.Echo {
 	e := echo.New()
 	e.HideBanner = true
 
-	currentPath, err := os.Getwd()
-	if err != nil {
-		myErr.Logging(err)
-	}
-	WebPath := filepath.Join(currentPath, "web")
-	IndexFilePath := filepath.Join(WebPath, "*.html")
-
-	e.Renderer = &Template{
-		templates: template.Must(template.ParseGlob(IndexFilePath)),
-	}
-
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}__${status}__${method}__${uri}\n",
 	}))
@@ -110,14 +97,11 @@ func (monitor *Monitor) Start() {
 	go monitor.Watching()
 	go monitor.SendToAgents()
 
-	currentPath, err := os.Getwd()
-	if err != nil {
-		myErr.Logging(err)
+	monitor.EchoEcho.Renderer = &Template{
+		templates: template.Must(template.ParseGlob(pkg.IndexPath)),
 	}
 
-	WebPath := filepath.Join(currentPath, "web")
-
-	monitor.EchoEcho.Static("/web", WebPath)
+	monitor.EchoEcho.Static("/web", pkg.WebPath)
 
 	monitor.EchoEcho.GET("/", monitor.Index)
 	monitor.EchoEcho.GET("/ws", monitor.WebSocket)
