@@ -34,10 +34,8 @@ func NewToShipment() service.ToShipment {
 
 // HandOver ...
 func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
-	currentPath, _ := os.Getwd()
 	fileName := order.OrderInfo.OrderNumber + ".json"
-
-	yummyPath := filepath.Join(currentPath, "yummy", fileName)
+	yummyFilePath := filepath.Join(pkg.YummyPath, fileName)
 
 	product, err := json.MarshalIndent(order.Product, "", "    ")
 	if err != nil {
@@ -45,7 +43,7 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(yummyPath, product, 0777)
+	err = ioutil.WriteFile(yummyFilePath, product, 0777)
 	if err != nil {
 		myErr.Logging(err)
 		return err
@@ -56,11 +54,8 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 
 // Logging ...
 func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
-	currentPath, _ := os.Getwd()
-	LogPath := filepath.Join(currentPath, "storage", "log")
-
 	fileName := time.Now().Format("2006-01-02") + ".log"
-	LogName := filepath.Join(LogPath, fileName)
+	LogName := filepath.Join(pkg.LogPath, fileName)
 
 	// ファイルが存在しなければ作成
 	_, err := os.Stat(LogName)

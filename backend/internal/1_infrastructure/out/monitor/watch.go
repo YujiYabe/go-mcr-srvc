@@ -7,21 +7,18 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"backend/pkg"
 )
 
-const targetPath = "yummy"
-
 func (monitor *Monitor) RemoveYummy() {
-	currentPath, _ := os.Getwd()
-	yummyPath := filepath.Join(currentPath, targetPath)
-
-	yummyFiles, err := ioutil.ReadDir(yummyPath)
+	yummyFiles, err := ioutil.ReadDir(pkg.YummyPath)
 	if err != nil {
 		myErr.Logging(err)
 	}
 
 	for _, yummyFile := range yummyFiles {
-		err := os.Remove(filepath.Join(yummyPath, yummyFile.Name()))
+		err := os.Remove(filepath.Join(pkg.YummyPath, yummyFile.Name()))
 		if err != nil {
 			myErr.Logging(err)
 		}
@@ -30,17 +27,10 @@ func (monitor *Monitor) RemoveYummy() {
 }
 
 func (monitor *Monitor) Watching() {
-	currentPath, err := os.Getwd()
-	if err != nil {
-		myErr.Logging(err)
-	}
-
-	yummyPath := filepath.Join(currentPath, targetPath)
-
 	var currentfiles []string
 
 	for {
-		files, err := ioutil.ReadDir(yummyPath)
+		files, err := ioutil.ReadDir(pkg.YummyPath)
 		if err != nil {
 			myErr.Logging(err)
 		}

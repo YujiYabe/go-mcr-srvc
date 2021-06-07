@@ -25,8 +25,6 @@ func init() {
 	myErr = pkg.NewMyErr("infrastructure", "register")
 }
 
-const targetPath = "scripts/order/register"
-
 type (
 	// Register ...
 	Register struct {
@@ -59,10 +57,10 @@ func (rgstr *Register) Start() {
 				}
 				switch {
 				case event.Op&fsnotify.Create == fsnotify.Create:
-					rgstr.OrderAccept(targetPath)
+					rgstr.OrderAccept(pkg.RegisterPath)
 
 				case event.Op&fsnotify.Write == fsnotify.Write:
-					rgstr.OrderAccept(targetPath)
+					rgstr.OrderAccept(pkg.RegisterPath)
 
 				case event.Op&fsnotify.Remove == fsnotify.Remove:
 				case event.Op&fsnotify.Rename == fsnotify.Rename:
@@ -80,7 +78,7 @@ func (rgstr *Register) Start() {
 		}
 	}()
 
-	err = watcher.Add(targetPath)
+	err = watcher.Add(pkg.RegisterPath)
 	if err != nil {
 		myErr.Logging(err)
 	}

@@ -83,7 +83,10 @@ func NewEcho() *echo.Echo {
 	e := echo.New()
 	e.HideBanner = true
 
-	currentPath, _ := os.Getwd()
+	currentPath, err := os.Getwd()
+	if err != nil {
+		myErr.Logging(err)
+	}
 	WebPath := filepath.Join(currentPath, "web")
 	IndexFilePath := filepath.Join(WebPath, "*.html")
 

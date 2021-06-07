@@ -12,12 +12,6 @@ import (
 	"time"
 )
 
-var (
-	currentPath, _ = os.Getwd()
-	storagePath    = filepath.Join(currentPath, "storage")
-	LogPath        = filepath.Join(storagePath, "errorlog")
-)
-
 // MyErr ...
 type MyErr struct {
 	Layer string
