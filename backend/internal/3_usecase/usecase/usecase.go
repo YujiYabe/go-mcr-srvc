@@ -1,19 +1,26 @@
 package usecase
 
 import (
-	"backend/internal/4_domain/domain"
 	"context"
 	"sync"
+
+	"backend/internal/4_domain/domain"
+	"backend/pkg"
 )
+
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("usecase", "usecase")
+}
 
 // Order ...
 func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	var err error
 
-	err = uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "assemble")
-	if err != nil {
-		return err
-	}
+	uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "assemble")
 
 	// オーダー解析
 	assemble := uc.ToDomain.ParseOrder(ctx, order)
@@ -21,21 +28,24 @@ func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	// 材料取り出し
 	err = uc.getFoodstuff(ctx, assemble)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
 
 	// 調理
 	err = uc.cookFoodstuff(ctx, order, assemble)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
 
 	// 出荷よー
 	err = uc.ToService.Shipment(ctx, order)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
-	err = uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "complete")
+	uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "complete")
 
 	return nil
 }
@@ -70,6 +80,7 @@ func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble) 
 
 	wg.Wait()
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
 
@@ -77,13 +88,12 @@ func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble) 
 }
 
 func (uc *UseCase) cookFoodstuff(ctx context.Context, order *domain.Order, assemble *domain.Assemble) error {
-	var err error
 	if len(order.Product.Hamburgers) > 0 {
-		err = uc.ToDomain.CookHamburgers(ctx, order.Product.Hamburgers)
-	}
-
-	if err != nil {
-		return err
+		err := uc.ToDomain.CookHamburgers(ctx, order.Product.Hamburgers)
+		if err != nil {
+			myErr.Logging(err)
+			return err
+		}
 	}
 
 	return nil

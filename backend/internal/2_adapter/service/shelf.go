@@ -8,6 +8,7 @@ import (
 func (sv *Service) GetBans(ctx context.Context, requestBans map[string]int) error {
 	err := sv.ToShelf.GetBans(ctx, requestBans)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
 

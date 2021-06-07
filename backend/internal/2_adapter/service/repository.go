@@ -4,7 +4,16 @@ import (
 	"context"
 
 	"backend/internal/4_domain/domain"
+	"backend/pkg"
 )
+
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("adapter", "service")
+}
 
 // Service ...
 type Service struct {
@@ -45,12 +54,6 @@ type (
 
 	// ToMonitor ...
 	ToMonitor interface {
-		UpdateOrders(ctx context.Context, orderNumber string, phase string) error
+		UpdateOrders(ctx context.Context, orderNumber string, phase string)
 	}
-
-	// // DatabaseResult ...
-	// DatabaseResult interface {
-	// 	LastInsertId() (int64, error)
-	// 	RowsAffected() (int64, error)
-	// }
 )

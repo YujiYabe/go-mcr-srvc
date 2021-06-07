@@ -3,7 +3,17 @@ package domain
 import (
 	"context"
 	"time"
+
+	"backend/pkg"
 )
+
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("domain", "domain")
+}
 
 type (
 	domain struct{}
@@ -130,30 +140,16 @@ func (dm *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble
 }
 
 func (dm *domain) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
-	var err error
 	for _, hamburger := range hamburgers {
-
-		err = dm.cutVegetables(ctx, hamburger)
-		if err != nil {
-			return err
-		}
-
-		err = dm.grillPatties(ctx, hamburger)
-		if err != nil {
-			return err
-		}
-
-		err = dm.assembleHamburger(ctx, hamburger)
-		if err != nil {
-			return err
-		}
-
+		dm.cutVegetables(ctx, hamburger)
+		dm.grillPatties(ctx, hamburger)
+		dm.assembleHamburger(ctx, hamburger)
 	}
 
 	return nil
 }
 
-func (dm *domain) cutVegetables(ctx context.Context, hamburger Hamburger) error {
+func (dm *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Lettuce > 0 {
 		time.Sleep(2 * time.Second)
 	}
@@ -163,15 +159,15 @@ func (dm *domain) cutVegetables(ctx context.Context, hamburger Hamburger) error 
 	if hamburger.Pickles > 0 {
 		time.Sleep(2 * time.Second)
 	}
-	return nil
+	return
 }
 
-func (dm *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) error {
+func (dm *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) {
 	time.Sleep(3 * time.Second)
-	return nil
+	return
 }
 
-func (dm *domain) grillPatties(ctx context.Context, hamburger Hamburger) error {
+func (dm *domain) grillPatties(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Beef > 0 {
 		time.Sleep(time.Duration(hamburger.Beef*6) * time.Second)
 	}
@@ -182,5 +178,5 @@ func (dm *domain) grillPatties(ctx context.Context, hamburger Hamburger) error {
 		time.Sleep(time.Duration(hamburger.Fish*6) * time.Second)
 	}
 
-	return nil
+	return
 }
