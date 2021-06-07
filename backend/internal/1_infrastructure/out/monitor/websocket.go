@@ -1,7 +1,6 @@
 package monitor
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/websocket"
@@ -21,6 +20,7 @@ func (monitor *Monitor) WebSocket(c echo.Context) error {
 
 	webSocket, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
 
@@ -58,6 +58,6 @@ func (monitor *Monitor) Disconnect(agentID string) {
 func (monitor *Monitor) sendToAgent(agentID string, orders Orders) {
 	err := monitor.Agents[agentID].Socket.WriteJSON(orders)
 	if err != nil {
-		fmt.Printf("%+v\n", err)
+		myErr.Logging(err)
 	}
 }

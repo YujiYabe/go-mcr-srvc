@@ -1,13 +1,21 @@
 package pc
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/domain"
-
-	"github.com/gin-gonic/gin"
+	"backend/pkg"
 )
 
-var orderType = "pc"
+var (
+	orderType = "pc"
+	myErr     *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "pc")
+}
 
 type (
 	// PC ...
@@ -48,8 +56,10 @@ func (pc *PC) IndexPost(c *gin.Context) {
 	order := &domain.Order{}
 	product := &domain.Product{}
 	if err := c.Bind(product); err != nil {
+		myErr.Logging(err)
 		return
 	}
+
 	order.Product = *product
 
 	pc.Controller.Reserve(ctx, order, orderType)

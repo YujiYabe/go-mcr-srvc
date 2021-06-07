@@ -3,20 +3,27 @@ package register
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/fsnotify/fsnotify"
+
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/domain"
-
-	"github.com/fsnotify/fsnotify"
+	"backend/pkg"
 )
 
-var orderType = "register"
+var (
+	orderType = "register"
+	myErr     *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "register")
+}
 
 const targetPath = "scripts/order/register"
 
@@ -37,6 +44,7 @@ func NewRegister(ctrl *controller.Controller) *Register {
 func (rgstr *Register) Start() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
+		myErr.Logging(err)
 		log.Fatal(err)
 	}
 	defer watcher.Close()
@@ -65,14 +73,16 @@ func (rgstr *Register) Start() {
 				if !ok {
 					return
 				}
-				log.Println("error:", err)
+				if err != nil {
+					myErr.Logging(err)
+				}
 			}
 		}
 	}()
 
 	err = watcher.Add(targetPath)
 	if err != nil {
-		log.Fatal(err)
+		myErr.Logging(err)
 	}
 	<-done
 }
@@ -80,7 +90,7 @@ func (rgstr *Register) Start() {
 func (rgstr *Register) OrderAccept(currentDir string) {
 	files, err := ioutil.ReadDir(currentDir)
 	if err != nil {
-		panic(err)
+		myErr.Logging(err)
 	}
 
 	for _, file := range files {
@@ -99,7 +109,7 @@ func (rgstr *Register) OrderAccept(currentDir string) {
 
 		raw, err := ioutil.ReadFile(filepath.Clean(currentFilePath))
 		if err != nil {
-			fmt.Println(err.Error())
+			myErr.Logging(err)
 			continue
 		}
 
@@ -107,7 +117,7 @@ func (rgstr *Register) OrderAccept(currentDir string) {
 		product := &domain.Product{}
 		err = json.Unmarshal(raw, product)
 		if err != nil {
-			fmt.Println(err.Error())
+			myErr.Logging(err)
 			continue
 		}
 		order.Product = *product
@@ -121,7 +131,7 @@ func (rgstr *Register) OrderAccept(currentDir string) {
 		newFileName := strings.Replace(currentFileName, "json", order.OrderInfo.OrderNumber, 1)
 		newFilePath := filepath.Join(newDir, newFileName)
 		if err := os.Rename(currentFilePath, newFilePath); err != nil {
-			fmt.Println(err)
+			myErr.Logging(err)
 		}
 	}
 

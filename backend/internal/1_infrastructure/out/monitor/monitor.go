@@ -1,7 +1,6 @@
 package monitor
 
 import (
-	"backend/internal/2_adapter/service"
 	"context"
 	"io"
 	"os"
@@ -12,7 +11,19 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+
+	"backend/internal/2_adapter/service"
+	"backend/pkg"
 )
+
+var (
+	myErr      *pkg.MyErr
+	ordersChan = make(chan Orders)
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "monitor")
+}
 
 type (
 	// Template ...
@@ -46,8 +57,6 @@ var orders = &Orders{
 	Completes: []string{},
 	Passes:    []string{},
 }
-
-var ordersChan = make(chan Orders)
 
 // Render ...
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -98,7 +107,11 @@ func (monitor *Monitor) Start() {
 	go monitor.Watching()
 	go monitor.SendToAgents()
 
-	currentPath, _ := os.Getwd()
+	currentPath, err := os.Getwd()
+	if err != nil {
+		myErr.Logging(err)
+	}
+
 	WebPath := filepath.Join(currentPath, "web")
 
 	monitor.EchoEcho.Static("/web", WebPath)
@@ -109,7 +122,7 @@ func (monitor *Monitor) Start() {
 }
 
 // UpdateOrders ...
-func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) error {
+func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
 
 	switch phase {
 	case "assemble":
@@ -124,7 +137,7 @@ func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, ph
 
 	ordersChan <- *orders
 
-	return nil
+	return
 }
 
 func remove(strings []string, search string) []string {

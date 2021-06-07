@@ -8,9 +8,17 @@ import (
 	"backend/internal/2_adapter/service"
 	"backend/internal/3_usecase/usecase"
 	"backend/internal/4_domain/domain"
+	"backend/pkg"
 )
 
-func init() {}
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("adapter", "controller")
+
+}
 
 type (
 	// Controller ...
@@ -59,8 +67,8 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderT
 func (ctrl *Controller) Order(ctx context.Context, order *domain.Order) error {
 	err := ctrl.UseCase.Order(ctx, order)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
-
 	return nil
 }

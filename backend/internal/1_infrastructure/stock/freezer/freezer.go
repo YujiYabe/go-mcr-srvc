@@ -9,7 +9,16 @@ import (
 	"gorm.io/gorm"
 
 	"backend/internal/2_adapter/service"
+	"backend/pkg"
 )
+
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "freezer")
+}
 
 type (
 	// Freezer ...
@@ -29,6 +38,7 @@ type (
 func NewToFreezer() service.ToFreezer {
 	conn, err := open(30)
 	if err != nil {
+		myErr.Logging(err)
 		panic(err)
 	}
 
@@ -43,6 +53,7 @@ func open(count uint) (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		if count == 0 {
+			myErr.Logging(err)
 			return nil, fmt.Errorf("Retry count over")
 		}
 		time.Sleep(time.Second)
@@ -63,8 +74,10 @@ func (s *Freezer) GetPatties(ctx context.Context, items map[string]int) error {
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
 
 		if res.Error != nil {
+			myErr.Logging(res.Error)
 			return res.Error
 		}
+
 		time.Sleep(2 * time.Second)
 	}
 	return nil

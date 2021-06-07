@@ -9,7 +9,16 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"backend/internal/2_adapter/service"
+	"backend/pkg"
 )
+
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "refrigerator")
+}
 
 type (
 	// Shelf ...
@@ -42,6 +51,7 @@ func open(count uint) (*mongo.Client, error) {
 
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 	if err != nil {
+		myErr.Logging(err)
 		panic(err)
 	}
 
@@ -58,12 +68,14 @@ func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
 
 		err := bans.FindOne(ctx, filter).Decode(stock)
 		if err != nil {
+			myErr.Logging(err)
 			return err
 		}
 
 		change := bson.M{"$set": bson.M{"stock": stock.Stock - num}}
 		_, err = bans.UpdateOne(ctx, filter, change)
 		if err != nil {
+			myErr.Logging(err)
 			return err
 		}
 

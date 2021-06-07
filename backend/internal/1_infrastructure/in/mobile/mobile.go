@@ -6,9 +6,17 @@ import (
 
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/domain"
+	"backend/pkg"
 )
 
-var orderType = "mobile"
+var (
+	orderType = "mobile"
+	myErr     *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("mobile", "infrastructure")
+}
 
 type (
 	// Mobile ...
@@ -53,6 +61,7 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 	order := &domain.Order{}
 	product := &domain.Product{}
 	if err := c.Bind(product); err != nil {
+		myErr.Logging(err)
 		return err
 	}
 	order.Product = *product

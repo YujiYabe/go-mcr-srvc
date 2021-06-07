@@ -5,16 +5,23 @@ import (
 	"log"
 	"net"
 
+	"github.com/jinzhu/copier"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/domain"
-
-	"github.com/jinzhu/copier"
-	"google.golang.org/grpc/reflection"
+	"backend/pkg"
 )
 
-var orderType = "delivery"
+var (
+	orderType = "delivery"
+	myErr     *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "delivery")
+}
 
 // Delivery ...
 type Delivery struct {
@@ -42,6 +49,7 @@ func (dlvr *Delivery) Start() {
 	log.Println("start GRPC ------------------------- ")
 	lis, err := net.Listen("tcp", "backend:3456")
 	if err != nil {
+		myErr.Logging(err)
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
@@ -50,6 +58,7 @@ func (dlvr *Delivery) Start() {
 	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
+		myErr.Logging(err)
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

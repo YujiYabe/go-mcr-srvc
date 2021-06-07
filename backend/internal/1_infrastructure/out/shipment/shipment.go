@@ -13,7 +13,16 @@ import (
 
 	"backend/internal/2_adapter/service"
 	"backend/internal/4_domain/domain"
+	"backend/pkg"
 )
+
+var (
+	myErr *pkg.MyErr
+)
+
+func init() {
+	myErr = pkg.NewMyErr("infrastructure", "shipment")
+}
 
 type Shipment struct{}
 
@@ -32,11 +41,13 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 
 	product, err := json.MarshalIndent(order.Product, "", "    ")
 	if err != nil {
-		log.Fatal(err)
+		myErr.Logging(err)
+		return err
 	}
 
 	err = ioutil.WriteFile(yummyPath, product, 0777)
 	if err != nil {
+		myErr.Logging(err)
 		return err
 	}
 
@@ -56,14 +67,16 @@ func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
 	if err != nil {
 		_, err := os.Create(LogName)
 		if err != nil {
-			log.Fatal(err)
+			myErr.Logging(err)
+			return err
 		}
 	}
 
 	// エラー以外の情報をjson化
 	product, err := json.Marshal(&order.Product)
 	if err != nil {
-		log.Fatal(err)
+		myErr.Logging(err)
+		return err
 	}
 
 	// エラー情報作成
@@ -78,10 +91,14 @@ func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
 	// ファイル書き込み
 	f, err := os.OpenFile(filepath.Clean(LogName), os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
-		log.Fatal(err)
+		myErr.Logging(err)
+		return err
 	}
+
 	defer func() {
-		if err := f.Close(); err != nil {
+		err := f.Close()
+		if err != nil {
+			myErr.Logging(err)
 			log.Fatal(err)
 		}
 	}()
