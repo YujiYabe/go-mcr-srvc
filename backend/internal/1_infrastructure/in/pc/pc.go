@@ -27,40 +27,39 @@ type (
 
 // NewPC ...
 func NewPC(ctrl *controller.Controller) *PC {
-	pc := &PC{}
-
-	pc.GinEngine = NewGin()
-	pc.Controller = ctrl
+	pc := &PC{
+		GinEngine:  NewGin(),
+		Controller: ctrl,
+	}
 
 	return pc
 }
 
 // NewGin ...
 func NewGin() *gin.Engine {
-	r := gin.Default()
-
-	return r
+	return gin.Default()
 }
 
 // Start ...
 func (pc *PC) Start() {
 	pc.GinEngine.POST("/", pc.IndexPost)
 
-	pc.GinEngine.Run(":2345")
+	pc.GinEngine.Run(pkg.PCPort)
 }
 
 // IndexPost ...
 func (pc *PC) IndexPost(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	order := &domain.Order{}
 	product := &domain.Product{}
 	if err := c.Bind(product); err != nil {
 		myErr.Logging(err)
 		return
 	}
 
-	order.Product = *product
+	order := &domain.Order{
+		Product: *product,
+	}
 
 	pc.Controller.Reserve(ctx, order, orderType)
 

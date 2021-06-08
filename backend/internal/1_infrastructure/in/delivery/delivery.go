@@ -36,18 +36,20 @@ type Server struct {
 
 // NewDelivery ...
 func NewDelivery(ctrl *controller.Controller) *Delivery {
-	dlvr := &Delivery{}
-	srvr := &Server{}
-	srvr.Controller = ctrl
-	dlvr.Server = *srvr
+	d := &Delivery{
+		Server: Server{
+			Controller: ctrl,
+		},
+	}
 
-	return dlvr
+	return d
 }
 
 // Start ....
 func (dlvr *Delivery) Start() {
 	log.Println("start GRPC ------------------------- ")
-	lis, err := net.Listen("tcp", "backend:3456")
+
+	lis, err := net.Listen("tcp", pkg.DeliveryAddress)
 	if err != nil {
 		myErr.Logging(err)
 		log.Fatalf("failed to listen: %v", err)
@@ -65,12 +67,16 @@ func (dlvr *Delivery) Start() {
 
 // DeliveryRPC ...
 func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
-	order := &domain.Order{}
 	product := &domain.Product{}
+	err := copier.Copy(product, in.Order)
+	if err != nil {
+		myErr.Logging(err)
+		return nil, err
+	}
 
-	copier.Copy(product, in.Order)
-
-	order.Product = *product
+	order := &domain.Order{
+		Product: *product,
+	}
 
 	s.Controller.Reserve(ctx, order, orderType)
 

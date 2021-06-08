@@ -15,7 +15,6 @@ func (monitor *Monitor) Index(c echo.Context) error {
 
 // WebSocket ...
 func (monitor *Monitor) WebSocket(c echo.Context) error {
-	var err error
 	var upgrader = websocket.Upgrader{}
 
 	webSocket, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
@@ -25,9 +24,10 @@ func (monitor *Monitor) WebSocket(c echo.Context) error {
 	}
 
 	id := uuid.NewUUID()
-	agent := new(Agent)
-	agent.Socket = webSocket
-	agent.ID = id.String()
+	agent := &Agent{
+		Socket: webSocket,
+		ID:     id.String(),
+	}
 
 	monitor.Mutex.Lock()
 	monitor.Agents[agent.ID] = agent

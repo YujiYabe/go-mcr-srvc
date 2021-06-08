@@ -105,7 +105,7 @@ func (monitor *Monitor) Start() {
 
 	monitor.EchoEcho.GET("/", monitor.Index)
 	monitor.EchoEcho.GET("/ws", monitor.WebSocket)
-	monitor.EchoEcho.Logger.Fatal(monitor.EchoEcho.Start(":4567"))
+	monitor.EchoEcho.Logger.Fatal(monitor.EchoEcho.Start(pkg.MonitorPort))
 }
 
 // UpdateOrders ...

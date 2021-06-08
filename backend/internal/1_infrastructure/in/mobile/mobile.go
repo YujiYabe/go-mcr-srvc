@@ -28,9 +28,10 @@ type (
 
 // NewMobile ...
 func NewMobile(ctrl *controller.Controller) *Mobile {
-	mb := &Mobile{}
-	mb.EchoEcho = NewEcho()
-	mb.Controller = ctrl
+	mb := &Mobile{
+		EchoEcho:   NewEcho(),
+		Controller: ctrl,
+	}
 
 	return mb
 }
@@ -51,20 +52,22 @@ func NewEcho() *echo.Echo {
 // Start ...
 func (mb *Mobile) Start() {
 	mb.EchoEcho.POST("/", mb.IndexPost)
-	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(":1234"))
+	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(pkg.MobilePort))
 }
 
 // IndexPost ...
 func (mb *Mobile) IndexPost(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	order := &domain.Order{}
 	product := &domain.Product{}
 	if err := c.Bind(product); err != nil {
 		myErr.Logging(err)
 		return err
 	}
-	order.Product = *product
+
+	order := &domain.Order{
+		Product: *product,
+	}
 
 	mb.Controller.Reserve(ctx, order, orderType)
 

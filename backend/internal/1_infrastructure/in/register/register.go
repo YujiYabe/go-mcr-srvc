@@ -34,8 +34,10 @@ type (
 
 // NewRegister ...
 func NewRegister(ctrl *controller.Controller) *Register {
-	rgstr := &Register{}
-	rgstr.Controller = ctrl
+	rgstr := &Register{
+		Controller: ctrl,
+	}
+
 	return rgstr
 }
 
@@ -57,10 +59,10 @@ func (rgstr *Register) Start() {
 				}
 				switch {
 				case event.Op&fsnotify.Create == fsnotify.Create:
-					rgstr.OrderAccept(pkg.RegisterPath)
+					rgstr.OrderAccept()
 
 				case event.Op&fsnotify.Write == fsnotify.Write:
-					rgstr.OrderAccept(pkg.RegisterPath)
+					rgstr.OrderAccept()
 
 				case event.Op&fsnotify.Remove == fsnotify.Remove:
 				case event.Op&fsnotify.Rename == fsnotify.Rename:
@@ -85,8 +87,8 @@ func (rgstr *Register) Start() {
 	<-done
 }
 
-func (rgstr *Register) OrderAccept(registerPath string) {
-	files, err := ioutil.ReadDir(registerPath)
+func (rgstr *Register) OrderAccept() {
+	files, err := ioutil.ReadDir(pkg.RegisterPath)
 	if err != nil {
 		myErr.Logging(err)
 	}
@@ -102,8 +104,7 @@ func (rgstr *Register) OrderAccept(registerPath string) {
 			continue
 		}
 
-		currentFilePath := filepath.Join(registerPath, file.Name())
-		newDir := filepath.Join(registerPath, "reserved")
+		currentFilePath := filepath.Join(pkg.RegisterPath, currentFileName)
 
 		raw, err := ioutil.ReadFile(filepath.Clean(currentFilePath))
 		if err != nil {
@@ -111,14 +112,16 @@ func (rgstr *Register) OrderAccept(registerPath string) {
 			continue
 		}
 
-		order := &domain.Order{}
 		product := &domain.Product{}
 		err = json.Unmarshal(raw, product)
 		if err != nil {
 			myErr.Logging(err)
 			continue
 		}
-		order.Product = *product
+
+		order := &domain.Order{
+			Product: *product,
+		}
 
 		ctx := context.Background()
 
@@ -127,7 +130,7 @@ func (rgstr *Register) OrderAccept(registerPath string) {
 		go rgstr.Controller.Order(ctx, order)
 
 		newFileName := strings.Replace(currentFileName, "json", order.OrderInfo.OrderNumber, 1)
-		newFilePath := filepath.Join(newDir, newFileName)
+		newFilePath := filepath.Join(pkg.ReservedPath, newFileName)
 		if err := os.Rename(currentFilePath, newFilePath); err != nil {
 			myErr.Logging(err)
 		}
