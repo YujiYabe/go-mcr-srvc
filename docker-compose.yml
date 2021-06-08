@@ -31,14 +31,11 @@ services:
             context: ./db/engine/postgres
             dockerfile: Dockerfile
         ports:
-            - "15432:5432"
+            - ${POSTGRES_PORTS}
         environment:
-            # - POSTGRES_DB=postgres
-            # - POSTGRES_USER=root
-            # - POSTGRES_PASSWORD=root
-            - POSTGRES_DB=app
-            - POSTGRES_USER=user
-            - POSTGRES_PASSWORD=user
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         user: root
         volumes:
             - ./db/engine/postgres/initdb.d:/docker-entrypoint-initdb.d
@@ -52,12 +49,12 @@ services:
             context: ./db/engine/mongo
             dockerfile: Dockerfile
         environment:
-            MONGO_INITDB_DATABASE: app
-            MONGO_INITDB_ROOT_USERNAME: user
-            MONGO_INITDB_ROOT_PASSWORD: user
-            TZ: Asia/Tokyo
+            - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+            - TZ=${TZ}
         ports:
-            - 27017:27017
+            - ${MONG_PORTS}
         volumes:
             - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
 
@@ -72,10 +69,10 @@ services:
         volumes:
             - ./backend:/go/src/backend
         ports:
-            - "1234:1234"
-            - "2345:2345"
-            - "3456:3456"
-            - "4567:4567"
+            - ${MOBILE_PORT}
+            - ${PC_PORT}
+            - ${DELIVERY_PORT}
+            - ${MONITOR_PORT}
         environment:
             - GOPATH=${GOPATH}
         tty: true

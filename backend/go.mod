@@ -8,6 +8,7 @@ require (
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/gorilla/websocket v0.0.0-20170926233335-4201258b820c
 	github.com/jinzhu/copier v0.3.2
+	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect

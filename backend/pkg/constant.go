@@ -1,8 +1,11 @@
 package pkg
 
 import (
+	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -17,13 +20,24 @@ var (
 	WebPath   = filepath.Join(currentPath, "web")
 	IndexPath = filepath.Join(WebPath, "*.html")
 )
-
-const (
-	backendHost  = "backend"
-	MobilePort   = ":1234"
-	PCPort       = ":2345"
-	DeliveryPort = ":3456"
-	MonitorPort  = ":4567"
-
-	DeliveryAddress = backendHost + DeliveryPort
+var (
+	backendHost     = "backend"
+	MobilePort      string
+	PCPort          string
+	DeliveryPort    string
+	MonitorPort     string
+	DeliveryAddress string
 )
+
+func init() {
+	err := godotenv.Load(filepath.Join(currentPath, ".env"))
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	MobilePort = os.Getenv("MOBILE_BACK_PORT")
+	PCPort = os.Getenv("PC_BACK_PORT")
+	DeliveryPort = os.Getenv("DELIVERY_BACK_PORT")
+	MonitorPort = os.Getenv("MONITOR_BACK_PORT")
+	DeliveryAddress = backendHost + DeliveryPort
+}
