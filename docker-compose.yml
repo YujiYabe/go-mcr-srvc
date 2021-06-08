@@ -9,42 +9,17 @@ services:
             context: ./db/engine/mysql
             dockerfile: Dockerfile
         environment:
-            # MYSQL_supplier: sample_db
-            # MYSQL_USER: user
-            # MYSQL_PASSWORD: password
-            # MYSQL_ROOT_PASSWORD: password
-            - MYSQL_DATABASE=app
-            - MYSQL_USER=user
-            - MYSQL_PASSWORD=user
-            - MYSQL_ROOT_PASSWORD=password
-            - TZ=Asia/Tokyo
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${TZ}
         ports:
-            - "13306:13306"
+            - ${MYSQL_PORTS}
         volumes:
             - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
             - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
             - ./db/engine/mysql/data:/var/lib/mysql
-        #     - ./log/mysql:/var/log/mysql
-
-    # #  ==================================
-    # phpmyadmin:
-    #     container_name: phpmyadmin
-    #     build:
-    #         context: ./db/tool/phpmyadmin
-    #         dockerfile: Dockerfile
-    #     environment:
-    #         - PMA_ARBITRARY=1
-    #         - PMA_HOST=mysql
-    #         - PMA_USER=root
-    #         - PMA_PASSWORD=password
-    #     ports:
-    #         - "8090:80"
-    #     volumes:
-    #         - "./db/tool/phpmyadmin/sessions:/sessions"
-    #     links:
-    #         - mysql
-    #     depends_on:
-    #         - mysql
 
 
     #  ==================================
@@ -69,25 +44,6 @@ services:
             - ./db/engine/postgres/initdb.d:/docker-entrypoint-initdb.d
             - ./db/engine/postgres/data:/var/lib/postgres/data
 
-
-    # #  ==================================
-    # pgadmin:
-    #     restart: always
-    #     container_name: pgadmin
-    #     hostname: pgadmin
-    #     build:
-    #         context: ./db/tool/pgadmin
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - 8091:80
-    #     volumes:
-    #         - ./db/tool/pgadmin:/var/lib/pgadmin/storage
-    #     environment:
-    #         PGADMIN_DEFAULT_EMAIL: root
-    #         PGADMIN_DEFAULT_PASSWORD: root
-    #     depends_on:
-    #         - postgres
-
     # ==================================
     mongo:
         restart: always
@@ -106,16 +62,6 @@ services:
             - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
 
 
-    # #  ==================================
-    # mongo-express:
-    #     image: mongo-express
-    #     restart: always
-    #     ports:
-    #         - 18081:8081
-    #     environment:
-    #         ME_CONFIG_MONGODB_ADMINUSERNAME: user
-    #         ME_CONFIG_MONGODB_ADMINPASSWORD: user
-
     #  ==================================
     backend:
         restart: always
@@ -130,9 +76,8 @@ services:
             - "2345:2345"
             - "3456:3456"
             - "4567:4567"
-        # command: ["4321", "1234"]
         environment:
-            - GOPATH=/go
+            - GOPATH=${GOPATH}
         tty: true
         links:
             - mysql
@@ -142,3 +87,53 @@ services:
             - mysql
             - postgres
             - mongo
+
+
+    #  ==================================
+    # phpmyadmin:
+    #     container_name: phpmyadmin
+    #     build:
+    #         context: ./db/tool/phpmyadmin
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         - PMA_ARBITRARY=1
+    #         - PMA_HOST=mysql
+    #         - PMA_USER=root
+    #         - PMA_PASSWORD=password
+    #     ports:
+    #         - "8090:80"
+    #     volumes:
+    #         - "./db/tool/phpmyadmin/sessions:/sessions"
+    #     links:
+    #         - mysql
+    #     depends_on:
+    #         - mysql
+
+    #  ==================================
+    # pgadmin:
+    #     restart: always
+    #     container_name: pgadmin
+    #     hostname: pgadmin
+    #     build:
+    #         context: ./db/tool/pgadmin
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - 8091:80
+    #     volumes:
+    #         - ./db/tool/pgadmin:/var/lib/pgadmin/storage
+    #     environment:
+    #         PGADMIN_DEFAULT_EMAIL: root
+    #         PGADMIN_DEFAULT_PASSWORD: root
+    #     depends_on:
+    #         - postgres
+
+    #  ==================================
+    # mongo-express:
+    #     image: mongo-express
+    #     restart: always
+    #     ports:
+    #         - 18081:8081
+    #     environment:
+    #         ME_CONFIG_MONGODB_ADMINUSERNAME: user
+    #         ME_CONFIG_MONGODB_ADMINPASSWORD: user
+
