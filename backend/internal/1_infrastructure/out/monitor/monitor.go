@@ -108,8 +108,8 @@ func (monitor *Monitor) Start() {
 	monitor.EchoEcho.Logger.Fatal(monitor.EchoEcho.Start(pkg.MonitorPort))
 }
 
-// ISUpdateOrders ...
-func (monitor *Monitor) ISUpdateOrders(ctx context.Context, orderNumber string, phase string) {
+// UpdateOrders ...
+func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
 
 	switch phase {
 	case "assemble":

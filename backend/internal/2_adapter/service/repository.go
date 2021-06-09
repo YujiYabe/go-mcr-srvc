@@ -27,28 +27,28 @@ type Service struct {
 type (
 	// ToShipment ...
 	ToShipment interface {
-		ISHandOver(ctx context.Context, order *domain.Order) error
-		ISLogging(ctx context.Context, order *domain.Order) error
+		PutProducts(ctx context.Context, order *domain.Order) error
+		WriteLog(ctx context.Context, order *domain.Order) error
 	}
 
 	// ToRefrigerator ...
 	ToRefrigerator interface {
-		ISGetVegetables(ctx context.Context, items map[string]int) error
-		ISGetIngredients(ctx context.Context, items map[string]int) error
+		UpdateVegetables(ctx context.Context, items map[string]int) error
+		UpdateIngredients(ctx context.Context, items map[string]int) error
 	}
 
 	// ToFreezer ...
 	ToFreezer interface {
-		ISGetPatties(ctx context.Context, items map[string]int) error
+		UpdatePatties(ctx context.Context, items map[string]int) error
 	}
 
 	// ToShelf ...
 	ToShelf interface {
-		ISGetBans(ctx context.Context, items map[string]int) error
+		UpdateBans(ctx context.Context, items map[string]int) error
 	}
 
 	// ToMonitor ...
 	ToMonitor interface {
-		ISUpdateOrders(ctx context.Context, orderNumber string, phase string)
+		UpdateOrders(ctx context.Context, orderNumber string, phase string)
 	}
 )

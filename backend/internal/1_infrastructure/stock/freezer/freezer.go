@@ -63,8 +63,8 @@ func open(count uint) (*gorm.DB, error) {
 	return db, nil
 }
 
-// ISGetPatties ...
-func (s *Freezer) ISGetPatties(ctx context.Context, items map[string]int) error {
+// UpdatePatties ...
+func (s *Freezer) UpdatePatties(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := s.Conn.
 			Table("patties").

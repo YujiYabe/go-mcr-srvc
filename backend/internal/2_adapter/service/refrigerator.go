@@ -6,7 +6,7 @@ import (
 
 // GetVegetables ...
 func (sv *Service) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
-	err := sv.ToRefrigerator.ISGetVegetables(ctx, requestVegetables)
+	err := sv.ToRefrigerator.UpdateVegetables(ctx, requestVegetables)
 	if err != nil {
 		myErr.Logging(err)
 		return err
@@ -17,7 +17,7 @@ func (sv *Service) GetVegetables(ctx context.Context, requestVegetables map[stri
 
 // GetIngredients ...
 func (sv *Service) GetIngredients(ctx context.Context, requestIngredients map[string]int) error {
-	err := sv.ToRefrigerator.ISGetIngredients(ctx, requestIngredients)
+	err := sv.ToRefrigerator.UpdateIngredients(ctx, requestIngredients)
 	if err != nil {
 		myErr.Logging(err)
 		return err
