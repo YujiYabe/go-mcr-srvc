@@ -32,8 +32,8 @@ func NewToShipment() service.ToShipment {
 	return s
 }
 
-// HandOver ...
-func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
+// ISHandOver ...
+func (s *Shipment) ISHandOver(ctx context.Context, order *domain.Order) error {
 	fileName := order.OrderInfo.OrderNumber + ".json"
 	yummyFilePath := filepath.Join(pkg.YummyPath, fileName)
 
@@ -52,8 +52,8 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 	return nil
 }
 
-// Logging ...
-func (s *Shipment) Logging(ctx context.Context, order *domain.Order) error {
+// ISLogging ...
+func (s *Shipment) ISLogging(ctx context.Context, order *domain.Order) error {
 	fileName := time.Now().Format("2006-01-02") + ".log"
 	LogFilePath := filepath.Join(pkg.LogPath, fileName)
 

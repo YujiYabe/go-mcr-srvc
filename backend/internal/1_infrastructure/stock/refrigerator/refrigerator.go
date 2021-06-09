@@ -63,8 +63,8 @@ func open(count uint) (*gorm.DB, error) {
 	return db, nil
 }
 
-// GetVegetables ...
-func (s *Refrigerator) GetVegetables(ctx context.Context, items map[string]int) error {
+// ISGetVegetables ...
+func (s *Refrigerator) ISGetVegetables(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := s.Conn.
 			Table("vegetables").
@@ -82,8 +82,8 @@ func (s *Refrigerator) GetVegetables(ctx context.Context, items map[string]int) 
 	return nil
 }
 
-// GetIngredients ...
-func (s *Refrigerator) GetIngredients(ctx context.Context, items map[string]int) error {
+// ISGetIngredients ...
+func (s *Refrigerator) ISGetIngredients(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := s.Conn.
 			Table("ingredients").

@@ -8,13 +8,13 @@ import (
 
 // Shipment ...
 func (sv *Service) Shipment(ctx context.Context, order *domain.Order) error {
-	err := sv.ToShipment.HandOver(ctx, order)
+	err := sv.ToShipment.ISHandOver(ctx, order)
 	if err != nil {
 		myErr.Logging(err)
 		return err
 	}
 
-	err = sv.ToShipment.Logging(ctx, order)
+	err = sv.ToShipment.ISLogging(ctx, order)
 	if err != nil {
 		myErr.Logging(err)
 		return err

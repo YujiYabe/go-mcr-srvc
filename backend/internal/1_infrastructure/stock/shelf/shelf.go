@@ -58,8 +58,8 @@ func open(count uint) (*mongo.Client, error) {
 	return client, nil
 }
 
-// GetBans ...
-func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
+// ISGetBans ...
+func (s *Shelf) ISGetBans(ctx context.Context, items map[string]int) error {
 	bans := s.Conn.Database(pkg.MongoDatabase).Collection("bans")
 
 	for item, num := range items {
