@@ -60,7 +60,7 @@ func open(count uint) (*mongo.Client, error) {
 
 // GetBans ...
 func (s *Shelf) GetBans(ctx context.Context, items map[string]int) error {
-	bans := s.Conn.Database("app").Collection("bans")
+	bans := s.Conn.Database(pkg.MongoDatabase).Collection("bans")
 
 	for item, num := range items {
 		filter := bson.M{"name": item}

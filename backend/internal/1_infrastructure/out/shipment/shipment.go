@@ -43,7 +43,7 @@ func (s *Shipment) HandOver(ctx context.Context, order *domain.Order) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(yummyFilePath, product, 0777)
+	err = ioutil.WriteFile(yummyFilePath, product, 0777) // #nosec G306
 	if err != nil {
 		myErr.Logging(err)
 		return err

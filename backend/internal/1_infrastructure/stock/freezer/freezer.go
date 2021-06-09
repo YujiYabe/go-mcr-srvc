@@ -48,9 +48,7 @@ func NewToFreezer() service.ToFreezer {
 }
 
 func open(count uint) (*gorm.DB, error) {
-	dsn := "user:user@tcp(mysql)/app?charset=utf8&parseTime=True&loc=Local"
-
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(pkg.MySQLDSN), &gorm.Config{})
 	if err != nil {
 		if count == 0 {
 			myErr.Logging(err)
