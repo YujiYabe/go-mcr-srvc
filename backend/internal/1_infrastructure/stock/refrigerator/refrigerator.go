@@ -48,8 +48,7 @@ func NewToRefrigerator() service.ToRefrigerator {
 }
 
 func open(count uint) (*gorm.DB, error) {
-	dsn := "host=postgres user=user password=user dbname=app port=5432 sslmode=disable TimeZone=Asia/Tokyo"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(pkg.PostgresDSN), &gorm.Config{})
 
 	if err != nil {
 		if count == 0 {
