@@ -38,7 +38,7 @@ func (me MyErr) Logging(passErr error, value ...interface{}) {
 	}
 
 	fileName := time.Now().Format("2006-01-02") + ".log"
-	LogName := filepath.Join(LogPath, fileName)
+	LogName := filepath.Join(ErrorLogPath, fileName)
 
 	// ファイルが存在しなければ作成
 	_, err := os.Stat(LogName)
