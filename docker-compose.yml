@@ -55,9 +55,9 @@ services:
             - TZ=${TZ}
         ports:
             - ${MONG_PORTS}
+        command: mongod --quiet --logpath /dev/null
         volumes:
             - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
-
 
     #  ==================================
     backend:
