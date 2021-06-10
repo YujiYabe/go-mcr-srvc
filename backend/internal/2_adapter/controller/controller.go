@@ -71,6 +71,7 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderT
 	order.OrderInfo.OrderType = orderType
 	order.OrderInfo.OrderTime = time.Now()
 
+	ctrl.UseCase.Reserve(ctx, &order.OrderInfo)
 	return
 }
 

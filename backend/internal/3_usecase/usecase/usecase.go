@@ -16,6 +16,15 @@ func init() {
 	myErr = pkg.NewMyErr("usecase", "usecase")
 }
 
+// Reserve ...
+func (uc *UseCase) Reserve(ctx context.Context, orderinfo *domain.OrderInfo) error {
+	// var err error
+
+	uc.ToService.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve")
+
+	return nil
+}
+
 // Order ...
 func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
 	var err error

@@ -38,6 +38,7 @@ type (
 
 	// Orders ...
 	Orders struct {
+		Reserves  []string
 		Assembles []string
 		Completes []string
 		Passes    []string
@@ -51,6 +52,7 @@ type (
 )
 
 var orders = &Orders{
+	Reserves:  []string{},
 	Assembles: []string{},
 	Completes: []string{},
 	Passes:    []string{},
@@ -112,7 +114,10 @@ func (monitor *Monitor) Start() {
 func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
 
 	switch phase {
+	case "reserve":
+		orders.Reserves = append(orders.Reserves, orderNumber)
 	case "assemble":
+		orders.Reserves = remove(orders.Reserves, orderNumber)
 		orders.Assembles = append(orders.Assembles, orderNumber)
 	case "complete":
 		orders.Assembles = remove(orders.Assembles, orderNumber)

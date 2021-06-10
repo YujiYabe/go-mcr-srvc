@@ -7,6 +7,7 @@ var app = new Vue({
   }, // --- End of components --- //
 
   data: {
+    reserves: [],
     assembles: [],
     completes: [],
     passes: [],
@@ -42,10 +43,10 @@ var app = new Vue({
       console.log(event);
 
       const eventData = JSON.parse(event.data);
+      _this.reserves = eventData.Reserves;
       _this.assembles = eventData.Assembles;
       _this.completes = eventData.Completes;
       _this.passes = eventData.Passes;
-
 
     };
 
