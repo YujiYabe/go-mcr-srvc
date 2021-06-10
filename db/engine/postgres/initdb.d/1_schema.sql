@@ -20,7 +20,9 @@ set client_encoding = 'UTF8';
 CREATE TABLE vegetables (
     id     integer PRIMARY KEY,
     name   VARCHAR(20),
-    stock  integer
+    stock  integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -28,5 +30,7 @@ CREATE TABLE vegetables (
 CREATE TABLE ingredients (
     id     integer PRIMARY KEY,
     name   VARCHAR(20),
-    stock  integer
+    stock  integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );

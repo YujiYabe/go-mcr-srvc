@@ -126,14 +126,13 @@ func (rgstr *Register) OrderAccept() {
 		ctx := context.Background()
 
 		rgstr.Controller.Reserve(ctx, order, orderType)
-
-		go rgstr.Controller.Order(ctx, order)
-
 		newFileName := strings.Replace(currentFileName, "json", order.OrderInfo.OrderNumber, 1)
 		newFilePath := filepath.Join(pkg.ReservedPath, newFileName)
 		if err := os.Rename(currentFilePath, newFilePath); err != nil {
 			myErr.Logging(err)
 		}
+
+		rgstr.Controller.Order(ctx, order)
 	}
 
 	return

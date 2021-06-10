@@ -17,7 +17,6 @@ var (
 
 func init() {
 	myErr = pkg.NewMyErr("adapter", "controller")
-
 }
 
 type (
@@ -26,7 +25,15 @@ type (
 		UseCase     usecase.UseCase
 		OrderNumber int
 	}
+
+	OrderChannel struct {
+		ctx   *context.Context
+		order *domain.Order
+	}
 )
+
+// OrderChannel ...
+var orderChannel = make(chan OrderChannel, 10)
 
 // NewController ...
 func NewController(
@@ -52,6 +59,10 @@ func NewController(
 	return ct
 }
 
+func (ctrl *Controller) Start() {
+	go ctrl.bulkReception()
+}
+
 // Reserve ...
 func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderType string) {
 	ctrl.OrderNumber++
@@ -64,11 +75,32 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderT
 }
 
 // Order ...
-func (ctrl *Controller) Order(ctx context.Context, order *domain.Order) error {
-	err := ctrl.UseCase.Order(ctx, order)
-	if err != nil {
-		myErr.Logging(err)
-		return err
+func (ctrl *Controller) Order(ctx context.Context, order *domain.Order) {
+	fmt.Println("1==============================")
+	fmt.Println("==============================")
+
+	oc := &OrderChannel{
+		ctx:   &ctx,
+		order: order,
 	}
-	return nil
+
+	fmt.Println("2==============================")
+	fmt.Println("==============================")
+	orderChannel <- *oc
+	fmt.Println("3==============================")
+	fmt.Println("==============================")
+
+	return
+}
+
+func (ctrl *Controller) bulkReception() {
+	for {
+		oc := <-orderChannel
+		ctxWithTimeout, _ := context.WithTimeout(*oc.ctx, time.Minute*10)
+
+		err := ctrl.UseCase.Order(ctxWithTimeout, oc.order)
+		if err != nil {
+			myErr.Logging(err)
+		}
+	}
 }

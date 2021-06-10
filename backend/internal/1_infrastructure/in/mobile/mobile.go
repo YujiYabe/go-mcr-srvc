@@ -70,10 +70,9 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 	}
 
 	mb.Controller.Reserve(ctx, order, orderType)
-
-	go mb.Controller.Order(ctx, order)
-
 	c.JSON(200, order.OrderInfo.OrderNumber)
+
+	mb.Controller.Order(ctx, order)
 
 	return nil
 }

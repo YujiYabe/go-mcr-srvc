@@ -18,11 +18,12 @@ use app;
 DROP TABLE IF EXISTS `patties`;
 
 ---- create ----
-create table IF not exists `patties`
-(
-  `id`               INT(20) AUTO_INCREMENT,
-  `name`             VARCHAR(20) NOT NULL,
-  `stock`            int,
+CREATE TABLE `patties` (
+  `id`         int(20) NOT NULL AUTO_INCREMENT,
+  `name`       varchar(20) COLLATE utf8_bin NOT NULL,
+  `stock`      int(5) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

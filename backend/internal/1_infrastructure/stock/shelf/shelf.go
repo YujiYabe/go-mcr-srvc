@@ -2,6 +2,7 @@ package shelf
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -62,15 +63,27 @@ func open(count uint) (*mongo.Client, error) {
 func (s *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
 	bans := s.Conn.Database(pkg.MongoDatabase).Collection("bans")
 
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
 	for item, num := range items {
+		fmt.Println(item)
 		filter := bson.M{"name": item}
 		stock := &Stock{}
 
 		err := bans.FindOne(ctx, filter).Decode(stock)
 		if err != nil {
+
 			myErr.Logging(err)
 			return err
 		}
+		fmt.Println("============================")
+		debugTarget := stock
+		fmt.Printf("%#v\n", debugTarget)
+		// fmt.Printf("%v\n", debugTarget)
+		// fmt.Printf("%+v\n", debugTarget)
+		// fmt.Printf("%T\n", debugTarget)
+		fmt.Println("==============================")
 
 		change := bson.M{"$set": bson.M{"stock": stock.Stock - num}}
 		_, err = bans.UpdateOne(ctx, filter, change)
