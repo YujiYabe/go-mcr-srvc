@@ -132,7 +132,7 @@ func (rgstr *Register) OrderAccept() {
 			myErr.Logging(err)
 		}
 
-		rgstr.Controller.Order(ctx, order)
+		rgstr.Controller.Order(&ctx, order)
 	}
 
 	return

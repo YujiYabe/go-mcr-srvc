@@ -26,6 +26,7 @@ type (
 		OrderNumber int
 	}
 
+	// OrderChannel ...
 	OrderChannel struct {
 		ctx   *context.Context
 		order *domain.Order
@@ -33,7 +34,7 @@ type (
 )
 
 // OrderChannel ...
-var orderChannel = make(chan OrderChannel, 10)
+var orderController = make(chan OrderChannel, 10)
 
 // NewController ...
 func NewController(
@@ -61,6 +62,7 @@ func NewController(
 
 func (ctrl *Controller) Start() {
 	go ctrl.bulkReception()
+	go ctrl.UseCase.Start()
 }
 
 // Reserve ...
@@ -76,30 +78,22 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *domain.Order, orderT
 }
 
 // Order ...
-func (ctrl *Controller) Order(ctx context.Context, order *domain.Order) {
-	fmt.Println("1==============================")
-	fmt.Println("==============================")
-
+func (ctrl *Controller) Order(ctx *context.Context, order *domain.Order) {
 	oc := &OrderChannel{
-		ctx:   &ctx,
+		ctx:   ctx,
 		order: order,
 	}
-
-	fmt.Println("2==============================")
-	fmt.Println("==============================")
-	orderChannel <- *oc
-	fmt.Println("3==============================")
-	fmt.Println("==============================")
+	orderController <- *oc
 
 	return
 }
 
 func (ctrl *Controller) bulkReception() {
 	for {
-		oc := <-orderChannel
+		oc := <-orderController
 		ctxWithTimeout, _ := context.WithTimeout(*oc.ctx, time.Minute*10)
 
-		err := ctrl.UseCase.Order(ctxWithTimeout, oc.order)
+		err := ctrl.UseCase.Order(&ctxWithTimeout, oc.order)
 		if err != nil {
 			myErr.Logging(err)
 		}

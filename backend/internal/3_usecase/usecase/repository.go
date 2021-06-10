@@ -12,6 +12,12 @@ type (
 		ToService ToService
 	}
 
+	// OrderUsecase ...
+	OrderUsecase struct {
+		ctx   *context.Context
+		order *domain.Order
+	}
+
 	// ToService ...
 	ToService interface {
 		GetBans(ctx context.Context, requestBans map[string]int) error

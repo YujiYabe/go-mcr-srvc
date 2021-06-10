@@ -2,7 +2,6 @@ package shelf
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -67,7 +66,7 @@ func (s *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
 	defer cancel()
 
 	for item, num := range items {
-		fmt.Println(item)
+
 		filter := bson.M{"name": item}
 		stock := &Stock{}
 
@@ -77,13 +76,6 @@ func (s *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
 			myErr.Logging(err)
 			return err
 		}
-		fmt.Println("============================")
-		debugTarget := stock
-		fmt.Printf("%#v\n", debugTarget)
-		// fmt.Printf("%v\n", debugTarget)
-		// fmt.Printf("%+v\n", debugTarget)
-		// fmt.Printf("%T\n", debugTarget)
-		fmt.Println("==============================")
 
 		change := bson.M{"$set": bson.M{"stock": stock.Stock - num}}
 		_, err = bans.UpdateOne(ctx, filter, change)

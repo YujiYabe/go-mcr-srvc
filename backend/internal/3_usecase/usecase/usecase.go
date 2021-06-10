@@ -2,61 +2,84 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"sync"
+	"time"
 
 	"backend/internal/4_domain/domain"
 	"backend/pkg"
 )
 
 var (
-	myErr *pkg.MyErr
+	myErr        *pkg.MyErr
+	orderUsecase = make(chan OrderUsecase)
 )
 
 func init() {
 	myErr = pkg.NewMyErr("usecase", "usecase")
 }
 
-// Reserve ...
-func (uc *UseCase) Reserve(ctx context.Context, orderinfo *domain.OrderInfo) error {
-	// var err error
+// Start ...
+func (uc *UseCase) Start() {
+	go uc.bulkOrder()
+}
 
+// Reserve ...
+func (uc *UseCase) Reserve(ctx context.Context, orderinfo *domain.OrderInfo) {
 	uc.ToService.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve")
 
-	return nil
+	return
 }
 
 // Order ...
-func (uc *UseCase) Order(ctx context.Context, order *domain.Order) error {
+func (uc *UseCase) Order(ctx *context.Context, order *domain.Order) error {
+	ou := &OrderUsecase{
+		ctx:   ctx,
+		order: order,
+	}
+
+	orderUsecase <- *ou
+	fmt.Println(len(orderUsecase))
+	fmt.Println(cap(orderUsecase))
+	return nil
+}
+
+func (uc *UseCase) bulkOrder() {
 	var err error
 
-	uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "assemble")
+	for {
+		ou := <-orderUsecase
 
-	// オーダー解析
-	assemble := uc.ToDomain.ParseOrder(ctx, order)
+		// go func() {
+		ctxWithTimeout, _ := context.WithTimeout(*ou.ctx, time.Minute*10)
 
-	// 材料取り出し
-	err = uc.getFoodstuff(ctx, assemble)
-	if err != nil {
-		myErr.Logging(err)
-		return err
+		uc.ToService.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
+
+		// オーダー解析
+		assemble := uc.ToDomain.ParseOrder(ctxWithTimeout, ou.order)
+
+		// 材料取り出し
+		err = uc.getFoodstuff(ctxWithTimeout, assemble)
+		if err != nil {
+			myErr.Logging(err)
+		}
+
+		// 調理
+		err = uc.cookFoodstuff(ctxWithTimeout, ou.order, assemble)
+		if err != nil {
+			myErr.Logging(err)
+		}
+
+		// 出荷よー
+		err = uc.ToService.Shipment(ctxWithTimeout, ou.order)
+		if err != nil {
+			myErr.Logging(err)
+		}
+
+		uc.ToService.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
+		// }()
 	}
 
-	// 調理
-	err = uc.cookFoodstuff(ctx, order, assemble)
-	if err != nil {
-		myErr.Logging(err)
-		return err
-	}
-
-	// 出荷よー
-	err = uc.ToService.Shipment(ctx, order)
-	if err != nil {
-		myErr.Logging(err)
-		return err
-	}
-	uc.ToService.UpdateOrders(ctx, order.OrderInfo.OrderNumber, "complete")
-
-	return nil
 }
 
 func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble) error {
