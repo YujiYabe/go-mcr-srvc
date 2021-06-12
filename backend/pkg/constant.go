@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -33,8 +34,9 @@ var (
 	MySQLDSN    string
 	PostgresDSN string
 
-	MongoDatabase string
-	MongoDSN      string
+	MongoDatabase  string
+	MongoDSN       string
+	AssembleNumber int
 )
 
 func init() {
@@ -42,6 +44,8 @@ func init() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	AssembleNumber, _ = strconv.Atoi(os.Getenv("ASSEMBLE_NUMBER"))
 
 	TZ = os.Getenv("TZ")
 	MobilePort = os.Getenv("MOBILE_BACK_PORT")
@@ -68,4 +72,5 @@ func init() {
 		os.Getenv("MONGO_INITDB_ROOT_PASSWORD") +
 		"@mongo:" +
 		os.Getenv("MONG_BACK_PORT")
+
 }

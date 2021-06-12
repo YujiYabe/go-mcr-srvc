@@ -3,6 +3,7 @@ module backend
 go 1.15
 
 require (
+	github.com/anikhasibul/queue v0.0.0-20190518110522-5d242d08bdde
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator/v10 v10.6.1 // indirect

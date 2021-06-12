@@ -2,9 +2,10 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"time"
+
+	"github.com/anikhasibul/queue"
 
 	"backend/internal/4_domain/domain"
 	"backend/pkg"
@@ -39,47 +40,8 @@ func (uc *UseCase) Order(ctx *context.Context, order *domain.Order) error {
 	}
 
 	orderUsecase <- *ou
-	fmt.Println(len(orderUsecase))
-	fmt.Println(cap(orderUsecase))
+
 	return nil
-}
-
-func (uc *UseCase) bulkOrder() {
-	var err error
-
-	for {
-		ou := <-orderUsecase
-
-		// go func() {
-		ctxWithTimeout, _ := context.WithTimeout(*ou.ctx, time.Minute*10)
-
-		uc.ToService.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
-
-		// オーダー解析
-		assemble := uc.ToDomain.ParseOrder(ctxWithTimeout, ou.order)
-
-		// 材料取り出し
-		err = uc.getFoodstuff(ctxWithTimeout, assemble)
-		if err != nil {
-			myErr.Logging(err)
-		}
-
-		// 調理
-		err = uc.cookFoodstuff(ctxWithTimeout, ou.order, assemble)
-		if err != nil {
-			myErr.Logging(err)
-		}
-
-		// 出荷よー
-		err = uc.ToService.Shipment(ctxWithTimeout, ou.order)
-		if err != nil {
-			myErr.Logging(err)
-		}
-
-		uc.ToService.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
-		// }()
-	}
-
 }
 
 func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble) error {
@@ -129,4 +91,45 @@ func (uc *UseCase) cookFoodstuff(ctx context.Context, order *domain.Order, assem
 	}
 
 	return nil
+}
+
+func (uc *UseCase) bulkOrder() {
+	var err error
+	q := queue.New(pkg.AssembleNumber)
+	defer q.Close()
+
+	for {
+		ou := <-orderUsecase
+		q.Add()
+		go func() {
+			defer q.Done()
+			ctxWithTimeout, _ := context.WithTimeout(*ou.ctx, time.Minute*10)
+
+			uc.ToService.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
+
+			// オーダー解析
+			assemble := uc.ToDomain.ParseOrder(ctxWithTimeout, ou.order)
+
+			// 材料取り出し
+			err = uc.getFoodstuff(ctxWithTimeout, assemble)
+			if err != nil {
+				myErr.Logging(err)
+			}
+
+			// 調理
+			err = uc.cookFoodstuff(ctxWithTimeout, ou.order, assemble)
+			if err != nil {
+				myErr.Logging(err)
+			}
+
+			// 出荷よー
+			err = uc.ToService.Shipment(ctxWithTimeout, ou.order)
+			if err != nil {
+				myErr.Logging(err)
+			}
+
+			uc.ToService.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
+		}()
+	}
+	q.Wait()
 }
