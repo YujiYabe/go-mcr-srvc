@@ -45,7 +45,10 @@ func init() {
 		log.Fatal("Error loading .env file")
 	}
 
-	AssembleNumber, _ = strconv.Atoi(os.Getenv("ASSEMBLE_NUMBER"))
+	AssembleNumber, err = strconv.Atoi(os.Getenv("ASSEMBLE_NUMBER"))
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	TZ = os.Getenv("TZ")
 	MobilePort = os.Getenv("MOBILE_BACK_PORT")

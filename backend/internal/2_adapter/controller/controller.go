@@ -34,7 +34,7 @@ type (
 )
 
 // OrderChannel ...
-var orderController = make(chan OrderChannel, 10)
+var orderController = make(chan OrderChannel)
 
 // NewController ...
 func NewController(
