@@ -76,7 +76,7 @@ func (s *Freezer) UpdatePatties(ctx context.Context, items map[string]int) error
 			return res.Error
 		}
 
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 	return nil
 }

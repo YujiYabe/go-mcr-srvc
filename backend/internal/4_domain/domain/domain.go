@@ -151,31 +151,31 @@ func (dm *domain) CookHamburgers(ctx context.Context, hamburgers []Hamburger) er
 
 func (dm *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Lettuce > 0 {
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 	if hamburger.Onion > 0 {
-		time.Sleep(3 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 	if hamburger.Pickles > 0 {
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 	}
 	return
 }
 
 func (dm *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) {
-	time.Sleep(3 * time.Second)
+	time.Sleep(1 * time.Second)
 	return
 }
 
 func (dm *domain) grillPatties(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Beef > 0 {
-		time.Sleep(time.Duration(hamburger.Beef*6) * time.Second)
+		time.Sleep(time.Duration(hamburger.Beef*1) * time.Second)
 	}
 	if hamburger.Chicken > 0 {
-		time.Sleep(time.Duration(hamburger.Chicken*6) * time.Second)
+		time.Sleep(time.Duration(hamburger.Chicken*1) * time.Second)
 	}
 	if hamburger.Fish > 0 {
-		time.Sleep(time.Duration(hamburger.Fish*6) * time.Second)
+		time.Sleep(time.Duration(hamburger.Fish*1) * time.Second)
 	}
 
 	return
