@@ -1,15 +1,15 @@
 package app
 
 import (
-	"backend/internal/1_frameworks_driver/in/delivery"
-	"backend/internal/1_frameworks_driver/in/mobile"
-	"backend/internal/1_frameworks_driver/in/pc"
-	"backend/internal/1_frameworks_driver/in/register"
-	"backend/internal/1_frameworks_driver/out/monitor"
-	"backend/internal/1_frameworks_driver/out/shipment"
-	"backend/internal/1_frameworks_driver/stock/freezer"
-	"backend/internal/1_frameworks_driver/stock/refrigerator"
-	"backend/internal/1_frameworks_driver/stock/shelf"
+	"backend/internal/1_frameworks_driver/db/freezer"
+	"backend/internal/1_frameworks_driver/db/refrigerator"
+	"backend/internal/1_frameworks_driver/db/shelf"
+	"backend/internal/1_frameworks_driver/external_interface/monitor"
+	"backend/internal/1_frameworks_driver/external_interface/shipment"
+	"backend/internal/1_frameworks_driver/web_ui/delivery"
+	"backend/internal/1_frameworks_driver/web_ui/mobile"
+	"backend/internal/1_frameworks_driver/web_ui/pc"
+	"backend/internal/1_frameworks_driver/web_ui/register"
 	"backend/internal/2_interface_adapter/controller"
 )
 
