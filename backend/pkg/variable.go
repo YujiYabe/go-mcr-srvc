@@ -15,7 +15,7 @@ var (
 	ErrorLogPath   = filepath.Join(StoragePath, "errorlog")
 	LogPath        = filepath.Join(StoragePath, "log")
 	YummyPath      = filepath.Join(currentPath, "yummy")
-	RegisterPath   = filepath.Join(currentPath, "scripts", "order", "register")
+	RegisterPath   = filepath.Join(currentPath, "script", "order", "register")
 	ReservedPath   = filepath.Join(RegisterPath, "reserved")
 
 	WebPath   = filepath.Join(currentPath, "web")

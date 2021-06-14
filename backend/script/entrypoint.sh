@@ -2,4 +2,4 @@
 set -e
 
 # go run ./cmd/main.go
-air -c ./scripts/air.toml
+air -c ./script/air.toml

@@ -23,7 +23,7 @@
 */vendor/*
 */Godeps/*
 backend/vendor
-backend/scripts/order/vendor
+backend/script/order/vendor
 
 # End of https://www.gitignore.io/api/go
 
@@ -40,7 +40,7 @@ db/tool/phpmyadmin/sessions/*
 
 */tmp/main
 backend/yummy/*.json
-backend/scripts/order/register/*.json
-backend/scripts/order/register/reserved/*
+backend/script/order/register/*.json
+backend/script/order/register/reserved/*
 
-backend/scripts/order/delivery/vendor/*
+backend/script/order/delivery/vendor/*

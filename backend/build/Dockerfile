@@ -14,6 +14,6 @@ RUN \
 
 COPY config/.bashrc /root/.bashrc
 
-ENTRYPOINT ["./scripts/entrypoint.sh"]
+ENTRYPOINT ["./script/entrypoint.sh"]
 
 
