@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("infrastructure", "freezer")
+	myErr = pkg.NewMyErr("framework_driver", "freezer")
 }
 
 type (

@@ -54,7 +54,7 @@ func NewController(
 ) ToController {
 	ct := &Controller{
 		UseCase: usecase.UseCase{
-			ToDomain: entity.NewDomain(),
+			ToEntity: entity.NewEntity(),
 			ToGateway: &gateway.Gateway{
 				ToRefrigerator: toRefrigerator,
 				ToFreezer:      toFreezer,
@@ -84,7 +84,6 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *entity.Order, orderT
 	order.OrderInfo.OrderTime = time.Now()
 
 	ctrl.UseCase.Reserve(ctx, &order.OrderInfo)
-	return
 }
 
 // Order ...
@@ -93,9 +92,8 @@ func (ctrl *Controller) Order(ctx *context.Context, order *entity.Order) {
 		ctx:   ctx,
 		order: order,
 	}
-	orderController <- *oc
 
-	return
+	orderController <- *oc
 }
 
 func (ctrl *Controller) bulkReception() {
@@ -108,4 +106,5 @@ func (ctrl *Controller) bulkReception() {
 			myErr.Logging(err)
 		}
 	}
+
 }

@@ -21,7 +21,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("infrastructure", "shipment")
+	myErr = pkg.NewMyErr("framework_driver", "shipment")
 }
 
 type Shipment struct{}

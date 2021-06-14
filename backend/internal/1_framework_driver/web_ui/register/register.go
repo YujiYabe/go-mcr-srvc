@@ -22,7 +22,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("infrastructure", "register")
+	myErr = pkg.NewMyErr("framework_driver", "register")
 }
 
 type (
@@ -135,5 +135,4 @@ func (rgstr *Register) OrderAccept() {
 		rgstr.Controller.Order(&ctx, order)
 	}
 
-	return
 }

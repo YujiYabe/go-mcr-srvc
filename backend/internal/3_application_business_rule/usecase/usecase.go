@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("usecase", "usecase")
+	myErr = pkg.NewMyErr("application_business_rule", "usecase")
 }
 
 // Start ...
@@ -83,7 +83,7 @@ func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble) 
 
 func (uc *UseCase) cookFoodstuff(ctx context.Context, order *entity.Order, assemble *entity.Assemble) error {
 	if len(order.Product.Hamburgers) > 0 {
-		err := uc.ToDomain.CookHamburgers(ctx, order.Product.Hamburgers)
+		err := uc.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
 		if err != nil {
 			myErr.Logging(err)
 			return err
@@ -108,7 +108,7 @@ func (uc *UseCase) bulkOrder() {
 			uc.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
 
 			// オーダー解析
-			assemble := uc.ToDomain.ParseOrder(ctxWithTimeout, ou.order)
+			assemble := uc.ToEntity.ParseOrder(ctxWithTimeout, ou.order)
 
 			// 材料取り出し
 			err = uc.getFoodstuff(ctxWithTimeout, assemble)

@@ -12,93 +12,16 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("4_enterprise_business_rule", "entity")
+	myErr = pkg.NewMyErr("enterprise_business_rule", "entity")
 }
 
-type (
-	entity struct{}
-)
-
-// infrastructure から来た用
-type (
-	// Order ...
-	Order struct {
-		OrderInfo OrderInfo
-		Product   Product
-	}
-
-	// OrderInfo ...
-	OrderInfo struct {
-		OrderNumber string
-		OrderType   string
-		OrderTime   time.Time
-		PassTime    time.Time
-	}
-
-	// Product ...
-	Product struct {
-		Combos     []Combo     `json:"combos"`
-		Hamburgers []Hamburger `json:"hamburgers"`
-		SideMenus  []SideMenu  `json:"side_menus"`
-		Drinks     []Drink     `json:"drinks"`
-	}
-
-	// Combo ...
-	Combo struct {
-		Hamburger *Hamburger `json:"hamburger"`
-		SideMenu  *SideMenu  `json:"side_menu"`
-		Drink     *Drink     `json:"drink"`
-	}
-
-	// Hamburger ...
-	Hamburger struct {
-		// bans
-		Top    int `json:"top"`
-		Middle int `json:"middle"`
-		Bottom int `json:"bottom"`
-		// patty
-		Beef    int `json:"beef"`
-		Chicken int `json:"chicken"`
-		Fish    int `json:"fish"`
-		//vegetable
-		Lettuce int `json:"lettuce"`
-		Tomato  int `json:"tomato"`
-		Onion   int `json:"onion"`
-		//ingredient
-		Cheese  int `json:"cheese"`
-		Pickles int `json:"pickles"`
-	}
-
-	// SideMenu ...
-	SideMenu struct {
-		Name string `json:"name"`
-	}
-
-	// Drink ...
-	Drink struct {
-		Name string `json:"name"`
-	}
-)
-
-// infrastructure へ行く用
-type (
-
-	// Assemble ...
-	Assemble struct {
-		Bans        map[string]int
-		Patties     map[string]int
-		Vegetables  map[string]int
-		Ingredients map[string]int
-	}
-)
-
-// NewDomain ...
-func NewDomain() *entity {
+// NewEntity ...
+func NewEntity() ToEntity {
 	return &entity{}
 }
 
 // ParseOrder ...
-func (dm *entity) ParseOrder(ctx context.Context, order *Order) *Assemble {
+func (entt *entity) ParseOrder(ctx context.Context, order *Order) *Assemble {
 	assemble := &Assemble{
 		Bans:        map[string]int{},
 		Patties:     map[string]int{},
@@ -107,13 +30,23 @@ func (dm *entity) ParseOrder(ctx context.Context, order *Order) *Assemble {
 	}
 
 	if len(order.Product.Hamburgers) != 0 {
-		dm.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
+		entt.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
 	}
 
 	return assemble
 }
 
-func (dm *entity) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
+func (entt *entity) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
+	for _, hamburger := range hamburgers {
+		entt.cutVegetables(ctx, hamburger)
+		entt.grillPatties(ctx, hamburger)
+		entt.assembleHamburger(ctx, hamburger)
+	}
+
+	return nil
+}
+
+func (entt *entity) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
 
 	for _, hamburger := range hamburgers {
 		// bans
@@ -139,17 +72,7 @@ func (dm *entity) countAssembleHamburger(ctx context.Context, assemble *Assemble
 	return
 }
 
-func (dm *entity) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
-	for _, hamburger := range hamburgers {
-		dm.cutVegetables(ctx, hamburger)
-		dm.grillPatties(ctx, hamburger)
-		dm.assembleHamburger(ctx, hamburger)
-	}
-
-	return nil
-}
-
-func (dm *entity) cutVegetables(ctx context.Context, hamburger Hamburger) {
+func (entt *entity) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Lettuce > 0 {
 		time.Sleep(1 * time.Second)
 	}
@@ -162,12 +85,12 @@ func (dm *entity) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	return
 }
 
-func (dm *entity) assembleHamburger(ctx context.Context, hamburger Hamburger) {
+func (entt *entity) assembleHamburger(ctx context.Context, hamburger Hamburger) {
 	time.Sleep(1 * time.Second)
 	return
 }
 
-func (dm *entity) grillPatties(ctx context.Context, hamburger Hamburger) {
+func (entt *entity) grillPatties(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Beef > 0 {
 		time.Sleep(time.Duration(hamburger.Beef*1) * time.Second)
 	}
