@@ -21,12 +21,12 @@ type (
 	// PC ...
 	PC struct {
 		GinEngine  *gin.Engine
-		Controller *controller.Controller
+		Controller controller.ToController
 	}
 )
 
 // NewPC ...
-func NewPC(ctrl *controller.Controller) *PC {
+func NewPC(ctrl controller.ToController) *PC {
 	pc := &PC{
 		GinEngine:  NewGin(),
 		Controller: ctrl,

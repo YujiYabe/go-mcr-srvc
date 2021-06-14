@@ -28,12 +28,12 @@ func init() {
 type (
 	// Register ...
 	Register struct {
-		Controller *controller.Controller
+		Controller controller.ToController
 	}
 )
 
 // NewRegister ...
-func NewRegister(ctrl *controller.Controller) *Register {
+func NewRegister(ctrl controller.ToController) *Register {
 	rgstr := &Register{
 		Controller: ctrl,
 	}

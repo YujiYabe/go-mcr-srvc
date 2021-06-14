@@ -32,6 +32,13 @@ type (
 		ctx   *context.Context
 		order *entity.Order
 	}
+
+	// ToController ...
+	ToController interface {
+		Start()
+		Reserve(ctx context.Context, order *entity.Order, orderType string)
+		Order(ctx *context.Context, order *entity.Order)
+	}
 )
 
 // OrderChannel ...
@@ -44,7 +51,7 @@ func NewController(
 	toShelf gateway.ToShelf,
 	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
-) *Controller {
+) ToController {
 	ct := &Controller{
 		UseCase: usecase.UseCase{
 			ToDomain: entity.NewDomain(),

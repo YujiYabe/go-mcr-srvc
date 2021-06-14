@@ -22,12 +22,12 @@ type (
 	// Mobile ...
 	Mobile struct {
 		EchoEcho   *echo.Echo
-		Controller *controller.Controller
+		Controller controller.ToController
 	}
 )
 
 // NewMobile ...
-func NewMobile(ctrl *controller.Controller) *Mobile {
+func NewMobile(ctrl controller.ToController) *Mobile {
 	mb := &Mobile{
 		EchoEcho:   NewEcho(),
 		Controller: ctrl,

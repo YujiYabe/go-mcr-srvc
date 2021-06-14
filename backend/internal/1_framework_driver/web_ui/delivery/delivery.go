@@ -31,11 +31,11 @@ type Delivery struct {
 // Server ...
 type Server struct {
 	UnimplementedDeliveryServiceServer
-	Controller *controller.Controller
+	Controller controller.ToController
 }
 
 // NewDelivery ...
-func NewDelivery(ctrl *controller.Controller) *Delivery {
+func NewDelivery(ctrl controller.ToController) *Delivery {
 	d := &Delivery{
 		Server: Server{
 			Controller: ctrl,
