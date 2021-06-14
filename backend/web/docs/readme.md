@@ -25,7 +25,7 @@
 
 # 赤外線情報
 vue/device/YYY.vue内に定義してあるdata-valueがデバイスサーバの赤外線のマップ※のキーとなっている。
-※backend/device/internal/1_frameworks_drivers/deviceapp/ir_data.go
+※backend/device/internal/1_frameworks_driver/deviceapp/ir_data.go
 <br><br>
 
 # 部屋情報
