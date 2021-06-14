@@ -12,7 +12,7 @@
 # alias ll='ls $LS_OPTIONS -l'
 # alias l='ls $LS_OPTIONS -lA'
 
-alias ll='ls -ltrah --time-style=long-iso  --color=auto'
+alias ll='ls -ltrah --time-style=long-iso --color=auto'
 
 PS1_1='\n\[\033[01;31m\]________________________________________________________'
 PS1_2='\n\[\033[01;32m\]`date +%Y-%m-%d\ %H:%M:%S` '
