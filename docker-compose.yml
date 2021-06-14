@@ -82,48 +82,48 @@ services:
             - mongo
 
 
-    phpmyadmin:
-        container_name: phpmyadmin
-        build:
-            context: ./db/tool/phpmyadmin
-            dockerfile: Dockerfile
-        environment:
-            - PMA_ARBITRARY=1
-            - PMA_HOST=mysql
-            - PMA_USER=root
-            - PMA_PASSWORD=password
-        ports:
-            - "8090:80"
-        volumes:
-            - "./db/tool/phpmyadmin/sessions:/sessions"
-        links:
-            - mysql
-        depends_on:
-            - mysql
+    # phpmyadmin:
+    #     container_name: phpmyadmin
+    #     build:
+    #         context: ./db/tool/phpmyadmin
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         - PMA_ARBITRARY=1
+    #         - PMA_HOST=mysql
+    #         - PMA_USER=root
+    #         - PMA_PASSWORD=password
+    #     ports:
+    #         - "8090:80"
+    #     volumes:
+    #         - "./db/tool/phpmyadmin/sessions:/sessions"
+    #     links:
+    #         - mysql
+    #     depends_on:
+    #         - mysql
 
-    pgadmin:
-        restart: always
-        container_name: pgadmin
-        hostname: pgadmin
-        build:
-            context: ./db/tool/pgadmin
-            dockerfile: Dockerfile
-        ports:
-            - 8091:80
-        volumes:
-            - ./db/tool/pgadmin:/var/lib/pgadmin/storage
-        environment:
-            PGADMIN_DEFAULT_EMAIL: root
-            PGADMIN_DEFAULT_PASSWORD: root
-        depends_on:
-            - postgres
+    # pgadmin:
+    #     restart: always
+    #     container_name: pgadmin
+    #     hostname: pgadmin
+    #     build:
+    #         context: ./db/tool/pgadmin
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - 8091:80
+    #     volumes:
+    #         - ./db/tool/pgadmin:/var/lib/pgadmin/storage
+    #     environment:
+    #         PGADMIN_DEFAULT_EMAIL: root
+    #         PGADMIN_DEFAULT_PASSWORD: root
+    #     depends_on:
+    #         - postgres
 
-    mongo-express:
-        image: mongo-express
-        restart: always
-        ports:
-            - 18081:8081
-        environment:
-            ME_CONFIG_MONGODB_ADMINUSERNAME: user
-            ME_CONFIG_MONGODB_ADMINPASSWORD: user
+    # mongo-express:
+    #     image: mongo-express
+    #     restart: always
+    #     ports:
+    #         - 18081:8081
+    #     environment:
+    #         ME_CONFIG_MONGODB_ADMINUSERNAME: user
+    #         ME_CONFIG_MONGODB_ADMINPASSWORD: user
 
