@@ -1,6 +1,6 @@
 package main
 
-import backend "backend/internal/1_frameworks_driver"
+import backend "backend/internal/1_framework_driver"
 
 func main() {
 	a := backend.NewApp()
