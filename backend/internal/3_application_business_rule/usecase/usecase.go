@@ -21,17 +21,17 @@ func init() {
 }
 
 // Start ...
-func (uc *useCase) Start() {
-	go uc.bulkOrder()
+func (uscs *useCase) Start() {
+	go uscs.bulkOrder()
 }
 
 // Reserve ...
-func (uc *useCase) Reserve(ctx context.Context, orderinfo *entity.OrderInfo) {
-	uc.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve")
+func (uscs *useCase) Reserve(ctx context.Context, orderinfo *entity.OrderInfo) {
+	uscs.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve")
 }
 
 // Order ...
-func (uc *useCase) Order(ctx *context.Context, order *entity.Order) error {
+func (uscs *useCase) Order(ctx *context.Context, order *entity.Order) error {
 	ou := &OrderUsecase{
 		ctx:   ctx,
 		order: order,
@@ -42,56 +42,7 @@ func (uc *useCase) Order(ctx *context.Context, order *entity.Order) error {
 	return nil
 }
 
-func (uc *useCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble) error {
-	var err error
-	var wg sync.WaitGroup
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		err = uc.ToGateway.GetVegetables(ctx, assemble.Vegetables)
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		err = uc.ToGateway.GetPatties(ctx, assemble.Patties)
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		err = uc.ToGateway.GetBans(ctx, assemble.Bans)
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		err = uc.ToGateway.GetIngredients(ctx, assemble.Ingredients)
-	}()
-
-	wg.Wait()
-	if err != nil {
-		myErr.Logging(err)
-		return err
-	}
-
-	return nil
-}
-
-func (uc *useCase) cookFoodstuff(ctx context.Context, order *entity.Order, assemble *entity.Assemble) error {
-	if len(order.Product.Hamburgers) > 0 {
-		err := uc.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
-		if err != nil {
-			myErr.Logging(err)
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (uc *useCase) bulkOrder() {
+func (uscs *useCase) bulkOrder() {
 	var err error
 	q := queue.New(pkg.AssembleNumber)
 	defer q.Close()
@@ -103,31 +54,80 @@ func (uc *useCase) bulkOrder() {
 			defer q.Done()
 			ctxWithTimeout, _ := context.WithTimeout(*ou.ctx, time.Minute*10)
 
-			uc.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
+			uscs.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
 
 			// オーダー解析
-			assemble := uc.ToEntity.ParseOrder(ctxWithTimeout, ou.order)
+			assemble := uscs.ToEntity.ParseOrder(ctxWithTimeout, ou.order)
 
 			// 材料取り出し
-			err = uc.getFoodstuff(ctxWithTimeout, assemble)
+			err = uscs.getFoodstuff(ctxWithTimeout, assemble)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
 			// 調理
-			err = uc.cookFoodstuff(ctxWithTimeout, ou.order, assemble)
+			err = uscs.cookFoodstuff(ctxWithTimeout, ou.order, assemble)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
 			// 出荷よー
-			err = uc.ToPresenter.Shipment(ctxWithTimeout, ou.order)
+			err = uscs.ToPresenter.Shipment(ctxWithTimeout, ou.order)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
-			uc.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
+			uscs.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
 		}()
 	}
 
+}
+
+func (uscs *useCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble) error {
+	var err error
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err = uscs.ToGateway.GetVegetables(ctx, assemble.Vegetables)
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err = uscs.ToGateway.GetIngredients(ctx, assemble.Ingredients)
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err = uscs.ToGateway.GetPatties(ctx, assemble.Patties)
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err = uscs.ToGateway.GetBans(ctx, assemble.Bans)
+	}()
+
+	wg.Wait()
+	if err != nil {
+		myErr.Logging(err)
+		return err
+	}
+
+	return nil
+}
+
+func (uscs *useCase) cookFoodstuff(ctx context.Context, order *entity.Order, assemble *entity.Assemble) error {
+	if len(order.Product.Hamburgers) > 0 {
+		err := uscs.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
+		if err != nil {
+			myErr.Logging(err)
+			return err
+		}
+	}
+
+	return nil
 }

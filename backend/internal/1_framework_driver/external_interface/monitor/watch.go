@@ -11,7 +11,7 @@ import (
 	"backend/pkg"
 )
 
-func (monitor *Monitor) RemoveYummy() {
+func (mntr *Monitor) RemoveYummy() {
 	yummyFiles, err := ioutil.ReadDir(pkg.YummyPath)
 	if err != nil {
 		myErr.Logging(err)
@@ -26,7 +26,7 @@ func (monitor *Monitor) RemoveYummy() {
 
 }
 
-func (monitor *Monitor) Watching() {
+func (mntr *Monitor) Watching() {
 	var currentfiles []string
 
 	for {
@@ -40,7 +40,7 @@ func (monitor *Monitor) Watching() {
 			newFiles = append(newFiles, file.Name())
 		}
 
-		monitor.passedCheck(currentfiles, newFiles)
+		mntr.passedCheck(currentfiles, newFiles)
 
 		currentfiles = newFiles
 
@@ -48,7 +48,7 @@ func (monitor *Monitor) Watching() {
 	}
 }
 
-func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) {
+func (mntr *Monitor) passedCheck(currentfiles, newFiles []string) {
 	//最新のリストからファイルが削除されていれば渡しずみ判断
 	for _, currentfile := range currentfiles {
 		isExist := false
@@ -61,7 +61,7 @@ func (monitor *Monitor) passedCheck(currentfiles, newFiles []string) {
 
 		if !isExist {
 			ctx := context.Background()
-			monitor.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
+			mntr.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
 		}
 	}
 

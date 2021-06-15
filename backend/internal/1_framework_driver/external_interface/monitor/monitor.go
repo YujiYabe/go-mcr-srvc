@@ -65,11 +65,11 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 // NewMonitor ...
 func NewMonitor() *Monitor {
-	monitor := &Monitor{}
-	monitor.EchoEcho = NewEcho()
-	monitor.Agents = make(map[string]*Agent)
+	mntr := &Monitor{}
+	mntr.EchoEcho = NewEcho()
+	mntr.Agents = make(map[string]*Agent)
 
-	return monitor
+	return mntr
 }
 
 // NewToMonitor ...
@@ -93,25 +93,25 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (monitor *Monitor) Start() {
-	monitor.RemoveYummy()
+func (mntr *Monitor) Start() {
+	mntr.RemoveYummy()
 
-	go monitor.Watching()
-	go monitor.SendToAgents()
+	go mntr.Watching()
+	go mntr.SendToAgents()
 
-	monitor.EchoEcho.Renderer = &Template{
+	mntr.EchoEcho.Renderer = &Template{
 		templates: template.Must(template.ParseGlob(pkg.IndexPath)),
 	}
 
-	monitor.EchoEcho.Static("/web", pkg.WebPath)
+	mntr.EchoEcho.Static("/web", pkg.WebPath)
 
-	monitor.EchoEcho.GET("/", monitor.Index)
-	monitor.EchoEcho.GET("/ws", monitor.WebSocket)
-	monitor.EchoEcho.Logger.Fatal(monitor.EchoEcho.Start(pkg.MonitorPort))
+	mntr.EchoEcho.GET("/", mntr.Index)
+	mntr.EchoEcho.GET("/ws", mntr.WebSocket)
+	mntr.EchoEcho.Logger.Fatal(mntr.EchoEcho.Start(pkg.MonitorPort))
 }
 
 // UpdateOrders ...
-func (monitor *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
+func (mntr *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
 
 	switch phase {
 	case "reserve":

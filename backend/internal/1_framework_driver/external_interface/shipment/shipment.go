@@ -33,7 +33,7 @@ func NewToShipment() presenter.ToShipment {
 }
 
 // PutProducts ...
-func (s *Shipment) PutProducts(ctx context.Context, order *entity.Order) error {
+func (shpmnt *Shipment) PutProducts(ctx context.Context, order *entity.Order) error {
 	fileName := order.OrderInfo.OrderNumber + ".json"
 	yummyFilePath := filepath.Join(pkg.YummyPath, fileName)
 
@@ -53,7 +53,7 @@ func (s *Shipment) PutProducts(ctx context.Context, order *entity.Order) error {
 }
 
 // WriteLog ...
-func (s *Shipment) WriteLog(ctx context.Context, order *entity.Order) error {
+func (shpmnt *Shipment) WriteLog(ctx context.Context, order *entity.Order) error {
 	fileName := time.Now().Format("2006-01-02") + ".log"
 	LogFilePath := filepath.Join(pkg.LogPath, fileName)
 

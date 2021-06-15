@@ -50,13 +50,13 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (mb *Mobile) Start() {
-	mb.EchoEcho.POST("/", mb.IndexPost)
-	mb.EchoEcho.Logger.Fatal(mb.EchoEcho.Start(pkg.MobilePort))
+func (mbl *Mobile) Start() {
+	mbl.EchoEcho.POST("/", mbl.IndexPost)
+	mbl.EchoEcho.Logger.Fatal(mbl.EchoEcho.Start(pkg.MobilePort))
 }
 
 // IndexPost ...
-func (mb *Mobile) IndexPost(c echo.Context) error {
+func (mbl *Mobile) IndexPost(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	product := &entity.Product{}
@@ -69,10 +69,10 @@ func (mb *Mobile) IndexPost(c echo.Context) error {
 		Product: *product,
 	}
 
-	mb.Controller.Reserve(ctx, order, orderType)
+	mbl.Controller.Reserve(ctx, order, orderType)
 	c.JSON(200, order.OrderInfo.OrderNumber)
 
-	mb.Controller.Order(&ctx, order)
+	mbl.Controller.Order(&ctx, order)
 
 	return nil
 }
