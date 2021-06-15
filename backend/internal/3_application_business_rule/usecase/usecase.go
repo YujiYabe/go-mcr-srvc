@@ -21,19 +21,17 @@ func init() {
 }
 
 // Start ...
-func (uc *UseCase) Start() {
+func (uc *useCase) Start() {
 	go uc.bulkOrder()
 }
 
 // Reserve ...
-func (uc *UseCase) Reserve(ctx context.Context, orderinfo *entity.OrderInfo) {
+func (uc *useCase) Reserve(ctx context.Context, orderinfo *entity.OrderInfo) {
 	uc.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve")
-
-	return
 }
 
 // Order ...
-func (uc *UseCase) Order(ctx *context.Context, order *entity.Order) error {
+func (uc *useCase) Order(ctx *context.Context, order *entity.Order) error {
 	ou := &OrderUsecase{
 		ctx:   ctx,
 		order: order,
@@ -44,7 +42,7 @@ func (uc *UseCase) Order(ctx *context.Context, order *entity.Order) error {
 	return nil
 }
 
-func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble) error {
+func (uc *useCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble) error {
 	var err error
 	var wg sync.WaitGroup
 
@@ -81,7 +79,7 @@ func (uc *UseCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble) 
 	return nil
 }
 
-func (uc *UseCase) cookFoodstuff(ctx context.Context, order *entity.Order, assemble *entity.Assemble) error {
+func (uc *useCase) cookFoodstuff(ctx context.Context, order *entity.Order, assemble *entity.Assemble) error {
 	if len(order.Product.Hamburgers) > 0 {
 		err := uc.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
 		if err != nil {
@@ -93,7 +91,7 @@ func (uc *UseCase) cookFoodstuff(ctx context.Context, order *entity.Order, assem
 	return nil
 }
 
-func (uc *UseCase) bulkOrder() {
+func (uc *useCase) bulkOrder() {
 	var err error
 	q := queue.New(pkg.AssembleNumber)
 	defer q.Close()
@@ -131,5 +129,5 @@ func (uc *UseCase) bulkOrder() {
 			uc.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
 		}()
 	}
-	q.Wait()
+
 }

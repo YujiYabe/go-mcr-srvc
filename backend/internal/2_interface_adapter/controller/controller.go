@@ -23,7 +23,7 @@ func init() {
 type (
 	// Controller ...
 	Controller struct {
-		UseCase     usecase.UseCase
+		UseCase     usecase.ToUseCase
 		OrderNumber int
 	}
 
@@ -52,19 +52,27 @@ func NewController(
 	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
 ) ToController {
+	toEntity := entity.NewEntity()
+
+	toGateway := &gateway.Gateway{
+		ToRefrigerator: toRefrigerator,
+		ToFreezer:      toFreezer,
+		ToShelf:        toShelf,
+	}
+
+	toPresenter := &presenter.Presenter{
+		ToShipment: toShipment,
+		ToMonitor:  toMonitor,
+	}
+
+	uscs := usecase.NewUseCase(
+		toEntity,
+		toGateway,
+		toPresenter,
+	)
+
 	ct := &Controller{
-		UseCase: usecase.UseCase{
-			ToEntity: entity.NewEntity(),
-			ToGateway: &gateway.Gateway{
-				ToRefrigerator: toRefrigerator,
-				ToFreezer:      toFreezer,
-				ToShelf:        toShelf,
-			},
-			ToPresenter: &presenter.Presenter{
-				ToShipment: toShipment,
-				ToMonitor:  toMonitor,
-			},
-		},
+		UseCase: uscs,
 	}
 
 	return ct

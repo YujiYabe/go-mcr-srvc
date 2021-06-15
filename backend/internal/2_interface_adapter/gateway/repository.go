@@ -14,14 +14,13 @@ func init() {
 	myErr = pkg.NewMyErr("adapter", "gateway")
 }
 
-// Gateway ...
-type Gateway struct {
-	ToRefrigerator ToRefrigerator
-	ToFreezer      ToFreezer
-	ToShelf        ToShelf
-}
-
 type (
+	// Gateway ...
+	Gateway struct {
+		ToRefrigerator ToRefrigerator
+		ToFreezer      ToFreezer
+		ToShelf        ToShelf
+	}
 
 	// ToRefrigerator ...
 	ToRefrigerator interface {

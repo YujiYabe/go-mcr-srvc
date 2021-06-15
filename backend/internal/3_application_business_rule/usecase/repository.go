@@ -6,8 +6,8 @@ import (
 )
 
 type (
-	// UseCase ...
-	UseCase struct {
+	// useCase ...
+	useCase struct {
 		ToEntity    ToEntity
 		ToGateway   ToGateway
 		ToPresenter ToPresenter
@@ -15,6 +15,7 @@ type (
 
 	// ToUseCase ...
 	ToUseCase interface {
+		Start()
 		Reserve(ctx context.Context, orderinfo *entity.OrderInfo)
 		Order(ctx *context.Context, order *entity.Order) error
 	}
@@ -45,3 +46,12 @@ type (
 		Shipment(ctx context.Context, order *entity.Order) error
 	}
 )
+
+// NewUseCase ...
+func NewUseCase(toEntity ToEntity, toGateway ToGateway, toPresenter ToPresenter) ToUseCase {
+	return &useCase{
+		ToEntity:    toEntity,
+		ToGateway:   toGateway,
+		ToPresenter: toPresenter,
+	}
+}
