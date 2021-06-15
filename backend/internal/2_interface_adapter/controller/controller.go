@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("adapter", "controller")
+	myErr = pkg.NewMyErr("interface_adapter", "controller")
 }
 
 type (

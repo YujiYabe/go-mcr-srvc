@@ -11,7 +11,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("adapter", "gateway")
+	myErr = pkg.NewMyErr("interface_adapter", "gateway")
 }
 
 type (
@@ -19,6 +19,12 @@ type (
 		ToRefrigerator ToRefrigerator
 		ToFreezer      ToFreezer
 		ToShelf        ToShelf
+	}
+
+	ToGateway interface {
+		ToRefrigerator
+		ToFreezer
+		ToShelf
 	}
 
 	// ToRefrigerator ...
