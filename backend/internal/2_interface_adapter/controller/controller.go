@@ -53,17 +53,15 @@ func NewController(
 	toMonitor presenter.ToMonitor,
 ) ToController {
 	toEntity := entity.NewEntity()
-
-	toGateway := &gateway.Gateway{
-		ToRefrigerator: toRefrigerator,
-		ToFreezer:      toFreezer,
-		ToShelf:        toShelf,
-	}
-
-	toPresenter := &presenter.Presenter{
-		ToShipment: toShipment,
-		ToMonitor:  toMonitor,
-	}
+	toGateway := gateway.NewGateway(
+		toRefrigerator,
+		toFreezer,
+		toShelf,
+	)
+	toPresenter := presenter.NewPresenter(
+		toShipment,
+		toMonitor,
+	)
 
 	uscs := usecase.NewUseCase(
 		toEntity,

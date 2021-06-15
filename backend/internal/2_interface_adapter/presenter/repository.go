@@ -33,3 +33,11 @@ type (
 		UpdateOrders(ctx context.Context, orderNumber string, phase string)
 	}
 )
+
+// NewPresenter ...
+func NewPresenter(toShipment ToShipment, toMonitor ToMonitor) *Presenter {
+	return &Presenter{
+		ToShipment: toShipment,
+		ToMonitor:  toMonitor,
+	}
+}

@@ -15,7 +15,6 @@ func init() {
 }
 
 type (
-	// Gateway ...
 	Gateway struct {
 		ToRefrigerator ToRefrigerator
 		ToFreezer      ToFreezer
@@ -38,3 +37,12 @@ type (
 		UpdateBans(ctx context.Context, items map[string]int) error
 	}
 )
+
+// NewGateway ...
+func NewGateway(toRefrigerator ToRefrigerator, toFreezer ToFreezer, toShelf ToShelf) *Gateway {
+	return &Gateway{
+		ToRefrigerator: toRefrigerator,
+		ToFreezer:      toFreezer,
+		ToShelf:        toShelf,
+	}
+}
