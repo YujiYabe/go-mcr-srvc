@@ -21,14 +21,14 @@ func init() {
 }
 
 type (
-	// Controller ...
-	Controller struct {
+	// controller ...
+	controller struct {
 		UseCase     usecase.ToUseCase
 		OrderNumber int
 	}
 
-	// OrderChannel ...
-	OrderChannel struct {
+	// orderChannel ...
+	orderChannel struct {
 		ctx   *context.Context
 		order *entity.Order
 	}
@@ -41,8 +41,8 @@ type (
 	}
 )
 
-// OrderChannel ...
-var orderController = make(chan OrderChannel)
+// orderChannel ...
+var odrChnnl = make(chan orderChannel)
 
 // NewController ...
 func NewController(
@@ -62,27 +62,25 @@ func NewController(
 		toShipment,
 		toMonitor,
 	)
-
 	uscs := usecase.NewUseCase(
 		toEntity,
 		toGateway,
 		toPresenter,
 	)
-
-	ct := &Controller{
+	ct := &controller{
 		UseCase: uscs,
 	}
 
 	return ct
 }
 
-func (ctrl *Controller) Start() {
+func (ctrl *controller) Start() {
 	go ctrl.bulkReception()
 	go ctrl.UseCase.Start()
 }
 
 // Reserve ...
-func (ctrl *Controller) Reserve(ctx context.Context, order *entity.Order, orderType string) {
+func (ctrl *controller) Reserve(ctx context.Context, order *entity.Order, orderType string) {
 	ctrl.OrderNumber++
 
 	order.OrderInfo.OrderNumber = fmt.Sprintf("%03d", ctrl.OrderNumber)
@@ -93,18 +91,21 @@ func (ctrl *Controller) Reserve(ctx context.Context, order *entity.Order, orderT
 }
 
 // Order ...
-func (ctrl *Controller) Order(ctx *context.Context, order *entity.Order) {
-	oc := &OrderChannel{
+func (ctrl *controller) Order(ctx *context.Context, order *entity.Order) {
+	oc := &orderChannel{
 		ctx:   ctx,
 		order: order,
 	}
 
-	orderController <- *oc
+	// the reason of use channel
+	// for return order number immediatamente
+	// and continue process to assemble order.
+	odrChnnl <- *oc
 }
 
-func (ctrl *Controller) bulkReception() {
+func (ctrl *controller) bulkReception() {
 	for {
-		oc := <-orderController
+		oc := <-odrChnnl
 		ctxWithTimeout, _ := context.WithTimeout(*oc.ctx, time.Minute*10)
 
 		err := ctrl.UseCase.Order(&ctxWithTimeout, oc.order)

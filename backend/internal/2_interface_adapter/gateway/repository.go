@@ -21,12 +21,6 @@ type (
 		ToShelf        ToShelf
 	}
 
-	ToGateway interface {
-		ToRefrigerator
-		ToFreezer
-		ToShelf
-	}
-
 	// ToRefrigerator ...
 	ToRefrigerator interface {
 		UpdateVegetables(ctx context.Context, items map[string]int) error
