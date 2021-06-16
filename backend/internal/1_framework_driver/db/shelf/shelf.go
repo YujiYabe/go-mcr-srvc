@@ -84,7 +84,8 @@ func (s *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
 			return err
 		}
 
-		time.Sleep(2 * time.Second)
+		// 作業時間を擬似的に再現
+		time.Sleep(1 * time.Second)
 	}
 
 	return nil

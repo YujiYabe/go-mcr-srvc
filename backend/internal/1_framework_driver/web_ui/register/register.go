@@ -123,16 +123,19 @@ func (rgstr *Register) OrderAccept() {
 			Product: *product,
 		}
 
+		// 標準コンテキストを取得
 		ctx := context.Background()
 
-		rgstr.Controller.Reserve(ctx, order, orderType)
+		rgstr.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+		rgstr.Controller.Order(&ctx, order)             // オーダー
+
 		newFileName := strings.Replace(currentFileName, "json", order.OrderInfo.OrderNumber, 1)
 		newFilePath := filepath.Join(pkg.ReservedPath, newFileName)
-		if err := os.Rename(currentFilePath, newFilePath); err != nil {
+		err = os.Rename(currentFilePath, newFilePath) // オーダー番号返却
+
+		if err != nil {
 			myErr.Logging(err)
 		}
-
-		rgstr.Controller.Order(&ctx, order)
 	}
 
 }

@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"sync"
-	"time"
 
 	"github.com/anikhasibul/queue"
 
@@ -27,7 +26,7 @@ func (uscs *useCase) Start() {
 
 // Reserve ...
 func (uscs *useCase) Reserve(ctx context.Context, orderinfo *entity.OrderInfo) {
-	uscs.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve")
+	uscs.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve") // オーダー情報更新
 }
 
 // Order ...
@@ -44,7 +43,8 @@ func (uscs *useCase) Order(ctx *context.Context, order *entity.Order) error {
 
 func (uscs *useCase) bulkOrder() {
 	var err error
-	q := queue.New(pkg.AssembleNumber)
+
+	q := queue.New(pkg.AssembleNumber) // 擬似的に同時進行できるキャパシティを設定
 	defer q.Close()
 
 	for {
@@ -52,32 +52,32 @@ func (uscs *useCase) bulkOrder() {
 		q.Add()
 		go func() {
 			defer q.Done()
-			ctxWithTimeout, _ := context.WithTimeout(*ou.ctx, time.Minute*10)
 
-			uscs.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "assemble")
+			// オーダー情報更新
+			uscs.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "assemble")
 
 			// オーダー解析
-			assemble := uscs.ToEntity.ParseOrder(ctxWithTimeout, ou.order)
+			assemble := uscs.ToEntity.ParseOrder(*ou.ctx, ou.order)
 
 			// 材料取り出し
-			err = uscs.getFoodstuff(ctxWithTimeout, assemble)
+			err = uscs.getFoodstuff(*ou.ctx, assemble)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
 			// 調理
-			err = uscs.cookFoodstuff(ctxWithTimeout, ou.order, assemble)
+			err = uscs.cookFoodstuff(*ou.ctx, ou.order, assemble)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
 			// 出荷よー
-			err = uscs.ToPresenter.Shipment(ctxWithTimeout, ou.order)
+			err = uscs.ToPresenter.Shipment(*ou.ctx, ou.order)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
-			uscs.ToPresenter.UpdateOrders(ctxWithTimeout, ou.order.OrderInfo.OrderNumber, "complete")
+			uscs.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "complete")
 		}()
 	}
 
@@ -87,6 +87,8 @@ func (uscs *useCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble
 	var err error
 	var wg sync.WaitGroup
 
+	// 材料取り出し
+	// 同時進行処理
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -121,6 +123,7 @@ func (uscs *useCase) getFoodstuff(ctx context.Context, assemble *entity.Assemble
 }
 
 func (uscs *useCase) cookFoodstuff(ctx context.Context, order *entity.Order, assemble *entity.Assemble) error {
+	// オーダーにハンバーガーが含まれていれば調理
 	if len(order.Product.Hamburgers) > 0 {
 		err := uscs.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
 		if err != nil {

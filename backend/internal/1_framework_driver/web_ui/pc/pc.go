@@ -49,22 +49,18 @@ func (pc *PC) Start() {
 
 // IndexPost ...
 func (pc *PC) IndexPost(c *gin.Context) {
+	// 標準コンテキストを取得
 	ctx := c.Request.Context()
 
+	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &entity.Product{}
 	if err := c.Bind(product); err != nil {
 		myErr.Logging(err)
 		return
 	}
+	order := &entity.Order{Product: *product}
 
-	order := &entity.Order{
-		Product: *product,
-	}
-
-	pc.Controller.Reserve(ctx, order, orderType)
-	c.JSON(200, order.OrderInfo.OrderNumber)
-
-	pc.Controller.Order(&ctx, order)
-
-	return
+	pc.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+	pc.Controller.Order(&ctx, order)             // オーダー
+	c.JSON(200, order.OrderInfo.OrderNumber)     // オーダー番号返却
 }

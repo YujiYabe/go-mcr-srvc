@@ -29,21 +29,12 @@ func (entt *entity) ParseOrder(ctx context.Context, order *Order) *Assemble {
 		Ingredients: map[string]int{},
 	}
 
+	// オーダー内容から必要な食材の数を計算
 	if len(order.Product.Hamburgers) != 0 {
 		entt.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
 	}
 
 	return assemble
-}
-
-func (entt *entity) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
-	for _, hamburger := range hamburgers {
-		entt.cutVegetables(ctx, hamburger)
-		entt.grillPatties(ctx, hamburger)
-		entt.assembleHamburger(ctx, hamburger)
-	}
-
-	return nil
 }
 
 func (entt *entity) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
@@ -68,11 +59,22 @@ func (entt *entity) countAssembleHamburger(ctx context.Context, assemble *Assemb
 		assemble.Ingredients["cheese"] += hamburger.Cheese
 		assemble.Ingredients["pickles"] += hamburger.Pickles
 	}
+}
 
-	return
+// CookHamburgers ...
+func (entt *entity) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
+	// ハンバーガーの調理
+	for _, hamburger := range hamburgers {
+		entt.cutVegetables(ctx, hamburger)
+		entt.grillPatties(ctx, hamburger)
+		entt.assembleHamburger(ctx, hamburger)
+	}
+
+	return nil
 }
 
 func (entt *entity) cutVegetables(ctx context.Context, hamburger Hamburger) {
+	// 調理時間を擬似的に再現
 	if hamburger.Lettuce > 0 {
 		time.Sleep(1 * time.Second)
 	}
@@ -82,15 +84,15 @@ func (entt *entity) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Pickles > 0 {
 		time.Sleep(1 * time.Second)
 	}
-	return
 }
 
 func (entt *entity) assembleHamburger(ctx context.Context, hamburger Hamburger) {
+	// 調理時間を擬似的に再現
 	time.Sleep(1 * time.Second)
-	return
 }
 
 func (entt *entity) grillPatties(ctx context.Context, hamburger Hamburger) {
+	// 調理時間を擬似的に再現
 	if hamburger.Beef > 0 {
 		time.Sleep(time.Duration(hamburger.Beef*1) * time.Second)
 	}
@@ -100,6 +102,4 @@ func (entt *entity) grillPatties(ctx context.Context, hamburger Hamburger) {
 	if hamburger.Fish > 0 {
 		time.Sleep(time.Duration(hamburger.Fish*1) * time.Second)
 	}
-
-	return
 }

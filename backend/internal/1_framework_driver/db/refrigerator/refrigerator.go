@@ -76,6 +76,7 @@ func (s *Refrigerator) UpdateVegetables(ctx context.Context, items map[string]in
 			return res.Error
 		}
 
+		// 作業時間を擬似的に再現
 		time.Sleep(1 * time.Second)
 	}
 
@@ -94,6 +95,9 @@ func (s *Refrigerator) UpdateIngredients(ctx context.Context, items map[string]i
 			myErr.Logging(res.Error)
 			return res.Error
 		}
+
+		// 作業時間を擬似的に再現
+		time.Sleep(1 * time.Second)
 	}
 
 	return nil

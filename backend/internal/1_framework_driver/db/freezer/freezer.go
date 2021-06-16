@@ -76,6 +76,7 @@ func (s *Freezer) UpdatePatties(ctx context.Context, items map[string]int) error
 			return res.Error
 		}
 
+		// 作業時間を擬似的に再現
 		time.Sleep(1 * time.Second)
 	}
 	return nil

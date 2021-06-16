@@ -57,22 +57,20 @@ func (mbl *Mobile) Start() {
 
 // IndexPost ...
 func (mbl *Mobile) IndexPost(c echo.Context) error {
+	// 標準コンテキストを取得
 	ctx := c.Request().Context()
 
+	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &entity.Product{}
 	if err := c.Bind(product); err != nil {
 		myErr.Logging(err)
 		return err
 	}
+	order := &entity.Order{Product: *product}
 
-	order := &entity.Order{
-		Product: *product,
-	}
-
-	mbl.Controller.Reserve(ctx, order, orderType)
-	c.JSON(200, order.OrderInfo.OrderNumber)
-
-	mbl.Controller.Order(&ctx, order)
+	mbl.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+	mbl.Controller.Order(&ctx, order)             // オーダー
+	c.JSON(200, order.OrderInfo.OrderNumber)      // オーダー番号返却
 
 	return nil
 }

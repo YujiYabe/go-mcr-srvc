@@ -66,21 +66,18 @@ func (dlvr *Delivery) Start() {
 }
 
 // DeliveryRPC ...
-func (s *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
+func (srvr *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
+
+	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &entity.Product{}
 	err := copier.Copy(product, in.Order)
 	if err != nil {
 		myErr.Logging(err)
 		return nil, err
 	}
+	order := &entity.Order{Product: *product}
 
-	order := &entity.Order{
-		Product: *product,
-	}
-
-	s.Controller.Reserve(ctx, order, orderType)
-
-	go s.Controller.Order(&ctx, order)
-
-	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil
+	srvr.Controller.Reserve(ctx, order, orderType)                          // オーダー番号発行
+	srvr.Controller.Order(&ctx, order)                                      // オーダー
+	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil // オーダー番号返却
 }
