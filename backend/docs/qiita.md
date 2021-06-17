@@ -145,15 +145,20 @@ git clone
 cd 
 make build
 make up
+
+
 ```
 # 最後に
 うーん。よく見るとハンバーガーのバンズ/レタス/パティ/トマト/バンズ もclean architectureが見えてきますね。   
 疲れてるとclean architectureがゲシュタルト崩壊します。(clean architecture初心者にありがち)
 
-こんなときはハンバーガーを食べて寝るに限りますね。
-## ちなみに私はサブウェイ派です！
+### こんなときはハンバーガーを食べて寝るに限りますね。
+## ちなみに私はサブウェイ派なのでBLTを食べます！
+<a href="https://www.subway.co.jp/menu/sandwich/limited_sandwich/2580.html">メキシカンミートタコス</a>
+おいしそう
 
-参考URL   
+
+
 https://qiita.com/t2-kob/items/02a76572693130c9a66e
 https://qiita.com/nrslib/items/a5f902c4defc83bd46b8
 https://qiita.com/koutalou/items/07a4f9cf51a2d13e4cdc
