@@ -23,11 +23,19 @@ pc.restから任意のメニューをpostリクエストします。
 delivery.shをcliから実行します。   
 ※処理実体はdelivery/delivery.goを参照
 
-### grpcurl を使って調査
-#### grpcインターフェイス確認コマンド   
-grpcurl -plaintext localhost:3456 list
+### grpcurl
+コマンドラインでの確認は下記が必要です。
+https://github.com/fullstorydev/grpcurl
 
-#### grpc送信コマンド
+
+### grpcインターフェイス確認コマンド   
+```
+grpcurl -plaintext localhost:3456 list
+```
+
+
+### grpc送信コマンド   
+```
 grpcurl -plaintext -d @ localhost:3456 delivery.DeliveryService/DeliveryRPC <<EOM
 {
     "Order": {
@@ -49,6 +57,7 @@ grpcurl -plaintext -d @ localhost:3456 delivery.DeliveryService/DeliveryRPC <<EO
     }
 }
 EOM
+```
 
 <br><br>
 # register
