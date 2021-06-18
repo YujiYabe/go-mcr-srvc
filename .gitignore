@@ -41,6 +41,6 @@ db/tool/phpmyadmin/sessions/*
 */tmp/main
 backend/yummy/*.json
 backend/script/order/register/*.json
-backend/script/order/register/reserved/*
+backend/script/order/register/reserved/*.json
 
 backend/script/order/delivery/vendor/*

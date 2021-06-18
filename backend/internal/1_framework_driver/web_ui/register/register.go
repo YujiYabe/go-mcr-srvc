@@ -129,7 +129,9 @@ func (rgstr *Register) OrderAccept() {
 		rgstr.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
 		rgstr.Controller.Order(&ctx, order)             // オーダー
 
-		newFileName := strings.Replace(currentFileName, "json", order.OrderInfo.OrderNumber, 1)
+		newExtention := order.OrderInfo.OrderNumber + ".json"
+		newFileName := strings.Replace(currentFileName, "json", newExtention, 1)
+
 		newFilePath := filepath.Join(pkg.ReservedPath, newFileName)
 		err = os.Rename(currentFilePath, newFilePath) // オーダー番号返却
 
