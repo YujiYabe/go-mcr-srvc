@@ -27,8 +27,28 @@ delivery.shをcliから実行します。
 #### grpcインターフェイス確認コマンド   
 grpcurl -plaintext localhost:3456 list
 
-#### grpc送信コマンド(空オーダー)   
-grpcurl -plaintext localhost:3456 delivery.DeliveryService/DeliveryRPC 
+#### grpc送信コマンド
+grpcurl -plaintext -d @ localhost:3456 delivery.DeliveryService/DeliveryRPC <<EOM
+{
+    "Order": {
+        "Hamburgers": [
+            {
+                "Top": 1 ,
+                "Middle": 0,
+                "Bottom":1 ,
+                "Beef":1 ,
+                "Chicken": 0,
+                "Fish": 0,
+                "Lettuce": 1,
+                "Tomato": 1,
+                "Onion": 0,
+                "Cheese": 1,
+                "Pickles": 1
+            }
+        ]
+    }
+}
+EOM
 
 <br><br>
 # register
