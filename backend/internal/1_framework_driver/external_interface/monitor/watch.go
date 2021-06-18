@@ -18,6 +18,9 @@ func (mntr *Monitor) RemoveYummy() {
 	}
 
 	for _, yummyFile := range yummyFiles {
+		if yummyFile.Name() == "readme.md" {
+			continue
+		}
 		err := os.Remove(filepath.Join(pkg.YummyPath, yummyFile.Name()))
 		if err != nil {
 			myErr.Logging(err)
