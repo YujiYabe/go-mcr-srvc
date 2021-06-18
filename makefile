@@ -16,6 +16,7 @@ removeall:
 	sudo rm -rf db/tool/phpmyadmin/sessions/
 	sudo rm -rf db/tool/pgadmin/root/
 	sudo rm -rf backend/yummy/*.json
+	sudo rm -rf backend/script/order/register/reserved/*.json
 
 
 # ----------------------------
