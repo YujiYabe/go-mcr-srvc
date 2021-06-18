@@ -146,8 +146,9 @@ cd
 make build
 make up
 
-
 ```
+オーダーは backend/script/order ディレクトリ内を参照
+
 # 最後に
 うーん。よく見るとハンバーガーのバンズ/レタス/パティ/トマト/バンズ もclean architectureが見えてきますね。   
 疲れてるとclean architectureがゲシュタルト崩壊します。(clean architecture初心者にありがち)
