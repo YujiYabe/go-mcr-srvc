@@ -4,25 +4,26 @@
 # この記事で説明したいこと
 clean architectureを(実際の実装を含めて)マク○ナル○に例えて説明したいと思います！   
 
+
 # なんでマク○ナル○？
 早い・安い・美味い、エンジニアの気絶のお供と言えばマク○ナル○だからです！（関係ない）
 キャッチーなタイトルだと書くモチベがあがりますよね!   
-実際にマク○ナル○で働いたことはないのですが、若い頃に参考資料を見たことがあるので大丈夫だと思います！
 
-ファーストフードでは誰がオーダーを受けようが誰が料理しようが基本的に同じ味で提供されますね。   
+ファーストフードでは誰がオーダーを受けようが誰が料理しようが基本的に同じ味で提供されますね。
 例えばキッチンのスタッフが入れ替わっても、レジの人は気にせずキッチンへのオーダーを通す事ができますが、これはclean architectureの疎結合に似ています。  
-またclean architecture(に限らない話ですが)はdbの依存関係を極力少なくしているのでdbの移行などでも最小限の工数で済む。というメリットがあります。   
-
+またclean architecture(に限らない話ですが)はdbの依存関係を極力少なくしているのでdbの移行などでも最小限の工数で済む。というメリットがあります。
 今回inputのインターフェースを４つ。outputのインターフェースを計５つ盛りだくさんで実装しています。
 
 # この記事のターゲット
-clean architectureについて解説してる有用な記事はたくさんありますが、clean architecture自体が難しい概念なので中々理解できない方が対象です。   
-かくゆう私も わからなくなることがたまによくあります！てへぺろ   
+clean architectureについて解説してる有用な記事はたくさんありますが、clean architecture自体が難しい概念なので中々理解できない方が対象です。
+かくゆう私も わからなくなることがたまによくあります！てへぺろ
 
 
+# ソースコードはこちら
+https://github.com/YujiYabe/macOnalO-chot-dekiru
 
 # 動作サンプル
-![demo](image/demo.gif "demo")
+![demo](https://github.com/YujiYabe/macOnalO-chot-dekiru/blob/main/backend/doc/image/demo.gif?raw=true)
 
 ##### 左側:スタッフが確認できるモニター
 | 項目     | 概要              |説明 |
@@ -90,11 +91,10 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 
 
 # オーダーフロー
-![orderflow](image/orderflow.png "orderflow")
-
+![orderflow](https://github.com/YujiYabe/macOnalO-chot-dekiru/blob/main/backend/doc/image/orderflow.png?raw=true)
 
 # framework_driver/web_ui
-オーダーを受けつけるパート
+[オーダーを受けつけるパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/web_ui)
 
 - web_uiのデータ型をControllerに持ち込まないようにentityのデータ型に変換
 - オーダー番号発行
@@ -102,64 +102,63 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 - オーダー番号を返却
 
 # framework_driver/db
-dbと接続するパート
+[dbと接続するパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/db)
 - dbの違いはこのパートで解消
 - 必要な食材を取得(デクリメント更新)
 
 # framework_driver/external_interface
-db以外の外部と接続するパート
+[db以外の外部と接続するパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/external_interface)
 - オーダー情報を随時更新するモニター(http://localhost:4567/)
 - 商品の出荷(backend/yummyディレクトリ)
 - 商品の出荷履歴(backend/storage/logディレクトリ)
 
 
 # interface_adapter/controller
-web_uiからのオーダーを処理するパート
-
+[web_uiからのオーダーを処理するパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/controller)
  - オーダー番号発行
  - オーダー処理
 
 # interface_adapter/presenter
-- usecaseからexternal_interfaceへ商品またはオーダー更新情報などを渡すパート
+[usecaseからexternal_interfaceへ商品またはオーダー更新情報などを渡すパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/presenter)
+
 
 # interface_adapter/gateway
-- usecaseからdbへ必要な食材の情報を渡すパート
+[usecaseからdbへ必要な食材の情報を渡すパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/gateway)
+
 
 # application_business_rule/usecase
-- controllerからのオーダーを受け取り、目的に応じて以下に処理を渡すパート
+[controllerからのオーダーを受け取り、目的に応じて以下に処理を渡すパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/3_application_business_rule/usecase)
 
-    - オーダー内容の解析・調理(データの解析・変更)は enterprise_business_rule/entity
-    - 食材の取り出し(DB更新)は interface_adapter/gateway
-    - オーダー情報のモニタ表示・商品の出荷は interface_adapter/presenter
+- オーダー内容の解析・調理(データの解析・変更)は enterprise_business_rule/entity
+- 食材の取り出し(DB更新)は interface_adapter/gateway
+- オーダー情報のモニタ表示・商品の出荷は interface_adapter/presenter
 
 # enterprise_business_rule/entity
-ドメインロジックを扱うパート
-
+[ドメインロジックを扱うパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/4_enterprise_business_rule/entity)
 - 調理に必要な食材数をカウントする
 - 食材を調理する
 
 # 動作確認
 ```
-git clone
+git clone git@github.com:YujiYabe/macOnalO-chot-dekiru.git
 
-cd 
+cd macOnalO-chot-dekiru
 make build
 make up
 
+# オーダーは backend/script/order ディレクトリ内を参照
 ```
-オーダーは backend/script/order ディレクトリ内を参照
 
 # 最後に
-うーん。よく見るとハンバーガーのバンズ/レタス/パティ/トマト/バンズ もclean architectureが見えてきますね。   
-疲れてるとclean architectureがゲシュタルト崩壊します。(clean architecture初心者にありがち)
+うーん。よく見るとハンバーガーのバンズ/レタス/パティ/トマト/バンズ もclean architectureが見えてきますね（タイトル回収）
+疲れてるとclean architectureがゲシュタルト崩壊します。(初心者にありがち) 
 
 ### こんなときはハンバーガーを食べて寝るに限りますね。
-## ちなみに私はサブウェイ派なのでBLTを食べます！
-<a href="https://www.subway.co.jp/menu/sandwich/limited_sandwich/2580.html">メキシカンミートタコス</a>
-おいしそう
+### ちなみに私はサブウェイ派なのでBLTを食べます！
+<a href="https://www.subway.co.jp/menu/sandwich/limited_sandwich/2580.html">メキシカンミートタコス</a> おいしそう
 
 
-
+# 参考URL
 https://qiita.com/t2-kob/items/02a76572693130c9a66e
 https://qiita.com/nrslib/items/a5f902c4defc83bd46b8
 https://qiita.com/koutalou/items/07a4f9cf51a2d13e4cdc
