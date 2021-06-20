@@ -20,10 +20,10 @@ clean architectureについて解説してる有用な記事はたくさんあ�
 
 
 # ソースコードはこちら
-https://github.com/YujiYabe/macOnalO-chot-dekiru
+https://github.com/yabeyuji/macOnalO-chot-dekiru
 
 # 動作サンプル
-![demo](https://github.com/YujiYabe/macOnalO-chot-dekiru/blob/main/backend/doc/image/demo.gif?raw=true)
+![demo](https://github.com/yabeyuji/macOnalO-chot-dekiru/blob/main/backend/doc/image/demo.gif?raw=true)
 
 ##### 左側:スタッフが確認できるモニター
 | 項目     | 概要              |説明 |
@@ -91,10 +91,10 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 
 
 # オーダーフロー
-![orderflow](https://github.com/YujiYabe/macOnalO-chot-dekiru/blob/main/backend/doc/image/orderflow.png?raw=true)
+![orderflow](https://github.com/yabeyuji/macOnalO-chot-dekiru/blob/main/backend/doc/image/orderflow.png?raw=true)
 
 # framework_driver/web_ui
-[オーダーを受けつけるパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/web_ui)
+[オーダーを受けつけるパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/web_ui)
 
 - web_uiのデータ型をControllerに持ち込まないようにentityのデータ型に変換
 - オーダー番号発行
@@ -102,45 +102,45 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 - オーダー番号を返却
 
 # framework_driver/db
-[dbと接続するパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/db)
+[dbと接続するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/db)
 - dbの違いはこのパートで解消
 - 必要な食材を取得(デクリメント更新)
 
 # framework_driver/external_interface
-[db以外の外部と接続するパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/external_interface)
+[db以外の外部と接続するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/external_interface)
 - オーダー情報を随時更新するモニター(http://localhost:4567/)
 - 商品の出荷(backend/yummyディレクトリ)
 - 商品の出荷履歴(backend/storage/logディレクトリ)
 
 
 # interface_adapter/controller
-[web_uiからのオーダーを処理するパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/controller)
+[web_uiからのオーダーを処理するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/controller)
  - オーダー番号発行
  - オーダー処理
 
 # interface_adapter/presenter
-[usecaseからexternal_interfaceへ商品またはオーダー更新情報などを渡すパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/presenter)
+[usecaseからexternal_interfaceへ商品またはオーダー更新情報などを渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/presenter)
 
 
 # interface_adapter/gateway
-[usecaseからdbへ必要な食材の情報を渡すパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/gateway)
+[usecaseからdbへ必要な食材の情報を渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/gateway)
 
 
 # application_business_rule/usecase
-[controllerからのオーダーを受け取り、目的に応じて以下に処理を渡すパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/3_application_business_rule/usecase)
+[controllerからのオーダーを受け取り、目的に応じて以下に処理を渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/3_application_business_rule/usecase)
 
 - オーダー内容の解析・調理(データの解析・変更)は enterprise_business_rule/entity
 - 食材の取り出し(DB更新)は interface_adapter/gateway
 - オーダー情報のモニタ表示・商品の出荷は interface_adapter/presenter
 
 # enterprise_business_rule/entity
-[ドメインロジックを扱うパート](https://github.com/YujiYabe/macOnalO-chot-dekiru/tree/main/backend/internal/4_enterprise_business_rule/entity)
+[ドメインロジックを扱うパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/4_enterprise_business_rule/entity)
 - 調理に必要な食材数をカウントする
 - 食材を調理する
 
 # 動作確認
 ```
-git clone git@github.com:YujiYabe/macOnalO-chot-dekiru.git
+git clone git@github.com:yabeyuji/macOnalO-chot-dekiru.git
 
 cd macOnalO-chot-dekiru
 make build
