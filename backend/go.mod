@@ -3,6 +3,7 @@ module backend
 go 1.15
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/anikhasibul/queue v0.0.0-20190518110522-5d242d08bdde
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-gonic/gin v1.7.2
