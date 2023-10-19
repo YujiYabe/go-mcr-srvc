@@ -200,7 +200,7 @@
                 <mxCell id="87" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="260" y="456" width="140" height="272" as="geometry"/>
                 </mxCell>
-                <mxCell id="88" value="enterprise_business_rule&lt;br&gt;entity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffff88;strokeColor=#36393d;" parent="1" vertex="1">
+                <mxCell id="88" value="enterprise_business_rule&lt;br&gt;domain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffff88;strokeColor=#36393d;" parent="1" vertex="1">
                     <mxGeometry x="260" y="405" width="140" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="89" value="オーダー解析" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">

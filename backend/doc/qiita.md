@@ -67,34 +67,34 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 
 | ディレクトリ | 説明 |
 | --- | --- |
-| 1_framework_driver | Frameworks & Drivers レイヤー |
-| 1_framework_driver/db | 食材の保管 |
-| 1_framework_driver/db/freezer | MySQL:冷凍庫 パティを保存 |
-| 1_framework_driver/db/refrigerator | PostgreSQL:冷蔵庫 野菜、チーズなどの保存 |
-| 1_framework_driver/db/shelf | MongoDB:棚 バンズを保存 |
-| 1_framework_driver/external_interface | オーダーモニター、商品の引き渡し |
-| 1_framework_driver/external_interface/monitor | websocket&vue:オーダーモニター |
-| 1_framework_driver/external_interface/shipment | jsonファイルを商品の引き渡しとする |
-| 1_framework_driver/web_ui | オーダー受け付け |
-| 1_framework_driver/web_ui/mobile | echo:モバイル注文 |
-| 1_framework_driver/web_ui/pc | gin:pc注文 |
-| 1_framework_driver/web_ui/delivery | grpc:ウー○ー的な提携業者からの注文 |
-| 1_framework_driver/web_ui/register | ファイル監視:レジ注文 |
-| 2_interface_adapter | Interface Adapters レイヤー |
-| 2_interface_adapter/controller | web_uiからのオーダーをusecaseに渡す |
-| 2_interface_adapter/gateway | usecaseからDBへのリクエストを渡す |
-| 2_interface_adapter/presenter | usecaseからexternal_interfaceへリクエストを渡す |
-| 3_application_business_rule | Application Business Rules レイヤー |
-| 3_application_business_rule/usecase | ユースケース |
-| 4_enterprise_business_rule | Enterprise Business Rules レイヤー |
-| 4_enterprise_business_rule/entity | ビジネスロジック 調理（野菜を切る、パティを焼くなど） |
+| 1_framework | Frameworks & Drivers レイヤー |
+| 1_framework/db | 食材の保管 |
+| 1_framework/db/freezer | MySQL:冷凍庫 パティを保存 |
+| 1_framework/db/refrigerator | PostgreSQL:冷蔵庫 野菜、チーズなどの保存 |
+| 1_framework/db/shelf | MongoDB:棚 バンズを保存 |
+| 1_framework/external_interface | オーダーモニター、商品の引き渡し |
+| 1_framework/external_interface/monitor | websocket&vue:オーダーモニター |
+| 1_framework/external_interface/shipment | jsonファイルを商品の引き渡しとする |
+| 1_framework/web_ui | オーダー受け付け |
+| 1_framework/web_ui/mobile | echo:モバイル注文 |
+| 1_framework/web_ui/pc | gin:pc注文 |
+| 1_framework/web_ui/delivery | grpc:ウー○ー的な提携業者からの注文 |
+| 1_framework/web_ui/register | ファイル監視:レジ注文 |
+| 2_adapter | Interface Adapters レイヤー |
+| 2_adapter/controller | web_uiからのオーダーをusecaseに渡す |
+| 2_adapter/gateway | usecaseからDBへのリクエストを渡す |
+| 2_adapter/presenter | usecaseからexternal_interfaceへリクエストを渡す |
+| 3_usecase | Application Business Rules レイヤー |
+| 3_usecase/usecase | ユースケース |
+| 4_domain | Enterprise Business Rules レイヤー |
+| 4_domain/domain | ビジネスロジック 調理（野菜を切る、パティを焼くなど） |
 
 
 # オーダーフロー
 ![orderflow](https://github.com/yabeyuji/macOnalO-chot-dekiru/blob/main/backend/doc/image/orderflow.png?raw=true)
 
 # framework_driver/web_ui
-[オーダーを受けつけるパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/web_ui)
+[オーダーを受けつけるパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework/web_ui)
 
 - web_uiのデータ型をControllerに持ち込まないようにentityのデータ型に変換
 - オーダー番号発行
@@ -102,39 +102,39 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 - オーダー番号を返却
 
 # framework_driver/db
-[dbと接続するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/db)
+[dbと接続するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework/db)
 - dbの違いはこのパートで解消
 - 必要な食材を取得(デクリメント更新)
 
 # framework_driver/external_interface
-[db以外の外部と接続するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework_driver/external_interface)
+[db以外の外部と接続するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/1_framework/external_interface)
 - オーダー情報を随時更新するモニター(http://localhost:4567/)
 - 商品の出荷(backend/yummyディレクトリ)
 - 商品の出荷履歴(backend/storage/logディレクトリ)
 
 
 # interface_adapter/controller
-[web_uiからのオーダーを処理するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/controller)
+[web_uiからのオーダーを処理するパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_adapter/controller)
  - オーダー番号発行
  - オーダー処理
 
 # interface_adapter/presenter
-[usecaseからexternal_interfaceへ商品またはオーダー更新情報などを渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/presenter)
+[usecaseからexternal_interfaceへ商品またはオーダー更新情報などを渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_adapter/presenter)
 
 
 # interface_adapter/gateway
-[usecaseからdbへ必要な食材の情報を渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_interface_adapter/gateway)
+[usecaseからdbへ必要な食材の情報を渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/2_adapter/gateway)
 
 
 # application_business_rule/usecase
-[controllerからのオーダーを受け取り、目的に応じて以下に処理を渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/3_application_business_rule/usecase)
+[controllerからのオーダーを受け取り、目的に応じて以下に処理を渡すパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/3_usecase/usecase)
 
-- オーダー内容の解析・調理(データの解析・変更)は enterprise_business_rule/entity
+- オーダー内容の解析・調理(データの解析・変更)は enterprise_business_rule/domain
 - 食材の取り出し(DB更新)は interface_adapter/gateway
 - オーダー情報のモニタ表示・商品の出荷は interface_adapter/presenter
 
-# enterprise_business_rule/entity
-[ドメインロジックを扱うパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/4_enterprise_business_rule/entity)
+# enterprise_business_rule/domain
+[ドメインロジックを扱うパート](https://github.com/yabeyuji/macOnalO-chot-dekiru/tree/main/backend/internal/4_domain/domain)
 - 調理に必要な食材数をカウントする
 - 食材を調理する
 
