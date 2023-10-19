@@ -52,7 +52,7 @@ func NewEcho() *echo.Echo {
 // Start ...
 func (mbl *Mobile) Start() {
 	mbl.EchoEcho.POST("/", mbl.IndexPost)
-	mbl.EchoEcho.Logger.Fatal(mbl.EchoEcho.Start(pkg.MobilePort))
+	mbl.EchoEcho.Logger.Fatal(mbl.EchoEcho.Start(":" + pkg.MobilePort))
 }
 
 // IndexPost ...

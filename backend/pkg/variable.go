@@ -32,6 +32,7 @@ var (
 	TZ string
 
 	MySQLDSN    string
+	MariaDBDSN  string
 	PostgresDSN string
 
 	MongoDatabase  string
@@ -51,11 +52,11 @@ func init() {
 	}
 
 	TZ = os.Getenv("TZ")
-	MobilePort = os.Getenv("MOBILE_BACK_PORT")
-	PCPort = os.Getenv("PC_BACK_PORT")
-	DeliveryPort = os.Getenv("DELIVERY_BACK_PORT")
-	MonitorPort = os.Getenv("MONITOR_BACK_PORT")
-	DeliveryAddress = backendHost + DeliveryPort
+	MobilePort = os.Getenv("MOBILE_PORT")
+	PCPort = os.Getenv("PC_PORT")
+	DeliveryPort = os.Getenv("DELIVERY_PORT")
+	MonitorPort = os.Getenv("MONITOR_PORT")
+	DeliveryAddress = backendHost + ":" + DeliveryPort
 
 	PostgresDSN = "host=postgres" +
 		" user=" + os.Getenv("POSTGRES_USER") +
@@ -66,6 +67,10 @@ func init() {
 
 	MySQLDSN = os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD") +
 		"@tcp(mysql)/" + os.Getenv("MYSQL_DATABASE") +
+		"?charset=utf8&parseTime=True&loc=Local"
+
+	MariaDBDSN = os.Getenv("MARIADB_USER") + ":" + os.Getenv("MARIADB_PASSWORD") +
+		"@tcp(mysql)/" + os.Getenv("MARIADB_DATABASE") +
 		"?charset=utf8&parseTime=True&loc=Local"
 
 	MongoDatabase = os.Getenv("MONGO_INITDB_DATABASE")

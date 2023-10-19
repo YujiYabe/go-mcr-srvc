@@ -29,11 +29,11 @@ backend/script/order/vendor
 
 
 /db/engine/mysql/data/*
+/db/engine/mariadb/data/*
 gin-bin
 .envrc
 /direnv/*
 direnv
-go-docker-template
 db/tool/phpmyadmin/sessions/*
 
 *.log
@@ -44,3 +44,5 @@ backend/script/order/register/*.json
 backend/script/order/register/reserved/*.json
 
 backend/script/order/delivery/vendor/*
+
+backend/bin/air

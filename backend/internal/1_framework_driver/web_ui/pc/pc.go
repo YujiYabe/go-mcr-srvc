@@ -44,7 +44,7 @@ func NewGin() *gin.Engine {
 func (pc *PC) Start() {
 	pc.GinEngine.POST("/", pc.IndexPost)
 
-	pc.GinEngine.Run(pkg.PCPort)
+	pc.GinEngine.Run(":" + pkg.PCPort)
 }
 
 // IndexPost ...

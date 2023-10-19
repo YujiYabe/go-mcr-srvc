@@ -9,7 +9,7 @@ stop:
 .PHONY: removeall
 removeall:
 	docker-compose stop
-	docker system prune
+	docker system prune -f
 	sudo rm -rf db/engine/mysql/var_lib_mysql/
 	sudo rm -rf db/engine/mysql/data/
 	sudo rm -rf db/engine/postgres/data
@@ -30,6 +30,7 @@ build:
 .PHONY: up
 up:
 	docker-compose up
+	# docker-compose up mysql mongo postgres
 
 # ----------------------------
 .PHONY: reup
