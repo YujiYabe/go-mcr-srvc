@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"backend/internal/2_adapter/controller"
-	"backend/pkg"
 	domain "backend/internal/4_domain"
+	"backend/pkg"
 )
 
 var (
@@ -66,7 +66,13 @@ func (dlvr *Delivery) Start() {
 }
 
 // DeliveryRPC ...
-func (srvr *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
+func (srvr *Server) DeliveryRPC(
+	ctx context.Context,
+	in *DeliveryRequest,
+) (
+	*DeliveryResponse,
+	error,
+) {
 
 	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &domain.Product{}

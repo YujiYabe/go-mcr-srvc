@@ -13,7 +13,7 @@ import (
 
 var (
 	myErr        *pkg.MyErr
-	orderUsecase = make(chan OrderUsecase)
+	orderUseCase = make(chan OrderUseCase)
 )
 
 func init() {
@@ -26,18 +26,18 @@ func (uscs *useCase) Start() {
 }
 
 // Reserve ...
-func (uscs *useCase) Reserve(ctx context.Context, orderinfo *domain.OrderInfo) {
-	uscs.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve") // オーダー情報更新
+func (uscs *useCase) Reserve(ctx context.Context, orderInfo *domain.OrderInfo) {
+	uscs.ToPresenter.UpdateOrders(ctx, orderInfo.OrderNumber, "reserve") // オーダー情報更新
 }
 
 // Order ...
 func (uscs *useCase) Order(ctx *context.Context, order *domain.Order) error {
-	ou := &OrderUsecase{
+	ou := &OrderUseCase{
 		ctx:   ctx,
 		order: order,
 	}
 
-	orderUsecase <- *ou
+	orderUseCase <- *ou
 
 	return nil
 }
@@ -49,7 +49,7 @@ func (uscs *useCase) bulkOrder() {
 	defer q.Close()
 
 	for {
-		ou := <-orderUsecase
+		ou := <-orderUseCase
 		q.Add()
 		go func() {
 			defer q.Done()

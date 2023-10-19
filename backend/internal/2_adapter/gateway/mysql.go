@@ -6,7 +6,7 @@ import (
 
 // GetPatties ...
 func (gw *Gateway) GetPatties(ctx context.Context, requestPatties map[string]int) error {
-	err := gw.ToFreezer.UpdatePatties(ctx, requestPatties)
+	err := gw.ToMysql.UpdatePatties(ctx, requestPatties)
 	if err != nil {
 		myErr.Logging(err)
 		return err

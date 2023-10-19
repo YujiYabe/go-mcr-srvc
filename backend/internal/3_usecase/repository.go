@@ -11,18 +11,18 @@ type (
 		ToDomain    ToDomain
 		ToGateway   ToGateway
 		ToPresenter ToPresenter
-	} 
+	}
 
 	// ToUseCase ...
 	ToUseCase interface {
 		Start()
-		Reserve(ctx context.Context, orderinfo *domain.OrderInfo)
+		Reserve(ctx context.Context, orderInfo *domain.OrderInfo)
 		Order(ctx *context.Context, order *domain.Order) error
 	}
 	//
 
-	// OrderUsecase ...
-	OrderUsecase struct {
+	// OrderUseCase ...
+	OrderUseCase struct {
 		ctx   *context.Context
 		order *domain.Order
 	}
@@ -49,7 +49,11 @@ type (
 )
 
 // NewUseCase ...
-func NewUseCase(toDomain ToDomain, toGateway ToGateway, toPresenter ToPresenter) ToUseCase {
+func NewUseCase(
+	toDomain ToDomain,
+	toGateway ToGateway,
+	toPresenter ToPresenter,
+) ToUseCase {
 	return &useCase{
 		ToDomain:    toDomain,
 		ToGateway:   toGateway,

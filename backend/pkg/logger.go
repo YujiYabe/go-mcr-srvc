@@ -21,7 +21,10 @@ type MyErr struct {
 }
 
 // NewMyErr ...
-func NewMyErr(layer string, part string) *MyErr {
+func NewMyErr(
+	layer string,
+	part string,
+) *MyErr {
 	me := &MyErr{}
 	me.Layer = layer
 	me.Part = part
@@ -85,5 +88,4 @@ func (me MyErr) Logging(passErr error, value ...interface{}) {
 
 	fmt.Fprintln(f, row)
 
-	return
 }

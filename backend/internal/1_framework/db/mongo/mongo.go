@@ -1,4 +1,4 @@
-package shelf
+package mongo
 
 import (
 	"context"
@@ -17,12 +17,12 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("framework_driver", "refrigerator")
+	myErr = pkg.NewMyErr("framework_driver", "postgres")
 }
 
 type (
-	// Shelf ...
-	Shelf struct {
+	// Mongo ...
+	Mongo struct {
 		Conn *mongo.Client
 	}
 
@@ -34,14 +34,14 @@ type (
 	}
 )
 
-// NewToShelf ...
-func NewToShelf() gateway.ToShelf {
+// NewToMongo ...
+func NewToMongo() gateway.ToMongo {
 	conn, err := open(30)
 	if err != nil {
 		panic(err)
 	}
 
-	s := new(Shelf)
+	s := new(Mongo)
 	s.Conn = conn
 	return s
 }
@@ -59,7 +59,7 @@ func open(count uint) (*mongo.Client, error) {
 }
 
 // UpdateBans ...
-func (s *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
+func (s *Mongo) UpdateBans(ctx context.Context, items map[string]int) error {
 	bans := s.Conn.Database(pkg.MongoDatabase).Collection("bans")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

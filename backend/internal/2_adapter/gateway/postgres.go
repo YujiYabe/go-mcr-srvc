@@ -6,7 +6,7 @@ import (
 
 // GetVegetables ...
 func (gw *Gateway) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
-	err := gw.ToRefrigerator.UpdateVegetables(ctx, requestVegetables)
+	err := gw.ToPostgres.UpdateVegetables(ctx, requestVegetables)
 	if err != nil {
 		myErr.Logging(err)
 		return err
@@ -17,7 +17,7 @@ func (gw *Gateway) GetVegetables(ctx context.Context, requestVegetables map[stri
 
 // GetIngredients ...
 func (gw *Gateway) GetIngredients(ctx context.Context, requestIngredients map[string]int) error {
-	err := gw.ToRefrigerator.UpdateIngredients(ctx, requestIngredients)
+	err := gw.ToPostgres.UpdateIngredients(ctx, requestIngredients)
 	if err != nil {
 		myErr.Logging(err)
 		return err

@@ -3,8 +3,8 @@ package presenter
 import (
 	"context"
 
-	"backend/pkg"
 	domain "backend/internal/4_domain"
+	"backend/pkg"
 )
 
 var (
@@ -35,7 +35,10 @@ type (
 )
 
 // NewPresenter ...
-func NewPresenter(toShipment ToShipment, toMonitor ToMonitor) *Presenter {
+func NewPresenter(
+	toShipment ToShipment,
+	toMonitor ToMonitor,
+) *Presenter {
 	return &Presenter{
 		ToShipment: toShipment,
 		ToMonitor:  toMonitor,

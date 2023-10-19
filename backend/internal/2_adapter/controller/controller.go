@@ -46,17 +46,17 @@ var odrChnnl = make(chan orderChannel)
 
 // NewController ...
 func NewController(
-	toRefrigerator gateway.ToRefrigerator,
-	toFreezer gateway.ToFreezer,
-	toShelf gateway.ToShelf,
+	toPostgres gateway.ToPostgres,
+	toMysql gateway.ToMysql,
+	toMongo gateway.ToMongo,
 	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
 ) ToController {
 	toDomain := domain.NewDomain()
 	toGateway := gateway.NewGateway(
-		toRefrigerator,
-		toFreezer,
-		toShelf,
+		toPostgres,
+		toMysql,
+		toMongo,
 	)
 	toPresenter := presenter.NewPresenter(
 		toShipment,
@@ -80,7 +80,11 @@ func (ctrl *controller) Start() {
 }
 
 // Reserve ...
-func (ctrl *controller) Reserve(ctx context.Context, order *domain.Order, orderType string) {
+func (ctrl *controller) Reserve(
+	ctx context.Context,
+	order *domain.Order,
+	orderType string,
+) {
 	ctrl.OrderNumber++ // オーダー番号発行
 	if ctrl.OrderNumber >= 1000 {
 		ctrl.OrderNumber = 1 // オーダー番号を3桁以内にする
@@ -94,7 +98,10 @@ func (ctrl *controller) Reserve(ctx context.Context, order *domain.Order, orderT
 }
 
 // Order ...
-func (ctrl *controller) Order(ctx *context.Context, order *domain.Order) {
+func (ctrl *controller) Order(
+	ctx *context.Context,
+	order *domain.Order,
+) {
 	oc := &orderChannel{
 		ctx:   ctx,
 		order: order,

@@ -21,7 +21,10 @@ func NewDomain() ToDomain {
 }
 
 // ParseOrder ...
-func (entt *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
+func (dmn *domain) ParseOrder(
+	ctx context.Context,
+	order *Order,
+) *Assemble {
 	assemble := &Assemble{
 		Bans:        map[string]int{},
 		Patties:     map[string]int{},
@@ -31,14 +34,17 @@ func (entt *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
 
 	// オーダー内容から必要な食材の数を計算
 	if len(order.Product.Hamburgers) != 0 {
-		entt.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
+		dmn.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
 	}
 
 	return assemble
 }
 
-func (entt *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
-
+func (dmn *domain) countAssembleHamburger(
+	ctx context.Context,
+	assemble *Assemble,
+	hamburgers []Hamburger,
+) {
 	for _, hamburger := range hamburgers {
 		// bans
 		assemble.Bans["top"] += hamburger.Top
@@ -62,18 +68,24 @@ func (entt *domain) countAssembleHamburger(ctx context.Context, assemble *Assemb
 }
 
 // CookHamburgers ...
-func (entt *domain) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
+func (dmn *domain) CookHamburgers(
+	ctx context.Context,
+	hamburgers []Hamburger,
+) error {
 	// ハンバーガーの調理
 	for _, hamburger := range hamburgers {
-		entt.cutVegetables(ctx, hamburger)
-		entt.grillPatties(ctx, hamburger)
-		entt.assembleHamburger(ctx, hamburger)
+		dmn.cutVegetables(ctx, hamburger)
+		dmn.grillPatties(ctx, hamburger)
+		dmn.assembleHamburger(ctx, hamburger)
 	}
 
 	return nil
 }
 
-func (entt *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
+func (dmn *domain) cutVegetables(
+	ctx context.Context,
+	hamburger Hamburger,
+) {
 	// 調理時間を擬似的に再現
 	if hamburger.Lettuce > 0 {
 		time.Sleep(1 * time.Second)
@@ -86,12 +98,18 @@ func (entt *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	}
 }
 
-func (entt *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) {
+func (dmn *domain) assembleHamburger(
+	ctx context.Context,
+	hamburger Hamburger,
+	) {
 	// 調理時間を擬似的に再現
 	time.Sleep(1 * time.Second)
 }
 
-func (entt *domain) grillPatties(ctx context.Context, hamburger Hamburger) {
+func (dmn *domain) grillPatties(
+	ctx context.Context,
+	hamburger Hamburger,
+	) {
 	// 調理時間を擬似的に再現
 	if hamburger.Beef > 0 {
 		time.Sleep(time.Duration(hamburger.Beef*1) * time.Second)

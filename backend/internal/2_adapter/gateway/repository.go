@@ -16,33 +16,37 @@ func init() {
 
 type (
 	Gateway struct {
-		ToRefrigerator ToRefrigerator
-		ToFreezer      ToFreezer
-		ToShelf        ToShelf
+		ToPostgres ToPostgres
+		ToMysql    ToMysql
+		ToMongo    ToMongo
 	}
 
-	// ToRefrigerator ...
-	ToRefrigerator interface {
+	// ToPostgres ...
+	ToPostgres interface {
 		UpdateVegetables(ctx context.Context, items map[string]int) error
 		UpdateIngredients(ctx context.Context, items map[string]int) error
 	}
 
-	// ToFreezer ...
-	ToFreezer interface {
+	// ToMysql ...
+	ToMysql interface {
 		UpdatePatties(ctx context.Context, items map[string]int) error
 	}
 
-	// ToShelf ...
-	ToShelf interface {
+	// ToMongo ...
+	ToMongo interface {
 		UpdateBans(ctx context.Context, items map[string]int) error
 	}
 )
 
 // NewGateway ...
-func NewGateway(toRefrigerator ToRefrigerator, toFreezer ToFreezer, toShelf ToShelf) *Gateway {
+func NewGateway(
+	toPostgres ToPostgres,
+	toMysql ToMysql,
+	toMongo ToMongo,
+) *Gateway {
 	return &Gateway{
-		ToRefrigerator: toRefrigerator,
-		ToFreezer:      toFreezer,
-		ToShelf:        toShelf,
+		ToPostgres: toPostgres,
+		ToMysql:    toMysql,
+		ToMongo:    toMongo,
 	}
 }
