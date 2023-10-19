@@ -29,8 +29,8 @@ build:
 # ----------------------------
 .PHONY: up
 up:
-	docker-compose up
-	# docker-compose up mysql mongo postgres
+	# docker-compose up
+	docker-compose up mysql mongo postgres
 
 # ----------------------------
 .PHONY: reup
