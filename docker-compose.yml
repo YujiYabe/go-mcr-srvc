@@ -5,7 +5,7 @@ services:
         restart: always
         container_name: mysql
         build:
-            context: ./db/engine/mysql
+            context: ./backend/db/engine/mysql
             dockerfile: Dockerfile
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -24,7 +24,7 @@ services:
         restart: always
         container_name: mariadb
         build:
-            context: ./db/engine/mariadb
+            context: ./backend/db/engine/mariadb
             dockerfile: Dockerfile
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -44,7 +44,7 @@ services:
         container_name: postgres
         hostname: postgres
         build:
-            context: ./db/engine/postgres
+            context: ./backend/db/engine/postgres
             dockerfile: Dockerfile
         ports:
             - ${POSTGRES_FRONT_PORT}:${POSTGRES_BACK_PORT}
@@ -61,7 +61,7 @@ services:
         restart: always
         container_name: mongo
         build:
-            context: ./db/engine/mongo
+            context: ./backend/db/engine/mongo
             dockerfile: Dockerfile
         environment:
             - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
@@ -103,7 +103,7 @@ services:
     # phpmyadmin:
     #     container_name: phpmyadmin
     #     build:
-    #         context: ./db/tool/phpmyadmin
+    #         context: ./backend/db/tool/phpmyadmin
     #         dockerfile: Dockerfile
     #     environment:
     #         - PMA_ARBITRARY=1
@@ -124,7 +124,7 @@ services:
     #     container_name: pgadmin
     #     hostname: pgadmin
     #     build:
-    #         context: ./db/tool/pgadmin
+    #         context: ./backend/db/tool/pgadmin
     #         dockerfile: Dockerfile
     #     ports:
     #         - 8091:80
