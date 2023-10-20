@@ -121,9 +121,6 @@ func getSqlitePath() string {
 		// dockerの場合は、/go/src/backend/sqlite を確認
 		sqlitePath = filepath.Dir(currentPath) + "/backend/sqlite"
 	}
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", sqlitePath)
-	fmt.Println("== == == == == == == == == == ")
 
 	return sqlitePath
 }
@@ -171,9 +168,6 @@ func open(
 	*gorm.DB,
 	error,
 ) {
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", dbPath)
-	fmt.Println("== == == == == == == == == == ")
 
 	db, err := gorm.Open(
 		sqlite.Open(dbPath),

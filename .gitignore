@@ -46,4 +46,5 @@ backend/script/order/register/reserved/*.json
 backend/script/order/delivery/vendor/*
 
 backend/bin/air
+
 *.sqlite3

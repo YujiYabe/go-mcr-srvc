@@ -45,14 +45,14 @@ type (
 // NewGateway ...
 func NewGateway(
 	toSqlite ToSqlite,
-	toPostgres ToPostgres,
-	toMysql ToMysql,
-	toMongo ToMongo,
+	// toPostgres ToPostgres,
+	// toMysql ToMysql,
+	// toMongo ToMongo,
 ) *Gateway {
 	return &Gateway{
-		ToSqlite:   toSqlite,
-		ToPostgres: toPostgres,
-		ToMysql:    toMysql,
-		ToMongo:    toMongo,
+		ToSqlite: toSqlite,
+		// ToPostgres: toPostgres,
+		// ToMysql:    toMysql,
+		// ToMongo:    toMongo,
 	}
 }

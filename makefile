@@ -23,8 +23,8 @@ removeall:
 .PHONY: build
 build:
 	# docker-compose build
-	# docker-compose build --no-cache
 	docker-compose build backend
+	# docker-compose build --no-cache
 
 
 # ----------------------------
@@ -32,6 +32,7 @@ build:
 up:
 	# docker-compose up
 	# docker-compose up mysql mongo postgres
+	# docker-compose up mysql mongo postgres sqlite
 	docker-compose up backend
 
 # ----------------------------

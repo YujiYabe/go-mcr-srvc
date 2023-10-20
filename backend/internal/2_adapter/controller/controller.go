@@ -9,6 +9,7 @@ import (
 	"backend/internal/2_adapter/presenter"
 	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
+
 	"backend/pkg"
 )
 
@@ -47,18 +48,18 @@ var odrChnnl = make(chan orderChannel)
 // NewController ...
 func NewController(
 	toSqlite gateway.ToSqlite,
-	toPostgres gateway.ToPostgres,
-	toMysql gateway.ToMysql,
-	toMongo gateway.ToMongo,
+	// toPostgres gateway.ToPostgres,
+	// toMysql gateway.ToMysql,
+	// toMongo gateway.ToMongo,
 	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
 ) ToController {
 	toDomain := domain.NewDomain()
 	toGateway := gateway.NewGateway(
 		toSqlite,
-		toPostgres,
-		toMysql,
-		toMongo,
+		// toPostgres,
+		// toMysql,
+		// toMongo,
 	)
 	toPresenter := presenter.NewPresenter(
 		toShipment,
