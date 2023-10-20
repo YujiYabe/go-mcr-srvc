@@ -46,6 +46,7 @@ var odrChnnl = make(chan orderChannel)
 
 // NewController ...
 func NewController(
+	toSqlite gateway.ToSqlite,
 	toPostgres gateway.ToPostgres,
 	toMysql gateway.ToMysql,
 	toMongo gateway.ToMongo,
@@ -54,6 +55,7 @@ func NewController(
 ) ToController {
 	toDomain := domain.NewDomain()
 	toGateway := gateway.NewGateway(
+		toSqlite,
 		toPostgres,
 		toMysql,
 		toMongo,

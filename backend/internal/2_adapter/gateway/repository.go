@@ -16,9 +16,13 @@ func init() {
 
 type (
 	Gateway struct {
+		ToSqlite   ToSqlite
 		ToPostgres ToPostgres
 		ToMysql    ToMysql
 		ToMongo    ToMongo
+	}
+
+	ToSqlite interface {
 	}
 
 	// ToPostgres ...
@@ -40,11 +44,13 @@ type (
 
 // NewGateway ...
 func NewGateway(
+	toSqlite ToSqlite,
 	toPostgres ToPostgres,
 	toMysql ToMysql,
 	toMongo ToMongo,
 ) *Gateway {
 	return &Gateway{
+		ToSqlite:   toSqlite,
 		ToPostgres: toPostgres,
 		ToMysql:    toMysql,
 		ToMongo:    toMongo,

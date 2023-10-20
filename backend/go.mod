@@ -31,5 +31,6 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gorm.io/driver/mysql v1.1.0
 	gorm.io/driver/postgres v1.1.0
-	gorm.io/gorm v1.21.10
+	gorm.io/driver/sqlite v1.5.4 // indirect
+	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
 )

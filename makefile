@@ -22,15 +22,17 @@ removeall:
 # ----------------------------
 .PHONY: build
 build:
-	docker-compose build
+	# docker-compose build
 	# docker-compose build --no-cache
+	docker-compose build backend
 
 
 # ----------------------------
 .PHONY: up
 up:
-	docker-compose up
+	# docker-compose up
 	# docker-compose up mysql mongo postgres
+	docker-compose up backend
 
 # ----------------------------
 .PHONY: reup

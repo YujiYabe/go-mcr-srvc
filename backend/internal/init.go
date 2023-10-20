@@ -4,6 +4,7 @@ import (
 	"backend/internal/1_framework/db/mongo"
 	"backend/internal/1_framework/db/mysql"
 	"backend/internal/1_framework/db/postgres"
+	"backend/internal/1_framework/db/sqlite"
 	"backend/internal/1_framework/external_interface/monitor"
 	"backend/internal/1_framework/external_interface/shipment"
 	"backend/internal/1_framework/web_ui/delivery"
@@ -30,6 +31,7 @@ func NewApp() *app {
 		postgres.NewToPostgres(),
 		mysql.NewToMysql(),
 		mongo.NewToMongo(),
+		sqlite.NewToSQLite(),
 		shipment.NewToShipment(),
 		monitor.NewToMonitor(),
 	)

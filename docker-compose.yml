@@ -5,7 +5,7 @@ services:
         restart: always
         container_name: mysql
         build:
-            context: ./backend/db/engine/mysql
+            context: ./db/engine/mysql
             dockerfile: Dockerfile
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -24,7 +24,7 @@ services:
         restart: always
         container_name: mariadb
         build:
-            context: ./backend/db/engine/mariadb
+            context: ./db/engine/mariadb
             dockerfile: Dockerfile
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -44,7 +44,7 @@ services:
         container_name: postgres
         hostname: postgres
         build:
-            context: ./backend/db/engine/postgres
+            context: ./db/engine/postgres
             dockerfile: Dockerfile
         ports:
             - ${POSTGRES_FRONT_PORT}:${POSTGRES_BACK_PORT}
@@ -61,7 +61,7 @@ services:
         restart: always
         container_name: mongo
         build:
-            context: ./backend/db/engine/mongo
+            context: ./db/engine/mongo
             dockerfile: Dockerfile
         environment:
             - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
@@ -82,6 +82,8 @@ services:
         container_name: backend
         volumes:
             - ./backend:/go/src/backend
+            - ./db/engine/sqlite:/go/src/backend/sqlite
+
         ports:
             - ${MOBILE_PORT}:${MOBILE_PORT}
             - ${PC_PORT}:${PC_PORT}
@@ -90,20 +92,20 @@ services:
         environment:
             - GOPATH=${GOPATH}
         tty: true
-        links:
-            - mysql
-            - postgres
-            - mongo
-        depends_on:
-            - mysql
-            - postgres
-            - mongo
+        # links:
+        #     - mysql
+        #     - postgres
+        #     - mongo
+        # depends_on:
+        #     - mysql
+        #     - postgres
+        #     - mongo
 
 
     # phpmyadmin:
     #     container_name: phpmyadmin
     #     build:
-    #         context: ./backend/db/tool/phpmyadmin
+    #         context: ./db/tool/phpmyadmin
     #         dockerfile: Dockerfile
     #     environment:
     #         - PMA_ARBITRARY=1
@@ -124,7 +126,7 @@ services:
     #     container_name: pgadmin
     #     hostname: pgadmin
     #     build:
-    #         context: ./backend/db/tool/pgadmin
+    #         context: ./db/tool/pgadmin
     #         dockerfile: Dockerfile
     #     ports:
     #         - 8091:80
