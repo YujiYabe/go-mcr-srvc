@@ -2,8 +2,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
-	"time"
 
 	"backend/internal/2_adapter/gateway"
 	"backend/internal/2_adapter/presenter"
@@ -88,16 +86,7 @@ func (ctrl *controller) Reserve(
 	order *domain.Order,
 	orderType string,
 ) {
-	ctrl.OrderNumber++ // オーダー番号発行
-	if ctrl.OrderNumber >= 1000 {
-		ctrl.OrderNumber = 1 // オーダー番号を3桁以内にする
-	}
-
-	order.OrderInfo.OrderNumber = fmt.Sprintf("%03d", ctrl.OrderNumber) // オーダー番号を3桁で表示
-	order.OrderInfo.OrderType = orderType                               // オーダーの種類(mobile/pc/delivery/register)
-	order.OrderInfo.OrderTime = time.Now()                              // オーダー受け付け時間
-
-	ctrl.UseCase.Reserve(ctx, &order.OrderInfo) // オーダー情報更新
+	ctrl.UseCase.Reserve(ctx) // オーダー情報更新
 }
 
 // Order ...
@@ -116,12 +105,4 @@ func (ctrl *controller) Order(
 }
 
 func (ctrl *controller) bulkOrder() {
-	// 無限ループでチャネルを待ち受け
-	for {
-		oc := <-odrChnnl // Orderメソッドのチャネルの受け取り
-		err := ctrl.UseCase.Order(oc.ctx, oc.order)
-		if err != nil {
-			myErr.Logging(err)
-		}
-	}
 }

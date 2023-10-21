@@ -5,8 +5,7 @@ import (
 )
 
 // Monitor ...
-func (prsntr *Presenter) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
+func (prsntr *Presenter) UpdateOrders(ctx context.Context) {
 	// オーダー情報更新
-	prsntr.ToMonitor.UpdateOrders(ctx, orderNumber, phase)
-	return
+	prsntr.ToMonitor.UpdateOrders(ctx)
 }

@@ -111,33 +111,10 @@ func (mntr *Monitor) Start() {
 }
 
 // UpdateOrders ...
-func (mntr *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
-
-	switch phase {
-	case "reserve":
-		orders.Reserves = append(orders.Reserves, orderNumber)
-	case "assemble":
-		orders.Reserves = remove(orders.Reserves, orderNumber)
-		orders.Assembles = append(orders.Assembles, orderNumber)
-	case "complete":
-		orders.Assembles = remove(orders.Assembles, orderNumber)
-		orders.Completes = append(orders.Completes, orderNumber)
-	case "pass":
-		orders.Completes = remove(orders.Completes, orderNumber)
-		orders.Passes = append(orders.Passes, orderNumber)
-	}
-
-	ordersChan <- *orders
-
+func (mntr *Monitor) UpdateOrders(ctx context.Context) {
 	return
 }
 
-func remove(strings []string, search string) []string {
-	result := []string{}
-	for _, v := range strings {
-		if v != search {
-			result = append(result, v)
-		}
-	}
-	return result
+func remove() error {
+	return nil
 }

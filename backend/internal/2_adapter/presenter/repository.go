@@ -3,7 +3,6 @@ package presenter
 import (
 	"context"
 
-	domain "backend/internal/4_domain"
 	"backend/pkg"
 )
 
@@ -24,13 +23,13 @@ type Presenter struct {
 type (
 	// ToShipment ...
 	ToShipment interface {
-		PutProducts(ctx context.Context, order *domain.Order) error
-		WriteLog(ctx context.Context, order *domain.Order) error
+		PutProducts(ctx context.Context) error
+		WriteLog(ctx context.Context) error
 	}
 
 	// ToMonitor ...
 	ToMonitor interface {
-		UpdateOrders(ctx context.Context, orderNumber string, phase string)
+		UpdateOrders(ctx context.Context)
 	}
 )
 

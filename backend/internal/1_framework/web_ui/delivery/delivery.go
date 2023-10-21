@@ -5,12 +5,10 @@ import (
 	"log"
 	"net"
 
-	"github.com/jinzhu/copier"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	"backend/internal/2_adapter/controller"
-	domain "backend/internal/4_domain"
 	"backend/pkg"
 )
 
@@ -74,16 +72,5 @@ func (srvr *Server) DeliveryRPC(
 	error,
 ) {
 
-	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
-	product := &domain.Product{}
-	err := copier.Copy(product, in.Order)
-	if err != nil {
-		myErr.Logging(err)
-		return nil, err
-	}
-	order := &domain.Order{Product: *product}
-
-	srvr.Controller.Reserve(ctx, order, orderType)                          // オーダー番号発行
-	srvr.Controller.Order(&ctx, order)                                      // オーダー
-	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil // オーダー番号返却
+	return nil, nil // オーダー番号返却
 }

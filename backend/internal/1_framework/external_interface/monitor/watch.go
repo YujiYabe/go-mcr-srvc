@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"backend/pkg"
@@ -64,7 +63,7 @@ func (mntr *Monitor) passedCheck(currentfiles, newFiles []string) {
 
 		if !isExist {
 			ctx := context.Background()
-			mntr.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
+			mntr.UpdateOrders(ctx)
 		}
 	}
 

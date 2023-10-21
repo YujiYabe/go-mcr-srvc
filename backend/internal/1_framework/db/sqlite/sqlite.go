@@ -49,7 +49,7 @@ func updateStoreDB() error {
 	}
 	product := &domain.Product{}
 
-	_ = masterDB.Find(&product)
+	masterDB.Find(&product)
 
 	// masterRows, err := masterDB.Query("SELECT * FROM products ORDER BY jan_code")
 	// if err != nil {

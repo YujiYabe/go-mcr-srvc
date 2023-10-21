@@ -5,7 +5,6 @@ import (
 
 	"backend/internal/2_adapter/controller"
 	"backend/pkg"
-	domain "backend/internal/4_domain"
 )
 
 var (
@@ -50,17 +49,5 @@ func (pc *PC) Start() {
 // IndexPost ...
 func (pc *PC) IndexPost(c *gin.Context) {
 	// 標準コンテキストを取得
-	ctx := c.Request.Context()
-
-	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
-	product := &domain.Product{}
-	if err := c.Bind(product); err != nil {
-		myErr.Logging(err)
-		return
-	}
-	order := &domain.Order{Product: *product}
-
-	pc.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-	pc.Controller.Order(&ctx, order)             // オーダー
-	c.JSON(200, order.OrderInfo.OrderNumber)     // オーダー番号返却
+	c.JSON(200, 0) // オーダー番号返却
 }
