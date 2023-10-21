@@ -6,13 +6,14 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/anikhasibul/queue"
 	"gocv.io/x/gocv"
 )
 
-func CodeDetector(number int, file *multipart.FileHeader) ([]int, error) {
+func (receiver *Reserving) CodeDetector(number int, file *multipart.FileHeader) ([]int, error) {
 	janCodes := []int{}
 	src, err := file.Open()
 	fileName := fmt.Sprintf("%d-%d-%s", number, time.Now().Unix(), file.Filename)
@@ -22,13 +23,13 @@ func CodeDetector(number int, file *multipart.FileHeader) ([]int, error) {
 	}
 	defer src.Close()
 
-	img, err := loadImage(src, fileName)
+	img, err := receiver.loadImage(src, fileName)
 	if err != nil {
 		return janCodes, err
 	}
 	defer img.Close()
 
-	janCodes, err = detectQRCode(img)
+	janCodes, err = receiver.detectQRCode(img)
 	if err != nil {
 		return janCodes, err
 	}
@@ -36,7 +37,7 @@ func CodeDetector(number int, file *multipart.FileHeader) ([]int, error) {
 	return janCodes, nil
 }
 
-func loadImage(src multipart.File, fileName string) (gocv.Mat, error) {
+func (receiver *Reserving) loadImage(src multipart.File, fileName string) (gocv.Mat, error) {
 	var img gocv.Mat
 
 	// 画像の読み込み方法を決定
@@ -54,7 +55,7 @@ func loadImage(src multipart.File, fileName string) (gocv.Mat, error) {
 		}
 	} else {
 		tempDir := "uploads"
-		ensureDirExists(tempDir)
+		receiver.ensureDirExists(tempDir)
 
 		dstPath := filepath.Join(tempDir, fileName)
 		dst, err := os.Create(dstPath)
@@ -77,7 +78,7 @@ func loadImage(src multipart.File, fileName string) (gocv.Mat, error) {
 	return img, nil
 }
 
-func detectQRCode(img gocv.Mat) ([]int, error) {
+func (receiver *Reserving) detectQRCode(img gocv.Mat) ([]int, error) {
 	janCodes := []int{}
 
 	// QRコードの検出器を初期化
@@ -97,7 +98,7 @@ func detectQRCode(img gocv.Mat) ([]int, error) {
 		q.Add()
 		go func(c int) {
 			defer q.Done()
-			tmpCodes := PickOutJANCodes(qcd, img)
+			tmpCodes := receiver.PickOutJANCodes(qcd, img)
 			if len(janCodes) <= len(tmpCodes) {
 				janCodes = tmpCodes
 			}
@@ -110,8 +111,30 @@ func detectQRCode(img gocv.Mat) ([]int, error) {
 }
 
 // ensureDirExists はディレクトリが存在することを確認し、存在しない場合は作成します。
-func ensureDirExists(dirName string) {
+func (receiver *Reserving) ensureDirExists(dirName string) {
 	if _, err := os.Stat(dirName); os.IsNotExist(err) {
 		os.Mkdir(dirName, 0755)
 	}
+}
+
+func (receiver *Reserving) PickOutJANCodes(qcd gocv.QRCodeDetector, img gocv.Mat) []int {
+	janCodes := []int{}
+
+	codes := make([]string, 20)
+	points := gocv.NewMat()
+	qrcodes := make([]gocv.Mat, 20)
+
+	res := qcd.DetectAndDecodeMulti(img, &codes, &points, &qrcodes)
+	if !res {
+		return janCodes
+	}
+	splitCodes := []int{}
+	for _, code := range codes {
+		if code != "" {
+			codeInt, _ := strconv.Atoi(code)
+			splitCodes = append(splitCodes, codeInt)
+		}
+	}
+
+	return splitCodes
 }
