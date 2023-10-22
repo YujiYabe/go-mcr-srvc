@@ -1,9 +1,15 @@
 package internal
 
 import (
+	// "backend/internal/1_framework/db/postgres"
+	// "backend/internal/1_framework/db/mysql"
+	// "backend/internal/1_framework/db/mongo"
 	"backend/internal/1_framework/db/sqlite"
+
 	"backend/internal/1_framework/external_interface/monitor"
 	"backend/internal/1_framework/external_interface/shipment"
+
+	"backend/internal/1_framework/instacook"
 	"backend/internal/1_framework/web_ui/delivery"
 	"backend/internal/1_framework/web_ui/mobile"
 	"backend/internal/1_framework/web_ui/pc"
@@ -13,11 +19,12 @@ import (
 
 type (
 	app struct {
-		mobile   *mobile.Mobile
-		pc       *pc.PC
-		delivery *delivery.Delivery
-		register *register.Register
-		monitor  *monitor.Monitor
+		instaCook *instacook.InstaCook
+		mobile    *mobile.Mobile
+		pc        *pc.PC
+		delivery  *delivery.Delivery
+		register  *register.Register
+		monitor   *monitor.Monitor
 	}
 )
 
@@ -34,11 +41,12 @@ func NewApp() *app {
 	)
 
 	a := &app{
-		delivery: delivery.NewDelivery(ctrl),
-		mobile:   mobile.NewMobile(ctrl),
-		pc:       pc.NewPC(ctrl),
-		register: register.NewRegister(ctrl),
-		monitor:  monitor.NewMonitor(),
+		instaCook: instacook.NewInstaCook(ctrl),
+		delivery:  delivery.NewDelivery(ctrl),
+		mobile:    mobile.NewMobile(ctrl),
+		pc:        pc.NewPC(ctrl),
+		register:  register.NewRegister(ctrl),
+		monitor:   monitor.NewMonitor(),
 	}
 	ctrl.Start()
 
@@ -47,6 +55,7 @@ func NewApp() *app {
 
 // Start ...
 func (a *app) Start() {
+	go a.instaCook.Start()
 	go a.monitor.Start()
 	go a.mobile.Start()
 	go a.pc.Start()

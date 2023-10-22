@@ -21,8 +21,7 @@ func (uscs *useCase) Start() {
 }
 
 // Reserve ...
-func (uscs *useCase) Reserve(ctx context.Context) {
-}
+func (uscs *useCase) Reserve(ctx context.Context) {}
 
 // Order ...
 func (uscs *useCase) Order(ctx *context.Context) error {
@@ -30,6 +29,4 @@ func (uscs *useCase) Order(ctx *context.Context) error {
 	return nil
 }
 
-func (uscs *useCase) bulkOrder() {
-
-}
+func (uscs *useCase) bulkOrder() {}

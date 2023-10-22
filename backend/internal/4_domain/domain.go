@@ -10,12 +10,10 @@ var (
 	myErr *pkg.MyErr
 )
 
-
 // ParseOrder ...
 func (dmn *domain) ParseOrder(
 	ctx context.Context,
 ) error {
-
 	return nil
 }
 

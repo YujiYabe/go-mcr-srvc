@@ -28,7 +28,6 @@ type (
 
 	// orderChannel ...
 	orderChannel struct {
-		ctx   *context.Context
 		order *domain.Order
 	}
 
@@ -95,7 +94,6 @@ func (ctrl *controller) Order(
 	order *domain.Order,
 ) {
 	oc := &orderChannel{
-		ctx:   ctx,
 		order: order,
 	}
 

@@ -23,6 +23,7 @@ var (
 )
 var (
 	backendHost     = "backend"
+	InstaCookPort   string
 	MobilePort      string
 	PCPort          string
 	DeliveryPort    string
@@ -53,6 +54,7 @@ func init() {
 
 	TZ = os.Getenv("TZ")
 	MobilePort = os.Getenv("MOBILE_PORT")
+	InstaCookPort = os.Getenv("INSTA_COOK_PORT")
 	PCPort = os.Getenv("PC_PORT")
 	DeliveryPort = os.Getenv("DELIVERY_PORT")
 	MonitorPort = os.Getenv("MONITOR_PORT")
