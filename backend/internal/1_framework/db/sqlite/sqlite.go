@@ -146,11 +146,16 @@ type (
 
 // NewToSQLite ...
 func NewToSQLite() gateway.ToSqlite {
+	// sqliteFilePath := getSqlitePath() + "/master.sqlite3"
+
 	storeDBName, err := getDBName()
 	if err != nil {
 		return err
 	}
-	conn, err := open(30, storeDBName)
+
+	sqliteFilePath := getSqlitePath() + "/" + storeDBName + ".sqlite3"
+
+	conn, err := open(30, sqliteFilePath)
 	if err != nil {
 		myErr.Logging(err)
 		panic(err)
@@ -158,6 +163,12 @@ func NewToSQLite() gateway.ToSqlite {
 
 	s := new(Sqlite)
 	s.Conn = conn
+	// productList := &domain.ProductList{}
+	// conn.Find(&productList)
+	// fmt.Println("== == == == == == == == == == ")
+	// fmt.Printf("%#v\n", productList)
+	// fmt.Println("== == == == == == == == == == ")
+
 	return s
 }
 

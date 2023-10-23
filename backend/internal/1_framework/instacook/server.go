@@ -1,10 +1,14 @@
 package instacook
 
 import (
+	"fmt"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
 	"backend/internal/2_adapter/controller"
+	"backend/internal/1_framework/instacook/http/v1"
+
 	"backend/pkg"
 )
 
@@ -49,17 +53,31 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (mbl *InstaCook) Start() {
-	mbl.EchoEcho.POST("/", mbl.IndexPost)
+func (receiver *InstaCook) Start() {
+	group := receiver.EchoEcho.Group("")
 
-	// g := mbl.EchoEcho.Group("")
-	// AddRoute(g)
+	v1.NewRoute(
+		receiver.EchoEcho,
+		receiver.Controller,
+		group,
+	)
 
-	mbl.EchoEcho.Logger.Fatal(mbl.EchoEcho.Start(":" + pkg.InstaCookPort))
+	receiver.EchoEcho.GET("/", receiver.IndexPost)
+
+	routes := receiver.EchoEcho.Routes()
+	for _, route := range routes {
+		fmt.Printf("%#v\n", route)
+	}
+
+	receiver.EchoEcho.Logger.Fatal(
+		// receiver.EchoEcho.Start(":" + pkg.InstaCookPort),
+		receiver.EchoEcho.StartTLS(":5678", "openssl/server.crt", "openssl/server.key"),
+	)
+
 }
 
 // IndexPost ...
-func (mbl *InstaCook) IndexPost(c echo.Context) error {
+func (receiver *InstaCook) IndexPost(c echo.Context) error {
 	// 標準コンテキストを取得
 
 	return nil

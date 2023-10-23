@@ -1,0 +1,165 @@
+@hostname=localhost
+# @hostname=192.168.10.8
+@port=5678
+
+@yakisoba=4548779706595
+@yakionig=4902150657300
+@pastaika=4548779734116
+@pastakan=4548779734192
+@dummy___=1111111111111
+
+@languageCodeJa=1041
+@languageCodeEn=1033
+@languageCodeEs=1034
+@languageCodeZh=2052
+@languageCodeAr=14337
+
+@queryParam=?debug=true
+# @queryParam=?debug=false
+
+
+### / ===============================================
+GET https://{{hostname}}:{{port}}
+
+
+### /v1/admin/client/:number ===============================================
+GET https://{{hostname}}:{{port}}/v1/admin/client/{{pastaika}}
+
+
+### product ===============================================
+GET http://{{hostname}}:{{port}}/v1/admin/client/product/{{pastaika}}{{queryParam}}
+
+
+
+### admin_product ==============================
+PATCH https://{{hostname}}:{{port}}/admin_product/{{pastaika}}{{queryParam}}
+Content-Type: application/json
+
+{
+	"is_valid": true,
+	"place": "aaaa"
+}
+
+### casher ===============================================
+### --------------------------------------------
+DELETE https://{{hostname}}:{{port}}/casher{{queryParam}}
+Content-Type: application/json
+
+{
+	"sold_no" : 7,
+	"status" : 1,
+	"language_code" : {{languageCodeJa}} ,
+	"jan_code_list" : [
+	]
+}
+
+### --------------------------------------------
+POST https://{{hostname}}:{{port}}/casher{{queryParam}}
+Content-Type: application/json
+ 
+{
+	"sold_no" : 7,
+	"status" : 1,
+	"jan_code_list" : [
+		{{languageCodeJa}},
+		{{yakionig}},
+		{{dummy___}}
+	]
+}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/sold_list{{queryParam}}
+Content-Type: application/json
+
+{
+	"sold_no" : 1,
+	"status" : 2
+}
+
+
+
+
+### delivery_queue ===============================================
+### --------------------------------------------
+PATCH https://{{hostname}}:{{port}}/delivery_queue{{queryParam}}
+Content-Type: application/json
+
+{
+	"sold_no" : 1,
+	"status" : 1
+}
+
+
+# languageCodeJa
+# languageCodeEn
+# languageCodeEs
+# languageCodeZh
+# languageCodeAr
+
+### client_queue ===============================================
+POST https://{{hostname}}:{{port}}/client_queue/0{{queryParam}}
+Content-Type: application/json
+
+{
+	"jan_code_list" : [
+		{{languageCodeEn}},
+ 		{{pastakan}},
+		{{yakionig}},
+		{{dummy___}}
+	]
+}
+
+
+### --------------------------------------------
+DELETE https://{{hostname}}:{{port}}/client_queue/0{{queryParam}}
+Content-Type: application/json
+
+{
+}
+
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/client_queue/0{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/client_queue/1{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/client_queue/2{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/client_queue/3{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/client_queue/4{{queryParam}}
+
+
+
+
+### kitchen_queue ===============================================
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/1{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/2{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/3{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/4{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/5{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/6{{queryParam}}
+
+### -------------------------------------------- 
+GET https://{{hostname}}:{{port}}/kitchen_queue/7{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/8{{queryParam}}
+
+### --------------------------------------------
+GET https://{{hostname}}:{{port}}/kitchen_queue/9{{queryParam}}

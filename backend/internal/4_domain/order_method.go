@@ -44,6 +44,10 @@ func (receiver *OrderList) PickOutNumber(numberString string) (int, error) {
 	return strconv.Atoi(numberString)
 }
 
+func PickOutNumber(numberString string) (int, error) {
+	return strconv.Atoi(numberString)
+}
+
 // UpdateSoldStatus はオーダーリスト内の特定の売れたアイテムのステータスを更新します。
 func (receiver *OrderList) UpdateSoldStatus(newSold *Sold) {
 	for index, sold := range receiver.SoldList {
