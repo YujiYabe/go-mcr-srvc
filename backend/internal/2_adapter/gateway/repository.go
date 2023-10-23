@@ -3,6 +3,7 @@ package gateway
 import (
 	"context"
 
+	domain "backend/internal/4_domain"
 	"backend/pkg"
 )
 
@@ -23,6 +24,7 @@ type (
 	}
 
 	ToSqlite interface {
+		GetAllProductList(ctx context.Context) *domain.AllProductList
 	}
 
 	// ToPostgres ...

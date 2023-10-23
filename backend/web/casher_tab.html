@@ -1,0 +1,151 @@
+{{define "casher_tab"}}
+<div class="row h-100" id="casher_list">
+  <!-- 左側 数値入力エリア -->
+  <div
+    class="col-6 border border-secondary border-1 rounded d-flex flex-column"
+  >
+    <!-- 注文番号入力欄 -->
+    <div
+      class="p-2 bd-highlight border border-secondary border-1 rounded bg-info h-25 row"
+    >
+      <div
+        class="col-12 border border-secondary border-1 h1 alert alert-light h-100"
+      >
+        <input
+          type="text"
+          id="sold_no"
+          class="form-control mb-3 h-100 text-center fs-1"
+          disabled
+        />
+      </div>
+      <!-- <div class="col-12 border border-secondary border-1 h1 alert alert-light h-100" id="display" disabled>
+                </div> -->
+    </div>
+
+    <div
+      class="p-2 bd-highlight border border-secondary border-1 rounded bg-info h-25 row"
+    >
+      <button
+        class="col-6 border border-secondary border-1 h2 alert alert-primary h-100"
+        onclick="clearDisplay()"
+      >
+        リセット
+      </button>
+      <button
+        class="col-6 border border-secondary border-1 h2 alert alert-primary h-100"
+        onclick="showCompeteConfirmModal(async ()=>{await postCasher()})"
+      >
+        確定
+      </button>
+    </div>
+
+    <!-- 注文番号ショートカット -->
+    <div
+      class="p-2 bd-highlight border border-secondary border-1 rounded bg-info h-25 row"
+    >
+      <button
+        id="previous_sold_no"
+        class="col-6 border border-secondary border-1 h1 alert alert-primary h-100"
+        onclick="changeSoldNo(this)"
+      ></button>
+      <button
+        id="predict_sold_no"
+        class="col-6 border border-secondary border-1 h1 alert alert-primary h-100"
+        onclick="changeSoldNo(this)"
+      ></button>
+    </div>
+
+    <div
+      class="p-2 bd-highlight border border-secondary border-1 rounded bg-info h-50 row"
+    >
+      <div class=" ">
+        <div class="row h-25">
+          <button
+            class="btn btn-secondary col border-light border-1 "
+            onclick="appendToDisplay('0')"
+          >
+            0
+          </button>
+        </div>
+        <div class="row h-25">
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('1')"
+          >
+            1
+          </button>
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('2')"
+          >
+            2
+          </button>
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('3')"
+          >
+            3
+          </button>
+        </div>
+        <div class="row h-25">
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('4')"
+          >
+            4
+          </button>
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('5')"
+          >
+            5
+          </button>
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('6')"
+          >
+            6
+          </button>
+        </div>
+        <div class="row h-25">
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('7')"
+          >
+            7
+          </button>
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('8')"
+          >
+            8
+          </button>
+          <button
+            class="btn btn-secondary col border-light border-1"
+            onclick="appendToDisplay('9')"
+          >
+            9
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 右側 商品登録エリア -->
+  <div
+    class="col-6 border border-secondary border-1 rounded d-flex flex-column"
+  >
+    <div
+      id="total_price"
+      class="text-center alert alert-light h1 p-2 bd-highlight border border-secondary border-1 rounded h-25 row"
+      onclick="location.reload();"
+    ></div>
+
+    <div
+      id="product_body"
+      class="p-2 bd-highlight border border-secondary border-1 rounded row h-75"
+    >
+      <div id="queue_content" class="row h-100"></div>
+    </div>
+  </div>
+</div>
+{{ template "Modal" .}} {{end}}

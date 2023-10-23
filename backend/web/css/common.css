@@ -1,0 +1,100 @@
+.product-img {
+	max-width: 90px;
+	max-height: 90px;
+	/* border: 1px solid #000; */
+	margin: 5px 0;
+	object-fit: fill;
+}
+
+.box-img {
+	width: 100px;
+	height: 100px;
+}
+
+
+.camera_zone {
+	display: none;
+}
+
+.h-100vh {
+	height: 100vh;
+}
+
+.font-150px {
+	font-size: 150px;
+}
+
+.font-70px {
+	font-size: 70px;
+}
+
+.font-20px {
+	font-size: 20px;
+}
+
+html,
+body {
+	height: 100vh;
+}
+
+.margin-0 {
+	margin: 0;
+}
+
+
+.bg-color-reserving {
+	background-color: #beb97f;
+}
+.bg-color-preparing {
+	background-color: #f1af63;
+}
+.bg-color-completed {
+	background-color: #e98b67;
+}
+.bg-color-passed {
+	background-color: #8f9c95;
+}
+
+
+.bdr-color-reserving {
+	border-color : #beb97f;
+}
+.bdr-color-preparing {
+	border-color : #f1af63;
+}
+.bdr-color-completed {
+	border-color : #e98b67;
+}
+.bdr-color-passed {
+	border-color : #8f9c95;
+}
+
+
+/* .container-fluid,
+.row,
+.column {
+	height: 100%;
+} */
+
+/* .width_18rem {
+	width: 18rem;
+} */
+
+.auto_scroll {
+	color: #333;
+	max-height: 400px;
+	/*--高さは必須--*/
+	overflow-y: scroll;
+	/*--スクロールを指定--*/
+	padding: 30px;
+	border: 1px solid #cccccc;
+	background-color: #f9f9f9;
+}
+
+.margin_t_5rem {
+    margin-top: 5rem;
+}
+
+.margin_t_3rem {
+    margin-top: 3rem;
+}

@@ -1,0 +1,56 @@
+{{define "acceptance"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../image/favicon.ico" />
+
+  <link type="text/css" rel="stylesheet" href="../css/external/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="../css/common.css" media="all" />
+
+  <style>
+    body {
+      overflow-y: hidden;
+    }
+  </style>
+
+  <title>acceptance_monitor</title>
+</head>
+
+<body>
+  <br />
+
+  <div id="kind" name="acceptance"></div>
+  <div id="number" name="0"></div>
+
+  <div class="container text-center h-100">
+    <div class="row h-100">
+      <div class="col-4 bg-info-subtle rounded">
+        <br />
+        <div id="preparing" class="h1 alert alert-light border-0">
+          お待ち番号
+        </div>
+        <div id="preparing_list"></div>
+      </div>
+
+      <div class="col-8 bg-primary-subtle rounded">
+        <br />
+        <div id="completed" class="h1 alert alert-light border-0">
+          お呼び出し中の番号
+        </div>
+        <div id="completed_list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/external/jquery.min.js"></script>
+  <script src="../js/external/bootstrap.bundle.min.js"></script>
+  <script src="../js/common.js"></script>
+  <script src="../js/acceptance.js"></script>
+  <script src="../js/websocket.js"></script>
+</body>
+
+</html>
+{{end}}

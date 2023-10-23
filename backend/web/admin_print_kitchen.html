@@ -1,0 +1,37 @@
+{{define "adminPrintKitchen"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="../../../image/favicon.ico" />
+    
+    <link type="text/css" rel="stylesheet" href="../../../css/external/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../../../css/common.css" media="all" />
+    <link type="text/css" rel="stylesheet" href="../../../css/product_print.css" media="all" />
+
+  <title>admin_print_kitchen</title>
+</head>
+
+<body>
+  <script src="../../../js/external/jquery.min.js"></script>
+  <script src="../../../js/external/bootstrap.bundle.min.js"></script>
+  <script src="../../../js/common.js"></script>
+
+  <div id="product"  style="display: none">{{ .Product }}</div>
+
+  <br /><br /><br /><br />
+
+  <div class="mx-auto ">
+    <div id="print_zone" class="row col-9 mx-auto">
+    </div>
+  </div>   
+
+  <script src="../../../js/admin_print_kitchen.js"></script>
+
+
+
+</body>
+
+</html>
+{{end}}

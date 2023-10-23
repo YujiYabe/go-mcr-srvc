@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"context"
+	"fmt"
 	"sort"
 
 	"golang.org/x/exp/slices"
@@ -20,7 +22,15 @@ func (receiver *Stock) GetProductList() []Product {
 	return receiver.ProductList
 }
 
-func (receiver *Stock) GetProduct(janCode int) *Product {
+func (receiver *Stock) GetProduct(
+	ctx context.Context,
+	janCode int,
+) *Product {
+
+	fmt.Println("== == == == == == == == == == ")
+	fmt.Printf("%#v\n", receiver.AllProductList)
+	fmt.Println("== == == == == == == == == == ")
+
 	for _, product := range receiver.AllProductList {
 		if janCode == product.JANCode {
 			return &product
@@ -28,6 +38,15 @@ func (receiver *Stock) GetProduct(janCode int) *Product {
 	}
 	return nil
 }
+
+// func GetProduct(janCode int) *Product {
+// 	for _, product := range receiver.AllProductList {
+// 		if janCode == product.JANCode {
+// 			return &product
+// 		}
+// 	}
+// 	return nil
+// }
 
 func (receiver *Stock) GetIsVaildJANCodeList() []int {
 	return receiver.IsVaildJANCodeList

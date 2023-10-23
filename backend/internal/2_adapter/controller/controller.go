@@ -36,6 +36,10 @@ type (
 		Start()
 		Reserve(ctx context.Context, order *domain.Order, orderType string)
 		Order(ctx *context.Context, order *domain.Order)
+		GetProduct(
+			ctx context.Context,
+			productNumber int,
+		) *domain.Product
 	}
 )
 
@@ -103,4 +107,15 @@ func (ctrl *controller) Order(
 }
 
 func (ctrl *controller) bulkOrder() {
+}
+
+// GetProduct ...
+func (ctrl *controller) GetProduct(
+	ctx context.Context,
+	productNumber int,
+) *domain.Product {
+	return ctrl.UseCase.GetProduct(
+		ctx,
+		productNumber,
+	)
 }

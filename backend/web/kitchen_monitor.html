@@ -1,0 +1,49 @@
+{{define "kitchenMonitor"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../../image/favicon.ico" />
+
+  <link type="text/css" rel="stylesheet" href="../../css/external/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="../../css/common.css" media="all" />
+
+  <title>kitchen_monitor</title>
+
+  <style>
+    body {
+      overflow-y: hidden;
+    }
+  </style>
+</head>
+
+<body class="h-100 ">
+
+  <div id="kind" name="kitchen"></div>
+  <div id="number" name="{{ .Number }}"></div>
+
+  <div id="kitchen_queue" name="{{ .Number }}"></div>
+  <div id="product_list" style="display: none;">{{ .ProductList }}</div>
+
+  <script src="../../js/external/jquery.min.js"></script>
+  <script src="../../js/external/bootstrap.bundle.min.js"></script>
+  <script src="../../js/common.js"></script>
+
+  <div id="product_body" class="row">
+    <div id="queue_content" class="row"></div>
+  </div>
+
+
+  <script src="../../js/kitchen_monitor.js"></script>
+  <script src="../../js/websocket.js"></script>
+
+
+
+
+</body>
+
+</html>
+{{end}}

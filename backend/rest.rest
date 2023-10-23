@@ -26,6 +26,10 @@ GET https://{{hostname}}:{{port}}
 GET https://{{hostname}}:{{port}}/v1/admin/client/{{pastaika}}
 
 
+### /v1/admin/client/:number ===============================================
+GET https://{{hostname}}:{{port}}/v1/admin/client/{{pastaika}}
+
+
 ### product ===============================================
 GET http://{{hostname}}:{{port}}/v1/admin/client/product/{{pastaika}}{{queryParam}}
 

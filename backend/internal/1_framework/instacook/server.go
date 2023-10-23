@@ -2,12 +2,14 @@ package instacook
 
 import (
 	"fmt"
+	"html/template"
+	"io"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
+	v1 "backend/internal/1_framework/instacook/http/v1"
 	"backend/internal/2_adapter/controller"
-	"backend/internal/1_framework/instacook/http/v1"
 
 	"backend/pkg"
 )
@@ -39,10 +41,25 @@ func NewInstaCook(ctrl controller.ToController) *InstaCook {
 	return mb
 }
 
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
 // NewEcho ...
 func NewEcho() *echo.Echo {
 	e := echo.New()
 	e.HideBanner = true
+	t := &Template{
+		templates: template.Must(template.ParseGlob("web/*.html")),
+	}
+	e.Renderer = t
+	e.Static("/js", "web/js")
+	e.Static("/css", "web/css")
+	e.Static("/image", "web/image")
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339}__${status}__${method}__${uri}\n",
@@ -71,7 +88,7 @@ func (receiver *InstaCook) Start() {
 
 	receiver.EchoEcho.Logger.Fatal(
 		// receiver.EchoEcho.Start(":" + pkg.InstaCookPort),
-		receiver.EchoEcho.StartTLS(":5678", "openssl/server.crt", "openssl/server.key"),
+		receiver.EchoEcho.StartTLS(":"+pkg.InstaCookPort, "openssl/server.crt", "openssl/server.key"),
 	)
 
 }

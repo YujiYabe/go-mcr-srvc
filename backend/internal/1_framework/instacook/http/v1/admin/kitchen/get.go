@@ -1,31 +1,55 @@
 package admin_kitchen
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+
 	"github.com/labstack/echo"
-	// domain "backend/internal/4_domain"
+
+	"backend/internal/2_adapter/controller"
+	domain "backend/internal/4_domain"
 )
 
 // ---------------------------------------------------------
 // 管理画面 お客様側商品印刷
 func Get(
 	c echo.Context,
+	Controller controller.ToController,
 ) error {
-	// number, err := domain.PickOutNumber(c.Param("number"))
-	// if err != nil {
-	// 	return c.JSON(http.StatusBadRequest, err)
-	// }
-
+	number, err := domain.PickOutNumber(c.Param("number"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	ctx := c.Request().Context()
+	fmt.Println("== == == == == == == == == == ")
+	fmt.Printf("%#v\n", number)
+	fmt.Println("== == == == == == == == == == ")
 	// productJson, err := json.Marshal(domain.GetProduct(number))
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	productJson, err := json.Marshal(
+		Controller.GetProduct(
+			ctx,
+			number,
+		),
+	)
+	fmt.Println("== == == == == == == == == == ")
+	fmt.Printf("%#v\n", productJson)
+	fmt.Println("== == == == == == == == == == ")
 
-	// data := struct {
-	// 	Product string
-	// }{
-	// 	Product: string(productJson),
-	// }
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	// return c.Render(http.StatusOK, "adminPrintKitchen", data)
-	return nil
+	data := struct {
+		Product string
+	}{
+		Product: string(productJson),
+	}
+	fmt.Println("== == == == == == == == == == ")
+	fmt.Printf("%#v\n", data)
+	fmt.Println("== == == == == == == == == == ")
+
+	return c.Render(http.StatusOK, "adminPrintKitchen", data)
+
+	// return nil
 }

@@ -18,7 +18,7 @@ func NewRoute(
 	Controller controller.ToController,
 	parrent *echo.Group,
 ) {
-	grp := parrent.Group("/client")
+	group := parrent.Group("/client")
 
-	grp.GET("/:number", func(c echo.Context) error { return Get(c) }) // 管理画面 顧客印刷 html
+	group.GET("/:number", func(c echo.Context) error { return Get(c, Controller) }) // 管理画面 顧客印刷 html
 }

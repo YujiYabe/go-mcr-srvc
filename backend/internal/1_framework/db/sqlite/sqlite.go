@@ -47,9 +47,9 @@ func updateStoreDB() error {
 		myErr.Logging(err)
 		panic(err)
 	}
-	product := &domain.Product{}
+	masterProductList := &domain.ProductList{}
 
-	masterDB.Find(&product)
+	masterDB.Find(&masterProductList)
 
 	// masterRows, err := masterDB.Query("SELECT * FROM products ORDER BY jan_code")
 	// if err != nil {
@@ -146,11 +146,10 @@ type (
 
 // NewToSQLite ...
 func NewToSQLite() gateway.ToSqlite {
-	// sqliteFilePath := getSqlitePath() + "/master.sqlite3"
 
 	storeDBName, err := getDBName()
 	if err != nil {
-		return err
+		return nil
 	}
 
 	sqliteFilePath := getSqlitePath() + "/" + storeDBName + ".sqlite3"
@@ -163,11 +162,6 @@ func NewToSQLite() gateway.ToSqlite {
 
 	s := new(Sqlite)
 	s.Conn = conn
-	// productList := &domain.ProductList{}
-	// conn.Find(&productList)
-	// fmt.Println("== == == == == == == == == == ")
-	// fmt.Printf("%#v\n", productList)
-	// fmt.Println("== == == == == == == == == == ")
 
 	return s
 }

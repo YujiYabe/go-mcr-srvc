@@ -12,6 +12,8 @@ type (
 )
 
 func NewStock() *Stock {
+	//ここでDBから取得する
+
 	return &Stock{}
 }
 

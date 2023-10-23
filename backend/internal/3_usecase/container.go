@@ -1,8 +1,9 @@
 package usecase
 
 import (
-	domain "backend/internal/4_domain"
 	"context"
+
+	domain "backend/internal/4_domain"
 )
 
 type (
@@ -18,6 +19,10 @@ type (
 		Start()
 		Reserve(ctx context.Context)
 		Order(ctx *context.Context) error
+		GetProduct(
+			ctx context.Context,
+			productNumber int,
+		) *domain.Product
 	}
 
 	// OrderUseCase ...
@@ -30,6 +35,10 @@ type (
 	ToDomain interface {
 		ParseOrder(ctx context.Context) error
 		CookHamburgers(ctx context.Context) error
+		GetProduct(
+			ctx context.Context,
+			productNumber int,
+		) *domain.Product
 	}
 
 	// ToGateway ...
@@ -38,6 +47,9 @@ type (
 		GetPatties(ctx context.Context) error
 		GetVegetables(ctx context.Context) error
 		GetIngredients(ctx context.Context) error
+		GetAllProductList(
+			ctx context.Context,
+		) *domain.AllProductList
 	}
 
 	// ToPresenter ...

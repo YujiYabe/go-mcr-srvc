@@ -103,7 +103,7 @@ func (mntr *Monitor) Start() {
 		templates: template.Must(template.ParseGlob(pkg.IndexPath)),
 	}
 
-	mntr.EchoEcho.Static("/web", pkg.WebPath)
+	// mntr.EchoEcho.Static("/web", pkg.WebPath)
 
 	mntr.EchoEcho.GET("/", mntr.Index)
 	mntr.EchoEcho.GET("/ws", mntr.WebSocket)

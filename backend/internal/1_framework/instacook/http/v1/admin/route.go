@@ -9,6 +9,7 @@ import (
 	// product "backend/internal/1_framework/instacook/http/admin/product"
 
 	client "backend/internal/1_framework/instacook/http/v1/admin/client"
+	kitchen "backend/internal/1_framework/instacook/http/v1/admin/kitchen"
 
 	"backend/internal/2_adapter/controller"
 )
@@ -29,6 +30,12 @@ func NewRoute(
 	group := parrent.Group("/admin")
 
 	client.NewRoute(
+		EchoEcho,
+		Controller,
+		group,
+	)
+
+	kitchen.NewRoute(
 		EchoEcho,
 		Controller,
 		group,

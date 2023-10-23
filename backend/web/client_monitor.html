@@ -1,0 +1,55 @@
+{{define "clientMonitor"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../../image/favicon.ico" />
+  <link type="text/css" rel="stylesheet" href="../../css/external/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="../../css/common.css" media="all" />
+  <style>
+    /* body {
+      overflow-y: hidden;
+    } */
+  </style>
+  <!-- <link rel="stylesheet" href="../css/external/swiper-bundle.min.css" /> -->
+  <title>client_monitor</title>
+</head>
+
+<div id="kind" name="client"></div>
+<div id="number" name="{{ .Number }}"></div>
+<div id="product_list" style="display: none;">{{ .ProductList }}</div>
+<div id="allergy_list" style="display: none;">{{ .AllergyList }}</div>
+
+
+
+
+<div class="camera_zone position-sticky top-0 bg-white z-3">
+  <video id="webcam" autoplay></video>
+  <button id="startCapture">Start Capture</button>
+  <button id="stopCapture">Stop Capture</button>
+  <div id="msg">Unable to access video stream.</div>
+  <canvas id="canvas"></canvas>
+</div>
+
+<div class=" row center-block justify-content-center position-sticky top-0 bg-white z-3 bg-info-subtle rounded">
+  <div id="total_price" class="col h1 text-center"></div >
+</div>
+<div id="product_body" class="z-0">
+  <div id="queue_content" class="row"></div>
+</div>
+
+<script src="../../js/external/jquery.min.js"></script>
+<script src="../../js/external/jsQR.js"></script>
+<script src="../../js/external/bootstrap.bundle.min.js"></script>
+<script src="../../js/external/swiper-bundle.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/client_camera.js"></script>
+<script src="../../js/client_monitor.js"></script>
+<script src="../../js/websocket.js"></script>
+</body>
+
+</html>
+{{end}}

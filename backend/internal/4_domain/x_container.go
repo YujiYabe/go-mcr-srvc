@@ -18,6 +18,10 @@ type (
 	ToDomain interface {
 		ParseOrder(ctx context.Context) error
 		CookHamburgers(ctx context.Context) error
+		GetProduct(
+			ctx context.Context,
+			productNumber int,
+		) *Product
 	}
 )
 

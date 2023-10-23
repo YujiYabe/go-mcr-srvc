@@ -1,0 +1,74 @@
+{{define "casherMonitor"}}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../image/favicon.ico" />
+
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../css/external/bootstrap.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../css/common.css"
+      media="all"
+    />
+
+    <title>casher_monitor</title>
+  </head>
+  <body>
+    <script src="../js/external/jquery.min.js"></script>
+    <script src="../js/external/bootstrap.bundle.min.js"></script>
+
+    <div id="kind" name="client"></div>
+    <div id="number" name="0"></div>
+
+    <div id="product_list" style="display: none">{{ .ProductList }}</div>
+
+    <div class="camera_zone position-sticky top-0 bg-white z-3">
+      <video id="webcam" autoplay></video>
+      <button id="startCapture">Start Capture</button>
+      <button id="stopCapture">Stop Capture</button>
+      <div id="msg">Unable to access video stream.</div>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <script src="../js/external/jsQR.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/casher_monitor.js"></script>
+    <script src="../js/client_camera.js"></script>
+    <script src="../js/websocket.js"></script>
+    <br>
+    <div class="container-fluid h-100">
+    <div class="container text-center">
+      <div id="menu_tab" class="row">
+        <div
+          id="history_button"
+          class="alert alert-dark col-6"
+          name="history_list"
+          onclick="changePage(this)"
+        >
+          履歴
+        </div>
+        <div
+          id="casher_button"
+          class="alert alert-warning col-6"
+          name="casher_list"
+          onclick="changePage(this)"
+        >
+          レジ
+        </div>
+      </div>
+      {{template "casher_tab"}} 
+      {{template "history_tab"}} 
+      {{ template "Modal"}}
+    </div>
+  </div>
+  </body>
+</html>
+{{end}}
