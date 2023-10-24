@@ -9,7 +9,7 @@ import (
 func (receiver *controller) Start() {
 	ctx := context.Background()
 
-	receiver.UseCase.Start(ctx)
+	receiver.ToUseCase.Start(ctx)
 }
 
 // GetProduct ...
@@ -17,7 +17,7 @@ func (receiver *controller) GetProduct(
 	ctx context.Context,
 	productNumber int,
 ) *domain.Product {
-	return receiver.UseCase.GetProduct(
+	return receiver.ToUseCase.GetProduct(
 		ctx,
 		productNumber,
 	)
@@ -27,7 +27,7 @@ func (receiver *controller) GetProduct(
 func (receiver *controller) GetAllProductList(
 	ctx context.Context,
 ) *domain.AllProductList {
-	return receiver.UseCase.GetAllProductList(
+	return receiver.ToUseCase.GetAllProductList(
 		ctx,
 	)
 }
@@ -36,7 +36,7 @@ func (receiver *controller) GetAllProductList(
 func (receiver *controller) GetAllergyDefault(
 	ctx context.Context,
 ) domain.Allergy {
-	return receiver.UseCase.GetAllergyDefault(
+	return receiver.ToUseCase.GetAllergyDefault(
 		ctx,
 	)
 }
@@ -45,7 +45,7 @@ func (receiver *controller) GetAllergyDefault(
 func (receiver *controller) GetIsVaildLangCodeMap(
 	ctx context.Context,
 ) map[int]string {
-	return receiver.UseCase.GetIsVaildLangCodeMap(
+	return receiver.ToUseCase.GetIsVaildLangCodeMap(
 		ctx,
 	)
 }
@@ -55,7 +55,7 @@ func (receiver *controller) UpdateProduct(
 	ctx context.Context,
 	product domain.Product,
 ) {
-	receiver.UseCase.UpdateProduct(
+	receiver.ToUseCase.UpdateProduct(
 		ctx,
 		product,
 	)

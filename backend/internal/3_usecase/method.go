@@ -8,8 +8,7 @@ import (
 )
 
 var (
-	myErr        *pkg.MyErr
-	orderUseCase = make(chan OrderUseCase)
+	myErr *pkg.MyErr
 )
 
 func init() {

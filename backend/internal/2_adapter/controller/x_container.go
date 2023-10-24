@@ -22,8 +22,7 @@ func init() {
 type (
 	// controller ...
 	controller struct {
-		UseCase     usecase.ToUseCase
-		OrderNumber int
+		ToUseCase usecase.ToUseCase
 	}
 
 	// ToController ...
@@ -61,21 +60,23 @@ func NewController(
 	toMonitor presenter.ToMonitor,
 ) ToController {
 	toDomain := domain.NewDomain()
+
 	toGateway := gateway.NewGateway(
 		toSqlite,
 	)
+
 	toPresenter := presenter.NewPresenter(
 		toShipment,
 		toMonitor,
 	)
-	uscs := usecase.NewUseCase(
+
+	toUseCase := usecase.NewUseCase(
 		toDomain,
 		toGateway,
 		toPresenter,
 	)
-	ct := &controller{
-		UseCase: uscs,
-	}
 
-	return ct
+	return &controller{
+		ToUseCase: toUseCase,
+	}
 }

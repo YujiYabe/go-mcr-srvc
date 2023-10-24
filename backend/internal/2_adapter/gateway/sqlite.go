@@ -6,16 +6,16 @@ import (
 )
 
 // GetPatties ...
-func (gw *Gateway) GetAllProductList(ctx context.Context) *domain.AllProductList {
-	return gw.ToSqlite.GetAllProductList(ctx)
+func (receiver *Gateway) GetAllProductList(ctx context.Context) *domain.AllProductList {
+	return receiver.ToSqlite.GetAllProductList(ctx)
 }
 
 // GetPatties ...
-func (gw *Gateway) UpdateProduct(
+func (receiver *Gateway) UpdateProduct(
 	ctx context.Context,
 	product domain.Product,
 ) {
-	gw.ToSqlite.UpdateProduct(
+	receiver.ToSqlite.UpdateProduct(
 		ctx,
 		product,
 	)

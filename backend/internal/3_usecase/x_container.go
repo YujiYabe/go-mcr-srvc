@@ -45,11 +45,6 @@ type (
 		)
 	}
 
-	// OrderUseCase ...
-	OrderUseCase struct {
-		ctx context.Context
-	}
-
 	// ToGateway ...
 	ToGateway interface {
 		GetAllProductList(
