@@ -12,7 +12,7 @@ import (
 )
 
 // ---------------------------------------------------------
-// 管理画面 お客様側商品印刷
+// 管理画面 厨房側商品印刷
 func Get(
 	c echo.Context,
 	Controller controller.ToController,
@@ -22,19 +22,13 @@ func Get(
 		return c.JSON(http.StatusBadRequest, err)
 	}
 	ctx := c.Request().Context()
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", number)
-	fmt.Println("== == == == == == == == == == ")
-	// productJson, err := json.Marshal(domain.GetProduct(number))
+
 	productJson, err := json.Marshal(
 		Controller.GetProduct(
 			ctx,
 			number,
 		),
 	)
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", productJson)
-	fmt.Println("== == == == == == == == == == ")
 
 	if err != nil {
 		fmt.Println(err)
@@ -45,9 +39,6 @@ func Get(
 	}{
 		Product: string(productJson),
 	}
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", data)
-	fmt.Println("== == == == == == == == == == ")
 
 	return c.Render(http.StatusOK, "adminPrintKitchen", data)
 

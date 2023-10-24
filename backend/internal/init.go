@@ -50,6 +50,7 @@ func NewApp() *app {
 		// register:  register.NewRegister(ctrl),
 		monitor: monitor.NewMonitor(),
 	}
+
 	ctrl.Start()
 
 	return a

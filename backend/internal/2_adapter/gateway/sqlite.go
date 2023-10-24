@@ -7,6 +7,5 @@ import (
 
 // GetPatties ...
 func (gw *Gateway) GetAllProductList(ctx *context.Context) *domain.AllProductList {
-
-	return nil
+	return gw.ToSqlite.GetAllProductList(ctx)
 }

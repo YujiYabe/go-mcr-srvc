@@ -7,8 +7,9 @@ import (
 )
 
 func (ctrl *controller) Start() {
-	go ctrl.bulkOrder()
-	go ctrl.UseCase.Start()
+	ctx := context.Background()
+
+	ctrl.UseCase.Start(&ctx)
 }
 
 // Reserve ...

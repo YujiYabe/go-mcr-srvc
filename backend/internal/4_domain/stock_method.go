@@ -2,7 +2,6 @@ package domain
 
 import (
 	"context"
-	"fmt"
 	"sort"
 
 	"golang.org/x/exp/slices"
@@ -26,10 +25,6 @@ func (receiver *Stock) GetProduct(
 	ctx context.Context,
 	janCode int,
 ) *Product {
-
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", receiver.AllProductList)
-	fmt.Println("== == == == == == == == == == ")
 
 	for _, product := range receiver.AllProductList {
 		if janCode == product.JANCode {

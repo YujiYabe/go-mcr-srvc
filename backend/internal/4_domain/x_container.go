@@ -1,8 +1,6 @@
 package domain
 
-import (
-	"context"
-)
+import "context"
 
 type (
 	Order struct {
@@ -22,6 +20,10 @@ type (
 			ctx context.Context,
 			productNumber int,
 		) *Product
+		SaveInMemory(
+			ctx *context.Context,
+			allProductList *AllProductList,
+		) error
 	}
 )
 

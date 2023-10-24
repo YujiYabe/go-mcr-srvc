@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	domain "backend/internal/4_domain"
 	"backend/pkg"
@@ -54,12 +53,9 @@ func (receiver *useCase) SetUpInMemory(
 		ctx,
 	)
 
-	// return receiver.ToDomain.GetProduct(
-	// 	ctx,
-	// 	productNumber,
-	// )
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", allProductList)
-	fmt.Println("== == == == == == == == == == ")
+	receiver.ToDomain.SaveInMemory(
+		ctx,
+		allProductList,
+	)
 
 }

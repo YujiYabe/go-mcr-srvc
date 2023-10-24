@@ -3,7 +3,6 @@ package sqlite
 import (
 	domain "backend/internal/4_domain"
 	"context"
-	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -33,10 +32,6 @@ func (s *Sqlite) GetAllProductList(ctx *context.Context) *domain.AllProductList 
 	allProductList := &domain.AllProductList{}
 
 	s.Conn.Find(allProductList)
-
-	fmt.Println("== Sqlite == == == == == == == == == ")
-	fmt.Printf("%#v\n", allProductList)
-	fmt.Println("== == == == == == == == == == ")
 
 	return allProductList
 }

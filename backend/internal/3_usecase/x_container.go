@@ -9,7 +9,7 @@ import (
 type (
 	// useCase ...
 	useCase struct {
-		ToDomain    ToDomain
+		ToDomain    domain.ToDomain
 		ToGateway   ToGateway
 		ToPresenter ToPresenter
 	}
@@ -36,16 +36,6 @@ type (
 		order *domain.Order
 	}
 
-	// ToDomain ...
-	ToDomain interface {
-		ParseOrder(ctx context.Context) error
-		CookHamburgers(ctx context.Context) error
-		GetProduct(
-			ctx context.Context,
-			productNumber int,
-		) *domain.Product
-	}
-
 	// ToGateway ...
 	ToGateway interface {
 		GetBans(ctx context.Context) error
@@ -66,7 +56,7 @@ type (
 
 // NewUseCase ...
 func NewUseCase(
-	toDomain ToDomain,
+	toDomain domain.ToDomain,
 	toGateway ToGateway,
 	toPresenter ToPresenter,
 ) ToUseCase {
