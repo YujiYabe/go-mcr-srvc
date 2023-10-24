@@ -53,7 +53,7 @@ async function buildAdminMonitor () {
       $("<img>")
         .appendTo(divImg)
         .addClass("img-thumbnail")
-        .attr("src", "../image/product/" + janCode + ".jpg")
+        .attr("src", "../../image/product/" + janCode + ".jpg")
         ;
 
       let divContent = $("<div>")
@@ -215,7 +215,7 @@ async function buildAdminMonitor () {
           $("<img>")
             .appendTo(card)
             .addClass("img-thumbnail card-img-top")
-            .attr("src", "../image/allergy/" + key + ".gif")
+            .attr("src", "../../image/allergy/" + key + ".gif")
             ;
 
           let cardBody = $('<div>')

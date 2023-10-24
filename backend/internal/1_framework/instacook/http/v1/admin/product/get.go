@@ -3,6 +3,7 @@ package admin_product
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/labstack/echo"
 
@@ -22,24 +23,20 @@ func Get(
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", allProductListJson)
-	fmt.Println("== == == == == == == == == == ")
 
-	// allergyListJson, err := json.Marshal(Controller.GetAllergyDefault(ctx))
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	allergyListJson, err := json.Marshal(Controller.GetAllergyDefault(ctx))
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	// data := struct {
-	// 	AllProductList string
-	// 	AllergyList    string
-	// }{
-	// 	AllProductList: string(allProductListJson),
-	// 	AllergyList:    string(allergyListJson),
-	// }
+	data := struct {
+		AllProductList string
+		AllergyList    string
+	}{
+		AllProductList: string(allProductListJson),
+		AllergyList:    string(allergyListJson),
+	}
 
-	// return c.Render(http.StatusOK, "adminMonitor", data)
+	return c.Render(http.StatusOK, "adminMonitor", data)
 
-	return nil
 }

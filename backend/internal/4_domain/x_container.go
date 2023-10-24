@@ -10,7 +10,7 @@ type (
 		*Stock
 		*Language
 		*AllergyList
-		*AllergyDefault
+		AllergyDefault Allergy
 	}
 
 	// ToDomain ...
@@ -28,7 +28,7 @@ type (
 
 		GetAllergyDefault(
 			ctx context.Context,
-		) *Allergy
+		) Allergy
 
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
@@ -44,8 +44,9 @@ type (
 // NewDomain ...
 func NewDomain() ToDomain {
 	return &domain{
-		Stock:       NewStock(),
-		Language:    NewLanguage(),
-		AllergyList: NewAllergyList(),
+		Stock:          NewStock(),
+		Language:       NewLanguage(),
+		AllergyList:    NewAllergyList(),
+		AllergyDefault: Allergy(NeAllergyDefault()),
 	}
 }

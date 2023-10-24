@@ -27,8 +27,8 @@ func (receiver *domain) CookHamburgers(
 // GetAllergyDefault ...
 func (receiver *domain) GetAllergyDefault(
 	ctx context.Context,
-) *Allergy {
-	return (*Allergy)(receiver.AllergyDefault)
+) Allergy {
+	return receiver.AllergyDefault
 }
 
 // GetIsVaildLangCodeMap ...

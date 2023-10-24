@@ -61,7 +61,7 @@ func (receiver *controller) GetAllProductList(
 // GetAllergyDefault ...
 func (receiver *controller) GetAllergyDefault(
 	ctx context.Context,
-) *domain.Allergy {
+) domain.Allergy {
 	return receiver.UseCase.GetAllergyDefault(
 		ctx,
 	)

@@ -3,7 +3,6 @@ package domain
 type (
 	Allergy        map[string]string
 	AllergyList    []Allergy
-	AllergyDefault Allergy
 )
 
 func NewAllergyList() *AllergyList {

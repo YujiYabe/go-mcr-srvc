@@ -27,7 +27,7 @@ type (
 
 		GetAllergyDefault(
 			ctx context.Context,
-		) *domain.Allergy
+		) domain.Allergy
 
 		GetAllProductList(
 			ctx context.Context,

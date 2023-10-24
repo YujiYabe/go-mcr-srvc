@@ -48,7 +48,7 @@ type (
 
 		GetAllergyDefault(
 			ctx context.Context,
-		) *domain.Allergy
+		) domain.Allergy
 
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
