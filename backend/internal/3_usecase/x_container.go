@@ -16,13 +16,18 @@ type (
 
 	// ToUseCase ...
 	ToUseCase interface {
-		Start()
+		Start(ctx *context.Context)
 		Reserve(ctx context.Context)
 		Order(ctx *context.Context) error
+
 		GetProduct(
 			ctx context.Context,
 			productNumber int,
 		) *domain.Product
+
+		SetUpInMemory(
+			ctx *context.Context,
+		)
 	}
 
 	// OrderUseCase ...
@@ -48,7 +53,7 @@ type (
 		GetVegetables(ctx context.Context) error
 		GetIngredients(ctx context.Context) error
 		GetAllProductList(
-			ctx context.Context,
+			ctx *context.Context,
 		) *domain.AllProductList
 	}
 

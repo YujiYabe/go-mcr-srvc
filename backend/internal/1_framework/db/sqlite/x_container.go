@@ -25,17 +25,6 @@ func init() {
 	// DBのアップデート
 
 	updateStoreDB()
-
-	// defer storeDB.Close()
-
-	// storeRows, err := storeDB.Query("SELECT * FROM products ORDER BY jan_code")
-	// if err != nil {
-	// 	log.Printf("Error querying products: %v", err)
-	// }
-	// defer storeRows.Close()
-
-	// for storeRows.Next() {
-	// }
 }
 
 func updateStoreDB() error {

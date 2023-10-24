@@ -29,7 +29,7 @@ func (s *Sqlite) UpdatePatties(ctx context.Context, items map[string]int) error 
 }
 
 // GetAllProductList ...
-func (s *Sqlite) GetAllProductList(ctx context.Context) *domain.AllProductList {
+func (s *Sqlite) GetAllProductList(ctx *context.Context) *domain.AllProductList {
 	allProductList := &domain.AllProductList{}
 
 	s.Conn.Find(allProductList)

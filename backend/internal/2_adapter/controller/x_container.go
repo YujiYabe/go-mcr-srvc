@@ -77,4 +77,3 @@ func NewController(
 
 	return ct
 }
-

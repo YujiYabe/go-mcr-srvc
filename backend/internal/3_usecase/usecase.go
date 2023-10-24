@@ -18,8 +18,8 @@ func init() {
 }
 
 // Start ...
-func (receiver *useCase) Start() {
-	go receiver.bulkOrder()
+func (receiver *useCase) Start(ctx *context.Context) {
+	receiver.SetUpInMemory(ctx)
 }
 
 // Reserve ...
@@ -47,7 +47,7 @@ func (receiver *useCase) GetProduct(
 
 // SetUpInMemory ...
 func (receiver *useCase) SetUpInMemory(
-	ctx context.Context,
+	ctx *context.Context,
 ) {
 	// localDBから全商品を取得
 	allProductList := receiver.ToGateway.GetAllProductList(
