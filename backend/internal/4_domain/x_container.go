@@ -3,9 +3,6 @@ package domain
 import "context"
 
 type (
-	Order struct {
-	}
-
 	domain struct {
 		*Stock
 		*Language

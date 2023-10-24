@@ -38,5 +38,4 @@ func Get(
 	}
 
 	return c.Render(http.StatusOK, "adminMonitor", data)
-
 }

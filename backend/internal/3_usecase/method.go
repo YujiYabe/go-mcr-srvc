@@ -21,16 +21,6 @@ func (receiver *useCase) Start(ctx context.Context) {
 	receiver.SetUpInMemory(ctx)
 }
 
-// Reserve ...
-func (receiver *useCase) Reserve(ctx context.Context) {}
-
-// Order ...
-func (receiver *useCase) Order(ctx context.Context) error {
-	return nil
-}
-
-func (receiver *useCase) bulkOrder() {}
-
 // GetProduct ...
 func (receiver *useCase) GetProduct(
 	ctx context.Context,

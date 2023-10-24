@@ -20,6 +20,34 @@ var (
 	myErr *pkg.MyErr
 )
 
+type (
+	// Sqlite ...
+	Sqlite struct {
+		Conn *gorm.DB
+	}
+)
+
+// NewToSQLite ...
+func NewToSQLite() gateway.ToSqlite {
+
+	storeDBName, err := getDBName()
+	if err != nil {
+		return nil
+	}
+
+	sqliteFilePath := getSqlitePath() + "/" + storeDBName + ".sqlite3"
+
+	conn, err := open(30, sqliteFilePath)
+	if err != nil {
+		myErr.Logging(err)
+		panic(err)
+	}
+
+	sqlite := new(Sqlite)
+	sqlite.Conn = conn
+
+	return sqlite
+}
 func init() {
 	myErr = pkg.NewMyErr("framework_driver", "sqlite")
 	// DBのアップデート
@@ -39,6 +67,7 @@ func updateStoreDB() error {
 		myErr.Logging(err)
 		panic(err)
 	}
+
 	storeJANCodeList := []int{}
 
 	storeDB.
@@ -54,7 +83,7 @@ func updateStoreDB() error {
 		myErr.Logging(err)
 		panic(err)
 	}
-	masterJANCodeList := []int{}
+	restJANCodeList := []int{}
 
 	// storeDBにないjanCodeの検索
 	masterDB.
@@ -63,24 +92,25 @@ func updateStoreDB() error {
 		Select("jan_code").
 		Order("jan_code desc").
 		Not(map[string]interface{}{"jan_code": storeJANCodeList}).
-		Find(&masterJANCodeList)
+		Find(&restJANCodeList)
 
-	if len(masterJANCodeList) == 0 {
+	// 差分がなければ終了
+	if len(restJANCodeList) == 0 {
 		return nil
 	}
 
 	// storeDBにないデータ取得
-	masterProductList := domain.AllProductList{}
+	differentProductList := domain.AllProductList{}
 	masterDB.
 		// Debug().
-		Where("jan_code IN (?)", masterJANCodeList).
+		Where("jan_code IN (?)", restJANCodeList).
 		Order("jan_code desc").
-		Find(&masterProductList)
+		Find(&differentProductList)
 
 	// DB更新
 	storeDB.
 		// Debug().
-		Create(&masterProductList)
+		Create(&differentProductList)
 
 	return nil
 }
@@ -103,42 +133,6 @@ func getSqlitePath() string {
 func exists(filename string) bool {
 	_, err := os.Stat(filename)
 	return err == nil
-}
-
-type (
-	// Sqlite ...
-	Sqlite struct {
-		Conn *gorm.DB
-	}
-
-	// Vegetable ...
-	Vegetable struct {
-		ID    int
-		Name  string
-		Stock int
-	}
-)
-
-// NewToSQLite ...
-func NewToSQLite() gateway.ToSqlite {
-
-	storeDBName, err := getDBName()
-	if err != nil {
-		return nil
-	}
-
-	sqliteFilePath := getSqlitePath() + "/" + storeDBName + ".sqlite3"
-
-	conn, err := open(30, sqliteFilePath)
-	if err != nil {
-		myErr.Logging(err)
-		panic(err)
-	}
-
-	s := new(Sqlite)
-	s.Conn = conn
-
-	return s
 }
 
 func open(

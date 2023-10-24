@@ -17,8 +17,6 @@ type (
 	// ToUseCase ...
 	ToUseCase interface {
 		Start(ctx context.Context)
-		Reserve(ctx context.Context)
-		Order(ctx context.Context) error
 
 		GetProduct(
 			ctx context.Context,
@@ -49,8 +47,7 @@ type (
 
 	// OrderUseCase ...
 	OrderUseCase struct {
-		ctx   context.Context
-		order *domain.Order
+		ctx context.Context
 	}
 
 	// ToGateway ...

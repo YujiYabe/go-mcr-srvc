@@ -17,7 +17,7 @@ func init() {
 
 type (
 	Gateway struct {
-		ToSqlite ToSqlite
+		ToSqlite
 	}
 
 	ToSqlite interface {

@@ -26,16 +26,9 @@ type (
 		OrderNumber int
 	}
 
-	// orderChannel ...
-	orderChannel struct {
-		order *domain.Order
-	}
-
 	// ToController ...
 	ToController interface {
 		Start()
-		Reserve(ctx context.Context, order *domain.Order, orderType string)
-		Order(ctx context.Context, order *domain.Order)
 
 		GetProduct(
 			ctx context.Context,
@@ -60,9 +53,6 @@ type (
 		)
 	}
 )
-
-// orderChannel ...
-var odrChnnl = make(chan orderChannel)
 
 // NewController ...
 func NewController(

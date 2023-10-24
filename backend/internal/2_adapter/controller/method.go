@@ -12,32 +12,6 @@ func (receiver *controller) Start() {
 	receiver.UseCase.Start(ctx)
 }
 
-// Reserve ...
-func (receiver *controller) Reserve(
-	ctx context.Context,
-	order *domain.Order,
-	orderType string,
-) {
-	receiver.UseCase.Reserve(ctx) // オーダー情報更新
-}
-
-// Order ...
-func (receiver *controller) Order(
-	ctx context.Context,
-	order *domain.Order,
-) {
-	oc := &orderChannel{
-		order: order,
-	}
-
-	// オーダー番号をweb_uiに即時返却する必要があるため、
-	// 後続処理をチャネル経由で処理
-	odrChnnl <- *oc
-}
-
-func (receiver *controller) bulkOrder() {
-}
-
 // GetProduct ...
 func (receiver *controller) GetProduct(
 	ctx context.Context,
