@@ -41,6 +41,4 @@ func Get(
 	}
 
 	return c.Render(http.StatusOK, "adminPrintKitchen", data)
-
-	// return nil
 }

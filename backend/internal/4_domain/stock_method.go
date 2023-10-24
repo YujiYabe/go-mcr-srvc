@@ -13,10 +13,6 @@ func (receiver *Stock) InitProduct(
 	receiver.FilterProductValid()
 }
 
-func (receiver *Stock) GetAllProductList() []Product {
-	return receiver.AllProductList
-}
-
 func (receiver *Stock) GetProductList() []Product {
 	return receiver.ProductList
 }
@@ -25,7 +21,6 @@ func (receiver *Stock) GetProduct(
 	ctx context.Context,
 	janCode int,
 ) *Product {
-
 	for _, product := range receiver.AllProductList {
 		if janCode == product.JANCode {
 			return &product
@@ -34,14 +29,12 @@ func (receiver *Stock) GetProduct(
 	return nil
 }
 
-// func GetProduct(janCode int) *Product {
-// 	for _, product := range receiver.AllProductList {
-// 		if janCode == product.JANCode {
-// 			return &product
-// 		}
-// 	}
-// 	return nil
-// }
+// GetAllProductList ...
+func (receiver *Stock) GetAllProductList(
+	ctx context.Context,
+) *AllProductList {
+	return &receiver.AllProductList
+}
 
 func (receiver *Stock) GetIsVaildJANCodeList() []int {
 	return receiver.IsVaildJANCodeList

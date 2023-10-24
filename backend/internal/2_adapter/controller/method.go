@@ -6,23 +6,23 @@ import (
 	domain "backend/internal/4_domain"
 )
 
-func (ctrl *controller) Start() {
+func (receiver *controller) Start() {
 	ctx := context.Background()
 
-	ctrl.UseCase.Start(&ctx)
+	receiver.UseCase.Start(&ctx)
 }
 
 // Reserve ...
-func (ctrl *controller) Reserve(
+func (receiver *controller) Reserve(
 	ctx context.Context,
 	order *domain.Order,
 	orderType string,
 ) {
-	ctrl.UseCase.Reserve(ctx) // オーダー情報更新
+	receiver.UseCase.Reserve(ctx) // オーダー情報更新
 }
 
 // Order ...
-func (ctrl *controller) Order(
+func (receiver *controller) Order(
 	ctx *context.Context,
 	order *domain.Order,
 ) {
@@ -35,16 +35,43 @@ func (ctrl *controller) Order(
 	odrChnnl <- *oc
 }
 
-func (ctrl *controller) bulkOrder() {
+func (receiver *controller) bulkOrder() {
 }
 
 // GetProduct ...
-func (ctrl *controller) GetProduct(
+func (receiver *controller) GetProduct(
 	ctx context.Context,
 	productNumber int,
 ) *domain.Product {
-	return ctrl.UseCase.GetProduct(
+	return receiver.UseCase.GetProduct(
 		ctx,
 		productNumber,
+	)
+}
+
+// GetAllProductList ...
+func (receiver *controller) GetAllProductList(
+	ctx context.Context,
+) *domain.AllProductList {
+	return receiver.UseCase.GetAllProductList(
+		ctx,
+	)
+}
+
+// GetAllergyDefault ...
+func (receiver *controller) GetAllergyDefault(
+	ctx *context.Context,
+) *domain.Allergy {
+	return receiver.UseCase.GetAllergyDefault(
+		ctx,
+	)
+}
+
+// GetProduct ...
+func (receiver *controller) GetIsVaildLangCodeMap(
+	ctx *context.Context,
+) map[int]string {
+	return receiver.UseCase.GetIsVaildLangCodeMap(
+		ctx,
 	)
 }

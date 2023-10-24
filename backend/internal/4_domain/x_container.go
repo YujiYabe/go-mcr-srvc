@@ -7,9 +7,10 @@ type (
 	}
 
 	domain struct {
+		*Stock
 		*Language
 		*AllergyList
-		*Stock
+		*AllergyDefault
 	}
 
 	// ToDomain ...
@@ -20,6 +21,19 @@ type (
 			ctx context.Context,
 			productNumber int,
 		) *Product
+
+		GetAllProductList(
+			ctx context.Context,
+		) *AllProductList
+
+		GetAllergyDefault(
+			ctx *context.Context,
+		) *Allergy
+
+		GetIsVaildLangCodeMap(
+			ctx *context.Context,
+		) map[int]string
+
 		SaveInMemory(
 			ctx *context.Context,
 			allProductList *AllProductList,

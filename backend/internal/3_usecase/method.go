@@ -26,7 +26,6 @@ func (receiver *useCase) Reserve(ctx context.Context) {}
 
 // Order ...
 func (receiver *useCase) Order(ctx *context.Context) error {
-
 	return nil
 }
 
@@ -41,7 +40,33 @@ func (receiver *useCase) GetProduct(
 		ctx,
 		productNumber,
 	)
+}
 
+// GetAllergyDefault ...
+func (receiver *useCase) GetAllergyDefault(
+	ctx *context.Context,
+) *domain.Allergy {
+	return receiver.ToDomain.GetAllergyDefault(
+		ctx,
+	)
+}
+
+// GetAllProductList ...
+func (receiver *useCase) GetAllProductList(
+	ctx context.Context,
+) *domain.AllProductList {
+	return receiver.ToDomain.GetAllProductList(
+		ctx,
+	)
+}
+
+// GetIsVaildLangCodeMap ...
+func (receiver *useCase) GetIsVaildLangCodeMap(
+	ctx *context.Context,
+) map[int]string {
+	return receiver.ToDomain.GetIsVaildLangCodeMap(
+		ctx,
+	)
 }
 
 // SetUpInMemory ...

@@ -1,12 +1,12 @@
 package domain
 
 type (
-	Allergy     map[string]string
-	AllergyList []Allergy
+	Allergy        map[string]string
+	AllergyList    []Allergy
+	AllergyDefault Allergy
 )
 
 func NewAllergyList() *AllergyList {
-
 	return &AllergyList{
 		newAllergyListJa(),
 		newAllergyListEn(),
@@ -14,6 +14,10 @@ func NewAllergyList() *AllergyList {
 		newAllergyListZh(),
 		newAllergyListAr(),
 	}
+}
+
+func NeAllergyDefault() Allergy {
+	return newAllergyListJa()
 }
 
 // https://www.relief.jp/docs/001403.html

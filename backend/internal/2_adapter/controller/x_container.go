@@ -36,10 +36,23 @@ type (
 		Start()
 		Reserve(ctx context.Context, order *domain.Order, orderType string)
 		Order(ctx *context.Context, order *domain.Order)
+
 		GetProduct(
 			ctx context.Context,
 			productNumber int,
 		) *domain.Product
+
+		GetAllProductList(
+			ctx context.Context,
+		) *domain.AllProductList
+
+		GetAllergyDefault(
+			ctx *context.Context,
+		) *domain.Allergy
+
+		GetIsVaildLangCodeMap(
+			ctx *context.Context,
+		) map[int]string
 	}
 )
 

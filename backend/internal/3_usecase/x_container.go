@@ -25,6 +25,18 @@ type (
 			productNumber int,
 		) *domain.Product
 
+		GetAllergyDefault(
+			ctx *context.Context,
+		) *domain.Allergy
+
+		GetAllProductList(
+			ctx context.Context,
+		) *domain.AllProductList
+
+		GetIsVaildLangCodeMap(
+			ctx *context.Context,
+		) map[int]string
+
 		SetUpInMemory(
 			ctx *context.Context,
 		)

@@ -1,7 +1,12 @@
 package admin_product
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/labstack/echo"
+
+	"backend/internal/2_adapter/controller"
 	// domain "backend/internal/4_domain"
 )
 
@@ -9,13 +14,19 @@ import (
 // 管理画面 html
 func Get(
 	c echo.Context,
+	Controller controller.ToController,
 ) error {
+	ctx := c.Request().Context()
 
-	// allProductListJson, err := json.Marshal(domain.GetAllProductList())
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// allergyListJson, err := json.Marshal(domain.GetAllergyListJa())
+	allProductListJson, err := json.Marshal(Controller.GetAllProductList(ctx))
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("== == == == == == == == == == ")
+	fmt.Printf("%#v\n", allProductListJson)
+	fmt.Println("== == == == == == == == == == ")
+
+	// allergyListJson, err := json.Marshal(Controller.GetAllergyDefault(ctx))
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
