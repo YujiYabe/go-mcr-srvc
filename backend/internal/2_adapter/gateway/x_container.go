@@ -21,7 +21,7 @@ type (
 	}
 
 	ToSqlite interface {
-		GetAllProductList(ctx *context.Context) *domain.AllProductList
+		GetAllProductList(ctx context.Context) *domain.AllProductList
 	}
 )
 

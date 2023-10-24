@@ -9,7 +9,7 @@ import (
 func (receiver *controller) Start() {
 	ctx := context.Background()
 
-	receiver.UseCase.Start(&ctx)
+	receiver.UseCase.Start(ctx)
 }
 
 // Reserve ...
@@ -23,7 +23,7 @@ func (receiver *controller) Reserve(
 
 // Order ...
 func (receiver *controller) Order(
-	ctx *context.Context,
+	ctx context.Context,
 	order *domain.Order,
 ) {
 	oc := &orderChannel{
@@ -60,7 +60,7 @@ func (receiver *controller) GetAllProductList(
 
 // GetAllergyDefault ...
 func (receiver *controller) GetAllergyDefault(
-	ctx *context.Context,
+	ctx context.Context,
 ) *domain.Allergy {
 	return receiver.UseCase.GetAllergyDefault(
 		ctx,
@@ -69,7 +69,7 @@ func (receiver *controller) GetAllergyDefault(
 
 // GetProduct ...
 func (receiver *controller) GetIsVaildLangCodeMap(
-	ctx *context.Context,
+	ctx context.Context,
 ) map[int]string {
 	return receiver.UseCase.GetIsVaildLangCodeMap(
 		ctx,

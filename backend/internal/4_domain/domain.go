@@ -26,21 +26,21 @@ func (receiver *domain) CookHamburgers(
 
 // GetAllergyDefault ...
 func (receiver *domain) GetAllergyDefault(
-	ctx *context.Context,
+	ctx context.Context,
 ) *Allergy {
 	return (*Allergy)(receiver.AllergyDefault)
 }
 
 // GetIsVaildLangCodeMap ...
 func (receiver *domain) GetIsVaildLangCodeMap(
-	ctx *context.Context,
+	ctx context.Context,
 ) map[int]string {
 	return receiver.isVaildLangCodeMap
 }
 
 // CookHamburgers ...
 func (receiver *domain) SaveInMemory(
-	ctx *context.Context,
+	ctx context.Context,
 	allProductList *AllProductList,
 ) error {
 	productList := ProductList{}

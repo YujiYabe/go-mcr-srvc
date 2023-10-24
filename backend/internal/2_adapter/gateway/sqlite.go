@@ -6,6 +6,6 @@ import (
 )
 
 // GetPatties ...
-func (gw *Gateway) GetAllProductList(ctx *context.Context) *domain.AllProductList {
+func (gw *Gateway) GetAllProductList(ctx context.Context) *domain.AllProductList {
 	return gw.ToSqlite.GetAllProductList(ctx)
 }

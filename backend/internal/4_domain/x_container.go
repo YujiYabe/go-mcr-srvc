@@ -27,15 +27,15 @@ type (
 		) *AllProductList
 
 		GetAllergyDefault(
-			ctx *context.Context,
+			ctx context.Context,
 		) *Allergy
 
 		GetIsVaildLangCodeMap(
-			ctx *context.Context,
+			ctx context.Context,
 		) map[int]string
 
 		SaveInMemory(
-			ctx *context.Context,
+			ctx context.Context,
 			allProductList *AllProductList,
 		) error
 	}

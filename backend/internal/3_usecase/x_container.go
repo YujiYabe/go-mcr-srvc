@@ -16,9 +16,9 @@ type (
 
 	// ToUseCase ...
 	ToUseCase interface {
-		Start(ctx *context.Context)
+		Start(ctx context.Context)
 		Reserve(ctx context.Context)
-		Order(ctx *context.Context) error
+		Order(ctx context.Context) error
 
 		GetProduct(
 			ctx context.Context,
@@ -26,7 +26,7 @@ type (
 		) *domain.Product
 
 		GetAllergyDefault(
-			ctx *context.Context,
+			ctx context.Context,
 		) *domain.Allergy
 
 		GetAllProductList(
@@ -34,24 +34,24 @@ type (
 		) *domain.AllProductList
 
 		GetIsVaildLangCodeMap(
-			ctx *context.Context,
+			ctx context.Context,
 		) map[int]string
 
 		SetUpInMemory(
-			ctx *context.Context,
+			ctx context.Context,
 		)
 	}
 
 	// OrderUseCase ...
 	OrderUseCase struct {
-		ctx   *context.Context
+		ctx   context.Context
 		order *domain.Order
 	}
 
 	// ToGateway ...
 	ToGateway interface {
 		GetAllProductList(
-			ctx *context.Context,
+			ctx context.Context,
 		) *domain.AllProductList
 	}
 

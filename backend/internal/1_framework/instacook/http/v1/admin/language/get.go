@@ -21,7 +21,7 @@ func Get(
 	}
 	ctx := c.Request().Context()
 
-	isVaildlangCodeMap := Controller.GetIsVaildLangCodeMap(&ctx)
+	isVaildlangCodeMap := Controller.GetIsVaildLangCodeMap(ctx)
 
 	data := struct {
 		Number int

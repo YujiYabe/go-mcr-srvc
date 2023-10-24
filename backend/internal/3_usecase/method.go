@@ -17,7 +17,7 @@ func init() {
 }
 
 // Start ...
-func (receiver *useCase) Start(ctx *context.Context) {
+func (receiver *useCase) Start(ctx context.Context) {
 	receiver.SetUpInMemory(ctx)
 }
 
@@ -25,7 +25,7 @@ func (receiver *useCase) Start(ctx *context.Context) {
 func (receiver *useCase) Reserve(ctx context.Context) {}
 
 // Order ...
-func (receiver *useCase) Order(ctx *context.Context) error {
+func (receiver *useCase) Order(ctx context.Context) error {
 	return nil
 }
 
@@ -44,7 +44,7 @@ func (receiver *useCase) GetProduct(
 
 // GetAllergyDefault ...
 func (receiver *useCase) GetAllergyDefault(
-	ctx *context.Context,
+	ctx context.Context,
 ) *domain.Allergy {
 	return receiver.ToDomain.GetAllergyDefault(
 		ctx,
@@ -62,7 +62,7 @@ func (receiver *useCase) GetAllProductList(
 
 // GetIsVaildLangCodeMap ...
 func (receiver *useCase) GetIsVaildLangCodeMap(
-	ctx *context.Context,
+	ctx context.Context,
 ) map[int]string {
 	return receiver.ToDomain.GetIsVaildLangCodeMap(
 		ctx,
@@ -71,7 +71,7 @@ func (receiver *useCase) GetIsVaildLangCodeMap(
 
 // SetUpInMemory ...
 func (receiver *useCase) SetUpInMemory(
-	ctx *context.Context,
+	ctx context.Context,
 ) {
 	// localDBから全商品を取得
 	allProductList := receiver.ToGateway.GetAllProductList(
