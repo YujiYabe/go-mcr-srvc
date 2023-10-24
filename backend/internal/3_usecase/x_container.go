@@ -65,9 +65,12 @@ func NewUseCase(
 	toGateway ToGateway,
 	toPresenter ToPresenter,
 ) ToUseCase {
-	return &useCase{
+
+	uscs := &useCase{
 		ToDomain:    toDomain,
 		ToGateway:   toGateway,
 		ToPresenter: toPresenter,
 	}
+
+	return uscs
 }

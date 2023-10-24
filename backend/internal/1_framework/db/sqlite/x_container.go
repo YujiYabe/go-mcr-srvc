@@ -39,73 +39,59 @@ func init() {
 }
 
 func updateStoreDB() error {
+	// local DB =======================
+	storeDBName, err := getDBName()
+	if err != nil {
+		return err
+	}
 
-	sqliteFilePath := getSqlitePath() + "/master.sqlite3"
-
-	masterDB, err := open(30, sqliteFilePath)
+	storeDB, err := open(30, getSqlitePath()+"/"+storeDBName+".sqlite3")
 	if err != nil {
 		myErr.Logging(err)
 		panic(err)
 	}
-	masterProductList := &domain.ProductList{}
+	storeJANCodeList := []int{}
 
-	masterDB.Find(&masterProductList)
+	storeDB.
+		// Debug().
+		Table("products").
+		Select("jan_code").
+		Order("jan_code desc").
+		Find(&storeJANCodeList)
 
-	// masterRows, err := masterDB.Query("SELECT * FROM products ORDER BY jan_code")
-	// if err != nil {
-	// 	log.Printf("Error querying products: %v", err)
-	// 	return err
-	// }
-	// defer masterRows.Close()
+	// master DB =======================
+	masterDB, err := open(30, getSqlitePath()+"/master.sqlite3")
+	if err != nil {
+		myErr.Logging(err)
+		panic(err)
+	}
+	masterJANCodeList := []int{}
 
-	// masterProductList, masterJANCodeList, err := convertToStruct(masterRows)
-	// if err != nil {
-	// 	return err
-	// }
+	// storeDBにないjanCodeの検索
+	masterDB.
+		// Debug().
+		Table("products").
+		Select("jan_code").
+		Order("jan_code desc").
+		Not(map[string]interface{}{"jan_code": storeJANCodeList}).
+		Find(&masterJANCodeList)
 
-	// storeDBName, err := getDBName()
-	// if err != nil {
-	// 	return err
-	// }
+	if len(masterJANCodeList) == 0 {
+		return nil
+	}
 
-	// storeDB, err := connectDB(storeDBName)
-	// if err != nil {
-	// 	return err
-	// }
-	// defer storeDB.Close()
+	// storeDBにないデータ取得
+	masterProductList := domain.AllProductList{}
+	masterDB.
+		// Debug().
+		Where("jan_code IN (?)", masterJANCodeList).
+		Order("jan_code desc").
+		Find(&masterProductList)
 
-	// storeRows, err := storeDB.Query("SELECT * FROM products ORDER BY jan_code")
-	// if err != nil {
-	// 	log.Printf("Error querying products: %v", err)
-	// 	return err
-	// }
-
-	// defer storeRows.Close()
-	// _, storeJANCodeList, err := convertToStruct(storeRows)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// if reflect.DeepEqual(masterJANCodeList, storeJANCodeList) {
-	// 	return nil
-	// }
-
-	// addProductList := []domain.Product{}
-
-	// for _, masterJANCode := range masterJANCodeList {
-	// 	if !slices.Contains(storeJANCodeList, masterJANCode) {
-	// 		product := returnProduct(masterJANCode, masterProductList)
-	// 		addProductList = append(
-	// 			addProductList,
-	// 			*product,
-	// 		)
-	// 	}
-	// }
-
-	// err = InsertProducts(storeDB, addProductList)
-	// if err != nil {
-	// 	return err
-	// }
+	// DB更新
+	storeDB.
+		// Debug().
+		Create(&masterProductList)
 
 	return nil
 }

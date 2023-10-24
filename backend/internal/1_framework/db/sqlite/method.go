@@ -3,6 +3,7 @@ package sqlite
 import (
 	domain "backend/internal/4_domain"
 	"context"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -29,20 +30,13 @@ func (s *Sqlite) UpdatePatties(ctx context.Context, items map[string]int) error 
 
 // GetAllProductList ...
 func (s *Sqlite) GetAllProductList(ctx context.Context) *domain.AllProductList {
-	// for item, num := range items {
-	// 	res := s.Conn.
-	// 		Table("patties").
-	// 		Where("name IN (?)", item).
-	// 		UpdateColumn("stock", gorm.Expr("stock - ?", num))
+	allProductList := &domain.AllProductList{}
 
-	// 	if res.Error != nil {
-	// 		myErr.Logging(res.Error)
-	// 		return res.Error
-	// 	}
+	s.Conn.Find(allProductList)
 
-	// 	// 作業時間を擬似的に再現
-	// 	time.Sleep(1 * time.Second)
-	// }
+	fmt.Println("== Sqlite == == == == == == == == == ")
+	fmt.Printf("%#v\n", allProductList)
+	fmt.Println("== == == == == == == == == == ")
 
-	return nil
+	return allProductList
 }
