@@ -8,7 +8,6 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-gonic/gin v1.7.2
 	github.com/gorilla/websocket v0.0.0-20170926233335-4201258b820c
-	github.com/jinzhu/copier v0.3.2
 	github.com/joho/godotenv v1.3.0
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/pborman/uuid v1.2.0
@@ -71,8 +70,4 @@ require (
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/genproto v0.0.0-20210601170153-0befbe3492e2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gorm.io/driver/mysql v1.1.0
-	gorm.io/driver/postgres v1.1.0
-	gorm.io/driver/sqlite v1.5.4 // indirect
-	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
 )
