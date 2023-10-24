@@ -4,9 +4,10 @@ import "context"
 
 type (
 	domain struct {
-		*Stock
-		*Language
-		*AllergyList
+		OrderList
+		Stock
+		Language
+		AllergyList
 		AllergyDefault Allergy
 	}
 

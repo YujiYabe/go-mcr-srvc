@@ -11,10 +11,10 @@ type (
 	ProductList    []Product
 )
 
-func NewStock() *Stock {
+func NewStock() Stock {
 	//ここでDBから取得する
 
-	return &Stock{}
+	return Stock{}
 }
 
 func NewProduct() Product {

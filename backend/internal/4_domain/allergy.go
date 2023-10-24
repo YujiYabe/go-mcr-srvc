@@ -1,12 +1,12 @@
 package domain
 
 type (
-	Allergy        map[string]string
-	AllergyList    []Allergy
+	Allergy     map[string]string
+	AllergyList []Allergy
 )
 
-func NewAllergyList() *AllergyList {
-	return &AllergyList{
+func NewAllergyList() AllergyList {
+	return AllergyList{
 		newAllergyListJa(),
 		newAllergyListEn(),
 		newAllergyListEs(),

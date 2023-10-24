@@ -1,9 +1,9 @@
 package admin_client
 
 import (
-	"backend/internal/2_adapter/controller"
-
 	"github.com/labstack/echo"
+
+	"backend/internal/2_adapter/controller"
 )
 
 type (

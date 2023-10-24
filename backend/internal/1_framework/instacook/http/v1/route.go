@@ -1,17 +1,19 @@
 package v1
 
 import (
-	"backend/internal/1_framework/instacook/http/v1/admin"
-	"backend/internal/2_adapter/controller"
 
 	"github.com/labstack/echo"
-	// "backend/internal/1_framework/in/http/acceptance"
+
+	"backend/internal/2_adapter/controller"
+	"backend/internal/1_framework/instacook/http/v1/admin"
+	"backend/internal/1_framework/instacook/http/v1/acceptance"
+
 	// "backend/internal/1_framework/instacook/http/admin"
-	// "backend/internal/1_framework/in/http/casher"
-	// "backend/internal/1_framework/in/http/client"
-	// "backend/internal/1_framework/in/http/delivery"
-	// "backend/internal/1_framework/in/http/kitchen"
-	// "backend/internal/1_framework/in/http/order"
+	// "backend/internal/1_framework/instacook/http/v1/casher"
+	// "backend/internal/1_framework/instacook/http/v1/client"
+	// "backend/internal/1_framework/instacook/http/v1/delivery"
+	// "backend/internal/1_framework/instacook/http/v1/kitchen"
+	// "backend/internal/1_framework/instacook/http/v1/order"
 )
 
 type (
@@ -29,6 +31,12 @@ func NewRoute(
 	group := parrent.Group("/v1")
 
 	admin.NewRoute(
+		EchoEcho,
+		Controller,
+		group,
+	)
+
+		acceptance.NewRoute(
 		EchoEcho,
 		Controller,
 		group,

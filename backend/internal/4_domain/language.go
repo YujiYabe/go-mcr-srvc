@@ -8,8 +8,8 @@ type (
 	}
 )
 
-func NewLanguage() *Language {
-	language := &Language{
+func NewLanguage() Language {
+	language := Language{
 		defaultLangCode: 1041,
 	}
 
