@@ -50,10 +50,6 @@ type (
 
 	// ToGateway ...
 	ToGateway interface {
-		GetBans(ctx context.Context) error
-		GetPatties(ctx context.Context) error
-		GetVegetables(ctx context.Context) error
-		GetIngredients(ctx context.Context) error
 		GetAllProductList(
 			ctx *context.Context,
 		) *domain.AllProductList
