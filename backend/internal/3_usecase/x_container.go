@@ -40,6 +40,11 @@ type (
 		SetUpInMemory(
 			ctx context.Context,
 		)
+
+		UpdateProduct(
+			ctx context.Context,
+			product domain.Product,
+		)
 	}
 
 	// OrderUseCase ...
@@ -53,6 +58,11 @@ type (
 		GetAllProductList(
 			ctx context.Context,
 		) *domain.AllProductList
+
+		UpdateProduct(
+			ctx context.Context,
+			product domain.Product,
+		)
 	}
 
 	// ToPresenter ...

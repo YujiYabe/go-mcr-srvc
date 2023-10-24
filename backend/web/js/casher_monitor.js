@@ -187,7 +187,7 @@ async function getSoldList () {
   let historyListElement = $("#history_list")
 
   try {
-    let response = await fetch(`/order/sold/preparing`);
+    let response = await fetch(`/v1/order/sold/preparing`);
     soldList = await response.json();
   } catch (error) {
     console.error("Error :", error);
@@ -276,7 +276,7 @@ async function postCasher () {
   try {
     const soldNoString = $("#sold_no").val();
 
-    const res = await fetch(`/casher`, {
+    const res = await fetch(`/v1/casher`, {
       method: "POST",
       body: JSON.stringify({
         sold_no: Number(soldNoString),
@@ -321,7 +321,7 @@ async function changePage (element) {
 
 async function deleteSoldItem (soldNo) {
   try {
-    await fetch(`/casher`, {
+    await fetch(`/v1/casher`, {
       method: "DELETE",
       body: JSON.stringify({
         sold_no: soldNo,

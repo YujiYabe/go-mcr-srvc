@@ -36,7 +36,7 @@ GET http://{{hostname}}:{{port}}/v1/admin/client/product/{{pastaika}}{{queryPara
 
 
 ### admin_product ==============================
-PATCH https://{{hostname}}:{{port}}/admin_product/{{pastaika}}{{queryParam}}
+PATCH https://{{hostname}}:{{port}}/admin/product/{{pastaika}}{{queryParam}}
 Content-Type: application/json
 
 {

@@ -84,3 +84,19 @@ func (receiver *useCase) SetUpInMemory(
 	)
 
 }
+
+// UpdateProduct ...
+func (receiver *useCase) UpdateProduct(
+	ctx context.Context,
+	product domain.Product,
+) {
+
+	// DB更新
+	receiver.ToGateway.UpdateProduct(
+		ctx,
+		product,
+	)
+
+	// インメモリの情報を更新
+	receiver.SetUpInMemory(ctx)
+}

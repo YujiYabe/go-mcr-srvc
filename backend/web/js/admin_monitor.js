@@ -268,7 +268,7 @@ async function patchAdminProduct (janCode) {
 
     $(`span[id=valid_${janCode}]`).text(isValid.toString());
 
-    await fetch(`/admin/product/${janCode}`, {
+    await fetch(`/v1/admin/product/${janCode}`, {
       method: "PATCH",
       body: JSON.stringify({
         is_valid: isValid,

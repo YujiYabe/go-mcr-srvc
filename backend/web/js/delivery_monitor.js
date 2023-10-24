@@ -131,7 +131,7 @@ async function makeImage (janCodeList, rowColor) {
 
 async function patchSold (soldNo, status) {
   try {
-    const res = await fetch(`/delivery`, {
+    const res = await fetch(`/v1/delivery`, {
       method: "PATCH",
       body: JSON.stringify({
         sold_no: soldNo,

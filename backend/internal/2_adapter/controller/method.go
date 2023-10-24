@@ -67,11 +67,22 @@ func (receiver *controller) GetAllergyDefault(
 	)
 }
 
-// GetProduct ...
+// GetIsVaildLangCodeMap ...
 func (receiver *controller) GetIsVaildLangCodeMap(
 	ctx context.Context,
 ) map[int]string {
 	return receiver.UseCase.GetIsVaildLangCodeMap(
 		ctx,
+	)
+}
+
+// UpdateProduct ...
+func (receiver *controller) UpdateProduct(
+	ctx context.Context,
+	product domain.Product,
+) {
+	receiver.UseCase.UpdateProduct(
+		ctx,
+		product,
 	)
 }

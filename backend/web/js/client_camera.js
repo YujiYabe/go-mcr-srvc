@@ -53,7 +53,7 @@ async function captureAndUpload () {
   formData.append('image', imageBlob, 'image.jpg');
 
   try {
-    await fetch(`/client_camera/${queueNo}`, {
+    await fetch(`/v1/client_camera/${queueNo}`, {
       method: "POST",
       body: formData,
     });

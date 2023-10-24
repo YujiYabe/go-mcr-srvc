@@ -53,6 +53,11 @@ type (
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
+
+		UpdateProduct(
+			ctx context.Context,
+			product domain.Product,
+		)
 	}
 )
 

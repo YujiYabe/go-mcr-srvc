@@ -22,6 +22,11 @@ type (
 
 	ToSqlite interface {
 		GetAllProductList(ctx context.Context) *domain.AllProductList
+
+		UpdateProduct(
+			ctx context.Context,
+			product domain.Product,
+		)
 	}
 )
 

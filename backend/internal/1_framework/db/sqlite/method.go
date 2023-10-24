@@ -35,3 +35,25 @@ func (s *Sqlite) GetAllProductList(ctx context.Context) *domain.AllProductList {
 
 	return allProductList
 }
+
+// UpdateProduct ...
+func (s *Sqlite) UpdateProduct(
+	ctx context.Context,
+	newProduct domain.Product,
+) {
+	product := &domain.Product{}
+
+	s.Conn.
+		Debug().
+		Where("jan_code = ?", newProduct.JANCode).
+		First(&product)
+
+	product.IsValid = newProduct.IsValid
+	product.Place = newProduct.Place
+
+	s.Conn.
+		Debug().
+		Where("jan_code = ?", newProduct.JANCode).
+		Save(product)
+
+}
