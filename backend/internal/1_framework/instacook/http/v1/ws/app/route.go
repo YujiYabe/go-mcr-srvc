@@ -14,6 +14,6 @@ func NewRoute(
 
 	group := parrent.Group("/app")
 
-	group.GET("", func(c echo.Context) error { return Get(c, Controller) }) // 管理画面 html
+	group.GET("", func(c echo.Context) error { return Get(c, Controller) })
 
 }

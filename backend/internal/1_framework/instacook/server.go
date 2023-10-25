@@ -79,8 +79,6 @@ func (receiver *InstaCook) Start() {
 		group,
 	)
 
-	receiver.EchoEcho.GET("/", receiver.IndexPost)
-
 	if false {
 		routes := receiver.EchoEcho.Routes()
 		for _, route := range routes {
@@ -93,11 +91,4 @@ func (receiver *InstaCook) Start() {
 		receiver.EchoEcho.StartTLS(":"+pkg.InstaCookPort, "openssl/server.crt", "openssl/server.key"),
 	)
 
-}
-
-// IndexPost ...
-func (receiver *InstaCook) IndexPost(c echo.Context) error {
-	// 標準コンテキストを取得
-
-	return nil
 }
