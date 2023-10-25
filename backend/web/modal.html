@@ -1,0 +1,31 @@
+{{define "Modal"}}
+<div class="modal fade" id="modal" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p id="modal_header_p" class="h1" style="margin: 0 auto"></p>
+      </div>
+      <div class="modal-body" style="margin: 0 auto">
+        <p id="modal_body_p1" class="h2 d-inline rounded"></p>
+        <p id="modal_body_p2" class="h2 d-inline"></p>
+        <p id="modal_body_p3" class="h2 d-inline rounded"></p>
+        <p id="modal_body_p4" class="h2 d-inline"></p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <div class="d-grid gap-2 col-8 mx-auto">
+          <button
+            id="confirm_button"
+            type="button"
+            class="btn btn-primary btn-lg py-4"
+            data-bs-toggle="popover"
+            data-bs-dismiss="modal"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{end}}

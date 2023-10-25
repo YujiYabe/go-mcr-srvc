@@ -34,10 +34,6 @@ func Get(
 	}{
 		Delivery: string(soldListJson),
 	}
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", data)
-	fmt.Println("== == == == == == == == == == ")
 
 	return c.Render(http.StatusOK, "deliveryMonitor", data)
-	// return nil
 }

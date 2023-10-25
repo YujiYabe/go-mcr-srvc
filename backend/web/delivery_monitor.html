@@ -1,4 +1,5 @@
 {{define "deliveryMonitor"}}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="../image/favicon.ico" />
 
-  <link type="text/css" rel="stylesheet" href="../css/external/bootstrap.min.css"/>
-  <link type="text/css" rel="stylesheet" href="../css/common.css" media="all"/>
+  <link type="text/css" rel="stylesheet" href="../css/external/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="../css/common.css" media="all" />
 
   <title>delivery_monitor</title>
 </head>
@@ -18,36 +19,24 @@
   <script src="../js/external/bootstrap.bundle.min.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/delivery_monitor.js"></script>
+  <div id="delivery" style="display: none;">{{ .Delivery }}</div>
 
   <div class="text-center h-100">
     <div class="row">
-      <div class="col-2" onclick="location.reload()"></div>
-      <div id="menu_tab" class="row col-8">
-        <div
-          id="passed_button"
-          class="alert bg-color-passed text-white col-5"
-          name="passed_list"
-          onclick="changePage(this)"
-        >
+      <div class="col-1" onclick="location.reload()"></div>
+      <div class="col-10 row" id="menu_tab">
+        <div id="passed_button" class="alert bg-color-passed text-white col-6" name="passed_list"
+          onclick="changePage(this)">
           お渡し済み
         </div>
-        <div
-          id="sold_button"
-          class="alert alert-warning col-6"
-          name="sold_list"
-          onclick="changePage(this)"
-        >
+        <div id="sold_button" class="alert alert-warning col-6" name="sold_list" onclick="changePage(this)">
           準備中＆準備完了
         </div>
 
-        <br />
-        <br />
-        <br />
         <div id="passed_list" class="row h-100" style="display: none"></div>
-
-        <div id="sold_list" class="row h-100"></div>
+        <div id="sold_list" class="row h-100 col-12"></div>
       </div>
-      <div class="col-2" onclick="location.reload()"></div>
+      <div class="col-1" onclick="location.reload()"></div>
     </div>
     {{ template "Modal" .}}
   </div>
