@@ -32,6 +32,15 @@ func (receiver *controller) GetAllProductList(
 	)
 }
 
+// GetSoldList ...
+func (receiver *controller) GetSoldList(
+	ctx context.Context,
+) domain.SoldList {
+	return receiver.ToUseCase.GetSoldList(
+		ctx,
+	)
+}
+
 // GetAllergyDefault ...
 func (receiver *controller) GetAllergyDefault(
 	ctx context.Context,

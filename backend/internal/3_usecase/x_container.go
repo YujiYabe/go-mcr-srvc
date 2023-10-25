@@ -35,6 +35,10 @@ type (
 			ctx context.Context,
 		) map[int]string
 
+		GetSoldList(
+			ctx context.Context,
+		) domain.SoldList
+
 		SetUpInMemory(
 			ctx context.Context,
 		)

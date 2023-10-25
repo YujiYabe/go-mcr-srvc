@@ -1,6 +1,7 @@
 package instacook
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 
@@ -80,10 +81,12 @@ func (receiver *InstaCook) Start() {
 
 	receiver.EchoEcho.GET("/", receiver.IndexPost)
 
-	// routes := receiver.EchoEcho.Routes()
-	// for _, route := range routes {
-	// 	fmt.Printf("%#v\n", route)
-	// }
+	if false {
+		routes := receiver.EchoEcho.Routes()
+		for _, route := range routes {
+			fmt.Printf("%#v\n", route)
+		}
+	}
 
 	receiver.EchoEcho.Logger.Fatal(
 		// receiver.EchoEcho.Start(":" + pkg.InstaCookPort),

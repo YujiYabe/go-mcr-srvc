@@ -7,8 +7,6 @@ import (
 
 	"backend/internal/2_adapter/controller"
 	domain "backend/internal/4_domain"
-	// "backend/internal/1_framework/out/db"
-	// domain "backend/internal/4_domain"
 )
 
 // ---------------------------------------------------------
@@ -33,7 +31,6 @@ func Patch(
 
 	newProduct.JANCode = number
 	Controller.UpdateProduct(ctx, *newProduct)
-
 
 	return c.JSON(http.StatusOK, nil)
 }

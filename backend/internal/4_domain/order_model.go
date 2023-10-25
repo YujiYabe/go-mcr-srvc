@@ -32,8 +32,8 @@ type (
 
 func NewOrderList(
 	isDemo bool,
-) *OrderList {
-	orderList := &OrderList{
+) OrderList {
+	orderList := OrderList{
 		ReservingList: NewReservingList(),
 		SoldList:      NewSoldList(),
 	}

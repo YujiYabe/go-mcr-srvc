@@ -1,4 +1,4 @@
-package admin_client
+package delivery
 
 import (
 	"github.com/labstack/echo"
@@ -6,12 +6,14 @@ import (
 	"backend/internal/2_adapter/controller"
 )
 
+
 func NewRoute(
 	EchoEcho *echo.Echo,
 	Controller controller.ToController,
 	parrent *echo.Group,
 ) {
-	group := parrent.Group("/client")
 
-	group.GET("/:number", func(c echo.Context) error { return Get(c, Controller) }) // 管理画面 顧客印刷 html
+	group := parrent.Group("/delivery")
+
+	group.GET("", func(c echo.Context) error { return Get(c, Controller) }) // 管理画面 html
 }

@@ -49,6 +49,15 @@ func (receiver *useCase) GetAllProductList(
 	)
 }
 
+// GetSoldList ...
+func (receiver *useCase) GetSoldList(
+	ctx context.Context,
+) domain.SoldList {
+	return receiver.ToDomain.GetSoldList(
+		ctx,
+	)
+}
+
 // GetIsVaildLangCodeMap ...
 func (receiver *useCase) GetIsVaildLangCodeMap(
 	ctx context.Context,

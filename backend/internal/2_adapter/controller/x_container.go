@@ -50,6 +50,11 @@ type (
 			ctx context.Context,
 			product domain.Product,
 		)
+
+		GetSoldList(
+			ctx context.Context,
+		) domain.SoldList
+		
 	}
 )
 

@@ -1,31 +1,33 @@
 package domain
 
 import (
+	"context"
 	"sort"
 	"strconv"
 )
 
-func (receiver *OrderList) GetOrderList() *OrderList {
+func (receiver *OrderList) GetOrderList(ctx context.Context) *OrderList {
 	return receiver
 }
 
-func (receiver *OrderList) GetReservingList() ReservingList {
+func (receiver *OrderList) GetReservingList(ctx context.Context) ReservingList {
 	return receiver.ReservingList
 }
 
-func (receiver *OrderList) GetSoldList() SoldList {
+// GetSoldList ...
+func (receiver *OrderList) GetSoldList(ctx context.Context) SoldList {
 	return receiver.SoldList
 }
 
-func (receiver *OrderList) GetPreparingList() SoldList {
+func (receiver *OrderList) GetPreparingList(ctx context.Context) SoldList {
 	return receiver.filterSoldList(StatusPreparing)
 }
 
-func (receiver *OrderList) GetCompletedList() SoldList {
+func (receiver *OrderList) GetCompletedList(ctx context.Context) SoldList {
 	return receiver.filterSoldList(StatusCompleted)
 }
 
-func (receiver *OrderList) GetPassedList() SoldList {
+func (receiver *OrderList) GetPassedList(ctx context.Context) SoldList {
 	return receiver.filterSoldList(StatusPassed)
 }
 
@@ -155,7 +157,7 @@ func (receiver *OrderList) AddNewReserving(newReserving *Reserving) {
 }
 
 // 注文リストの更新
-func (receiver *OrderList) SortOrderList() {
+func (receiver *OrderList) SortOrderList(ctx context.Context) {
 	// 注文リストをソート
 	sort.Slice(receiver.SoldList, func(i, j int) bool {
 		return receiver.SoldList[i].SoldNo < receiver.SoldList[j].SoldNo

@@ -6,12 +6,6 @@ import (
 	"backend/internal/2_adapter/controller"
 )
 
-// func AddRoute(parrent *echo.Group) {
-// 	g := parrent.Group("/acceptance")
-
-// 	g.GET("", func(c echo.Context) error { return Get(c) }) // 商品情報
-// }
-
 type (
 	Acceptance struct {
 		EchoEcho   *echo.Echo

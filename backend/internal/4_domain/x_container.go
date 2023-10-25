@@ -28,6 +28,10 @@ type (
 			ctx context.Context,
 		) Allergy
 
+		GetSoldList(
+			ctx context.Context,
+		) SoldList
+
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
@@ -41,7 +45,11 @@ type (
 
 // NewDomain ...
 func NewDomain() ToDomain {
+	isDemo := true
+	// isDemo := false
+
 	return &domain{
+		OrderList:      NewOrderList(isDemo),
 		Stock:          NewStock(),
 		Language:       NewLanguage(),
 		AllergyList:    NewAllergyList(),

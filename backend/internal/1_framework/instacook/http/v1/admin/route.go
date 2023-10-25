@@ -10,13 +10,6 @@ import (
 	"backend/internal/2_adapter/controller"
 )
 
-type (
-	Admin struct {
-		EchoEcho   *echo.Echo
-		Controller controller.ToController
-	}
-)
-
 func NewRoute(
 	EchoEcho *echo.Echo,
 	Controller controller.ToController,

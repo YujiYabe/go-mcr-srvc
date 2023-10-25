@@ -8,7 +8,6 @@ import (
 	"github.com/labstack/echo"
 
 	"backend/internal/2_adapter/controller"
-	// domain "backend/internal/4_domain"
 )
 
 // ---------------------------------------------------------
@@ -19,12 +18,16 @@ func Get(
 ) error {
 	ctx := c.Request().Context()
 
-	allProductListJson, err := json.Marshal(Controller.GetAllProductList(ctx))
+	allProductListJson, err := json.Marshal(
+		Controller.GetAllProductList(ctx),
+	)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	allergyListJson, err := json.Marshal(Controller.GetAllergyDefault(ctx))
+	allergyListJson, err := json.Marshal(
+		Controller.GetAllergyDefault(ctx),
+	)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -37,5 +40,5 @@ func Get(
 		AllergyList:    string(allergyListJson),
 	}
 
-	return c.Render(http.StatusOK, "adminMonitor", data)
+	return c.Render(http.StatusOK, "adminProduct", data)
 }
