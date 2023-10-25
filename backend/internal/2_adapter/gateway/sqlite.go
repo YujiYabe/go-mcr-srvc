@@ -1,8 +1,9 @@
 package gateway
 
 import (
-	domain "backend/internal/4_domain"
 	"context"
+
+	domain "backend/internal/4_domain"
 )
 
 // GetPatties ...

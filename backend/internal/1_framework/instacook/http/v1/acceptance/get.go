@@ -1,10 +1,11 @@
 package acceptance
 
 import (
-	"backend/internal/2_adapter/controller"
 	"net/http"
 
 	"github.com/labstack/echo"
+
+	"backend/internal/2_adapter/controller"
 )
 
 // ---------------------------------------------------------
