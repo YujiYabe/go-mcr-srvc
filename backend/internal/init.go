@@ -3,8 +3,8 @@ package internal
 import (
 	"backend/internal/1_framework/db/sqlite"
 
-	"backend/internal/1_framework/external_interface/monitor"
-	"backend/internal/1_framework/external_interface/shipment"
+	"backend/internal/1_framework/external/monitor"
+	"backend/internal/1_framework/external/shipment"
 
 	"backend/internal/1_framework/instacook"
 
