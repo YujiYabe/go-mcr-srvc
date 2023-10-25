@@ -71,6 +71,11 @@ type (
 			ctx context.Context,
 		) domain.Allergy
 
+		GetAllergyList(
+			ctx context.Context,
+		) domain.AllergyList
+
+		// language -----------------------
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string

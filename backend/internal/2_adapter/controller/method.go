@@ -130,6 +130,16 @@ func (receiver *controller) GetAllergyDefault(
 	)
 }
 
+// GetAllergyList ...
+func (receiver *controller) GetAllergyList(
+	ctx context.Context,
+) domain.AllergyList {
+	return receiver.ToUseCase.GetAllergyList(
+		ctx,
+	)
+}
+
+// language -----------------------
 // GetIsVaildLangCodeMap ...
 func (receiver *controller) GetIsVaildLangCodeMap(
 	ctx context.Context,

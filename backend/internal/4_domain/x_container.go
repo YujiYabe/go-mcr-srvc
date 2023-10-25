@@ -2,18 +2,31 @@ package domain
 
 import "context"
 
-type (
-	domain struct {
-		OrderList
-		Stock
-		Language
-		AllergyList
-		AllergyDefault Allergy
-	}
+type domain struct {
+	OrderList
+	Stock
+	Language
+	AllergyList
+	AllergyDefault Allergy
+}
 
+// NewDomain ...
+func NewDomain() ToDomain {
+	isDemo := true
+	// isDemo := false
+
+	return &domain{
+		OrderList:      NewOrderList(isDemo),
+		Stock:          NewStock(),
+		Language:       NewLanguage(),
+		AllergyList:    NewAllergyList(),
+		AllergyDefault: Allergy(NeAllergyDefault()),
+	}
+}
+
+type (
 	// ToDomain ...
 	ToDomain interface {
-
 		// product -----------------------
 		GetProduct(
 			ctx context.Context,
@@ -32,6 +45,11 @@ type (
 			ctx context.Context,
 			product Product,
 		)
+
+		SaveInMemory(
+			ctx context.Context,
+			allProductList AllProductList,
+		) error
 
 		// order -----------------------
 		GetOrderList(
@@ -68,26 +86,13 @@ type (
 			ctx context.Context,
 		) Allergy
 
+		GetAllergyList(
+			ctx context.Context,
+		) AllergyList
+
+		// language -----------------------
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
-		SaveInMemory(
-			ctx context.Context,
-			allProductList AllProductList,
-		) error
 	}
 )
-
-// NewDomain ...
-func NewDomain() ToDomain {
-	isDemo := true
-	// isDemo := false
-
-	return &domain{
-		OrderList:      NewOrderList(isDemo),
-		Stock:          NewStock(),
-		Language:       NewLanguage(),
-		AllergyList:    NewAllergyList(),
-		AllergyDefault: Allergy(NeAllergyDefault()),
-	}
-}

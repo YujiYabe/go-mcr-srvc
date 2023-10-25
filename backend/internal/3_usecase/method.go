@@ -66,6 +66,22 @@ func (receiver *useCase) UpdateProduct(
 	receiver.SetUpInMemory(ctx)
 }
 
+// SetUpInMemory ...
+func (receiver *useCase) SetUpInMemory(
+	ctx context.Context,
+) {
+	// localDBから全商品を取得
+	allProductList := receiver.ToGateway.GetAllProductList(
+		ctx,
+	)
+
+	receiver.ToDomain.SaveInMemory(
+		ctx,
+		allProductList,
+	)
+
+}
+
 // order -----------------------
 // GetOrderList ...
 func (receiver *useCase) GetOrderList(
@@ -142,6 +158,15 @@ func (receiver *useCase) GetAllergyDefault(
 	)
 }
 
+// GetAllergyList ...
+func (receiver *useCase) GetAllergyList(
+	ctx context.Context,
+) domain.AllergyList {
+	return receiver.ToDomain.GetAllergyList(
+		ctx,
+	)
+}
+
 // GetIsVaildLangCodeMap ...
 func (receiver *useCase) GetIsVaildLangCodeMap(
 	ctx context.Context,
@@ -149,20 +174,4 @@ func (receiver *useCase) GetIsVaildLangCodeMap(
 	return receiver.ToDomain.GetIsVaildLangCodeMap(
 		ctx,
 	)
-}
-
-// SetUpInMemory ...
-func (receiver *useCase) SetUpInMemory(
-	ctx context.Context,
-) {
-	// localDBから全商品を取得
-	allProductList := receiver.ToGateway.GetAllProductList(
-		ctx,
-	)
-
-	receiver.ToDomain.SaveInMemory(
-		ctx,
-		allProductList,
-	)
-
 }

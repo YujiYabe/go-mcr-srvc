@@ -19,6 +19,7 @@ func NeAllergyDefault() Allergy {
 	return newAllergyListJa()
 }
 
+
 // https://www.relief.jp/docs/001403.html
 func newAllergyListJa() Allergy {
 	return Allergy{

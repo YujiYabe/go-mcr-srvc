@@ -10,25 +10,18 @@ var (
 	myErr *pkg.MyErr
 )
 
-// ParseOrder ...
-func (receiver *domain) ParseOrder(
-	ctx context.Context,
-) error {
-	return nil
-}
-
-// CookHamburgers ...
-func (receiver *domain) CookHamburgers(
-	ctx context.Context,
-) error {
-	return nil
-}
-
 // GetAllergyDefault ...
 func (receiver *domain) GetAllergyDefault(
 	ctx context.Context,
 ) Allergy {
 	return receiver.AllergyDefault
+}
+
+// GetAllergyList ...
+func (receiver *domain) GetAllergyList(
+	ctx context.Context,
+) AllergyList {
+	return receiver.AllergyList
 }
 
 // GetIsVaildLangCodeMap ...
