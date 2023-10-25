@@ -13,32 +13,67 @@ type (
 
 	// ToDomain ...
 	ToDomain interface {
-		ParseOrder(ctx context.Context) error
-		CookHamburgers(ctx context.Context) error
+
+		// product -----------------------
 		GetProduct(
 			ctx context.Context,
 			productNumber int,
-		) *Product
+		) Product
 
 		GetAllProductList(
 			ctx context.Context,
-		) *AllProductList
+		) AllProductList
 
-		GetAllergyDefault(
+		GetProductList(
 			ctx context.Context,
-		) Allergy
+		) ProductList
+
+		UpdateProduct(
+			ctx context.Context,
+			product Product,
+		)
+
+		// order -----------------------
+		GetOrderList(
+			ctx context.Context,
+		) OrderList
+
+		GetReservingList(
+			ctx context.Context,
+		) ReservingList
 
 		GetSoldList(
 			ctx context.Context,
 		) SoldList
 
+		GetPreparingList(
+			ctx context.Context,
+		) SoldList
+
+		GetCompletedList(
+			ctx context.Context,
+		) SoldList
+
+		GetPassedList(
+			ctx context.Context,
+		) SoldList
+
+		UpdateSoldStatus(
+			ctx context.Context,
+			newSold Sold,
+		)
+
+		// allergy -----------------------
+		GetAllergyDefault(
+			ctx context.Context,
+		) Allergy
+
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
-
 		SaveInMemory(
 			ctx context.Context,
-			allProductList *AllProductList,
+			allProductList AllProductList,
 		) error
 	}
 )

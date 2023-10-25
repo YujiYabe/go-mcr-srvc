@@ -7,10 +7,10 @@ import (
 )
 
 // GetAllProductList ...
-func (receiver *Sqlite) GetAllProductList(ctx context.Context) *domain.AllProductList {
-	allProductList := &domain.AllProductList{}
+func (receiver *Sqlite) GetAllProductList(ctx context.Context) domain.AllProductList {
+	allProductList := domain.AllProductList{}
 
-	receiver.Conn.Find(allProductList)
+	receiver.Conn.Find(&allProductList)
 
 	return allProductList
 }

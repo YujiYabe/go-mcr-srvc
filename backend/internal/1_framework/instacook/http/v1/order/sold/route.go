@@ -1,4 +1,4 @@
-package delivery
+package sold
 
 import (
 	"github.com/labstack/echo"
@@ -12,8 +12,8 @@ func NewRoute(
 	parrent *echo.Group,
 ) {
 
-	group := parrent.Group("/delivery")
+	group := parrent.Group("/sold")
 
 	group.GET("", func(c echo.Context) error { return Get(c, Controller) })     // 管理画面 html
-	group.PATCH("", func(c echo.Context) error { return Patch(c, Controller) }) // 管理画面 商品更新
+	// group.PATCH("", func(c echo.Context) error { return Patch(c, Controller) }) // 管理画面 商品更新
 }

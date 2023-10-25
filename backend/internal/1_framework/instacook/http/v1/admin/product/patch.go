@@ -21,7 +21,6 @@ func Patch(
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	ctx := c.Request().Context()
 
 	// // リクエストの内容を新製品オブジェクトにバインド
 	newProduct := &domain.Product{}
@@ -30,6 +29,8 @@ func Patch(
 	}
 
 	newProduct.JANCode = number
+
+	ctx := c.Request().Context()
 	Controller.UpdateProduct(ctx, *newProduct)
 
 	return c.JSON(http.StatusOK, nil)

@@ -6,15 +6,14 @@ import (
 	"strconv"
 )
 
-func (receiver *OrderList) GetOrderList(ctx context.Context) *OrderList {
-	return receiver
-}
-
 func (receiver *OrderList) GetReservingList(ctx context.Context) ReservingList {
 	return receiver.ReservingList
 }
 
-// GetSoldList ...
+func (receiver *OrderList) GetOrderList(ctx context.Context) OrderList {
+	return *receiver
+}
+
 func (receiver *OrderList) GetSoldList(ctx context.Context) SoldList {
 	return receiver.SoldList
 }
@@ -51,7 +50,10 @@ func PickOutNumber(numberString string) (int, error) {
 }
 
 // UpdateSoldStatus はオーダーリスト内の特定の売れたアイテムのステータスを更新します。
-func (receiver *OrderList) UpdateSoldStatus(newSold *Sold) {
+func (receiver *OrderList) UpdateSoldStatus(
+	ctx context.Context,
+	newSold Sold,
+) {
 	for index, sold := range receiver.SoldList {
 		if sold.SoldNo == newSold.SoldNo {
 			receiver.SoldList[index].Status = newSold.Status

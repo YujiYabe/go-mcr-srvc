@@ -13,27 +13,31 @@ func (receiver *Stock) InitProduct(
 	receiver.FilterProductValid()
 }
 
-func (receiver *Stock) GetProductList() []Product {
-	return receiver.ProductList
-}
-
 func (receiver *Stock) GetProduct(
 	ctx context.Context,
 	janCode int,
-) *Product {
+) Product {
+	newProduct := Product{}
 	for _, product := range receiver.AllProductList {
 		if janCode == product.JANCode {
-			return &product
+			newProduct = product
 		}
 	}
-	return nil
+	return newProduct
 }
 
 // GetAllProductList ...
 func (receiver *Stock) GetAllProductList(
 	ctx context.Context,
-) *AllProductList {
-	return &receiver.AllProductList
+) AllProductList {
+	return receiver.AllProductList
+}
+
+// GetProductList ...
+func (receiver *Stock) GetProductList(
+	ctx context.Context,
+) ProductList {
+	return receiver.ProductList
 }
 
 func (receiver *Stock) GetIsVaildJANCodeList() []int {
@@ -41,7 +45,10 @@ func (receiver *Stock) GetIsVaildJANCodeList() []int {
 }
 
 // UpdateProduct は指定された新製品の情報で、製品リスト中の該当製品を更新します。
-func (receiver *Stock) UpdateProduct(newProduct *Product) {
+func (receiver *Stock) UpdateProduct(
+	ctx context.Context,
+	newProduct Product,
+) {
 	for index, product := range receiver.AllProductList {
 		if newProduct.JANCode == product.JANCode {
 			// インメモリ更新

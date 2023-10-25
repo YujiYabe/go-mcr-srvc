@@ -5,6 +5,7 @@ import (
 
 	"backend/internal/1_framework/instacook/http/v1/acceptance"
 	"backend/internal/1_framework/instacook/http/v1/admin"
+	"backend/internal/1_framework/instacook/http/v1/casher"
 	"backend/internal/1_framework/instacook/http/v1/delivery"
 
 	"backend/internal/2_adapter/controller"
@@ -36,6 +37,12 @@ func NewRoute(
 	)
 
 	delivery.NewRoute(
+		EchoEcho,
+		Controller,
+		group,
+	)
+
+	casher.NewRoute(
 		EchoEcho,
 		Controller,
 		group,

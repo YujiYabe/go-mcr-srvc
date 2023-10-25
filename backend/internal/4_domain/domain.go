@@ -38,22 +38,22 @@ func (receiver *domain) GetIsVaildLangCodeMap(
 	return receiver.isVaildLangCodeMap
 }
 
-// CookHamburgers ...
+// SaveInMemory ...
 func (receiver *domain) SaveInMemory(
 	ctx context.Context,
-	allProductList *AllProductList,
+	allProductList AllProductList,
 ) error {
 	productList := ProductList{}
 	isVaildJANCodeList := []int{}
 
-	for _, allProduct := range *allProductList {
+	for _, allProduct := range allProductList {
 		if allProduct.IsValid {
 			productList = append(productList, allProduct)
 			isVaildJANCodeList = append(isVaildJANCodeList, allProduct.JANCode)
 		}
 	}
 
-	receiver.AllProductList = *allProductList
+	receiver.AllProductList = allProductList
 	receiver.ProductList = productList
 	receiver.IsVaildJANCodeList = isVaildJANCodeList
 

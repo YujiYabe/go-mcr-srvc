@@ -28,16 +28,56 @@ type (
 	// ToController ...
 	ToController interface {
 		Start()
-
+		// product -----------------------
 		GetProduct(
 			ctx context.Context,
 			productNumber int,
-		) *domain.Product
+		) domain.Product
 
 		GetAllProductList(
 			ctx context.Context,
-		) *domain.AllProductList
+		) domain.AllProductList
 
+		GetProductList(
+			ctx context.Context,
+		) domain.ProductList
+
+		UpdateProduct(
+			ctx context.Context,
+			product domain.Product,
+		)
+
+		// order -----------------------
+		GetOrderList(
+			ctx context.Context,
+		) domain.OrderList
+
+		GetReservingList(
+			ctx context.Context,
+		) domain.ReservingList
+
+		GetSoldList(
+			ctx context.Context,
+		) domain.SoldList
+
+		GetPreparingList(
+			ctx context.Context,
+		) domain.SoldList
+
+		GetCompletedList(
+			ctx context.Context,
+		) domain.SoldList
+
+		GetPassedList(
+			ctx context.Context,
+		) domain.SoldList
+
+		UpdateSoldStatus(
+			ctx context.Context,
+			newSold domain.Sold,
+		)
+
+		// allergy -----------------------
 		GetAllergyDefault(
 			ctx context.Context,
 		) domain.Allergy
@@ -45,16 +85,6 @@ type (
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
-
-		UpdateProduct(
-			ctx context.Context,
-			product domain.Product,
-		)
-
-		GetSoldList(
-			ctx context.Context,
-		) domain.SoldList
-		
 	}
 )
 

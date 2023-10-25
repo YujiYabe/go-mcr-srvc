@@ -17,43 +17,70 @@ type (
 	// ToUseCase ...
 	ToUseCase interface {
 		Start(ctx context.Context)
-
+		// product -----------------------
 		GetProduct(
 			ctx context.Context,
 			productNumber int,
-		) *domain.Product
-
-		GetAllergyDefault(
-			ctx context.Context,
-		) domain.Allergy
+		) domain.Product
 
 		GetAllProductList(
 			ctx context.Context,
-		) *domain.AllProductList
+		) domain.AllProductList
 
-		GetIsVaildLangCodeMap(
+		GetProductList(
 			ctx context.Context,
-		) map[int]string
-
-		GetSoldList(
-			ctx context.Context,
-		) domain.SoldList
-
-		SetUpInMemory(
-			ctx context.Context,
-		)
+		) domain.ProductList
 
 		UpdateProduct(
 			ctx context.Context,
 			product domain.Product,
 		)
+
+		// order -----------------------
+		GetOrderList(
+			ctx context.Context,
+		) domain.OrderList
+
+		GetReservingList(
+			ctx context.Context,
+		) domain.ReservingList
+
+		GetSoldList(
+			ctx context.Context,
+		) domain.SoldList
+
+		GetPreparingList(
+			ctx context.Context,
+		) domain.SoldList
+
+		GetCompletedList(
+			ctx context.Context,
+		) domain.SoldList
+
+		GetPassedList(
+			ctx context.Context,
+		) domain.SoldList
+
+		UpdateSoldStatus(
+			ctx context.Context,
+			newSold domain.Sold,
+		)
+
+		// allergy -----------------------
+		GetAllergyDefault(
+			ctx context.Context,
+		) domain.Allergy
+
+		GetIsVaildLangCodeMap(
+			ctx context.Context,
+		) map[int]string
 	}
 
 	// ToGateway ...
 	ToGateway interface {
 		GetAllProductList(
 			ctx context.Context,
-		) *domain.AllProductList
+		) domain.AllProductList
 
 		UpdateProduct(
 			ctx context.Context,
