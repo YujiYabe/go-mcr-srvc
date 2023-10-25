@@ -7,6 +7,7 @@ import (
 	"backend/internal/1_framework/instacook/http/v1/admin"
 	"backend/internal/1_framework/instacook/http/v1/casher"
 	"backend/internal/1_framework/instacook/http/v1/delivery"
+	"backend/internal/1_framework/instacook/http/v1/order"
 
 	"backend/internal/2_adapter/controller"
 	// "backend/internal/1_framework/instacook/http/admin"
@@ -14,7 +15,6 @@ import (
 	// "backend/internal/1_framework/instacook/http/v1/client"
 	// "backend/internal/1_framework/instacook/http/v1/delivery"
 	// "backend/internal/1_framework/instacook/http/v1/kitchen"
-	// "backend/internal/1_framework/instacook/http/v1/order"
 )
 
 func NewRoute(
@@ -48,10 +48,14 @@ func NewRoute(
 		group,
 	)
 
+	order.NewRoute(
+		EchoEcho,
+		Controller,
+		group,
+	)
+
 	// client.AddRoute(g)
 	// kitchen.AddRoute(g)
 	// casher.AddRoute(g)
-
-	// order.AddRoute(g)
 
 }

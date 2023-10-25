@@ -186,14 +186,8 @@ async function getSoldList () {
   let soldList = [];
   let historyListElement = $("#history_list")
 
-  try {
-    let response = await fetch(`/v1/order/sold/preparing`);
-    soldList = await response.json();
-  } catch (error) {
-    console.error("Error :", error);
-    // TODO エラーダイアログ出して 再試行させる
-    // location.reload();
-  }
+  soldList = JSON.parse($("#preparing_list").text());
+
   if (soldList.length == 0) return;
 
   let divParent = $("<div>")

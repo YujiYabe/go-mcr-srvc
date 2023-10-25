@@ -29,7 +29,6 @@ func Get(
 	}
 	preparingList := Controller.GetPreparingList(ctx)
 
-	
 	preparingListJson, err := json.Marshal(
 		preparingList,
 	)
@@ -37,15 +36,12 @@ func Get(
 		fmt.Println(err)
 	}
 
-	fmt.Println("== == == == == == == == == == ")
-	fmt.Printf("%#v\n", preparingListJson)
-	fmt.Println("== == == == == == == == == == ")
-
 	data := struct {
 		ProductList   string
-		orderListJson string
+		PreparingList string
 	}{
-		ProductList: string(productListJson),
+		ProductList:   string(productListJson),
+		PreparingList: string(preparingListJson),
 	}
 
 	return c.Render(http.StatusOK, "casherMonitor", data)
