@@ -70,6 +70,11 @@ type (
 			newSold domain.Sold,
 		)
 
+		DeleteSold(
+			ctx context.Context,
+			number int,
+		)
+
 		GetPreparingList(
 			ctx context.Context,
 		) domain.SoldList

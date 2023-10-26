@@ -34,14 +34,6 @@ func (receiver *OrderList) GetSoldList(ctx context.Context) SoldList {
 	return receiver.SoldList
 }
 
-// SaveSold ...
-func (receiver *OrderList) SaveSold(
-	ctx context.Context,
-	newSold Sold,
-) {
-
-}
-
 func (receiver *OrderList) GetPreparingList(ctx context.Context) SoldList {
 	return receiver.filterSoldList(StatusPreparing)
 }

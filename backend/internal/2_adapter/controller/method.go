@@ -104,6 +104,17 @@ func (receiver *controller) SaveSold(
 	)
 }
 
+// DeleteSold ...
+func (receiver *controller) DeleteSold(
+	ctx context.Context,
+	number int,
+) {
+	receiver.ToUseCase.DeleteSold(
+		ctx,
+		number,
+	)
+}
+
 // GetPreparingList ...
 func (receiver *controller) GetPreparingList(
 	ctx context.Context,

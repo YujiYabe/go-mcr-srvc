@@ -144,11 +144,26 @@ func (receiver *useCase) SaveSold(
 		receiver.ToDomain.AddNewSold(newSold)
 		receiver.ToDomain.SortOrderList()
 	}
+}
 
-	receiver.ToDomain.SaveSold(
-		ctx,
-		newSold,
-	)
+// DeleteSold ...
+func (receiver *useCase) DeleteSold(
+	ctx context.Context,
+	number int,
+) {
+
+	// 削除する注文を見つける
+	index := receiver.ToDomain.FindSoldIndex(number)
+	if index == -1 {
+		// 見つからない場合も問題なし
+		return
+	}
+
+	// 注文を削除
+	receiver.ToDomain.DeleteSoldList(index)
+
+	// 注文リストをソート
+	receiver.ToDomain.SortOrderList()
 
 }
 

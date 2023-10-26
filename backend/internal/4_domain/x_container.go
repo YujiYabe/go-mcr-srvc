@@ -81,10 +81,9 @@ type (
 			ctx context.Context,
 		) SoldList
 
-		SaveSold(
-			ctx context.Context,
-			newSold Sold,
-		)
+		FindSoldIndex(soldNo int) int
+
+		DeleteSoldList(index int)
 
 		GetPreparingList(
 			ctx context.Context,
