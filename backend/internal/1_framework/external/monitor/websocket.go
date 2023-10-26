@@ -12,7 +12,5 @@ func (mntr *Monitor) DistributeOrder(
 	ctx context.Context,
 	orderList *domain.OrderList,
 ) {
-
 	wschannel.Cnnl <- orderList
-
 }

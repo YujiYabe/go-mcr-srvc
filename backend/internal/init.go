@@ -4,7 +4,7 @@ import (
 	"backend/internal/1_framework/db/sqlite"
 
 	"backend/internal/1_framework/external/monitor"
-	"backend/internal/1_framework/external/shipment"
+	// "backend/internal/1_framework/external/shipment"
 
 	"backend/internal/1_framework/instacook"
 
@@ -32,7 +32,6 @@ func NewApp() *app {
 
 	ctrl := controller.NewController(
 		sqlite.NewToSQLite(),
-		shipment.NewToShipment(),
 		monitor.NewToMonitor(),
 	)
 

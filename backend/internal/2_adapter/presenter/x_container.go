@@ -39,11 +39,9 @@ type (
 
 // NewPresenter ...
 func NewPresenter(
-	toShipment ToShipment,
 	toMonitor ToMonitor,
 ) *Presenter {
 	return &Presenter{
-		ToShipment: toShipment,
-		ToMonitor:  toMonitor,
+		ToMonitor: toMonitor,
 	}
 }

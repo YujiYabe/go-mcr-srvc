@@ -128,7 +128,6 @@ type (
 // NewController ...
 func NewController(
 	toSqlite gateway.ToSqlite,
-	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
 ) ToController {
 	toDomain := domain.NewDomain()
@@ -138,7 +137,6 @@ func NewController(
 	)
 
 	toPresenter := presenter.NewPresenter(
-		toShipment,
 		toMonitor,
 	)
 
