@@ -127,7 +127,6 @@ type (
 
 	// ToPresenter ...
 	ToPresenter interface {
-		UpdateOrders(ctx context.Context)
 		Shipment(ctx context.Context) error
 		DistributeOrder(
 			ctx context.Context,

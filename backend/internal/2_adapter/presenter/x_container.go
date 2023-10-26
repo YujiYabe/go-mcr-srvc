@@ -30,7 +30,6 @@ type (
 
 	// ToMonitor ...
 	ToMonitor interface {
-		UpdateOrders(ctx context.Context)
 		DistributeOrder(
 			ctx context.Context,
 			orderList *domain.OrderList,

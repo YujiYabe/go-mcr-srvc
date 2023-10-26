@@ -52,8 +52,8 @@ func NewApp() *app {
 
 // Start ...
 func (receiver *app) Start() {
-	go receiver.instaCook.Start()
-	receiver.monitor.Start()
+	receiver.instaCook.Start()
+	// receiver.monitor.Start()
 	// go a.monitor.Start()
 	// go a.mobile.Start()
 	// go a.pc.Start()

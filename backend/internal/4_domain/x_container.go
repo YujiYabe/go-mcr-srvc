@@ -12,8 +12,8 @@ type domain struct {
 
 // NewDomain ...
 func NewDomain() ToDomain {
-	// isDemo := true
-	isDemo := false
+	isDemo := true
+	// isDemo := false
 
 	return &domain{
 		OrderList:      NewOrderList(isDemo),
