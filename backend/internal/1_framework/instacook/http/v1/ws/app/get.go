@@ -116,7 +116,7 @@ func SendToAgents() {
 
 				// ReservingListの対応するアイテムを取得
 				// item = findReservingItem(agent.Number, &counter)
-				item = content.FindPreparingSoldItem(agent.Number, &counter)
+				item = content.FindReservingItem(agent.Number, &counter)
 				if item != nil {
 					byteContent, err := json.Marshal(item)
 					if err != nil {
