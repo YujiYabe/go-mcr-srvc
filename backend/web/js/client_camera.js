@@ -6,8 +6,7 @@ async function init () {
 }
 
 const webcamElement = $('#webcam')[0];
-const startCaptureButton = $('#start_capture')[0];
-const stopCaptureButton = $('#stop_capture')[0];
+const captureButton = $('#capture')[0];
 let isExist = false
 
 let captureInterval;
@@ -64,18 +63,9 @@ async function captureAndUpload () {
 }
 
 
-// $(startCaptureButton).on('click', () => {
-//   $(startCaptureButton).prop('disabled', true);
-//   $(stopCaptureButton).prop('disabled', false);
-//   captureInterval = setInterval(captureAndUpload, 5000); // n秒ごとにキャプチャーと送信
-// });
+$(captureButton).on('click', () => {
+  captureAndUpload()
+});
 
-
-
-// $(stopCaptureButton).on('click', () => {
-//   $(startCaptureButton).prop('disabled', false);
-//   $(stopCaptureButton).prop('disabled', true);
-//   clearInterval(captureInterval);
-// });
 
 window.addEventListener('load', init);
