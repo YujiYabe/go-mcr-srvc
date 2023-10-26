@@ -17,13 +17,13 @@ func Post(
 	Controller controller.ToController,
 ) error {
 	// リクエストから注文情報を取得
-	newSold := &domain.Sold{}
-	if err := c.Bind(newSold); err != nil {
+	newSold := domain.Sold{}
+	if err := c.Bind(&newSold); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	ctx := c.Request().Context()
-	Controller.SaveSold(ctx, *newSold)
+	Controller.SaveSold(ctx, newSold)
 
 	Controller.DistributeOrder(ctx)
 

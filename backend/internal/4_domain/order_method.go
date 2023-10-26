@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"fmt"
 	"sort"
 	"strconv"
 )
@@ -147,8 +148,16 @@ func (receiver *OrderList) DeleteSoldList(index int) {
 // マージが成功した場合はtrueを、それ以外の場合はfalseを返します。
 func (receiver *OrderList) MergeWithExistingOrder(newSold Sold) bool {
 	for index, sold := range receiver.SoldList {
+		fmt.Println("== == sold.JANCodeList== == == == == == == == ")
+		fmt.Printf("%#v\n", sold.JANCodeList)
+		fmt.Println("== == newSold.JANCodeLis== == == == == == == == ")
+		fmt.Printf("%#v\n", newSold.JANCodeList)
+
 		if sold.SoldNo == newSold.SoldNo {
 			receiver.SoldList[index].JANCodeList = append(receiver.SoldList[index].JANCodeList, newSold.JANCodeList...)
+			fmt.Println("== ==  receiver.SoldList[index].JANCodeList== == == == == == == == ")
+			fmt.Printf("%#v\n", receiver.SoldList[index].JANCodeList)
+
 			return true
 		}
 	}

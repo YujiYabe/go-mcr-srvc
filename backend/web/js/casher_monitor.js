@@ -1,7 +1,6 @@
 // グローバル変数
 let products;
 let soldNo = "1"; //初期値 local storage にない場合
-let janCodes = [];
 
 
 async function init () {
@@ -51,7 +50,13 @@ function changeSoldNo (element) {
 async function buildOnWs (eventData) {
 
   data = JSON.parse(JSON.parse(eventData));
+// console.log(" ==data['jan_code_list']======================= ");
+// console.log( data['jan_code_list'] );
+// console.log(" ========================= ");
+
+
   targetProductList = await convertJANtoProduct(data['jan_code_list']);
+
 
   await buildCasherMonitor(targetProductList);
 }
@@ -68,9 +73,13 @@ async function buildCasherMonitor (targetProductList) {
     .addClass("h-100 overflow-y-scroll")
     ;
 
+  janCodes = [];
 
   $.each(targetProductList, function (_, targetProduct) {
     if (targetProduct == null || targetProduct == undefined) return;
+// console.log(" ==targetProduct======================= ");
+// console.log( targetProduct );
+// console.log(" ========================= ");
 
     const janCode = targetProduct.jan_code;
 
@@ -83,7 +92,11 @@ async function buildCasherMonitor (targetProductList) {
     totalPrice += (price * targetProduct.count);
     totalCount += targetProduct.count;
 
-    janCodes.push(janCode);
+
+    for (let i = 0; i < targetProduct.count; i++) {
+      janCodes.push(janCode);
+    }
+
 
     let divCard = $("<div>")
       .appendTo(divParent)
@@ -194,8 +207,9 @@ async function getSoldList () {
     .addClass("h-100 overflow-y-scroll")
     ;
 
-  soldList.forEach((truck) => {
-    if (truck.status != "1") return;
+
+  for (let sold of soldList) {
+    if (sold.status != "1") return;
 
     const divRow = $("<div>")
       .appendTo(divParent)
@@ -210,7 +224,7 @@ async function getSoldList () {
     $("<div>")
       .appendTo(divCard)
       .addClass("h2 col-md-4 card-body align-items-center")
-      .text("注文番号：" + zeroFill(truck.sold_no))
+      .text("注文番号：" + zeroFill(sold.sold_no))
       ;
 
     const divCardRight = $("<div>")
@@ -218,32 +232,30 @@ async function getSoldList () {
       .addClass("col-md-8 card-body")
       ;
 
-    convertJANtoProduct(truck.jan_code_list).then((targetProductList) => {
-      let ul = $("<ul>")
-        .appendTo(divCardRight)
-        .addClass("list-group list-group-flush")
+    let targetProductList = await convertJANtoProduct(sold.jan_code_list);
+    let ul = $("<ul>")
+      .appendTo(divCardRight)
+      .addClass("list-group list-group-flush")
+      ;
+
+    for (let targetProduct of targetProductList) {
+      if (targetProduct == null || targetProduct == undefined) continue;
+
+      $("<li>")
+        .appendTo(ul)
+        .addClass("list-group-item text-start")
+        .text(targetProduct.count + " Ｘ " + targetProduct.name_ja + " ")
         ;
+    }
 
-      targetProductList.forEach((targetProduct) => {
-        if (targetProduct == undefined){
-          return 
-        }
-
-        $("<li>")
-          .appendTo(ul)
-          .addClass("list-group-item text-start")
-          .text(targetProduct.count + " Ｘ " + targetProduct.name_ja + " ")
-          ;
-      });
-    });
 
     divCard.click(function () {
       showDeleteConfirmModal(
-        () => deleteSoldItem(truck.sold_no),
-        truck.sold_no
-      );
+        () => deleteSoldItem(sold.sold_no),
+        sold.sold_no
+       );
     });
-  });
+  }
 
   historyListElement.empty();
   divParent.appendTo(historyListElement);
@@ -289,7 +301,7 @@ async function postCasher () {
     soldNo = String(Number(soldNoString) + 1);
     await setSoldNoLocalStorage(soldNo);
 
-    location.reload();
+    // location.reload();
   } catch (error) {
     showErrorModal(error);
     console.error("Error :", error);

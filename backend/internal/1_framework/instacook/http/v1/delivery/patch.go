@@ -17,13 +17,13 @@ func Patch(
 	c echo.Context,
 	Controller controller.ToController,
 ) error {
-	newSold := &domain.Sold{}
-	if err := c.Bind(newSold); err != nil {
+	newSold := domain.Sold{}
+	if err := c.Bind(&newSold); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 	ctx := c.Request().Context()
 
-	Controller.UpdateSoldStatus(ctx, *newSold)
+	Controller.UpdateSoldStatus(ctx, newSold)
 
 	Controller.DistributeOrder(ctx)
 	return c.JSON(http.StatusOK, nil)

@@ -23,15 +23,15 @@ func Patch(
 	}
 
 	// // リクエストの内容を新製品オブジェクトにバインド
-	newProduct := &domain.Product{}
-	if err := c.Bind(newProduct); err != nil {
+	newProduct := domain.Product{}
+	if err := c.Bind(&newProduct); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	newProduct.JANCode = number
 
 	ctx := c.Request().Context()
-	Controller.UpdateProduct(ctx, *newProduct)
+	Controller.UpdateProduct(ctx, newProduct)
 
 	return c.JSON(http.StatusOK, nil)
 }

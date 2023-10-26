@@ -67,10 +67,11 @@ var SoldListDemo = []Sold{
 	{
 		SoldNo:       1,
 		LanguageCode: languageCodeAr,
-		Status:       StatusPassed,
+		Status:       StatusPreparing,
 		JANCodeList: []int{
 			pastaika,
-			pastakan,
+			pastaika,
+			pastaika,
 		},
 	},
 	{
@@ -99,11 +100,6 @@ var SoldListDemo = []Sold{
 		Status:       StatusPreparing,
 		JANCodeList: []int{
 			yakisoba,
-			pastakan,
-			yakisoba,
-			pastakan,
-			yakionig,
-			pastaika,
 		},
 	},
 	{
