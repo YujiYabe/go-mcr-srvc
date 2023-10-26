@@ -315,11 +315,9 @@ async function changePage (element) {
 
 async function deleteSoldItem (soldNo) {
   try {
-    await fetch(`/v1/casher`, {
+    await fetch(`/v1/casher/${soldNo}`, {
       method: "DELETE",
-      body: JSON.stringify({
-        sold_no: soldNo,
-      }),
+      body: JSON.stringify({}),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
