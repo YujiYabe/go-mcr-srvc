@@ -11,9 +11,7 @@ func NewRoute(
 	Controller controller.ToController,
 	parrent *echo.Group,
 ) {
-
 	group := parrent.Group("/camera")
 
 	group.POST("/:number", func(c echo.Context) error { return Post(c, Controller) }) // 予約商品の送信
-
 }

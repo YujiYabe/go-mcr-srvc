@@ -1,6 +1,6 @@
 async function init () {
   startWebcam();
-  if (false){ 
+  if (true) {
     captureInterval = setInterval(captureAndUpload, 5000); // n秒ごとにキャプチャーと送信
   }
 }
@@ -53,7 +53,7 @@ async function captureAndUpload () {
   formData.append('image', imageBlob, 'image.jpg');
 
   try {
-    await fetch(`/v1/client_camera/${queueNo}`, {
+    await fetch(`/v1/client/camera/${queueNo}`, {
       method: "POST",
       body: formData,
     });
