@@ -29,11 +29,3 @@ func NewLanguage() Language {
 
 	return language
 }
-
-func (receiver *Language) GetIsVaildLangCodeList() []int {
-	return receiver.isVaildLangCodeList
-}
-
-func (receiver *Language) GetIsVaildlangCodeMap() map[int]string {
-	return receiver.isVaildLangCodeMap
-}

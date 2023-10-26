@@ -126,6 +126,8 @@ func SendToAgents() {
 					sendToAgent(agent.ID, string(byteContent))
 				}
 
+				// TODO ★空の場合nilを送る
+
 			// ___________________________________
 			case agent.Kind == "acceptance":
 				byteContent, err := json.Marshal(content.SoldList)
@@ -152,4 +154,5 @@ func sendToAgent(agentID string, stringContent string) {
 	if err != nil {
 		fmt.Print(err)
 	}
+
 }

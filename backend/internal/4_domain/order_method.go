@@ -10,12 +10,36 @@ func (receiver *OrderList) GetReservingList(ctx context.Context) ReservingList {
 	return receiver.ReservingList
 }
 
+// GetReserving ...
+func (receiver *OrderList) GetReserving(
+	ctx context.Context,
+	number int,
+) Reserving {
+	targetReserving := Reserving{}
+	for _, reserving := range receiver.ReservingList {
+		if number == reserving.QueueNo {
+			targetReserving = reserving
+			break
+		}
+	}
+
+	return targetReserving
+}
+
 func (receiver *OrderList) GetOrderList(ctx context.Context) OrderList {
 	return *receiver
 }
 
 func (receiver *OrderList) GetSoldList(ctx context.Context) SoldList {
 	return receiver.SoldList
+}
+
+// SaveSold ...
+func (receiver *OrderList) SaveSold(
+	ctx context.Context,
+	newSold Sold,
+) {
+
 }
 
 func (receiver *OrderList) GetPreparingList(ctx context.Context) SoldList {
@@ -129,7 +153,7 @@ func (receiver *OrderList) DeleteSoldList(index int) {
 
 // MergeWithExistingOrder は新しい売却情報を既存の注文とマージします。
 // マージが成功した場合はtrueを、それ以外の場合はfalseを返します。
-func (receiver *OrderList) MergeWithExistingOrder(newSold *Sold) bool {
+func (receiver *OrderList) MergeWithExistingOrder(newSold Sold) bool {
 	for index, sold := range receiver.SoldList {
 		if sold.SoldNo == newSold.SoldNo {
 			receiver.SoldList[index].JANCodeList = append(receiver.SoldList[index].JANCodeList, newSold.JANCodeList...)
@@ -159,7 +183,7 @@ func (receiver *OrderList) AddNewReserving(newReserving *Reserving) {
 }
 
 // 注文リストの更新
-func (receiver *OrderList) SortOrderList(ctx context.Context) {
+func (receiver *OrderList) SortOrderList() {
 	// 注文リストをソート
 	sort.Slice(receiver.SoldList, func(i, j int) bool {
 		return receiver.SoldList[i].SoldNo < receiver.SoldList[j].SoldNo
@@ -167,6 +191,6 @@ func (receiver *OrderList) SortOrderList(ctx context.Context) {
 
 }
 
-func (receiver *OrderList) AddNewSold(newSold *Sold) {
-	receiver.SoldList = append(receiver.SoldList, *newSold)
+func (receiver *OrderList) AddNewSold(newSold Sold) {
+	receiver.SoldList = append(receiver.SoldList, newSold)
 }

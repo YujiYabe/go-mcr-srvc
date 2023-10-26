@@ -38,5 +38,7 @@ func Get(
 		ProductList: string(productListJson),
 	}
 
+	Controller.DistributeOrder(ctx)
+
 	return c.Render(http.StatusOK, "kitchenMonitor", data)
 }

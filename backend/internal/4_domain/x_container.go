@@ -51,6 +51,18 @@ type (
 			allProductList AllProductList,
 		) error
 
+		VerifyJANCodes(
+			janCodeList []int,
+			isVaildJANCodeList []int,
+			isVaildLangCodeList []int,
+			defaultLangCode int,
+		) (
+			[]int,
+			int,
+		)
+
+		GetIsVaildJANCodeList() []int
+
 		// order -----------------------
 		GetOrderList(
 			ctx context.Context,
@@ -60,9 +72,19 @@ type (
 			ctx context.Context,
 		) ReservingList
 
+		GetReserving(
+			ctx context.Context,
+			number int,
+		) Reserving
+
 		GetSoldList(
 			ctx context.Context,
 		) SoldList
+
+		SaveSold(
+			ctx context.Context,
+			newSold Sold,
+		)
 
 		GetPreparingList(
 			ctx context.Context,
@@ -81,6 +103,14 @@ type (
 			newSold Sold,
 		)
 
+		MergeWithExistingOrder(
+			newSold Sold,
+		) bool
+
+		AddNewSold(newSold Sold)
+
+		SortOrderList()
+
 		// allergy -----------------------
 		GetAllergyDefault(
 			ctx context.Context,
@@ -91,8 +121,10 @@ type (
 		) AllergyList
 
 		// language -----------------------
-		GetIsVaildLangCodeMap(
-			ctx context.Context,
-		) map[int]string
+		GetIsVaildLangCodeMap() map[int]string
+
+		GetIsVaildLangCodeList() []int
+
+		GetDefaultLangCode() int
 	}
 )

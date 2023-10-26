@@ -101,6 +101,17 @@ func (receiver *useCase) GetReservingList(
 	)
 }
 
+// GetReserving ...
+func (receiver *useCase) GetReserving(
+	ctx context.Context,
+	number int,
+) domain.Reserving {
+	return receiver.ToDomain.GetReserving(
+		ctx,
+		number,
+	)
+}
+
 // GetSoldList ...
 func (receiver *useCase) GetSoldList(
 	ctx context.Context,
@@ -108,6 +119,37 @@ func (receiver *useCase) GetSoldList(
 	return receiver.ToDomain.GetSoldList(
 		ctx,
 	)
+}
+
+// SaveSold ...
+func (receiver *useCase) SaveSold(
+	ctx context.Context,
+	newSold domain.Sold,
+) {
+	// 無効なJANcodeを排除
+
+	janCodeList, languageCode := receiver.ToDomain.VerifyJANCodes(
+		newSold.JANCodeList,
+		receiver.ToDomain.GetIsVaildJANCodeList(),
+		receiver.ToDomain.GetIsVaildLangCodeList(),
+		receiver.ToDomain.GetDefaultLangCode(),
+	)
+
+	newSold.JANCodeList = janCodeList
+	newSold.LanguageCode = languageCode
+
+	// 同じ注文番号が存在するかを確認して、存在する場合はマージ
+	if !receiver.ToDomain.MergeWithExistingOrder(newSold) {
+		// 存在しない場合は新規に注文リストに追加
+		receiver.ToDomain.AddNewSold(newSold)
+		receiver.ToDomain.SortOrderList()
+	}
+
+	receiver.ToDomain.SaveSold(
+		ctx,
+		newSold,
+	)
+
 }
 
 // GetPreparingList ...
@@ -172,9 +214,7 @@ func (receiver *useCase) GetAllergyList(
 func (receiver *useCase) GetIsVaildLangCodeMap(
 	ctx context.Context,
 ) map[int]string {
-	return receiver.ToDomain.GetIsVaildLangCodeMap(
-		ctx,
-	)
+	return receiver.ToDomain.GetIsVaildLangCodeMap()
 }
 
 // websocket -----------------------

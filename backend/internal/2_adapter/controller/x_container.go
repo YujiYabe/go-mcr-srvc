@@ -56,9 +56,19 @@ type (
 			ctx context.Context,
 		) domain.ReservingList
 
+		GetReserving(
+			ctx context.Context,
+			number int,
+		) domain.Reserving
+
 		GetSoldList(
 			ctx context.Context,
 		) domain.SoldList
+
+		SaveSold(
+			ctx context.Context,
+			newSold domain.Sold,
+		)
 
 		GetPreparingList(
 			ctx context.Context,

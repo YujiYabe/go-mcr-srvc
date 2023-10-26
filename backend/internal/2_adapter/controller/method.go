@@ -73,12 +73,34 @@ func (receiver *controller) GetReservingList(
 	)
 }
 
+// GetReserving ...
+func (receiver *controller) GetReserving(
+	ctx context.Context,
+	number int,
+) domain.Reserving {
+	return receiver.ToUseCase.GetReserving(
+		ctx,
+		number,
+	)
+}
+
 // GetSoldList ...
 func (receiver *controller) GetSoldList(
 	ctx context.Context,
 ) domain.SoldList {
 	return receiver.ToUseCase.GetSoldList(
 		ctx,
+	)
+}
+
+// SaveSold ...
+func (receiver *controller) SaveSold(
+	ctx context.Context,
+	newSold domain.Sold,
+) {
+	receiver.ToUseCase.SaveSold(
+		ctx,
+		newSold,
 	)
 }
 

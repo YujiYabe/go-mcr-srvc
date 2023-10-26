@@ -25,10 +25,16 @@ func (receiver *domain) GetAllergyList(
 }
 
 // GetIsVaildLangCodeMap ...
-func (receiver *domain) GetIsVaildLangCodeMap(
-	ctx context.Context,
-) map[int]string {
+func (receiver *domain) GetIsVaildLangCodeMap() map[int]string {
 	return receiver.isVaildLangCodeMap
+}
+
+func (receiver *domain) GetIsVaildLangCodeList() []int {
+	return receiver.isVaildLangCodeList
+}
+
+func (receiver *domain) GetDefaultLangCode() int {
+	return receiver.defaultLangCode
 }
 
 // SaveInMemory ...
