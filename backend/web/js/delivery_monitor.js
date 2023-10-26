@@ -57,12 +57,13 @@ async function buildDeliveryMonitor () {
             .addClass(" col-12 row  center-block border-0 " + rowColor)
             ;
 
+          // TODO 見えないonclickボタンの削除
           // 準備中
-          let DivPrepare = createButton(rowColor, preparingBorder, textStatusPreparing, textSoldNoPreparing, value, soldNo);
+          let DivPrepare = await createButton(rowColor, preparingBorder, textStatusPreparing, textSoldNoPreparing, value, soldNo);
           DivPrepare.appendTo(rowDiv);
 
           // 準備完了
-          let newDivCompl = createButton(rowColor, completedBorder, textStatusCompleted, textSoldNoCompleted, value, soldNo);
+          let newDivCompl = await createButton(rowColor, completedBorder, textStatusCompleted, textSoldNoCompleted, value, soldNo);
           newDivCompl.appendTo(rowDiv);
 
           rowDiv.append(await makeImage(value["jan_code_list"].sort(), rowColor));
@@ -78,7 +79,7 @@ async function buildDeliveryMonitor () {
           ;
 
         // 準備中
-        let DivPrepare = createButton(rowColor, preparingBorder, passedText, textSoldNoPassed, value, soldNo);
+        let DivPrepare = await createButton(rowColor, preparingBorder, passedText, textSoldNoPassed, value, soldNo);
         DivPrepare.appendTo(rowDiv);
 
 
@@ -225,7 +226,7 @@ function changePage (element) {
 }
 
 
-function createButton (rowColor, border, textSoldNo, textStatus, value, soldNo) {
+async function createButton (rowColor, border, textSoldNo, textStatus, value, soldNo) {
   let newDiv = $("<div>")
     .addClass(
       "col-2 d-flex align-items-center border-success alert" +
@@ -234,7 +235,7 @@ function createButton (rowColor, border, textSoldNo, textStatus, value, soldNo) 
     )
     ;
 
-  if (value["status"] == preparingStatus) {
+  if (value["status"] == preparingStatus) {    
     newDiv.click(function () {
       showConfirmModal(
         async () => {
