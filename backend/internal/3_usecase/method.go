@@ -128,7 +128,6 @@ func (receiver *useCase) SaveSold(
 	newSold domain.Sold,
 ) {
 	// 無効なJANcodeを排除
-
 	janCodeList, languageCode := receiver.ToDomain.VerifyJANCodes(
 		newSold.JANCodeList,
 		receiver.ToDomain.GetIsVaildJANCodeList(),
@@ -166,6 +165,31 @@ func (receiver *useCase) DeleteSold(
 	// 注文リストをソート
 	receiver.ToDomain.SortOrderList()
 
+}
+
+// SaveReserving ...
+func (receiver *useCase) SaveReserving(
+	ctx context.Context,
+	newReserving domain.Reserving,
+) {
+
+	// 無効なJANcodeを排除
+	janCodeList, languageCode := receiver.ToDomain.VerifyJANCodes(
+		newReserving.JANCodeList,
+		receiver.ToDomain.GetIsVaildJANCodeList(),
+		receiver.ToDomain.GetIsVaildLangCodeList(),
+		receiver.ToDomain.GetDefaultLangCode(),
+	)
+	newReserving.JANCodeList = janCodeList
+	newReserving.LanguageCode = languageCode
+
+	// 古い queueNo の内容を入れ替え
+	// 古い queueNo がなければ新規追加
+	if !receiver.ToDomain.UpdateExistingReserving(newReserving) {
+		receiver.ToDomain.AddNewReserving(newReserving)
+	}
+
+	// ws.OrderListChan <- true
 }
 
 // GetPreparingList ...
@@ -231,7 +255,7 @@ func (receiver *useCase) DetectSaveJANCodes(
 
 	// // 古い queueNo の内容を入れ替え
 	// // 古い queueNo がなければ新規追加
-	if !receiver.ToDomain.UpdateExistingReserving(number, reserving) {
+	if !receiver.ToDomain.UpdateExistingReserving(reserving) {
 		receiver.ToDomain.AddNewReserving(reserving)
 	}
 

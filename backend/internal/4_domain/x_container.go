@@ -111,7 +111,6 @@ type (
 		SortOrderList()
 
 		UpdateExistingReserving(
-			number int,
 			newReserving Reserving,
 		) bool
 

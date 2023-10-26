@@ -60,6 +60,11 @@ type (
 			newSold domain.Sold,
 		)
 
+		SaveReserving(
+			ctx context.Context,
+			newSold domain.Reserving,
+		)
+
 		DeleteSold(
 			ctx context.Context,
 			number int,

@@ -156,9 +156,9 @@ func (receiver *OrderList) MergeWithExistingOrder(newSold Sold) bool {
 	return false
 }
 
-func (receiver *OrderList) UpdateExistingReserving(number int, newReserving Reserving) bool {
+func (receiver *OrderList) UpdateExistingReserving(newReserving Reserving) bool {
 	for index, reserving := range receiver.ReservingList {
-		if number == reserving.QueueNo {
+		if reserving.QueueNo == newReserving.QueueNo {
 			receiver.ReservingList[index].JANCodeList = newReserving.JANCodeList
 			receiver.ReservingList[index].LanguageCode = newReserving.LanguageCode
 			return true

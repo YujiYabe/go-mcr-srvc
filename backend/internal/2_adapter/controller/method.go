@@ -105,6 +105,17 @@ func (receiver *controller) SaveSold(
 	)
 }
 
+// SaveReserving ...
+func (receiver *controller) SaveReserving(
+	ctx context.Context,
+	newReserving domain.Reserving,
+) {
+	receiver.ToUseCase.SaveReserving(
+		ctx,
+		newReserving,
+	)
+}
+
 // DeleteSold ...
 func (receiver *controller) DeleteSold(
 	ctx context.Context,
