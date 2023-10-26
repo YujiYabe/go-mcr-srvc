@@ -50,9 +50,6 @@ function changeSoldNo (element) {
 async function buildOnWs (eventData) {
 
   data = JSON.parse(JSON.parse(eventData));
-// console.log(" ==data['jan_code_list']======================= ");
-// console.log( data['jan_code_list'] );
-// console.log(" ========================= ");
 
 
   targetProductList = await convertJANtoProduct(data['jan_code_list']);
@@ -77,9 +74,7 @@ async function buildCasherMonitor (targetProductList) {
 
   $.each(targetProductList, function (_, targetProduct) {
     if (targetProduct == null || targetProduct == undefined) return;
-// console.log(" ==targetProduct======================= ");
-// console.log( targetProduct );
-// console.log(" ========================= ");
+
 
     const janCode = targetProduct.jan_code;
 
@@ -253,7 +248,7 @@ async function getSoldList () {
       showDeleteConfirmModal(
         () => deleteSoldItem(sold.sold_no),
         sold.sold_no
-       );
+      );
     });
   }
 
@@ -301,7 +296,7 @@ async function postCasher () {
     soldNo = String(Number(soldNoString) + 1);
     await setSoldNoLocalStorage(soldNo);
 
-    // location.reload();
+    location.reload();
   } catch (error) {
     showErrorModal(error);
     console.error("Error :", error);
