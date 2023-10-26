@@ -1,3 +1,5 @@
 package wschannel
 
-var Wschannel = make(chan bool)
+import domain "backend/internal/4_domain"
+
+var Cnnl = make(chan *domain.OrderList)

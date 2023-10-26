@@ -12,6 +12,7 @@ func NewRoute(
 	Controller controller.ToController,
 	parrent *echo.Group,
 ) {
+	go app.SendToAgents()
 
 	group := parrent.Group("/ws")
 

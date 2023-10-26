@@ -1,6 +1,8 @@
 package app
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -30,6 +32,7 @@ func Get(
 	c echo.Context,
 	Controller controller.ToController,
 ) error {
+	ctx := c.Request().Context()
 
 	var upgrader = websocket.Upgrader{}
 	var err error
@@ -65,8 +68,7 @@ func Get(
 	Agents[agent.ID] = agent
 	Mutex.Unlock()
 
-	wschannel.Wschannel <- true
-
+	Controller.DistributeOrder(ctx)
 	return nil
 }
 
@@ -75,4 +77,79 @@ func Disconnect(agentID string) {
 	Mutex.Lock()
 	delete(Agents, agentID)
 	Mutex.Unlock()
+}
+
+// SendToAgents .... goroutine で無限ループ
+func SendToAgents() {
+	for {
+		content := <-wschannel.Cnnl
+
+		for _, agent := range Agents {
+			switch {
+			// ___________________________________
+			case agent.Kind == "client":
+				for _, reserving := range content.ReservingList {
+					if agent.Number == reserving.QueueNo {
+						byteContent, err := json.Marshal(reserving)
+						if err != nil {
+							fmt.Println(err)
+						}
+						sendToAgent(agent.ID, string(byteContent))
+					}
+				}
+
+			// ___________________________________
+			case agent.Kind == "kitchen":
+				counter := 0
+
+				// ステータスがPreparingのSoldListを取得
+
+				item := content.FindPreparingSoldItem(agent.Number, &counter)
+				if item != nil {
+					byteContent, err := json.Marshal(item)
+					if err != nil {
+						fmt.Println(err)
+					}
+
+					sendToAgent(agent.ID, string(byteContent))
+				}
+
+				// ReservingListの対応するアイテムを取得
+				// item = findReservingItem(agent.Number, &counter)
+				item = content.FindPreparingSoldItem(agent.Number, &counter)
+				if item != nil {
+					byteContent, err := json.Marshal(item)
+					if err != nil {
+						fmt.Println(err)
+					}
+
+					sendToAgent(agent.ID, string(byteContent))
+				}
+
+			// ___________________________________
+			case agent.Kind == "acceptance":
+				byteContent, err := json.Marshal(content.SoldList)
+				if err != nil {
+					fmt.Println(err)
+				}
+				sendToAgent(agent.ID, string(byteContent))
+
+			// ___________________________________
+			case agent.Kind == "delivery": // 自動更新すると意図しないボタン押し間違えの可能性がありwebsocket対象外とする
+			case agent.Kind == "casher": // 自動更新すると意図しないボタン押し間違えの可能性がありwebsocket対象外とする
+			default:
+				fmt.Println("is unknown")
+			}
+
+		}
+	}
+}
+
+// sendToAgent ....
+func sendToAgent(agentID string, stringContent string) {
+	err := Agents[agentID].Socket.WriteJSON(stringContent)
+
+	if err != nil {
+		fmt.Print(err)
+	}
 }

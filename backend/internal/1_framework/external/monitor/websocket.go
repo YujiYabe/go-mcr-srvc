@@ -1,11 +1,15 @@
 package monitor
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	"github.com/pborman/uuid"
+
+	wschannel "backend/internal/1_framework/instacook/http/v1/ws/channel"
+	domain "backend/internal/4_domain"
 )
 
 // Index ...
@@ -60,4 +64,14 @@ func (mntr *Monitor) sendToAgent(agentID string, orders Orders) {
 	if err != nil {
 		myErr.Logging(err)
 	}
+}
+
+// DistributeOrder ...
+func (mntr *Monitor) DistributeOrder(
+	ctx context.Context,
+	orderList *domain.OrderList,
+) {
+
+	wschannel.Cnnl <- orderList
+
 }

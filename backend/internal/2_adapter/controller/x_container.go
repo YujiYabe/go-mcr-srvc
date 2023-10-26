@@ -90,6 +90,11 @@ type (
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
+
+		// websocket -----------------------
+		DistributeOrder(
+			ctx context.Context,
+		)
 	}
 )
 

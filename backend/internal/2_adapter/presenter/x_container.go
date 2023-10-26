@@ -3,6 +3,7 @@ package presenter
 import (
 	"context"
 
+	domain "backend/internal/4_domain"
 	"backend/pkg"
 )
 
@@ -30,6 +31,10 @@ type (
 	// ToMonitor ...
 	ToMonitor interface {
 		UpdateOrders(ctx context.Context)
+		DistributeOrder(
+			ctx context.Context,
+			orderList *domain.OrderList,
+		)
 	}
 )
 

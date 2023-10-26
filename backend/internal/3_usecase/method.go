@@ -167,6 +167,7 @@ func (receiver *useCase) GetAllergyList(
 	)
 }
 
+// language -----------------------
 // GetIsVaildLangCodeMap ...
 func (receiver *useCase) GetIsVaildLangCodeMap(
 	ctx context.Context,
@@ -174,4 +175,20 @@ func (receiver *useCase) GetIsVaildLangCodeMap(
 	return receiver.ToDomain.GetIsVaildLangCodeMap(
 		ctx,
 	)
+}
+
+// websocket -----------------------
+// DistributeOrder ...
+func (receiver *useCase) DistributeOrder(
+	ctx context.Context,
+) {
+	orderList := receiver.ToDomain.GetOrderList(
+		ctx,
+	)
+
+	receiver.ToPresenter.DistributeOrder(
+		ctx,
+		&orderList,
+	)
+
 }

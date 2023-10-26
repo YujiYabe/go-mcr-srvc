@@ -2,10 +2,22 @@ package presenter
 
 import (
 	"context"
+
+	domain "backend/internal/4_domain"
 )
 
-// Monitor ...
-func (prsntr *Presenter) UpdateOrders(ctx context.Context) {
+// UpdateOrders ...
+func (receiver *Presenter) UpdateOrders(ctx context.Context) {
 	// オーダー情報更新
-	prsntr.ToMonitor.UpdateOrders(ctx)
+	receiver.ToMonitor.UpdateOrders(ctx)
+}
+
+func (receiver *Presenter) DistributeOrder(
+	ctx context.Context,
+	orderList *domain.OrderList,
+) {
+	receiver.ToMonitor.DistributeOrder(
+		ctx,
+		orderList,
+	)
 }

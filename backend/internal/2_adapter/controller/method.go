@@ -148,3 +148,13 @@ func (receiver *controller) GetIsVaildLangCodeMap(
 		ctx,
 	)
 }
+
+// websocket -----------------------
+// DistributeOrder ...
+func (receiver *controller) DistributeOrder(
+	ctx context.Context,
+) {
+	receiver.ToUseCase.DistributeOrder(
+		ctx,
+	)
+}

@@ -79,6 +79,11 @@ type (
 		GetIsVaildLangCodeMap(
 			ctx context.Context,
 		) map[int]string
+
+		// websocket -----------------------
+		DistributeOrder(
+			ctx context.Context,
+		)
 	}
 
 	// ToGateway ...
@@ -97,6 +102,10 @@ type (
 	ToPresenter interface {
 		UpdateOrders(ctx context.Context)
 		Shipment(ctx context.Context) error
+		DistributeOrder(
+			ctx context.Context,
+			orderList *domain.OrderList,
+		)
 	}
 )
 

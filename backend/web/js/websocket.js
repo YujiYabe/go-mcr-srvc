@@ -3,7 +3,7 @@ function setupWebSocket () {
   const kind = $('#kind').attr('name');
   const number = $('#number').attr('name');
 
-  const urlString = "wss://" + document.domain + ":" + location.port + "/ws?kind=" + kind + "&number=" + number;
+  const urlString = "wss://" + document.domain + ":" + location.port + "/v1/ws/app?kind=" + kind + "&number=" + number;
   let socket = new WebSocket(urlString);
 
   socket.onopen = function (event) {
