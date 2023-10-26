@@ -156,7 +156,7 @@ func (receiver *OrderList) MergeWithExistingOrder(newSold Sold) bool {
 	return false
 }
 
-func (receiver *OrderList) UpdateExistingReserving(number int, newReserving *Reserving) bool {
+func (receiver *OrderList) UpdateExistingReserving(number int, newReserving Reserving) bool {
 	for index, reserving := range receiver.ReservingList {
 		if number == reserving.QueueNo {
 			receiver.ReservingList[index].JANCodeList = newReserving.JANCodeList
@@ -167,11 +167,11 @@ func (receiver *OrderList) UpdateExistingReserving(number int, newReserving *Res
 	return false
 }
 
-func (receiver *OrderList) AddNewReserving(newReserving *Reserving) {
-	// receiver.ReservingList = append(receiver.ReservingList, *newReserving)
-	// sort.Slice(receiver.ReservingList, func(i, j int) bool {
-	// 	return receiver.ReservingList[i].QueueNo < receiver.ReservingList[j].QueueNo
-	// })
+func (receiver *OrderList) AddNewReserving(newReserving Reserving) {
+	receiver.ReservingList = append(receiver.ReservingList, newReserving)
+	sort.Slice(receiver.ReservingList, func(i, j int) bool {
+		return receiver.ReservingList[i].QueueNo < receiver.ReservingList[j].QueueNo
+	})
 }
 
 // 注文リストの更新

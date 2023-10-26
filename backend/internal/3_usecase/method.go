@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"mime/multipart"
 
 	domain "backend/internal/4_domain"
 	"backend/pkg"
@@ -203,6 +204,38 @@ func (receiver *useCase) UpdateSoldStatus(
 		ctx,
 		newSold,
 	)
+}
+
+func (receiver *useCase) DetectSaveJANCodes(
+	ctx context.Context,
+	number int,
+	file *multipart.FileHeader,
+) error {
+	reserving := domain.Reserving{}
+
+	originalJANCodes, err := reserving.CodeDetector(number, file)
+	if err != nil {
+		return err
+	}
+
+	janCodeList, languageCode := receiver.ToDomain.VerifyJANCodes(
+		originalJANCodes,
+		receiver.ToDomain.GetIsVaildJANCodeList(),
+		receiver.ToDomain.GetIsVaildLangCodeList(),
+		receiver.ToDomain.GetDefaultLangCode(),
+	)
+
+	reserving.QueueNo = number
+	reserving.JANCodeList = janCodeList
+	reserving.LanguageCode = languageCode
+
+	// // 古い queueNo の内容を入れ替え
+	// // 古い queueNo がなければ新規追加
+	if !receiver.ToDomain.UpdateExistingReserving(number, reserving) {
+		receiver.ToDomain.AddNewReserving(reserving)
+	}
+
+	return nil
 }
 
 // allergy -----------------------

@@ -110,6 +110,13 @@ type (
 
 		SortOrderList()
 
+		UpdateExistingReserving(
+			number int,
+			newReserving Reserving,
+		) bool
+
+		AddNewReserving(newReserving Reserving)
+
 		// allergy -----------------------
 		GetAllergyDefault(
 			ctx context.Context,

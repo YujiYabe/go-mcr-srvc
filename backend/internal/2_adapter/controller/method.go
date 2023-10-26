@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"mime/multipart"
 
 	domain "backend/internal/4_domain"
 )
@@ -150,6 +151,18 @@ func (receiver *controller) UpdateSoldStatus(
 	receiver.ToUseCase.UpdateSoldStatus(
 		ctx,
 		newSold,
+	)
+}
+
+func (receiver *controller) DetectSaveJANCodes(
+	ctx context.Context,
+	number int,
+	file *multipart.FileHeader,
+) error {
+	return receiver.ToUseCase.DetectSaveJANCodes(
+		ctx,
+		number,
+		file,
 	)
 }
 

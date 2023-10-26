@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"mime/multipart"
 
 	domain "backend/internal/4_domain"
 )
@@ -80,6 +81,12 @@ type (
 			ctx context.Context,
 			newSold domain.Sold,
 		)
+
+		DetectSaveJANCodes(
+			ctx context.Context,
+			number int,
+			file *multipart.FileHeader,
+		) error
 
 		// allergy -----------------------
 		GetAllergyDefault(

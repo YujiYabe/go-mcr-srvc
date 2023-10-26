@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"mime/multipart"
 
 	"backend/internal/2_adapter/gateway"
 	"backend/internal/2_adapter/presenter"
@@ -91,6 +92,12 @@ type (
 			ctx context.Context,
 			newSold domain.Sold,
 		)
+
+		DetectSaveJANCodes(
+			ctx context.Context,
+			number int,
+			file *multipart.FileHeader,
+		) error
 
 		// allergy -----------------------
 		GetAllergyDefault(
