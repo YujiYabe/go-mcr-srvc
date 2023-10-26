@@ -21,22 +21,8 @@
 ### / ===============================================
 GET https://{{hostname}}:{{port}}
 
-
-### /v1/admin/client/:number ===============================================
-GET https://{{hostname}}:{{port}}/v1/admin/client/{{pastaika}}
-
-
-### /v1/admin/client/:number ===============================================
-GET https://{{hostname}}:{{port}}/v1/admin/client/{{pastaika}}
-
-
-### product ===============================================
-GET http://{{hostname}}:{{port}}/v1/admin/client/product/{{pastaika}}{{queryParam}}
-
-
-
 ### admin_product ==============================
-PATCH https://{{hostname}}:{{port}}/admin/product/{{pastaika}}{{queryParam}}
+PATCH https://{{hostname}}:{{port}}/v1/admin/product/{{pastaika}}{{queryParam}}
 Content-Type: application/json
 
 {
@@ -46,7 +32,7 @@ Content-Type: application/json
 
 ### casher ===============================================
 ### --------------------------------------------
-DELETE https://{{hostname}}:{{port}}/casher{{queryParam}}
+DELETE https://{{hostname}}:{{port}}/v1/casher{{queryParam}}
 Content-Type: application/json
 
 {
@@ -58,39 +44,30 @@ Content-Type: application/json
 }
 
 ### --------------------------------------------
-POST https://{{hostname}}:{{port}}/casher{{queryParam}}
+POST https://{{hostname}}:{{port}}/v1/casher{{queryParam}}
 Content-Type: application/json
  
 {
-	"sold_no" : 7,
+	"sold_no" : 4,
 	"status" : 1,
 	"jan_code_list" : [
-		{{languageCodeJa}},
+		{{languageCodeAr}},
+		{{pastakan}},
 		{{yakionig}},
 		{{dummy___}}
 	]
 }
 
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/sold_list{{queryParam}}
-Content-Type: application/json
-
-{
-	"sold_no" : 1,
-	"status" : 2
-}
-
-
 
 
 ### delivery_queue ===============================================
 ### --------------------------------------------
-PATCH https://{{hostname}}:{{port}}/delivery_queue{{queryParam}}
+PATCH https://{{hostname}}:{{port}}/v1/delivery{{queryParam}}
 Content-Type: application/json
 
 {
-	"sold_no" : 1,
-	"status" : 1
+	"sold_no" : 4,
+	"status" : 2
 }
 
 
@@ -100,16 +77,16 @@ Content-Type: application/json
 # languageCodeZh
 # languageCodeAr
 
-### client_queue ===============================================
-POST https://{{hostname}}:{{port}}/client_queue/0{{queryParam}}
+### client/queue ===============================================
+POST https://{{hostname}}:{{port}}/v1/client/queue/1{{queryParam}}
 Content-Type: application/json
 
 {
 	"jan_code_list" : [
 		{{languageCodeJa}},
- 		{{pastakan}},
- 		{{pastakan}},
- 		{{pastakan}},
+		{{pastakan}},
+		{{pastakan}},
+		{{pastakan}},
 		{{yakionig}},
 		{{dummy___}}
 	]
@@ -117,7 +94,7 @@ Content-Type: application/json
 
 
 ### --------------------------------------------
-DELETE https://{{hostname}}:{{port}}/client_queue/0{{queryParam}}
+DELETE https://{{hostname}}:{{port}}/v1/client/queue/0{{queryParam}}
 Content-Type: application/json
 
 {
@@ -125,47 +102,19 @@ Content-Type: application/json
 
 
 ### --------------------------------------------
-GET https://{{hostname}}:{{port}}/client_queue/0{{queryParam}}
+GET https://{{hostname}}:{{port}}/v1/client/queue/0{{queryParam}}
 
 ### --------------------------------------------
-GET https://{{hostname}}:{{port}}/client_queue/1{{queryParam}}
+GET https://{{hostname}}:{{port}}/v1/client/queue/1{{queryParam}}
 
 ### --------------------------------------------
-GET https://{{hostname}}:{{port}}/client_queue/2{{queryParam}}
+GET https://{{hostname}}:{{port}}/v1/client/queue/2{{queryParam}}
 
 ### --------------------------------------------
-GET https://{{hostname}}:{{port}}/client_queue/3{{queryParam}}
+GET https://{{hostname}}:{{port}}/v1/client/queue/3{{queryParam}}
 
 ### --------------------------------------------
-GET https://{{hostname}}:{{port}}/client_queue/4{{queryParam}}
+GET https://{{hostname}}:{{port}}/v1/client/queue/4{{queryParam}}
 
 
 
-
-### kitchen_queue ===============================================
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/1{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/2{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/3{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/4{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/5{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/6{{queryParam}}
-
-### -------------------------------------------- 
-GET https://{{hostname}}:{{port}}/kitchen_queue/7{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/8{{queryParam}}
-
-### --------------------------------------------
-GET https://{{hostname}}:{{port}}/kitchen_queue/9{{queryParam}}

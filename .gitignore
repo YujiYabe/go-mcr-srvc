@@ -49,3 +49,4 @@ backend/bin/air
 
 *.sqlite3
 backend/.vscode/settings.json
+backend/.favorites.json

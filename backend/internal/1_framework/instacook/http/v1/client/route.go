@@ -3,7 +3,9 @@ package client
 import (
 	"github.com/labstack/echo"
 
-	monitor "backend/internal/1_framework/instacook/http/v1/client/monitor"
+	"backend/internal/1_framework/instacook/http/v1/client/camera"
+	"backend/internal/1_framework/instacook/http/v1/client/monitor"
+	"backend/internal/1_framework/instacook/http/v1/client/queue"
 
 	"backend/internal/2_adapter/controller"
 )
@@ -15,12 +17,20 @@ func NewRoute(
 ) {
 	group := parrent.Group("/client")
 
+	camera.NewRoute(
+		EchoEcho,
+		Controller,
+		group,
+	)
 	monitor.NewRoute(
 		EchoEcho,
 		Controller,
 		group,
 	)
+	queue.NewRoute(
+		EchoEcho,
+		Controller,
+		group,
+	)
 
-	// group.GET("", func(c echo.Context) error { return Get(c, Controller) })     // 管理画面 html
-	// group.PATCH("", func(c echo.Context) error { return Patch(c, Controller) }) // 管理画面 商品更新
 }
