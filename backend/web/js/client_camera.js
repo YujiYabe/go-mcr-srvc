@@ -1,6 +1,6 @@
 async function init () {
   startWebcam();
-  if (true) {
+  if (!isDebug()) { // debugモードでは手動キャプチャ
     captureInterval = setInterval(captureAndUpload, 5000); // n秒ごとにキャプチャーと送信
   }
 }
