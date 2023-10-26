@@ -7,7 +7,7 @@ async function init () {
 
 async function buildDeliveryMonitor () {
   try {
-    $.each(soldList, async function (_, value) {
+    $.each(soldList, async function (_, sold) {
 
       let rowColor = "";
       let textStatusPreparing = "";
@@ -18,11 +18,11 @@ async function buildDeliveryMonitor () {
 
       let preparingBorder = "border-1";
       let completedBorder = "border-1";
-      let soldNo = "" + ("000" + value["sold_no"]).slice(-3);
+      let soldNo = "" + ("000" + sold["sold_no"]).slice(-3);
 
 
 
-      switch (value["status"]) {
+      switch (sold["status"]) {
         case preparingStatus:
           rowColor = " alert-info ";
           textStatusPreparing = preparingText;
@@ -45,11 +45,11 @@ async function buildDeliveryMonitor () {
           break;
 
         default:
-          console.error("error status : ", value);
+          console.error("error status : ", sold);
           break;
       }
 
-      if (value["status"] != passedStatus) {
+      if (sold["status"] != passedStatus) {
         {
           let list = $("#sold_list");
           let rowDiv = $("<div>")
@@ -59,18 +59,18 @@ async function buildDeliveryMonitor () {
 
           // TODO 見えないonclickボタンの削除
           // 準備中
-          let DivPrepare = await createButton(rowColor, preparingBorder, textStatusPreparing, textSoldNoPreparing, value, soldNo);
+          let DivPrepare = await createButton(rowColor, preparingBorder, textStatusPreparing, textSoldNoPreparing, sold, soldNo);
           DivPrepare.appendTo(rowDiv);
 
           // 準備完了
-          let newDivCompl = await createButton(rowColor, completedBorder, textStatusCompleted, textSoldNoCompleted, value, soldNo);
-          newDivCompl.appendTo(rowDiv);
+          let DivComplete = await createButton(rowColor, completedBorder, textStatusCompleted, textSoldNoCompleted, sold, soldNo);
+          DivComplete.appendTo(rowDiv);
 
-          rowDiv.append(await makeImage(value["jan_code_list"].sort(), rowColor));
+          rowDiv.append(await makeImage(sold["jan_code_list"].sort(), rowColor));
 
         }
       }
-      if (value["status"] == passedStatus) {
+      if (sold["status"] == passedStatus) {
         // お渡し済み
         let list = $("#passed_list");
         let rowDiv = $("<div>")
@@ -79,11 +79,11 @@ async function buildDeliveryMonitor () {
           ;
 
         // 準備中
-        let DivPrepare = await createButton(rowColor, preparingBorder, passedText, textSoldNoPassed, value, soldNo);
+        let DivPrepare = await createButton(rowColor, preparingBorder, passedText, textSoldNoPassed, sold, soldNo);
         DivPrepare.appendTo(rowDiv);
 
 
-        rowDiv.append(await makeImage(value["jan_code_list"].sort(), rowColor));
+        rowDiv.append(await makeImage(sold["jan_code_list"].sort(), rowColor));
       }
     });
     $("#sold_button")
@@ -195,7 +195,7 @@ async function showConfirmModal (callback, soldNo, status) {
       break;
 
     default:
-      console.error("error status : ", value);
+      console.error("error status : ", sold);
       break;
   }
 
@@ -226,7 +226,7 @@ function changePage (element) {
 }
 
 
-async function createButton (rowColor, border, textSoldNo, textStatus, value, soldNo) {
+async function createButton (rowColor, border, textSoldNo, textStatus, sold, soldNo) {
   let newDiv = $("<div>")
     .addClass(
       "col-2 d-flex align-items-center border-success alert" +
@@ -235,11 +235,13 @@ async function createButton (rowColor, border, textSoldNo, textStatus, value, so
     )
     ;
 
-  if (value["status"] == preparingStatus) {    
+
+
+  if (sold["status"] == preparingStatus && textStatus != "") {
     newDiv.click(function () {
       showConfirmModal(
         async () => {
-          await patchSold(value["sold_no"], completedStatus);
+          await patchSold(sold["sold_no"], completedStatus);
         },
         soldNo,
         completedStatus
@@ -247,11 +249,11 @@ async function createButton (rowColor, border, textSoldNo, textStatus, value, so
     });
   }
 
-  if (value["status"] == completedStatus) {
+  if (sold["status"] == completedStatus && textStatus != "") {
     newDiv.click(function () {
       showConfirmModal(
         async () => {
-          await patchSold(value["sold_no"], passedStatus);
+          await patchSold(sold["sold_no"], passedStatus);
         },
         soldNo,
         passedStatus
@@ -259,11 +261,11 @@ async function createButton (rowColor, border, textSoldNo, textStatus, value, so
     });
   }
 
-  if (value["status"] == passedStatus) {
+  if (sold["status"] == passedStatus) {
     newDiv.click(function () {
       showConfirmModal(
         async () => {
-          await patchSold(value["sold_no"], preparingStatus);
+          await patchSold(sold["sold_no"], preparingStatus);
         },
         soldNo,
         preparingStatus
