@@ -10,8 +10,8 @@ services:
         container_name: backend
         volumes:
             - ./backend:/go/src/backend
+        ports:
+            - ${INSTA_COOK_PORT}:${INSTA_COOK_PORT}
         environment:
             - GOPATH=${GOPATH}
         tty: true
-
-
