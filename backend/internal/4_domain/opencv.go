@@ -98,7 +98,7 @@ func (receiver *Reserving) detectQRCode(img gocv.Mat) ([]int, error) {
 		q.Add()
 		go func(c int) {
 			defer q.Done()
-			tmpCodes := receiver.PickOutJANCodes(qcd, img)
+			tmpCodes := receiver.PickOutJANCodes(&qcd, &img)
 			if len(janCodes) <= len(tmpCodes) {
 				janCodes = tmpCodes
 			}
@@ -117,14 +117,14 @@ func (receiver *Reserving) ensureDirExists(dirName string) {
 	}
 }
 
-func (receiver *Reserving) PickOutJANCodes(qcd gocv.QRCodeDetector, img gocv.Mat) []int {
+func (receiver *Reserving) PickOutJANCodes(qcd *gocv.QRCodeDetector, img *gocv.Mat) []int {
 	janCodes := []int{}
 
 	codes := make([]string, 20)
 	points := gocv.NewMat()
 	qrcodes := make([]gocv.Mat, 20)
 
-	res := qcd.DetectAndDecodeMulti(img, &codes, &points, &qrcodes)
+	res := qcd.DetectAndDecodeMulti(*img, &codes, &points, &qrcodes)
 	if !res {
 		return janCodes
 	}
