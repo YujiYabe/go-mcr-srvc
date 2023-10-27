@@ -7,54 +7,6 @@ import (
 	domain "backend/internal/4_domain"
 )
 
-// Start ...
-func (receiver *controller) Start() {
-	ctx := context.Background()
-
-	receiver.ToUseCase.Start(ctx)
-}
-
-// product -----------------------
-// GetProduct ...
-func (receiver *controller) GetProduct(
-	ctx context.Context,
-	productNumber int,
-) domain.Product {
-	return receiver.ToUseCase.GetProduct(
-		ctx,
-		productNumber,
-	)
-}
-
-// GetAllProductList ...
-func (receiver *controller) GetAllProductList(
-	ctx context.Context,
-) domain.AllProductList {
-	return receiver.ToUseCase.GetAllProductList(
-		ctx,
-	)
-}
-
-// GetProductList ...
-func (receiver *controller) GetProductList(
-	ctx context.Context,
-) domain.ProductList {
-	return receiver.ToUseCase.GetProductList(
-		ctx,
-	)
-}
-
-// UpdateProduct ...
-func (receiver *controller) UpdateProduct(
-	ctx context.Context,
-	product domain.Product,
-) {
-	receiver.ToUseCase.UpdateProduct(
-		ctx,
-		product,
-	)
-}
-
 // order -----------------------
 // GetOrderList ...
 func (receiver *controller) GetOrderList(
@@ -174,44 +126,5 @@ func (receiver *controller) DetectSaveJANCodes(
 		ctx,
 		number,
 		file,
-	)
-}
-
-// allergy -----------------------
-// GetAllergyDefault ...
-func (receiver *controller) GetAllergyDefault(
-	ctx context.Context,
-) domain.Allergy {
-	return receiver.ToUseCase.GetAllergyDefault(
-		ctx,
-	)
-}
-
-// GetAllergyList ...
-func (receiver *controller) GetAllergyList(
-	ctx context.Context,
-) domain.AllergyList {
-	return receiver.ToUseCase.GetAllergyList(
-		ctx,
-	)
-}
-
-// language -----------------------
-// GetIsVaildLangCodeMap ...
-func (receiver *controller) GetIsVaildLangCodeMap(
-	ctx context.Context,
-) map[int]string {
-	return receiver.ToUseCase.GetIsVaildLangCodeMap(
-		ctx,
-	)
-}
-
-// websocket -----------------------
-// DistributeOrder ...
-func (receiver *controller) DistributeOrder(
-	ctx context.Context,
-) {
-	receiver.ToUseCase.DistributeOrder(
-		ctx,
 	)
 }

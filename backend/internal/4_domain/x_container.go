@@ -24,112 +24,110 @@ func NewDomain() ToDomain {
 	}
 }
 
-type (
-	// ToDomain ...
-	ToDomain interface {
-		// product -----------------------
-		GetProduct(
-			ctx context.Context,
-			productNumber int,
-		) Product
+// ToDomain ...
+type ToDomain interface {
+	// product -----------------------
+	GetProduct(
+		ctx context.Context,
+		productNumber int,
+	) Product
 
-		GetAllProductList(
-			ctx context.Context,
-		) AllProductList
+	GetAllProductList(
+		ctx context.Context,
+	) AllProductList
 
-		GetProductList(
-			ctx context.Context,
-		) ProductList
+	GetProductList(
+		ctx context.Context,
+	) ProductList
 
-		UpdateProduct(
-			ctx context.Context,
-			product Product,
-		)
+	UpdateProduct(
+		ctx context.Context,
+		product Product,
+	)
 
-		SaveInMemory(
-			ctx context.Context,
-			allProductList AllProductList,
-		) error
+	SaveInMemory(
+		ctx context.Context,
+		allProductList AllProductList,
+	) error
 
-		VerifyJANCodes(
-			janCodeList []int,
-			isVaildJANCodeList []int,
-			isVaildLangCodeList []int,
-			defaultLangCode int,
-		) (
-			[]int,
-			int,
-		)
+	VerifyJANCodes(
+		janCodeList []int,
+		isVaildJANCodeList []int,
+		isVaildLangCodeList []int,
+		defaultLangCode int,
+	) (
+		[]int,
+		int,
+	)
 
-		GetIsVaildJANCodeList() []int
+	GetIsVaildJANCodeList() []int
 
-		// order -----------------------
-		GetOrderList(
-			ctx context.Context,
-		) OrderList
+	// order -----------------------
+	GetOrderList(
+		ctx context.Context,
+	) OrderList
 
-		GetReservingList(
-			ctx context.Context,
-		) ReservingList
+	GetReservingList(
+		ctx context.Context,
+	) ReservingList
 
-		GetReserving(
-			ctx context.Context,
-			number int,
-		) Reserving
+	GetReserving(
+		ctx context.Context,
+		number int,
+	) Reserving
 
-		GetSoldList(
-			ctx context.Context,
-		) SoldList
+	GetSoldList(
+		ctx context.Context,
+	) SoldList
 
-		FindSoldIndex(soldNo int) int
+	FindSoldIndex(soldNo int) int
 
-		DeleteSoldList(index int)
+	DeleteSoldList(index int)
 
-		GetPreparingList(
-			ctx context.Context,
-		) SoldList
+	GetPreparingList(
+		ctx context.Context,
+	) SoldList
 
-		GetCompletedList(
-			ctx context.Context,
-		) SoldList
+	GetCompletedList(
+		ctx context.Context,
+	) SoldList
 
-		GetPassedList(
-			ctx context.Context,
-		) SoldList
+	GetPassedList(
+		ctx context.Context,
+	) SoldList
 
-		UpdateSoldStatus(
-			ctx context.Context,
-			newSold Sold,
-		)
+	UpdateSoldStatus(
+		ctx context.Context,
+		newSold Sold,
+	)
 
-		MergeWithExistingOrder(
-			newSold Sold,
-		) bool
+	MergeWithExistingOrder(
+		newSold Sold,
+	) bool
 
-		AddNewSold(newSold Sold)
+	AddNewSold(newSold Sold)
 
-		SortOrderList()
+	SortOrderList()
 
-		UpdateExistingReserving(
-			newReserving Reserving,
-		) bool
+	UpdateExistingReserving(
+		newReserving Reserving,
+	) bool
 
-		AddNewReserving(newReserving Reserving)
+	AddNewReserving(newReserving Reserving)
 
-		// allergy -----------------------
-		GetAllergyDefault(
-			ctx context.Context,
-		) Allergy
+	// allergy -----------------------
+	GetAllergyDefault(
+		ctx context.Context,
+	) Allergy
 
-		GetAllergyList(
-			ctx context.Context,
-		) AllergyList
+	GetAllergyList(
+		ctx context.Context,
+	) AllergyList
 
-		// language -----------------------
-		GetIsVaildLangCodeMap() map[int]string
+	// language -----------------------
+	GetIsVaildLangCodeMap() map[int]string
 
-		GetIsVaildLangCodeList() []int
+	GetIsVaildLangCodeList() []int
 
-		GetDefaultLangCode() int
-	}
-)
+	GetDefaultLangCode() int
+}

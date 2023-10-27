@@ -17,16 +17,10 @@ func init() {
 
 // Presenter ...
 type Presenter struct {
-	ToShipment ToShipment
-	ToMonitor  ToMonitor
+	ToMonitor ToMonitor
 }
 
 type (
-	// ToShipment ...
-	ToShipment interface {
-		PutProducts(ctx context.Context) error
-		WriteLog(ctx context.Context) error
-	}
 
 	// ToMonitor ...
 	ToMonitor interface {

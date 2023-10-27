@@ -5,85 +5,8 @@ import (
 	"mime/multipart"
 
 	domain "backend/internal/4_domain"
-	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("application_business_rule", "usecase")
-}
-
-// Start ...
-func (receiver *useCase) Start(ctx context.Context) {
-	receiver.SetUpInMemory(ctx)
-}
-
-// product -----------------------
-// GetProduct ...
-func (receiver *useCase) GetProduct(
-	ctx context.Context,
-	productNumber int,
-) domain.Product {
-	return receiver.ToDomain.GetProduct(
-		ctx,
-		productNumber,
-	)
-}
-
-// GetAllProductList ...
-func (receiver *useCase) GetAllProductList(
-	ctx context.Context,
-) domain.AllProductList {
-	return receiver.ToDomain.GetAllProductList(
-		ctx,
-	)
-}
-
-// GetProductList ...
-func (receiver *useCase) GetProductList(
-	ctx context.Context,
-) domain.ProductList {
-	return receiver.ToDomain.GetProductList(
-		ctx,
-	)
-}
-
-// UpdateProduct ...
-func (receiver *useCase) UpdateProduct(
-	ctx context.Context,
-	product domain.Product,
-) {
-
-	// DB更新
-	receiver.ToGateway.UpdateProduct(
-		ctx,
-		product,
-	)
-
-	// インメモリの情報を更新
-	receiver.SetUpInMemory(ctx)
-}
-
-// SetUpInMemory ...
-func (receiver *useCase) SetUpInMemory(
-	ctx context.Context,
-) {
-	// localDBから全商品を取得
-	allProductList := receiver.ToGateway.GetAllProductList(
-		ctx,
-	)
-
-	receiver.ToDomain.SaveInMemory(
-		ctx,
-		allProductList,
-	)
-
-}
-
-// order -----------------------
 // GetOrderList ...
 func (receiver *useCase) GetOrderList(
 	ctx context.Context,
@@ -188,8 +111,6 @@ func (receiver *useCase) SaveReserving(
 	if !receiver.ToDomain.UpdateExistingReserving(newReserving) {
 		receiver.ToDomain.AddNewReserving(newReserving)
 	}
-
-	// ws.OrderListChan <- true
 }
 
 // GetPreparingList ...
@@ -260,47 +181,4 @@ func (receiver *useCase) DetectSaveJANCodes(
 	}
 
 	return nil
-}
-
-// allergy -----------------------
-// GetAllergyDefault ...
-func (receiver *useCase) GetAllergyDefault(
-	ctx context.Context,
-) domain.Allergy {
-	return receiver.ToDomain.GetAllergyDefault(
-		ctx,
-	)
-}
-
-// GetAllergyList ...
-func (receiver *useCase) GetAllergyList(
-	ctx context.Context,
-) domain.AllergyList {
-	return receiver.ToDomain.GetAllergyList(
-		ctx,
-	)
-}
-
-// language -----------------------
-// GetIsVaildLangCodeMap ...
-func (receiver *useCase) GetIsVaildLangCodeMap(
-	ctx context.Context,
-) map[int]string {
-	return receiver.ToDomain.GetIsVaildLangCodeMap()
-}
-
-// websocket -----------------------
-// DistributeOrder ...
-func (receiver *useCase) DistributeOrder(
-	ctx context.Context,
-) {
-	orderList := receiver.ToDomain.GetOrderList(
-		ctx,
-	)
-
-	receiver.ToPresenter.DistributeOrder(
-		ctx,
-		&orderList,
-	)
-
 }
