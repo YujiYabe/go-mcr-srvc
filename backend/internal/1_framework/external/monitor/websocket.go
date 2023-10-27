@@ -8,7 +8,7 @@ import (
 )
 
 // DistributeOrder ...
-func (mntr *Monitor) DistributeOrder(
+func (receiver *Monitor) DistributeOrder(
 	ctx context.Context,
 	orderList *domain.OrderList,
 ) {
