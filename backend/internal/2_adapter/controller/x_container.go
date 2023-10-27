@@ -8,17 +8,7 @@ import (
 	"backend/internal/2_adapter/presenter"
 	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
-
-	"backend/pkg"
 )
-
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("interface_adapter", "controller")
-}
 
 // controller ...
 type controller struct {

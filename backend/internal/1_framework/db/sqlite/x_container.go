@@ -13,11 +13,6 @@ import (
 
 	"backend/internal/2_adapter/gateway"
 	domain "backend/internal/4_domain"
-	"backend/pkg"
-)
-
-var (
-	myErr *pkg.MyErr
 )
 
 type (
@@ -39,7 +34,6 @@ func NewToSQLite() gateway.ToSqlite {
 
 	conn, err := open(30, sqliteFilePath)
 	if err != nil {
-		myErr.Logging(err)
 		panic(err)
 	}
 
@@ -49,10 +43,13 @@ func NewToSQLite() gateway.ToSqlite {
 	return sqlite
 }
 func init() {
-	myErr = pkg.NewMyErr("framework_driver", "sqlite")
 	// DBのアップデート
 
-	updateStoreDB()
+	err := updateStoreDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 func updateStoreDB() error {
@@ -64,7 +61,6 @@ func updateStoreDB() error {
 
 	storeDB, err := open(30, getSqlitePath()+"/"+storeDBName+".sqlite3")
 	if err != nil {
-		myErr.Logging(err)
 		panic(err)
 	}
 
@@ -80,7 +76,6 @@ func updateStoreDB() error {
 	// master DB =======================
 	masterDB, err := open(30, getSqlitePath()+"/master.sqlite3")
 	if err != nil {
-		myErr.Logging(err)
 		panic(err)
 	}
 	restJANCodeList := []int{}
@@ -121,7 +116,7 @@ func getSqlitePath() string {
 
 	// localの場合は、db/engine/sqlite を確認
 	sqlitePath := currentPath + "/db/engine/sqlite"
-	// /home/yuji/Workspace/private_dev/template/backend/db/engine/sqlite/master.sqlite3
+
 	if !exists(sqlitePath + "/master.sqlite3") {
 		// dockerの場合は、/go/src/backend/sqlite を確認
 		sqlitePath = filepath.Dir(currentPath) + "/backend/sqlite"
@@ -149,7 +144,6 @@ func open(
 	)
 	if err != nil {
 		if count == 0 {
-			myErr.Logging(err)
 			return nil, fmt.Errorf("retry count over")
 		}
 		time.Sleep(time.Second)

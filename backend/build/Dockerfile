@@ -1,11 +1,9 @@
-# FROM golang:1.20
 FROM gocv/opencv:4.8.0
 
 WORKDIR /go/src/backend
 
 SHELL ["/bin/bash", "-c"]
 
-# RUN go get -u github.com/cosmtrek/air
 RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s
 
 # change timezone

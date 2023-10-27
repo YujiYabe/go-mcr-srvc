@@ -4,23 +4,28 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
+	"os"
+	"path/filepath"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
 	v1 "backend/internal/1_framework/instacook/http/v1"
 	"backend/internal/2_adapter/controller"
-
-	"backend/pkg"
 )
 
-var (
-	orderType = "mobile"
-	myErr     *pkg.MyErr
-)
+var InstaCookPort string
 
 func init() {
-	myErr = pkg.NewMyErr("framework_driver", "mobile")
+	currentPath, _ := os.Getwd()
+
+	err := godotenv.Load(filepath.Join(currentPath, ".env"))
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	InstaCookPort = os.Getenv("INSTA_COOK_PORT")
 }
 
 type (
@@ -88,7 +93,7 @@ func (receiver *InstaCook) Start() {
 
 	receiver.EchoEcho.Logger.Fatal(
 		// receiver.EchoEcho.Start(":" + pkg.InstaCookPort),
-		receiver.EchoEcho.StartTLS(":"+pkg.InstaCookPort, "openssl/server.crt", "openssl/server.key"),
+		receiver.EchoEcho.StartTLS(":"+InstaCookPort, "openssl/server.crt", "openssl/server.key"),
 	)
 
 }

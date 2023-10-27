@@ -8,7 +8,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-gonic/gin v1.7.2
 	github.com/gorilla/websocket v0.0.0-20170926233335-4201258b820c
-	github.com/joho/godotenv v1.3.0
+	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/pborman/uuid v1.2.0
 	go.mongodb.org/mongo-driver v1.5.2

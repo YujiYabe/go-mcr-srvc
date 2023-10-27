@@ -2,23 +2,10 @@ package monitor
 
 import (
 	"backend/internal/2_adapter/presenter"
-	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "monitor")
-}
-
-type (
-
-	// Monitor ...
-	Monitor struct {
-	}
-)
+// Monitor ...
+type Monitor struct{}
 
 // NewMonitor ...
 func NewMonitor() *Monitor {

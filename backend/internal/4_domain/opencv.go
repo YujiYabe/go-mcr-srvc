@@ -90,7 +90,7 @@ func (receiver *Reserving) detectQRCode(img gocv.Mat) ([]int, error) {
 	fmt.Printf("start time: %v\n", startTime)
 
 	// 並行処理のためのキューの初期化
-	capacity := 10
+	capacity := AssembleNumber
 	q := queue.New(capacity) // 擬似的に同時進行できるキャパシティを設定
 	defer q.Close()
 

@@ -2,12 +2,6 @@ package domain
 
 import (
 	"context"
-
-	"backend/pkg"
-)
-
-var (
-	myErr *pkg.MyErr
 )
 
 // GetAllergyDefault ...
