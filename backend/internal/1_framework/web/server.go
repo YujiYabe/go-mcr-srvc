@@ -29,16 +29,16 @@ func init() {
 }
 
 type (
-	// InstaCook ...
-	InstaCook struct {
+	// Web ...
+	Web struct {
 		EchoEcho   *echo.Echo
 		Controller controller.ToController
 	}
 )
 
-// NewInstaCook ...
-func NewInstaCook(ctrl controller.ToController) *InstaCook {
-	mb := &InstaCook{
+// NewWeb ...
+func NewWeb(ctrl controller.ToController) *Web {
+	mb := &Web{
 		EchoEcho:   NewEcho(),
 		Controller: ctrl,
 	}
@@ -75,7 +75,7 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (receiver *InstaCook) Start(isShowRoute bool) {
+func (receiver *Web) Start(isShowRoute bool) {
 	group := receiver.EchoEcho.Group("")
 
 	v1.NewRoute(

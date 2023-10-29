@@ -15,8 +15,8 @@ var (
 )
 
 type app struct {
-	instaCook *web.InstaCook
-	monitor   *monitor.Monitor
+	web     *web.Web
+	monitor *monitor.Monitor
 }
 
 // NewApp ...
@@ -29,16 +29,16 @@ func NewApp() *app {
 	)
 
 	a := &app{
-		instaCook: web.NewInstaCook(ctrl),
-		monitor:   monitor.NewMonitor(),
+		web:     web.NewWeb(ctrl),
+		monitor: monitor.NewMonitor(),
 	}
 
-	ctrl.Start()
+	ctrl.Start() // 初期処理 DBをインメモリに保存
 
 	return a
 }
 
 // Start ...
 func (receiver *app) Start() {
-	receiver.instaCook.Start(isShowRoute)
+	receiver.web.Start(isShowRoute)
 }

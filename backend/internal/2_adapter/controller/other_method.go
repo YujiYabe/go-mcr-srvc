@@ -10,7 +10,7 @@ import (
 func (receiver *controller) Start() {
 	ctx := context.Background()
 
-	receiver.ToUseCase.Start(ctx)
+	receiver.ToUseCase.Start(ctx) // 初期処理 DBをインメモリに保存
 }
 
 // allergy -----------------------

@@ -8,7 +8,7 @@ import (
 
 // Start ...
 func (receiver *useCase) Start(ctx context.Context) {
-	receiver.SetUpInMemory(ctx)
+	receiver.SetUpInMemory(ctx) // 初期処理 DBをインメモリに保存
 }
 
 // allergy -----------------------
