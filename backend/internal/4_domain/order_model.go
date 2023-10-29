@@ -8,6 +8,14 @@ const (
 	StatusPassed    StatusNum = 3
 )
 
+type ViaNum int
+
+const (
+	ViaUnknown ViaNum = 0 // 不明
+	ViaCasher  ViaNum = 1 // レジ経由
+	ViaMobile  ViaNum = 2 // grpc経由でスマホアプリに注文番号を返却する必要あり
+)
+
 type (
 	OrderList struct {
 		ReservingList
@@ -25,6 +33,7 @@ type (
 	Sold     struct {
 		SoldNo       int       `json:"sold_no"`
 		LanguageCode int       `json:"language_code"`
+		Via          ViaNum    `json:"via"`
 		Status       StatusNum `json:"status"`
 		JANCodeList  []int     `json:"jan_code_list"`
 	}

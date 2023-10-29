@@ -23,7 +23,6 @@ removeall:
 .PHONY: build
 build:
 	# docker-compose build
-	docker-compose build 
 	# docker-compose build --no-cache
 
 
@@ -33,7 +32,8 @@ up:
 	# docker-compose up
 	# docker-compose up mysql mongo postgres
 	# docker-compose up mysql mongo postgres sqlite
-	docker-compose up 
+	# docker-compose up 
+	docker run --restart=always --name=backend -v $(pwd)/backend:/go/src/backend -p 5678:5678 -e GOPATH=${GOPATH} -t backend
 
 # ----------------------------
 .PHONY: reup
@@ -46,7 +46,8 @@ restart: stop up
 
 # ----------------------------
 .PHONY: resetall
-resetall: removeall build up
+# resetall: removeall build up
+resetall: removeall up
 
 
 # ----------------------------

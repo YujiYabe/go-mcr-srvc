@@ -16,10 +16,13 @@ type (
 
 // NewApp ...
 func NewApp() *app {
+	isDemo := true
+	// isDemo := false
 
 	ctrl := controller.NewController(
 		sqlite.NewToSQLite(),
 		monitor.NewToMonitor(),
+		isDemo,
 	)
 
 	a := &app{

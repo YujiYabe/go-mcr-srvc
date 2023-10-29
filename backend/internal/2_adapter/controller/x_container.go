@@ -19,8 +19,9 @@ type controller struct {
 func NewController(
 	toSqlite gateway.ToSqlite,
 	toMonitor presenter.ToMonitor,
+	isDemo bool,
 ) ToController {
-	toDomain := domain.NewDomain()
+	toDomain := domain.NewDomain(isDemo)
 
 	toGateway := gateway.NewGateway(
 		toSqlite,

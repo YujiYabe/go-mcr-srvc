@@ -283,6 +283,7 @@ async function postCasher () {
         sold_no: Number(soldNoString),
         status: preparingStatus,
         jan_code_list: janCodes,
+        via: 1,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",

@@ -11,9 +11,7 @@ type domain struct {
 }
 
 // NewDomain ...
-func NewDomain() ToDomain {
-	// isDemo := true
-	isDemo := false
+func NewDomain(isDemo bool) ToDomain {
 
 	return &domain{
 		OrderList:      NewOrderList(isDemo),
