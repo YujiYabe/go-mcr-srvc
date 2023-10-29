@@ -3,7 +3,7 @@ package monitor
 import (
 	"context"
 
-	wschannel "backend/internal/1_framework/instacook/http/v1/ws/channel"
+	wschannel "backend/internal/1_framework/web/v1/ws/channel"
 	domain "backend/internal/4_domain"
 )
 

@@ -3,9 +3,9 @@ package kitchen
 import (
 	"github.com/labstack/echo"
 
-	// monitor "backend/internal/1_framework/instacook/http/v1/kitchen/monitor"
-	// queue "backend/internal/1_framework/instacook/http/v1/kitchen/queue"
-	monitor "backend/internal/1_framework/instacook/http/v1/kitchen/monitor"
+	// monitor "backend/internal/1_framework/web/v1/kitchen/monitor"
+	// queue "backend/internal/1_framework/web/v1/kitchen/queue"
+	monitor "backend/internal/1_framework/web/v1/kitchen/monitor"
 
 	"backend/internal/2_adapter/controller"
 )

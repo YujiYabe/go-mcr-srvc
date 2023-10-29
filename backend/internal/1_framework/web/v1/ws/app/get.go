@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 
-	wschannel "backend/internal/1_framework/instacook/http/v1/ws/channel"
+	wschannel "backend/internal/1_framework/web/v1/ws/channel"
 	"backend/internal/2_adapter/controller"
 )
 

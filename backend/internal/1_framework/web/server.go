@@ -1,4 +1,4 @@
-package instacook
+package web
 
 import (
 	"fmt"
@@ -12,11 +12,11 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	v1 "backend/internal/1_framework/instacook/http/v1"
+	v1 "backend/internal/1_framework/web/v1"
 	"backend/internal/2_adapter/controller"
 )
 
-var InstaCookPort string
+var instaCookPort string
 
 func init() {
 	currentPath, _ := os.Getwd()
@@ -25,7 +25,7 @@ func init() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	InstaCookPort = os.Getenv("INSTA_COOK_PORT")
+	instaCookPort = os.Getenv("INSTA_COOK_PORT")
 }
 
 type (
@@ -75,7 +75,7 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (receiver *InstaCook) Start() {
+func (receiver *InstaCook) Start(isShowRoute bool) {
 	group := receiver.EchoEcho.Group("")
 
 	v1.NewRoute(
@@ -84,7 +84,7 @@ func (receiver *InstaCook) Start() {
 		group,
 	)
 
-	if false {
+	if isShowRoute {
 		routes := receiver.EchoEcho.Routes()
 		for _, route := range routes {
 			fmt.Printf("%#v\n", route)
@@ -92,8 +92,7 @@ func (receiver *InstaCook) Start() {
 	}
 
 	receiver.EchoEcho.Logger.Fatal(
-		// receiver.EchoEcho.Start(":" + pkg.InstaCookPort),
-		receiver.EchoEcho.StartTLS(":"+InstaCookPort, "openssl/server.crt", "openssl/server.key"),
+		receiver.EchoEcho.StartTLS(":"+instaCookPort, "openssl/server.crt", "openssl/server.key"),
 	)
 
 }

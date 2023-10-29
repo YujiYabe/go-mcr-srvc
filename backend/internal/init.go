@@ -3,21 +3,24 @@ package internal
 import (
 	"backend/internal/1_framework/db/sqlite"
 	"backend/internal/1_framework/external/monitor"
-	"backend/internal/1_framework/instacook"
+	"backend/internal/1_framework/web"
 	"backend/internal/2_adapter/controller"
 )
 
-type (
-	app struct {
-		instaCook *instacook.InstaCook
-		monitor   *monitor.Monitor
-	}
+var (
+	isDemo = true
+	// isDemo = false
+	// isShowRoute = true
+	isShowRoute = false
 )
+
+type app struct {
+	instaCook *web.InstaCook
+	monitor   *monitor.Monitor
+}
 
 // NewApp ...
 func NewApp() *app {
-	isDemo := true
-	// isDemo := false
 
 	ctrl := controller.NewController(
 		sqlite.NewToSQLite(),
@@ -26,7 +29,7 @@ func NewApp() *app {
 	)
 
 	a := &app{
-		instaCook: instacook.NewInstaCook(ctrl),
+		instaCook: web.NewInstaCook(ctrl),
 		monitor:   monitor.NewMonitor(),
 	}
 
@@ -37,5 +40,5 @@ func NewApp() *app {
 
 // Start ...
 func (receiver *app) Start() {
-	receiver.instaCook.Start()
+	receiver.instaCook.Start(isShowRoute)
 }

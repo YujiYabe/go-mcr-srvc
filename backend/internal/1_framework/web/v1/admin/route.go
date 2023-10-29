@@ -3,10 +3,10 @@ package admin
 import (
 	"github.com/labstack/echo"
 
-	client "backend/internal/1_framework/instacook/http/v1/admin/client"
-	kitchen "backend/internal/1_framework/instacook/http/v1/admin/kitchen"
-	language "backend/internal/1_framework/instacook/http/v1/admin/language"
-	product "backend/internal/1_framework/instacook/http/v1/admin/product"
+	client "backend/internal/1_framework/web/v1/admin/client"
+	kitchen "backend/internal/1_framework/web/v1/admin/kitchen"
+	language "backend/internal/1_framework/web/v1/admin/language"
+	product "backend/internal/1_framework/web/v1/admin/product"
 	"backend/internal/2_adapter/controller"
 )
 

@@ -3,7 +3,7 @@ package order
 import (
 	"github.com/labstack/echo"
 
-	sold "backend/internal/1_framework/instacook/http/v1/order/sold"
+	sold "backend/internal/1_framework/web/v1/order/sold"
 	"backend/internal/2_adapter/controller"
 )
 

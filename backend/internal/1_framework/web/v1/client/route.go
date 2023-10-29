@@ -3,9 +3,9 @@ package client
 import (
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/instacook/http/v1/client/camera"
-	"backend/internal/1_framework/instacook/http/v1/client/monitor"
-	"backend/internal/1_framework/instacook/http/v1/client/queue"
+	"backend/internal/1_framework/web/v1/client/camera"
+	"backend/internal/1_framework/web/v1/client/monitor"
+	"backend/internal/1_framework/web/v1/client/queue"
 
 	"backend/internal/2_adapter/controller"
 )

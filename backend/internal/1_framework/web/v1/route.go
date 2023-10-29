@@ -3,19 +3,19 @@ package v1
 import (
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/instacook/http/v1/acceptance"
-	"backend/internal/1_framework/instacook/http/v1/admin"
-	"backend/internal/1_framework/instacook/http/v1/casher"
-	"backend/internal/1_framework/instacook/http/v1/delivery"
-	"backend/internal/1_framework/instacook/http/v1/kitchen"
-	"backend/internal/1_framework/instacook/http/v1/order"
-	"backend/internal/1_framework/instacook/http/v1/client"
-	"backend/internal/1_framework/instacook/http/v1/ws"
+	"backend/internal/1_framework/web/v1/acceptance"
+	"backend/internal/1_framework/web/v1/admin"
+	"backend/internal/1_framework/web/v1/casher"
+	"backend/internal/1_framework/web/v1/client"
+	"backend/internal/1_framework/web/v1/delivery"
+	"backend/internal/1_framework/web/v1/kitchen"
+	"backend/internal/1_framework/web/v1/order"
+	"backend/internal/1_framework/web/v1/ws"
 
 	"backend/internal/2_adapter/controller"
-	// "backend/internal/1_framework/instacook/http/admin"
-	// "backend/internal/1_framework/instacook/http/v1/casher"
-	// "backend/internal/1_framework/instacook/http/v1/delivery"
+	// "backend/internal/1_framework/web/admin"
+	// "backend/internal/1_framework/web/v1/casher"
+	// "backend/internal/1_framework/web/v1/delivery"
 )
 
 func NewRoute(
