@@ -9,12 +9,12 @@ import (
 )
 
 // Index ...
-func (mntr *Monitor) Index(c echo.Context) error {
+func (receiver *Monitor) Index(c echo.Context) error {
 	return c.Render(http.StatusOK, "index", "")
 }
 
 // WebSocket ...
-func (mntr *Monitor) WebSocket(c echo.Context) error {
+func (receiver *Monitor) WebSocket(c echo.Context) error {
 	var upgrader = websocket.Upgrader{}
 
 	webSocket, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
@@ -29,9 +29,9 @@ func (mntr *Monitor) WebSocket(c echo.Context) error {
 		ID:     id.String(),
 	}
 
-	mntr.Mutex.Lock()
-	mntr.Agents[agent.ID] = agent
-	mntr.Mutex.Unlock()
+	receiver.Mutex.Lock()
+	receiver.Agents[agent.ID] = agent
+	receiver.Mutex.Unlock()
 
 	ordersChan <- *orders
 
@@ -39,24 +39,24 @@ func (mntr *Monitor) WebSocket(c echo.Context) error {
 }
 
 // SendToAgents ....
-func (mntr *Monitor) SendToAgents() {
+func (receiver *Monitor) SendToAgents() {
 	for {
 		content := <-ordersChan
-		for _, agent := range mntr.Agents {
-			mntr.sendToAgent(agent.ID, content)
+		for _, agent := range receiver.Agents {
+			receiver.sendToAgent(agent.ID, content)
 		}
 	}
 }
 
 // Disconnect ...
-func (mntr *Monitor) Disconnect(agentID string) {
-	mntr.Mutex.Lock()
-	delete(mntr.Agents, agentID)
-	mntr.Mutex.Unlock()
+func (receiver *Monitor) Disconnect(agentID string) {
+	receiver.Mutex.Lock()
+	delete(receiver.Agents, agentID)
+	receiver.Mutex.Unlock()
 }
 
-func (mntr *Monitor) sendToAgent(agentID string, orders Orders) {
-	err := mntr.Agents[agentID].Socket.WriteJSON(orders)
+func (receiver *Monitor) sendToAgent(agentID string, orders Orders) {
+	err := receiver.Agents[agentID].Socket.WriteJSON(orders)
 	if err != nil {
 		myErr.Logging(err)
 	}

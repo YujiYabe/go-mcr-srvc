@@ -46,7 +46,7 @@ func NewDelivery(ctrl controller.ToController) *Delivery {
 }
 
 // Start ....
-func (dlvr *Delivery) Start() {
+func (receiver *Delivery) Start() {
 	log.Println("start GRPC ------------------------- ")
 
 	lis, err := net.Listen("tcp", pkg.DeliveryAddress)
@@ -56,7 +56,7 @@ func (dlvr *Delivery) Start() {
 	}
 	s := grpc.NewServer()
 
-	RegisterDeliveryServiceServer(s, &dlvr.Server)
+	RegisterDeliveryServiceServer(s, &receiver.Server)
 	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
@@ -66,7 +66,7 @@ func (dlvr *Delivery) Start() {
 }
 
 // DeliveryRPC ...
-func (srvr *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
+func (receiver *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*DeliveryResponse, error) {
 
 	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &domain.Product{}
@@ -77,7 +77,7 @@ func (srvr *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*Deli
 	}
 	order := &domain.Order{Product: *product}
 
-	srvr.Controller.Reserve(ctx, order, orderType)                          // オーダー番号発行
-	srvr.Controller.Order(&ctx, order)                                      // オーダー
+	receiver.Controller.Reserve(ctx, order, orderType)                      // オーダー番号発行
+	receiver.Controller.Order(&ctx, order)                                  // オーダー
 	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil // オーダー番号返却
 }

@@ -5,8 +5,8 @@ import (
 )
 
 // GetBans ...
-func (gw *Gateway) GetBans(ctx context.Context, requestBans map[string]int) error {
-	err := gw.ToShelf.UpdateBans(ctx, requestBans)
+func (receiver *Gateway) GetBans(ctx context.Context, requestBans map[string]int) error {
+	err := receiver.ToShelf.UpdateBans(ctx, requestBans)
 	if err != nil {
 		myErr.Logging(err)
 		return err

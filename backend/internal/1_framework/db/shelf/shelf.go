@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("framework_driver", "refrigerator")
+	myErr = pkg.NewMyErr("framework_driver", "postgres")
 }
 
 type (
@@ -59,8 +59,8 @@ func open(count uint) (*mongo.Client, error) {
 }
 
 // UpdateBans ...
-func (s *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
-	bans := s.Conn.Database(pkg.MongoDatabase).Collection("bans")
+func (receiver *Shelf) UpdateBans(ctx context.Context, items map[string]int) error {
+	bans := receiver.Conn.Database(pkg.MongoDatabase).Collection("bans")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

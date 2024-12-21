@@ -24,7 +24,7 @@ func TestUpdateVegetables(t *testing.T) {
 				Conn: sqlDB,
 			}), &gorm.Config{})
 
-			refrigerator := Refrigerator{
+			postgres := Refrigerator{
 				Conn: gormDB,
 			}
 			// 想定されるクエリとその引数に対して返す値の設定
@@ -37,7 +37,7 @@ func TestUpdateVegetables(t *testing.T) {
 			items := map[string]int{
 				"aa": 1,
 			}
-			err = refrigerator.UpdateVegetables(ctx, items)
+			err = postgres.UpdateVegetables(ctx, items)
 
 			if err != nil {
 				t.Error(err.Error())

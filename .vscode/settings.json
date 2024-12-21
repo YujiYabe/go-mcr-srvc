@@ -1,6 +1,6 @@
 {
-    "cSpell.showAutocompleteSuggestions": true,
     "cSpell.import": [
         "./.vscode/cspell.json"
     ],
+    "makefile.configureOnOpen": false
 }

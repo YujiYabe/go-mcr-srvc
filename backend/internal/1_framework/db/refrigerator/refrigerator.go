@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("framework_driver", "refrigerator")
+	myErr = pkg.NewMyErr("framework_driver", "postgres")
 }
 
 type (
@@ -64,9 +64,9 @@ func open(count uint) (*gorm.DB, error) {
 }
 
 // UpdateVegetables ...
-func (s *Refrigerator) UpdateVegetables(ctx context.Context, items map[string]int) error {
+func (receiver *Refrigerator) UpdateVegetables(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
-		res := s.Conn.
+		res := receiver.Conn.
 			Table("vegetables").
 			Where("name IN (?)", item).
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
@@ -84,9 +84,9 @@ func (s *Refrigerator) UpdateVegetables(ctx context.Context, items map[string]in
 }
 
 // UpdateIngredients ...
-func (s *Refrigerator) UpdateIngredients(ctx context.Context, items map[string]int) error {
+func (receiver *Refrigerator) UpdateIngredients(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
-		res := s.Conn.
+		res := receiver.Conn.
 			Table("ingredients").
 			Where("name IN (?)", item).
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))

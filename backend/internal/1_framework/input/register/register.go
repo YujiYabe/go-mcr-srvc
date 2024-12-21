@@ -3,7 +3,6 @@ package register
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -33,15 +32,15 @@ type (
 )
 
 // NewRegister ...
-func NewRegister(ctrl controller.ToController) *Register {
-	rgstr := &Register{
-		Controller: ctrl,
+func NewRegister(receiver controller.ToController) *Register {
+	register := &Register{
+		Controller: receiver,
 	}
 
-	return rgstr
+	return register
 }
 
-func (rgstr *Register) Start() {
+func (receiver *Register) Start() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		myErr.Logging(err)
@@ -59,10 +58,10 @@ func (rgstr *Register) Start() {
 				}
 				switch {
 				case event.Op&fsnotify.Create == fsnotify.Create:
-					rgstr.OrderAccept()
+					receiver.OrderAccept()
 
 				case event.Op&fsnotify.Write == fsnotify.Write:
-					rgstr.OrderAccept()
+					receiver.OrderAccept()
 
 				case event.Op&fsnotify.Remove == fsnotify.Remove:
 				case event.Op&fsnotify.Rename == fsnotify.Rename:
@@ -87,8 +86,8 @@ func (rgstr *Register) Start() {
 	<-done
 }
 
-func (rgstr *Register) OrderAccept() {
-	files, err := ioutil.ReadDir(pkg.RegisterPath)
+func (receiver *Register) OrderAccept() {
+	files, err := os.ReadDir(pkg.RegisterPath)
 	if err != nil {
 		myErr.Logging(err)
 	}
@@ -106,7 +105,7 @@ func (rgstr *Register) OrderAccept() {
 
 		currentFilePath := filepath.Join(pkg.RegisterPath, currentFileName)
 
-		raw, err := ioutil.ReadFile(filepath.Clean(currentFilePath))
+		raw, err := os.ReadFile(filepath.Clean(currentFilePath))
 		if err != nil {
 			myErr.Logging(err)
 			continue
@@ -126,11 +125,11 @@ func (rgstr *Register) OrderAccept() {
 		// 標準コンテキストを取得
 		ctx := context.Background()
 
-		rgstr.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-		rgstr.Controller.Order(&ctx, order)             // オーダー
+		receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+		receiver.Controller.Order(&ctx, order)             // オーダー
 
-		newExtention := order.OrderInfo.OrderNumber + ".json"
-		newFileName := strings.Replace(currentFileName, "json", newExtention, 1)
+		newExtension := order.OrderInfo.OrderNumber + ".json"
+		newFileName := strings.Replace(currentFileName, "json", newExtension, 1)
 
 		newFilePath := filepath.Join(pkg.ReservedPath, newFileName)
 		err = os.Rename(currentFilePath, newFilePath) // オーダー番号返却

@@ -22,15 +22,15 @@ type MyErr struct {
 
 // NewMyErr ...
 func NewMyErr(layer string, part string) *MyErr {
-	me := &MyErr{}
-	me.Layer = layer
-	me.Part = part
+	myErr := &MyErr{}
+	myErr.Layer = layer
+	myErr.Part = part
 
-	return me
+	return myErr
 }
 
 // Logging ...
-func (me MyErr) Logging(passErr error, value ...interface{}) {
+func (receiver MyErr) Logging(passErr error, value ...interface{}) {
 	// テスト中であればロギングしない
 	if flag.Lookup("test.v") != nil {
 		log.Println("run under go test")
@@ -65,8 +65,8 @@ func (me MyErr) Logging(passErr error, value ...interface{}) {
 	// エラー情報作成
 	var rowData []string
 	rowData = append(rowData, time.Now().Format("2006-01-02_15:04:05")) // dateTime
-	rowData = append(rowData, me.Layer)                                 // レイヤ名
-	rowData = append(rowData, me.Part)                                  // アプリ名
+	rowData = append(rowData, receiver.Layer)                           // レイヤ名
+	rowData = append(rowData, receiver.Part)                            // アプリ名
 	rowData = append(rowData, fmt.Sprint(file, ":", line))              // ファイル名:行番号
 	rowData = append(rowData, passErr.Error())                          // エラー内容
 	rowData = append(rowData, string(jsonData))                         // エラー原因
@@ -84,6 +84,4 @@ func (me MyErr) Logging(passErr error, value ...interface{}) {
 	}()
 
 	fmt.Fprintln(f, row)
-
-	return
 }

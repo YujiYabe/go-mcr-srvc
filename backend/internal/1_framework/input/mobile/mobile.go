@@ -50,13 +50,13 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (mbl *Mobile) Start() {
-	mbl.EchoEcho.POST("/", mbl.IndexPost)
-	mbl.EchoEcho.Logger.Fatal(mbl.EchoEcho.Start(":" + pkg.MobilePort))
+func (receiver *Mobile) Start() {
+	receiver.EchoEcho.POST("/", receiver.IndexPost)
+	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.MobilePort))
 }
 
 // IndexPost ...
-func (mbl *Mobile) IndexPost(c echo.Context) error {
+func (receiver *Mobile) IndexPost(c echo.Context) error {
 	// 標準コンテキストを取得
 	ctx := c.Request().Context()
 
@@ -68,9 +68,9 @@ func (mbl *Mobile) IndexPost(c echo.Context) error {
 	}
 	order := &domain.Order{Product: *product}
 
-	mbl.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-	mbl.Controller.Order(&ctx, order)             // オーダー
-	c.JSON(200, order.OrderInfo.OrderNumber)      // オーダー番号返却
+	receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+	receiver.Controller.Order(&ctx, order)             // オーダー
+	c.JSON(200, order.OrderInfo.OrderNumber)           // オーダー番号返却
 
 	return nil
 }

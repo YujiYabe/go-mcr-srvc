@@ -21,7 +21,7 @@ func NewEntity() ToEntity {
 }
 
 // ParseOrder ...
-func (entt *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
+func (receiver *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
 	assemble := &Assemble{
 		Bans:        map[string]int{},
 		Patties:     map[string]int{},
@@ -31,13 +31,13 @@ func (entt *domain) ParseOrder(ctx context.Context, order *Order) *Assemble {
 
 	// オーダー内容から必要な食材の数を計算
 	if len(order.Product.Hamburgers) != 0 {
-		entt.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
+		receiver.countAssembleHamburger(ctx, assemble, order.Product.Hamburgers)
 	}
 
 	return assemble
 }
 
-func (entt *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
+func (receiver *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
 
 	for _, hamburger := range hamburgers {
 		// bans
@@ -62,18 +62,18 @@ func (entt *domain) countAssembleHamburger(ctx context.Context, assemble *Assemb
 }
 
 // CookHamburgers ...
-func (entt *domain) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
+func (receiver *domain) CookHamburgers(ctx context.Context, hamburgers []Hamburger) error {
 	// ハンバーガーの調理
 	for _, hamburger := range hamburgers {
-		entt.cutVegetables(ctx, hamburger)
-		entt.grillPatties(ctx, hamburger)
-		entt.assembleHamburger(ctx, hamburger)
+		receiver.cutVegetables(ctx, hamburger)
+		receiver.grillPatties(ctx, hamburger)
+		receiver.assembleHamburger(ctx, hamburger)
 	}
 
 	return nil
 }
 
-func (entt *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
+func (receiver *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	// 調理時間を擬似的に再現
 	if hamburger.Lettuce > 0 {
 		time.Sleep(1 * time.Second)
@@ -86,12 +86,12 @@ func (entt *domain) cutVegetables(ctx context.Context, hamburger Hamburger) {
 	}
 }
 
-func (entt *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) {
+func (receiver *domain) assembleHamburger(ctx context.Context, hamburger Hamburger) {
 	// 調理時間を擬似的に再現
 	time.Sleep(1 * time.Second)
 }
 
-func (entt *domain) grillPatties(ctx context.Context, hamburger Hamburger) {
+func (receiver *domain) grillPatties(ctx context.Context, hamburger Hamburger) {
 	// 調理時間を擬似的に再現
 	if hamburger.Beef > 0 {
 		time.Sleep(time.Duration(hamburger.Beef*1) * time.Second)

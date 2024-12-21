@@ -47,10 +47,10 @@ func NewApp() *app {
 }
 
 // Start ...
-func (a *app) Start() {
-	go a.monitor.Start()
-	go a.mobile.Start()
-	go a.pc.Start()
-	go a.register.Start()
-	a.delivery.Start()
+func (receiver *app) Start() {
+	go receiver.monitor.Start()
+	go receiver.mobile.Start()
+	go receiver.pc.Start()
+	go receiver.register.Start()
+	receiver.delivery.Start()
 }

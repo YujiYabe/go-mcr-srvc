@@ -59,17 +59,17 @@ var orders = &Orders{
 }
 
 // Render ...
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
+func (receiver *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return receiver.templates.ExecuteTemplate(w, name, data)
 }
 
 // NewMonitor ...
 func NewMonitor() *Monitor {
-	mntr := &Monitor{}
-	mntr.EchoEcho = NewEcho()
-	mntr.Agents = make(map[string]*Agent)
+	monitor := &Monitor{}
+	monitor.EchoEcho = NewEcho()
+	monitor.Agents = make(map[string]*Agent)
 
-	return mntr
+	return monitor
 }
 
 // NewToMonitor ...
@@ -93,25 +93,25 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (mntr *Monitor) Start() {
-	mntr.RemoveYummy()
+func (receiver *Monitor) Start() {
+	receiver.RemoveYummy()
 
-	go mntr.Watching()
-	go mntr.SendToAgents()
+	go receiver.Watching()
+	go receiver.SendToAgents()
 
-	mntr.EchoEcho.Renderer = &Template{
+	receiver.EchoEcho.Renderer = &Template{
 		templates: template.Must(template.ParseGlob(pkg.IndexPath)),
 	}
 
-	mntr.EchoEcho.Static("/web", pkg.WebPath)
+	receiver.EchoEcho.Static("/web", pkg.WebPath)
 
-	mntr.EchoEcho.GET("/", mntr.Index)
-	mntr.EchoEcho.GET("/ws", mntr.WebSocket)
-	mntr.EchoEcho.Logger.Fatal(mntr.EchoEcho.Start(":" + pkg.MonitorPort))
+	receiver.EchoEcho.GET("/", receiver.Index)
+	receiver.EchoEcho.GET("/ws", receiver.WebSocket)
+	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.MonitorPort))
 }
 
 // UpdateOrders ...
-func (mntr *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
+func (receiver *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase string) {
 
 	switch phase {
 	case "reserve":
@@ -128,8 +128,6 @@ func (mntr *Monitor) UpdateOrders(ctx context.Context, orderNumber string, phase
 	}
 
 	ordersChan <- *orders
-
-	return
 }
 
 func remove(strings []string, search string) []string {

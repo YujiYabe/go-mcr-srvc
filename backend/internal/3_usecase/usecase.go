@@ -20,17 +20,17 @@ func init() {
 }
 
 // Start ...
-func (uscs *useCase) Start() {
-	go uscs.bulkOrder()
+func (receiver *useCase) Start() {
+	go receiver.bulkOrder()
 }
 
 // Reserve ...
-func (uscs *useCase) Reserve(ctx context.Context, orderinfo *domain.OrderInfo) {
-	uscs.ToPresenter.UpdateOrders(ctx, orderinfo.OrderNumber, "reserve") // オーダー情報更新
+func (receiver *useCase) Reserve(ctx context.Context, orderInfo *domain.OrderInfo) {
+	receiver.ToPresenter.UpdateOrders(ctx, orderInfo.OrderNumber, "reserve") // オーダー情報更新
 }
 
 // Order ...
-func (uscs *useCase) Order(ctx *context.Context, order *domain.Order) error {
+func (receiver *useCase) Order(ctx *context.Context, order *domain.Order) error {
 	ou := &OrderUsecase{
 		ctx:   ctx,
 		order: order,
@@ -41,7 +41,7 @@ func (uscs *useCase) Order(ctx *context.Context, order *domain.Order) error {
 	return nil
 }
 
-func (uscs *useCase) bulkOrder() {
+func (receiver *useCase) bulkOrder() {
 	var err error
 
 	q := queue.New(pkg.AssembleNumber) // 擬似的に同時進行できるキャパシティを設定
@@ -54,36 +54,36 @@ func (uscs *useCase) bulkOrder() {
 			defer q.Done()
 
 			// オーダー情報更新
-			uscs.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "assemble")
+			receiver.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "assemble")
 
 			// オーダー解析
-			assemble := uscs.ToEntity.ParseOrder(*ou.ctx, ou.order)
+			assemble := receiver.ToEntity.ParseOrder(*ou.ctx, ou.order)
 
 			// 材料取り出し
-			err = uscs.getFoodstuff(*ou.ctx, assemble)
+			err = receiver.getFoodstuff(*ou.ctx, assemble)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
 			// 調理
-			err = uscs.cookFoodstuff(*ou.ctx, ou.order, assemble)
+			err = receiver.cookFoodstuff(*ou.ctx, ou.order, assemble)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
 			// 出荷よー
-			err = uscs.ToPresenter.Shipment(*ou.ctx, ou.order)
+			err = receiver.ToPresenter.Shipment(*ou.ctx, ou.order)
 			if err != nil {
 				myErr.Logging(err)
 			}
 
-			uscs.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "complete")
+			receiver.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "complete")
 		}()
 	}
 
 }
 
-func (uscs *useCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble) error {
+func (receiver *useCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble) error {
 	var err error
 	var wg sync.WaitGroup
 
@@ -92,25 +92,25 @@ func (uscs *useCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err = uscs.ToGateway.GetVegetables(ctx, assemble.Vegetables)
+		err = receiver.ToGateway.GetVegetables(ctx, assemble.Vegetables)
 	}()
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err = uscs.ToGateway.GetIngredients(ctx, assemble.Ingredients)
+		err = receiver.ToGateway.GetIngredients(ctx, assemble.Ingredients)
 	}()
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err = uscs.ToGateway.GetPatties(ctx, assemble.Patties)
+		err = receiver.ToGateway.GetPatties(ctx, assemble.Patties)
 	}()
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err = uscs.ToGateway.GetBans(ctx, assemble.Bans)
+		err = receiver.ToGateway.GetBans(ctx, assemble.Bans)
 	}()
 
 	wg.Wait()
@@ -122,10 +122,10 @@ func (uscs *useCase) getFoodstuff(ctx context.Context, assemble *domain.Assemble
 	return nil
 }
 
-func (uscs *useCase) cookFoodstuff(ctx context.Context, order *domain.Order, _ *domain.Assemble) error {
+func (receiver *useCase) cookFoodstuff(ctx context.Context, order *domain.Order, _ *domain.Assemble) error {
 	// オーダーにハンバーガーが含まれていれば調理
 	if len(order.Product.Hamburgers) > 0 {
-		err := uscs.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
+		err := receiver.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
 		if err != nil {
 			myErr.Logging(err)
 			return err

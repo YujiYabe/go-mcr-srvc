@@ -17,7 +17,7 @@ type (
 	// ToUseCase ...
 	ToUseCase interface {
 		Start()
-		Reserve(ctx context.Context, orderinfo *domain.OrderInfo)
+		Reserve(ctx context.Context, orderInfo *domain.OrderInfo)
 		Order(ctx *context.Context, order *domain.Order) error
 	}
 

@@ -41,14 +41,14 @@ func NewGin() *gin.Engine {
 }
 
 // Start ...
-func (pc *PC) Start() {
-	pc.GinEngine.POST("/", pc.IndexPost)
+func (receiver *PC) Start() {
+	receiver.GinEngine.POST("/", receiver.IndexPost)
 
-	pc.GinEngine.Run(":" + pkg.PCPort)
+	receiver.GinEngine.Run(":" + pkg.PCPort)
 }
 
 // IndexPost ...
-func (pc *PC) IndexPost(c *gin.Context) {
+func (receiver *PC) IndexPost(c *gin.Context) {
 	// 標準コンテキストを取得
 	ctx := c.Request.Context()
 
@@ -60,7 +60,7 @@ func (pc *PC) IndexPost(c *gin.Context) {
 	}
 	order := &domain.Order{Product: *product}
 
-	pc.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-	pc.Controller.Order(&ctx, order)             // オーダー
-	c.JSON(200, order.OrderInfo.OrderNumber)     // オーダー番号返却
+	receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+	receiver.Controller.Order(&ctx, order)             // オーダー
+	c.JSON(200, order.OrderInfo.OrderNumber)           // オーダー番号返却
 }

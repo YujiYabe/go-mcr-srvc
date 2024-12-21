@@ -5,8 +5,8 @@ import (
 )
 
 // GetVegetables ...
-func (gw *Gateway) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
-	err := gw.ToRefrigerator.UpdateVegetables(ctx, requestVegetables)
+func (receiver *Gateway) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
+	err := receiver.ToRefrigerator.UpdateVegetables(ctx, requestVegetables)
 	if err != nil {
 		myErr.Logging(err)
 		return err
@@ -16,8 +16,8 @@ func (gw *Gateway) GetVegetables(ctx context.Context, requestVegetables map[stri
 }
 
 // GetIngredients ...
-func (gw *Gateway) GetIngredients(ctx context.Context, requestIngredients map[string]int) error {
-	err := gw.ToRefrigerator.UpdateIngredients(ctx, requestIngredients)
+func (receiver *Gateway) GetIngredients(ctx context.Context, requestIngredients map[string]int) error {
+	err := receiver.ToRefrigerator.UpdateIngredients(ctx, requestIngredients)
 	if err != nil {
 		myErr.Logging(err)
 		return err

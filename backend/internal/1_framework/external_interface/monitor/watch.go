@@ -2,7 +2,6 @@ package monitor
 
 import (
 	"context"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,8 +10,8 @@ import (
 	"backend/pkg"
 )
 
-func (mntr *Monitor) RemoveYummy() {
-	yummyFiles, err := ioutil.ReadDir(pkg.YummyPath)
+func (receiver *Monitor) RemoveYummy() {
+	yummyFiles, err := os.ReadDir(pkg.YummyPath)
 	if err != nil {
 		myErr.Logging(err)
 	}
@@ -29,11 +28,11 @@ func (mntr *Monitor) RemoveYummy() {
 
 }
 
-func (mntr *Monitor) Watching() {
-	var currentfiles []string
+func (receiver *Monitor) Watching() {
+	var currentFiles []string
 
 	for {
-		files, err := ioutil.ReadDir(pkg.YummyPath)
+		files, err := os.ReadDir(pkg.YummyPath)
 		if err != nil {
 			myErr.Logging(err)
 		}
@@ -43,20 +42,20 @@ func (mntr *Monitor) Watching() {
 			newFiles = append(newFiles, file.Name())
 		}
 
-		mntr.passedCheck(currentfiles, newFiles)
+		receiver.passedCheck(currentFiles, newFiles)
 
-		currentfiles = newFiles
+		currentFiles = newFiles
 
 		time.Sleep(1 * time.Second)
 	}
 }
 
-func (mntr *Monitor) passedCheck(currentfiles, newFiles []string) {
+func (receiver *Monitor) passedCheck(currentFiles, newFiles []string) {
 	//最新のリストからファイルが削除されていれば渡しずみ判断
-	for _, currentfile := range currentfiles {
+	for _, currentFile := range currentFiles {
 		isExist := false
 		for _, newFile := range newFiles {
-			if currentfile == newFile {
+			if currentFile == newFile {
 				isExist = true
 				continue
 			}
@@ -64,9 +63,8 @@ func (mntr *Monitor) passedCheck(currentfiles, newFiles []string) {
 
 		if !isExist {
 			ctx := context.Background()
-			mntr.UpdateOrders(ctx, strings.TrimRight(currentfile, ".json"), "pass")
+			receiver.UpdateOrders(ctx, strings.TrimRight(currentFile, ".json"), "pass")
 		}
 	}
 
-	return
 }

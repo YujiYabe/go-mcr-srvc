@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	myErr = pkg.NewMyErr("framework_driver", "freezer")
+	myErr = pkg.NewMyErr("framework_driver", "mysql")
 }
 
 type (
@@ -64,9 +64,9 @@ func open(count uint) (*gorm.DB, error) {
 }
 
 // UpdatePatties ...
-func (s *Freezer) UpdatePatties(ctx context.Context, items map[string]int) error {
+func (receiver *Freezer) UpdatePatties(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
-		res := s.Conn.
+		res := receiver.Conn.
 			Table("patties").
 			Where("name IN (?)", item).
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
