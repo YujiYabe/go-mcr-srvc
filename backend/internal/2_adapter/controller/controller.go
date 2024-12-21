@@ -87,8 +87,8 @@ func (receiver *controller) Reserve(ctx context.Context, order *domain.Order, or
 	}
 
 	order.OrderInfo.OrderNumber = fmt.Sprintf("%03d", receiver.OrderNumber) // オーダー番号を3桁で表示
-	order.OrderInfo.OrderType = orderType                               // オーダーの種類(mobile/pc/delivery/register)
-	order.OrderInfo.OrderTime = time.Now()                              // オーダー受け付け時間
+	order.OrderInfo.OrderType = orderType                                   // オーダーの種類(mobile/pc/delivery/register)
+	order.OrderInfo.OrderTime = time.Now()                                  // オーダー受け付け時間
 
 	receiver.UseCase.Reserve(ctx, &order.OrderInfo) // オーダー情報更新
 }
