@@ -6,10 +6,10 @@ import (
 	"backend/internal/1_framework/db/shelf"
 	"backend/internal/1_framework/external_interface/monitor"
 	"backend/internal/1_framework/external_interface/shipment"
-	"backend/internal/1_framework/web_ui/delivery"
-	"backend/internal/1_framework/web_ui/mobile"
-	"backend/internal/1_framework/web_ui/pc"
-	"backend/internal/1_framework/web_ui/register"
+	"backend/internal/1_framework/input/delivery"
+	"backend/internal/1_framework/input/mobile"
+	"backend/internal/1_framework/input/pc"
+	"backend/internal/1_framework/input/register"
 	"backend/internal/2_adapter/controller"
 )
 
