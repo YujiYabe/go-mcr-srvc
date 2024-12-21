@@ -15,8 +15,8 @@ func init() {
 	myErr = pkg.NewMyErr("enterprise_business_rule", "domain")
 }
 
-// NewEntity ...
-func NewEntity() ToEntity {
+// NewDomain ...
+func NewDomain() ToDomain {
 	return &domain{}
 }
 
@@ -37,7 +37,11 @@ func (receiver *domain) ParseOrder(ctx context.Context, order *Order) *Assemble 
 	return assemble
 }
 
-func (receiver *domain) countAssembleHamburger(ctx context.Context, assemble *Assemble, hamburgers []Hamburger) {
+func (receiver *domain) countAssembleHamburger(
+	ctx context.Context,
+	assemble *Assemble,
+	hamburgers []Hamburger,
+) {
 
 	for _, hamburger := range hamburgers {
 		// bans

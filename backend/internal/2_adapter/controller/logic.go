@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"backend/internal/2_adapter/gateway"
-	"backend/internal/2_adapter/presenter"
-	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
 	"backend/pkg"
 )
@@ -20,59 +17,8 @@ func init() {
 	myErr = pkg.NewMyErr("interface_adapter", "controller")
 }
 
-type (
-	// controller ...
-	controller struct {
-		UseCase     usecase.ToUseCase
-		OrderNumber int
-	}
-
-	// OrderChannel ...
-	OrderChannel struct {
-		ctx   *context.Context
-		order *domain.Order
-	}
-
-	// ToController ...
-	ToController interface {
-		Start()
-		Reserve(ctx context.Context, order *domain.Order, orderType string)
-		Order(ctx *context.Context, order *domain.Order)
-	}
-)
-
 // orderChannel ...
 var orderChannel = make(chan OrderChannel)
-
-// NewController ...
-func NewController(
-	ToPostgres gateway.ToPostgres,
-	toMySQL gateway.ToMySQL,
-	toMongo gateway.ToMongo,
-	toShipment presenter.ToShipment,
-	toMonitor presenter.ToMonitor,
-) ToController {
-	toEntity := domain.NewEntity()
-	toGateway := gateway.NewGateway(
-		ToPostgres,
-		toMySQL,
-		toMongo,
-	)
-	toPresenter := presenter.NewPresenter(
-		toShipment,
-		toMonitor,
-	)
-	useCase := usecase.NewUseCase(
-		toEntity,
-		toGateway,
-		toPresenter,
-	)
-	ct := &controller{
-		UseCase: useCase,
-	}
-
-	return ct
-}
 
 func (receiver *controller) Start() {
 	go receiver.bulkOrder()

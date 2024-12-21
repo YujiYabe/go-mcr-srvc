@@ -57,7 +57,7 @@ func (receiver *useCase) bulkOrder() {
 			receiver.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "assemble")
 
 			// オーダー解析
-			assemble := receiver.ToEntity.ParseOrder(*ou.ctx, ou.order)
+			assemble := receiver.ToDomain.ParseOrder(*ou.ctx, ou.order)
 
 			// 材料取り出し
 			err = receiver.getFoodstuff(*ou.ctx, assemble)
@@ -125,7 +125,7 @@ func (receiver *useCase) getFoodstuff(ctx context.Context, assemble *domain.Asse
 func (receiver *useCase) cookFoodstuff(ctx context.Context, order *domain.Order, _ *domain.Assemble) error {
 	// オーダーにハンバーガーが含まれていれば調理
 	if len(order.Product.Hamburgers) > 0 {
-		err := receiver.ToEntity.CookHamburgers(ctx, order.Product.Hamburgers)
+		err := receiver.ToDomain.CookHamburgers(ctx, order.Product.Hamburgers)
 		if err != nil {
 			myErr.Logging(err)
 			return err

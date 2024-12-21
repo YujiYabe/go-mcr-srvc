@@ -8,8 +8,8 @@ import (
 type (
 	domain struct{}
 
-	// ToEntity ...
-	ToEntity interface {
+	// ToDomain ...
+	ToDomain interface {
 		ParseOrder(ctx context.Context, order *Order) *Assemble
 		CookHamburgers(ctx context.Context, hamburgers []Hamburger) error
 	}
@@ -76,7 +76,6 @@ type (
 	}
 )
 
-// framework_driver へ行く用
 type (
 	// Assemble ...
 	Assemble struct {

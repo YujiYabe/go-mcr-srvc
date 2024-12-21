@@ -9,9 +9,15 @@ import (
 type (
 	// useCase ...
 	useCase struct {
-		ToEntity    ToEntity
+		ToDomain    ToDomain
 		ToGateway   ToGateway
 		ToPresenter ToPresenter
+	}
+
+	// OrderUsecase ...
+	OrderUsecase struct {
+		ctx   *context.Context
+		order *domain.Order
 	}
 
 	// ToUseCase ...
@@ -21,14 +27,8 @@ type (
 		Order(ctx *context.Context, order *domain.Order) error
 	}
 
-	// OrderUsecase ...
-	OrderUsecase struct {
-		ctx   *context.Context
-		order *domain.Order
-	}
-
-	// ToEntity ...
-	ToEntity interface {
+	// ToDomain ...
+	ToDomain interface {
 		ParseOrder(ctx context.Context, order *domain.Order) *domain.Assemble
 		CookHamburgers(ctx context.Context, hamburgers []domain.Hamburger) error
 	}
@@ -49,9 +49,13 @@ type (
 )
 
 // NewUseCase ...
-func NewUseCase(toEntity ToEntity, toGateway ToGateway, toPresenter ToPresenter) ToUseCase {
+func NewUseCase(
+	toDomain ToDomain,
+	toGateway ToGateway,
+	toPresenter ToPresenter,
+) ToUseCase {
 	return &useCase{
-		ToEntity:    toEntity,
+		ToDomain:    toDomain,
 		ToGateway:   toGateway,
 		ToPresenter: toPresenter,
 	}
