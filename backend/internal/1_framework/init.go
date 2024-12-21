@@ -1,9 +1,9 @@
 package app
 
 import (
-	"backend/internal/1_framework/db/freezer"
-	"backend/internal/1_framework/db/refrigerator"
-	"backend/internal/1_framework/db/shelf"
+	"backend/internal/1_framework/db/mongo"
+	"backend/internal/1_framework/db/mysql"
+	"backend/internal/1_framework/db/postgres"
 	"backend/internal/1_framework/external_interface/monitor"
 	"backend/internal/1_framework/external_interface/shipment"
 	"backend/internal/1_framework/input/delivery"
@@ -27,9 +27,9 @@ type (
 func NewApp() *app {
 
 	ctrl := controller.NewController(
-		refrigerator.NewToRefrigerator(),
-		freezer.NewToFreezer(),
-		shelf.NewToShelf(),
+		postgres.NewToPostgres(),
+		mysql.NewToMySQL(),
+		mongo.NewToMongo(),
 		shipment.NewToShipment(),
 		monitor.NewToMonitor(),
 	)

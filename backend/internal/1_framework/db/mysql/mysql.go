@@ -1,4 +1,4 @@
-package freezer
+package mysql
 
 import (
 	"context"
@@ -21,8 +21,8 @@ func init() {
 }
 
 type (
-	// Freezer ...
-	Freezer struct {
+	// MySQL ...
+	MySQL struct {
 		Conn *gorm.DB
 	}
 
@@ -34,15 +34,15 @@ type (
 	}
 )
 
-// NewToFreezer ...
-func NewToFreezer() gateway.ToFreezer {
+// NewToMySQL ...
+func NewToMySQL() gateway.ToMySQL {
 	conn, err := open(30)
 	if err != nil {
 		myErr.Logging(err)
 		panic(err)
 	}
 
-	s := new(Freezer)
+	s := new(MySQL)
 	s.Conn = conn
 	return s
 }
@@ -64,7 +64,7 @@ func open(count uint) (*gorm.DB, error) {
 }
 
 // UpdatePatties ...
-func (receiver *Freezer) UpdatePatties(ctx context.Context, items map[string]int) error {
+func (receiver *MySQL) UpdatePatties(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := receiver.Conn.
 			Table("patties").

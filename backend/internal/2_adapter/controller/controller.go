@@ -46,17 +46,17 @@ var orderChannel = make(chan OrderChannel)
 
 // NewController ...
 func NewController(
-	toRefrigerator gateway.ToRefrigerator,
-	toFreezer gateway.ToFreezer,
-	toShelf gateway.ToShelf,
+	ToPostgres gateway.ToPostgres,
+	toMySQL gateway.ToMySQL,
+	toMongo gateway.ToMongo,
 	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
 ) ToController {
 	toEntity := domain.NewEntity()
 	toGateway := gateway.NewGateway(
-		toRefrigerator,
-		toFreezer,
-		toShelf,
+		ToPostgres,
+		toMySQL,
+		toMongo,
 	)
 	toPresenter := presenter.NewPresenter(
 		toShipment,

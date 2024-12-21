@@ -69,9 +69,9 @@ internal内のディレクトリ設計を<a href="https://blog.tai2.net/the_clea
 | --- | --- |
 | 1_framework | Frameworks & Drivers レイヤー |
 | 1_framework/db | 食材の保管 |
-| 1_framework/db/freezer | MySQL:冷凍庫 パティを保存 |
-| 1_framework/db/refrigerator | PostgreSQL:冷蔵庫 野菜、チーズなどの保存 |
-| 1_framework/db/shelf | MongoDB:棚 バンズを保存 |
+| 1_framework/db/mysql | MySQL:冷凍庫 パティを保存 |
+| 1_framework/db/postgres | PostgreSQL:冷蔵庫 野菜、チーズなどの保存 |
+| 1_framework/db/mongo | MongoDB:棚 バンズを保存 |
 | 1_framework/external_interface | オーダーモニター、商品の引き渡し |
 | 1_framework/external_interface/monitor | websocket&vue:オーダーモニター |
 | 1_framework/external_interface/shipment | jsonファイルを商品の引き渡しとする |

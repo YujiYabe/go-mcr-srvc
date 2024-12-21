@@ -1,4 +1,4 @@
-package refrigerator
+package postgres
 
 import (
 	"context"
@@ -21,8 +21,8 @@ func init() {
 }
 
 type (
-	// Refrigerator ...
-	Refrigerator struct {
+	// Postgres ...
+	Postgres struct {
 		Conn *gorm.DB
 	}
 
@@ -34,15 +34,15 @@ type (
 	}
 )
 
-// NewToRefrigerator ...
-func NewToRefrigerator() gateway.ToRefrigerator {
+// NewToPostgres ...
+func NewToPostgres() gateway.ToPostgres {
 	conn, err := open(30)
 	if err != nil {
 		myErr.Logging(err)
 		panic(err)
 	}
 
-	s := new(Refrigerator)
+	s := new(Postgres)
 	s.Conn = conn
 	return s
 }
@@ -64,7 +64,7 @@ func open(count uint) (*gorm.DB, error) {
 }
 
 // UpdateVegetables ...
-func (receiver *Refrigerator) UpdateVegetables(ctx context.Context, items map[string]int) error {
+func (receiver *Postgres) UpdateVegetables(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := receiver.Conn.
 			Table("vegetables").
@@ -84,7 +84,7 @@ func (receiver *Refrigerator) UpdateVegetables(ctx context.Context, items map[st
 }
 
 // UpdateIngredients ...
-func (receiver *Refrigerator) UpdateIngredients(ctx context.Context, items map[string]int) error {
+func (receiver *Postgres) UpdateIngredients(ctx context.Context, items map[string]int) error {
 	for item, num := range items {
 		res := receiver.Conn.
 			Table("ingredients").

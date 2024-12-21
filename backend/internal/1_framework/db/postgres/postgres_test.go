@@ -1,4 +1,4 @@
-package refrigerator
+package postgres
 
 import (
 	"context"
@@ -24,7 +24,7 @@ func TestUpdateVegetables(t *testing.T) {
 				Conn: sqlDB,
 			}), &gorm.Config{})
 
-			postgres := Refrigerator{
+			postgres := Postgres{
 				Conn: gormDB,
 			}
 			// 想定されるクエリとその引数に対して返す値の設定

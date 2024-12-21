@@ -6,7 +6,7 @@ import (
 
 // GetBans ...
 func (receiver *Gateway) GetBans(ctx context.Context, requestBans map[string]int) error {
-	err := receiver.ToShelf.UpdateBans(ctx, requestBans)
+	err := receiver.ToMongo.UpdateBans(ctx, requestBans)
 	if err != nil {
 		myErr.Logging(err)
 		return err
