@@ -1,7 +1,6 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#1E3302",
-        "titleBar.activeBackground": "#2A4803",
-        "titleBar.activeForeground": "#F3FEE5"
-    }
+    "cSpell.showAutocompleteSuggestions": true,
+    "cSpell.import": [
+        "./.vscode/cspell.json"
+    ],
 }
