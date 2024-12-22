@@ -8,6 +8,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
+	"backend/internal/1_framework/db/postgres/models"
 	"backend/internal/2_adapter/gateway"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
@@ -19,12 +20,12 @@ type (
 		Conn *gorm.DB
 	}
 
-	// Vegetable ...
-	Vegetable struct {
-		ID    int
-		Name  string
-		Stock int
-	}
+	// // Vegetable ...
+	// Vegetable struct {
+	// 	ID    int
+	// 	Name  string
+	// 	Stock int
+	// }
 )
 
 // NewToPostgres ...
@@ -66,15 +67,31 @@ func (receiver *Postgres) GetPersonList(
 	err error,
 ) {
 	personList = struct_object.PersonList{}
+	persons := []models.Person{}
 
-	res := receiver.Conn.
+	result := receiver.Conn.
 		Table("persons").
-		Find(personList)
+		Find(&persons)
 
-	if res.Error != nil {
-		pkg.Logging(ctx, res.Error)
-		return personList, res.Error
+	if result.Error != nil {
+		pkg.Logging(ctx, result.Error)
+		return personList, result.Error
+	}
+	for _, person := range persons {
+		args := &struct_object.NewPersonArgs{
+			ID:          person.ID,
+			Name:        &person.Name.String,
+			MailAddress: &person.MailAddress.String,
+		}
+		person := struct_object.NewPerson(args)
+
+		if person.Err != nil {
+			pkg.Logging(ctx, person.Err)
+			return personList, person.Err
+		}
+
+		personList = append(personList, *person)
 	}
 
-	return personList, nil
+	return
 }

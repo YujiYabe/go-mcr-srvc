@@ -42,35 +42,35 @@ func (receiver *Register) Start() {
 	defer watcher.Close()
 	done := make(chan bool)
 
-	go func() {
-		for {
-			select {
-			case event, ok := <-watcher.Events:
-				if !ok {
-					return
-				}
-				switch {
-				case event.Op&fsnotify.Create == fsnotify.Create:
-					receiver.OrderAccept()
+	// go func() {
+	// 	for {
+	// 		select {
+	// 		case event, ok := <-watcher.Events:
+	// 			if !ok {
+	// 				return
+	// 			}
+	// 			switch {
+	// 			case event.Op&fsnotify.Create == fsnotify.Create:
+	// 				receiver.OrderAccept()
 
-				case event.Op&fsnotify.Write == fsnotify.Write:
-					receiver.OrderAccept()
+	// 			case event.Op&fsnotify.Write == fsnotify.Write:
+	// 				receiver.OrderAccept()
 
-				case event.Op&fsnotify.Remove == fsnotify.Remove:
-				case event.Op&fsnotify.Rename == fsnotify.Rename:
-				case event.Op&fsnotify.Chmod == fsnotify.Chmod:
-				}
+	// 			case event.Op&fsnotify.Remove == fsnotify.Remove:
+	// 			case event.Op&fsnotify.Rename == fsnotify.Rename:
+	// 			case event.Op&fsnotify.Chmod == fsnotify.Chmod:
+	// 			}
 
-			case err, ok := <-watcher.Errors:
-				if !ok {
-					return
-				}
-				if err != nil {
-					pkg.Logging(ctx, err)
-				}
-			}
-		}
-	}()
+	// 		case err, ok := <-watcher.Errors:
+	// 			if !ok {
+	// 				return
+	// 			}
+	// 			if err != nil {
+	// 				pkg.Logging(ctx, err)
+	// 			}
+	// 		}
+	// 	}
+	// }()
 
 	err = watcher.Add(pkg.RegisterPath)
 	if err != nil {

@@ -50,3 +50,10 @@ resetall: removeall build up
 .PHONY: gosec
 gosec:
 	gosec -exclude=G303 ./backend/...
+
+
+# ----------------------------
+# github.com/securego/gosec/v2/cmd/gosec
+.PHONY: xo
+xo:
+	cd backend/internal/1_framework/db/postgres && xo schema postgres://user:user@localhost:15432/app?sslmode=disable

@@ -14,5 +14,6 @@ func (receiver *controller) GetPersonList(
 	personList struct_object.PersonList,
 	err error,
 ) {
-	return
+
+	return receiver.UseCase.GetPersonList(ctx)
 }

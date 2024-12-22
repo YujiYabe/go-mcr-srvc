@@ -38,10 +38,11 @@
 		"gonic",
 		"gopkg",
 		"gorm",
+		"gosec",
 		"iasm",
 		"Idxs",
-		"INITDB",
 		"initdb",
+		"INITDB",
 		"isatty",
 		"jackc",
 		"jinzhu",
@@ -101,7 +102,7 @@
 		"Unrk",
 		"upgrader",
 		"Upgrader",
-		"Upgrader",
+		"usecase",
 		"valyala",
 		"vasile",
 		"Vgkq",
@@ -114,7 +115,6 @@
 		"youmark",
 		"yuin",
 		"zliz",
-		"zoneinfo",
-		"usecase"
+		"zoneinfo"
 	]
 }

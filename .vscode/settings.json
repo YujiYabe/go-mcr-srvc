@@ -2,5 +2,17 @@
     "cSpell.import": [
         "./.vscode/cspell.json"
     ],
-    "makefile.configureOnOpen": false
+    "makefile.configureOnOpen": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 15432,
+            "driver": "PostgreSQL",
+            "name": "postgres local",
+            "database": "app",
+            "username": "user",
+            "password": "user"
+        }
+    ]
 }

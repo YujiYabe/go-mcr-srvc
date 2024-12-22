@@ -20,6 +20,7 @@ type (
 	// ToController ...
 	ToController interface {
 		Start()
+
 		GetPersonList(
 			ctx context.Context,
 		) (

@@ -15,6 +15,5 @@ func (receiver *useCase) GetPersonList(
 	personList struct_object.PersonList,
 	err error,
 ) {
-
-	return
+	return receiver.ToGateway.GetPersonList(ctx)
 }
