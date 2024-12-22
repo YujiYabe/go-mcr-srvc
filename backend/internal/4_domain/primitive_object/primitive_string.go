@@ -6,126 +6,141 @@ import (
 )
 
 type PrimitiveString struct {
-	value  *string
-	max    *int
-	min    *int
-	canNil *bool
+	Err       error
+	Value     string
+	IsNil     bool
+	MaxLength int
+	MinLength int
 }
 
-func NewPrimitiveString() *PrimitiveString {
-	return &PrimitiveString{}
+type PrimitiveStringOption func(*PrimitiveString)
+
+func WithError(err error) PrimitiveStringOption {
+	return func(s *PrimitiveString) {
+		s.Err = err
+	}
 }
 
+func WithValue(value string) PrimitiveStringOption {
+	return func(s *PrimitiveString) {
+		s.Value = value
+	}
+}
+
+func WithIsNil(value string) PrimitiveStringOption {
+	return func(s *PrimitiveString) {
+		s.Value = value
+	}
+}
+
+func WithMaxLength(length int) PrimitiveStringOption {
+	return func(s *PrimitiveString) {
+		s.MaxLength = length
+	}
+}
+
+func WithMinLength(length int) PrimitiveStringOption {
+	return func(s *PrimitiveString) {
+		s.MinLength = length
+	}
+}
+
+func NewPrimitiveString(
+	options ...PrimitiveStringOption,
+) (
+	primitiveString *PrimitiveString,
+) {
+	// デフォルト値を設定
+	primitiveString = &PrimitiveString{
+		Err:       nil,
+		Value:     "",
+		IsNil:     false,
+		MaxLength: -1,
+		MinLength: -1,
+	}
+
+	// オプションを適用
+	for _, option := range options {
+		option(primitiveString)
+	}
+
+	return
+}
+
+// --------------------------------------
+func (receiver *PrimitiveString) SetIsNil(isNil bool) {
+	receiver.IsNil = isNil
+}
+
+// --------------------------------------
+func (receiver *PrimitiveString) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *PrimitiveString) SetError(errString string) {
+	receiver.Err = fmt.Errorf("error: %s", errString)
+}
+
+// --------------------------------------
 func (receiver *PrimitiveString) GetValue() string {
-	if receiver.value != nil {
-		return *receiver.value
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return ""
+	}
+	return receiver.Value
+}
+
+func (receiver *PrimitiveString) SetValue(value string) {
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return
+	}
+	receiver.Value = value
+}
+
+// --------------------------------------
+func (receiver *PrimitiveString) Validation() {
+	receiver.ValidationMax()
+	if receiver.Err != nil {
+		return
 	}
 
-	return ""
+	receiver.ValidationMin()
+	if receiver.Err != nil {
+		return
+	}
 }
 
-func (receiver *PrimitiveString) GetPointer() *string {
-	return receiver.value
-}
-
-func (receiver *PrimitiveString) SetValue(v *string) (*PrimitiveString, error) {
-	receiver.value = v
-
-	// nullがnilであれば判定対象外にヌル
-	canNil := receiver.GetCanNil()
-	if canNil != nil && // canNilに値が入っており
-		!*canNil && // canNilがfalseだが[*canNil == false]
-		receiver.value == nil { // valueがnilの場合
-		return receiver, fmt.Errorf("error: %s", "validation error")
+func (receiver *PrimitiveString) ValidationMax() {
+	if receiver.MaxLength < 0 {
+		receiver.SetError("max length no defined")
+		return
 	}
 
-	if canNil != nil && // canNilに値が入っており
-		*canNil && // canNilがtrueだが[*canNil == true
-		receiver.value == nil { // valueがnilの場合
-		return receiver, nil
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return
 	}
 
-	if canNil == nil && // canNilに値が入っておらず
-		receiver.value == nil { // valueがnilの場合
-		return receiver, nil // あえて設定しない要素の為このまま返す
+	if utf8.RuneCountInString(receiver.Value) > receiver.MaxLength {
+		receiver.SetError("over max limitation")
+		return
+	}
+}
+
+func (receiver *PrimitiveString) ValidationMin() {
+	if receiver.MinLength < 0 {
+		receiver.SetError("min length no defined")
+		return
 	}
 
-	// max があればmax判定確認
-	if receiver.GetMax() != nil {
-		if err := receiver.ValidationMax(); err != nil {
-			return receiver, fmt.Errorf("error: %s", "validation error")
-		}
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return
 	}
 
-	// min があればmin判定確認
-	if receiver.GetMin() != nil {
-		if err := receiver.ValidationMin(); err != nil {
-			return receiver, fmt.Errorf("error: %s", "validation error")
-		}
+	if utf8.RuneCountInString(receiver.Value) < receiver.MaxLength {
+		receiver.SetError("over max limitation")
+		return
 	}
-
-	return receiver, nil
-}
-
-func (receiver *PrimitiveString) GetMax() *int {
-	return receiver.max
-}
-
-func (receiver *PrimitiveString) GetMin() *int {
-	return receiver.min
-}
-
-func (receiver *PrimitiveString) GetCanNil() *bool {
-	return receiver.canNil
-}
-
-func (receiver *PrimitiveString) SetMax(v int) *PrimitiveString {
-	receiver.max = &v
-	return receiver
-}
-
-func (receiver *PrimitiveString) SetMin(v int) *PrimitiveString {
-	receiver.min = &v
-	return receiver
-}
-
-func (receiver *PrimitiveString) SetCanNil(v bool) *PrimitiveString {
-	receiver.canNil = &v
-	return receiver
-}
-
-func (receiver *PrimitiveString) ValidationNil() error {
-	if receiver.canNil != nil && //canNilがnilでない
-		!*receiver.canNil && //canNilがfalse
-		receiver.value == nil {
-		return fmt.Errorf("error: %s", " is nil")
-	}
-	return nil
-}
-
-func (receiver *PrimitiveString) ValidationMax() error {
-	if err := receiver.ValidationNil(); err != nil {
-		return err
-	}
-
-	if utf8.RuneCountInString(*receiver.value) > *receiver.max {
-		return fmt.Errorf("error: %s", "over max limitation")
-	}
-
-	return nil
-}
-
-func (receiver *PrimitiveString) ValidationMin() error {
-	if err := receiver.ValidationNil(); err != nil {
-		return err
-	}
-	if utf8.RuneCountInString(*receiver.value) < *receiver.min {
-		return fmt.Errorf("error: %s", "over min limitation")
-	}
-
-	return nil
-}
-
-func (receiver *PrimitiveString) IsNil() bool {
-	return receiver.value == nil
 }
