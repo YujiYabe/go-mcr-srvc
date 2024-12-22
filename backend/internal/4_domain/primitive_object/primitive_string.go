@@ -2,6 +2,7 @@ package primitive_object
 
 import (
 	"fmt"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -11,37 +12,44 @@ type PrimitiveString struct {
 	IsNil     bool
 	MaxLength int
 	MinLength int
+	SpellList []string
 }
 
 type PrimitiveStringOption func(*PrimitiveString)
 
-func WithError(err error) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithError(err error) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.Err = err
 	}
 }
 
-func WithValue(value string) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithValue(value string) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.Value = value
 	}
 }
 
-func WithIsNil(value string) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithIsNil(isNil bool) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.Value = value
+		s.IsNil = isNil
 	}
 }
 
-func WithMaxLength(length int) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithMaxLength(length int) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.MaxLength = length
 	}
 }
 
-func WithMinLength(length int) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithMinLength(length int) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.MinLength = length
+	}
+}
+
+func (receiver *PrimitiveString) WithCheckSpell(spellList []string) PrimitiveStringOption {
+	return func(s *PrimitiveString) {
+		s.SpellList = spellList
 	}
 }
 
@@ -57,6 +65,7 @@ func NewPrimitiveString(
 		IsNil:     false,
 		MaxLength: -1,
 		MinLength: -1,
+		SpellList: []string{},
 	}
 
 	// オプションを適用
@@ -91,29 +100,37 @@ func (receiver *PrimitiveString) GetValue() string {
 }
 
 func (receiver *PrimitiveString) SetValue(value string) {
-	if receiver.IsNil {
-		receiver.SetError("is nil")
-		return
-	}
+	// if receiver.IsNil {
+	// 	receiver.SetError("is nil")
+	// 	return
+	// }
+	receiver.IsNil = false
 	receiver.Value = value
 }
 
 // --------------------------------------
-func (receiver *PrimitiveString) Validation() {
+func (receiver *PrimitiveString) Validation() error {
 	receiver.ValidationMax()
 	if receiver.Err != nil {
-		return
+		return receiver.Err
 	}
 
 	receiver.ValidationMin()
 	if receiver.Err != nil {
-		return
+		return receiver.Err
 	}
+
+	receiver.ValidationSpell()
+	if receiver.Err != nil {
+		return receiver.Err
+	}
+
+	return nil
 }
 
 func (receiver *PrimitiveString) ValidationMax() {
 	if receiver.MaxLength < 0 {
-		receiver.SetError("max length no defined")
+		// receiver.SetError("max length no defined")
 		return
 	}
 
@@ -130,7 +147,7 @@ func (receiver *PrimitiveString) ValidationMax() {
 
 func (receiver *PrimitiveString) ValidationMin() {
 	if receiver.MinLength < 0 {
-		receiver.SetError("min length no defined")
+		// receiver.SetError("min length no defined")
 		return
 	}
 
@@ -139,8 +156,36 @@ func (receiver *PrimitiveString) ValidationMin() {
 		return
 	}
 
-	if utf8.RuneCountInString(receiver.Value) < receiver.MaxLength {
-		receiver.SetError("over max limitation")
+	if utf8.RuneCountInString(receiver.Value) < receiver.MinLength {
+		receiver.SetError("over min limitation")
 		return
 	}
+}
+
+func (receiver *PrimitiveString) ValidationSpell() {
+	if len(receiver.SpellList) == 0 {
+		return
+	}
+	for _, spell := range receiver.SpellList {
+		if strings.Contains(receiver.Value, spell) {
+			receiver.SetError("detect target spell : " + spell)
+			return
+		}
+	}
+}
+
+func (receiver *PrimitiveString) CheckNil(
+	value *string,
+) (
+	valueString string,
+	isNil bool,
+) {
+	valueString = ""
+	isNil = true
+	if value != nil {
+		valueString = *value
+		isNil = false
+	}
+
+	return
 }

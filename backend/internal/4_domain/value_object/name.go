@@ -9,28 +9,35 @@ const (
 	nameLengthMin = 1
 )
 
+var nameCheckSpell = []string{
+	"盗む",
+	"暴力",
+}
+
 type Name struct {
-	primitiveString *primitive_object.PrimitiveString
+	Content *primitive_object.PrimitiveString
 }
 
 func NewName(
-	value string,
+	value *string,
 ) (
-	name *Name,
+	name Name,
 	err error,
 ) {
-	name = &Name{
-		primitiveString: primitive_object.NewPrimitiveString(
-			primitive_object.WithValue(value),
-			primitive_object.WithMaxLength(nameLengthMax),
-			primitive_object.WithMinLength(nameLengthMin),
-		),
-	}
+	name = Name{}
+	primitiveString := &primitive_object.PrimitiveString{}
 
-	name.primitiveString.Validation()
-	if name.primitiveString.GetError() != nil {
-		return name, name.primitiveString.GetError()
-	}
+	valueString, isNil := primitiveString.CheckNil(value)
+
+	name.Content = primitive_object.NewPrimitiveString(
+		primitiveString.WithValue(valueString),
+		primitiveString.WithIsNil(isNil),
+		primitiveString.WithMaxLength(nameLengthMax),
+		primitiveString.WithMinLength(nameLengthMin),
+		primitiveString.WithCheckSpell(nameCheckSpell),
+	)
+
+	err = name.Content.Validation()
 
 	return
 }
