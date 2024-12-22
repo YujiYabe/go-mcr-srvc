@@ -3,17 +3,7 @@ package domain
 import (
 	"context"
 	"time"
-
-	"backend/pkg"
 )
-
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("enterprise_business_rule", "domain")
-}
 
 // NewDomain ...
 func NewDomain() ToDomain {

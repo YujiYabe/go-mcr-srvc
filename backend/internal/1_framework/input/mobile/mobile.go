@@ -11,12 +11,7 @@ import (
 
 var (
 	orderType = "mobile"
-	myErr     *pkg.MyErr
 )
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "mobile")
-}
 
 type (
 	// Mobile ...
@@ -63,7 +58,7 @@ func (receiver *Mobile) IndexPost(c echo.Context) error {
 	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &domain.Product{}
 	if err := c.Bind(product); err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 	order := &domain.Order{Product: *product}

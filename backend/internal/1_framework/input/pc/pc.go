@@ -10,12 +10,7 @@ import (
 
 var (
 	orderType = "pc"
-	myErr     *pkg.MyErr
 )
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "pc")
-}
 
 type (
 	// PC ...
@@ -55,7 +50,7 @@ func (receiver *PC) IndexPost(c *gin.Context) {
 	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
 	product := &domain.Product{}
 	if err := c.Bind(product); err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return
 	}
 	order := &domain.Order{Product: *product}

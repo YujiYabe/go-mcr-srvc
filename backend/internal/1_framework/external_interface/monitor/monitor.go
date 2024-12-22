@@ -15,13 +15,8 @@ import (
 )
 
 var (
-	myErr      *pkg.MyErr
 	ordersChan = make(chan Orders)
 )
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "monitor")
-}
 
 type (
 	// Template ...

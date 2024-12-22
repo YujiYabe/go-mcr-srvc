@@ -11,9 +11,10 @@ import (
 )
 
 func (receiver *Monitor) RemoveYummy() {
+	ctx := context.Background()
 	yummyFiles, err := os.ReadDir(pkg.YummyPath)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 	}
 
 	for _, yummyFile := range yummyFiles {
@@ -22,19 +23,20 @@ func (receiver *Monitor) RemoveYummy() {
 		}
 		err := os.Remove(filepath.Join(pkg.YummyPath, yummyFile.Name()))
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 		}
 	}
 
 }
 
 func (receiver *Monitor) Watching() {
+	ctx := context.Background()
 	var currentFiles []string
 
 	for {
 		files, err := os.ReadDir(pkg.YummyPath)
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 		}
 
 		var newFiles []string

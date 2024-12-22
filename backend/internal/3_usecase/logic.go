@@ -11,13 +11,8 @@ import (
 )
 
 var (
-	myErr        *pkg.MyErr
 	orderUsecase = make(chan OrderUsecase)
 )
-
-func init() {
-	myErr = pkg.NewMyErr("application_business_rule", "usecase")
-}
 
 // Start ...
 func (receiver *useCase) Start() {
@@ -62,19 +57,19 @@ func (receiver *useCase) bulkOrder() {
 			// 材料取り出し
 			err = receiver.getFoodstuff(*ou.ctx, assemble)
 			if err != nil {
-				myErr.Logging(err)
+				pkg.Logging(*ou.ctx, err)
 			}
 
 			// 調理
 			err = receiver.cookFoodstuff(*ou.ctx, ou.order, assemble)
 			if err != nil {
-				myErr.Logging(err)
+				pkg.Logging(*ou.ctx, err)
 			}
 
 			// 出荷よー
 			err = receiver.ToPresenter.Shipment(*ou.ctx, ou.order)
 			if err != nil {
-				myErr.Logging(err)
+				pkg.Logging(*ou.ctx, err)
 			}
 
 			receiver.ToPresenter.UpdateOrders(*ou.ctx, ou.order.OrderInfo.OrderNumber, "complete")
@@ -115,7 +110,7 @@ func (receiver *useCase) getFoodstuff(ctx context.Context, assemble *domain.Asse
 
 	wg.Wait()
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
@@ -127,7 +122,7 @@ func (receiver *useCase) cookFoodstuff(ctx context.Context, order *domain.Order,
 	if len(order.Product.Hamburgers) > 0 {
 		err := receiver.ToDomain.CookHamburgers(ctx, order.Product.Hamburgers)
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			return err
 		}
 	}

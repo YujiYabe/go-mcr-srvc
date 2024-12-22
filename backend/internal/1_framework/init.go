@@ -4,6 +4,7 @@ import (
 	"backend/internal/1_framework/db/mongo"
 	"backend/internal/1_framework/db/mysql"
 	"backend/internal/1_framework/db/postgres"
+	"backend/internal/1_framework/db/redis"
 	"backend/internal/1_framework/external_interface/monitor"
 	"backend/internal/1_framework/external_interface/shipment"
 	"backend/internal/1_framework/input/delivery"
@@ -27,6 +28,7 @@ type (
 func NewApp() *app {
 
 	ctrl := controller.NewController(
+		redis.NewToRedis(),
 		postgres.NewToPostgres(),
 		mysql.NewToMySQL(),
 		mongo.NewToMongo(),

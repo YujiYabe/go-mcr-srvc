@@ -1,43 +1,43 @@
 version: '3.6'
 services:
 
-    mysql:
-        restart: always
-        container_name: mysql
-        build:
-            context: ./db/engine/mysql
-            dockerfile: Dockerfile
-        environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - TZ=${TZ}
-        ports:
-            - ${MYSQL_FRONT_PORT}:${MYSQL_BACK_PORT}
-        volumes:
-            - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
-            - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
-            - ./db/engine/mysql/data:/var/lib/mysql
+    # mysql:
+    #     restart: always
+    #     container_name: mysql
+    #     build:
+    #         context: ./db/engine/mysql
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         - MYSQL_DATABASE=${MYSQL_DATABASE}
+    #         - MYSQL_USER=${MYSQL_USER}
+    #         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    #         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    #         - TZ=${TZ}
+    #     ports:
+    #         - ${MYSQL_FRONT_PORT}:${MYSQL_BACK_PORT}
+    #     volumes:
+    #         - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
+    #         - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
+    #         - ./db/engine/mysql/data:/var/lib/mysql
 
-    mariadb:
-        restart: always
-        container_name: mariadb
-        build:
-            context: ./db/engine/mariadb
-            dockerfile: Dockerfile
-        environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - TZ=${TZ}
-        ports:
-            - ${MARIADB_FRONT_PORT}:${MARIADB_BACK_PORT}
-        volumes:
-            - ./db/engine/mariadb/conf.d:/etc/mysql/conf.d
-            - ./db/engine/mariadb/initdb.d:/docker-entrypoint-initdb.d
-            - ./db/engine/mariadb/data:/var/lib/mysql
+    # mariadb:
+    #     restart: always
+    #     container_name: mariadb
+    #     build:
+    #         context: ./db/engine/mariadb
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         - MYSQL_DATABASE=${MYSQL_DATABASE}
+    #         - MYSQL_USER=${MYSQL_USER}
+    #         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    #         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    #         - TZ=${TZ}
+    #     ports:
+    #         - ${MARIADB_FRONT_PORT}:${MARIADB_BACK_PORT}
+    #     volumes:
+    #         - ./db/engine/mariadb/conf.d:/etc/mysql/conf.d
+    #         - ./db/engine/mariadb/initdb.d:/docker-entrypoint-initdb.d
+    #         - ./db/engine/mariadb/data:/var/lib/mysql
 
     postgres:
         restart: always
@@ -57,22 +57,33 @@ services:
             - ./db/engine/postgres/initdb.d:/docker-entrypoint-initdb.d
             - ./db/engine/postgres/data:/var/lib/postgres/data
 
-    mongo:
+    # mongo:
+    #     restart: always
+    #     container_name: mongo
+    #     build:
+    #         context: ./db/engine/mongo
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    #         - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+    #         - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    #         - TZ=${TZ}
+    #     ports:
+    #         - ${MONG_FRONT_PORT}:${MONG_BACK_PORT}
+    #     command: mongod --quiet --logpath /dev/null
+    #     volumes:
+    #         - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
+
+    redis:
         restart: always
-        container_name: mongo
+        container_name: redis
         build:
-            context: ./db/engine/mongo
+            context: ./db/engine/redis
             dockerfile: Dockerfile
-        environment:
-            - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-            - TZ=${TZ}
         ports:
-            - ${MONG_FRONT_PORT}:${MONG_BACK_PORT}
-        command: mongod --quiet --logpath /dev/null
+            - "6739:6739"
         volumes:
-            - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
+            - ./db/engine/redis/data:/data
 
     backend:
         restart: always
@@ -91,13 +102,15 @@ services:
             - GOPATH=${GOPATH}
         tty: true
         links:
-            - mysql
+            - redis
             - postgres
-            - mongo
+            # - mysql
+            # - mongo
         depends_on:
-            - mysql
+            - redis
             - postgres
-            - mongo
+            # - mysql
+            # - mongo
 
 
     # phpmyadmin:

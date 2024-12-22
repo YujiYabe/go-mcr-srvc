@@ -12,13 +12,7 @@ import (
 	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "postgres")
-}
+var isEnable = false
 
 type (
 	// Mongo ...
@@ -46,12 +40,20 @@ func NewToMongo() gateway.ToMongo {
 	return s
 }
 
-func open(count uint) (*mongo.Client, error) {
-	uri := "mongodb://user:user@mongo:27017"
+func open(count uint) (
+	client *mongo.Client,
+	err error,
+) {
+	if !isEnable {
+		return client, nil
+	}
 
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	uri := "mongodb://user:user@mongo:27017"
+	ctx := context.Background()
+
+	client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		panic(err)
 	}
 
@@ -73,14 +75,14 @@ func (receiver *Mongo) UpdateBans(ctx context.Context, items map[string]int) err
 		err := bans.FindOne(ctx, filter).Decode(stock)
 		if err != nil {
 
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			return err
 		}
 
 		change := bson.M{"$set": bson.M{"stock": stock.Stock - num}}
 		_, err = bans.UpdateOne(ctx, filter, change)
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			return err
 		}
 

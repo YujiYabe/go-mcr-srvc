@@ -2,23 +2,21 @@ package gateway
 
 import (
 	"context"
-
-	"backend/pkg"
 )
-
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("interface_adapter", "gateway")
-}
 
 type (
 	Gateway struct {
+		ToRedis    ToRedis
 		ToPostgres ToPostgres
 		ToMySQL    ToMySQL
 		ToMongo    ToMongo
+	}
+
+	// ToRedis ...
+	ToRedis interface {
+		ResetPlaceListInRedis(
+			ctx context.Context,
+		) error
 	}
 
 	// ToPostgres ...
@@ -39,9 +37,15 @@ type (
 )
 
 // NewGateway ...
-func NewGateway(ToPostgres ToPostgres, toMySQL ToMySQL, toMongo ToMongo) *Gateway {
+func NewGateway(
+	toRedis ToRedis,
+	toPostgres ToPostgres,
+	toMySQL ToMySQL,
+	toMongo ToMongo,
+) *Gateway {
 	return &Gateway{
-		ToPostgres: ToPostgres,
+		ToRedis:    toRedis,
+		ToPostgres: toPostgres,
 		ToMySQL:    toMySQL,
 		ToMongo:    toMongo,
 	}

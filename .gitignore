@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/go
 # Edit at https://www.gitignore.io/?templates=go
 
@@ -27,9 +26,9 @@ backend/script/order/vendor
 
 # End of https://www.gitignore.io/api/go
 
-
 /db/engine/mysql/data/*
 /db/engine/mariadb/data/*
+/db/engine/redis/data/*
 gin-bin
 .envrc
 /direnv/*

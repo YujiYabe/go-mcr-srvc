@@ -12,13 +12,7 @@ import (
 	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "mysql")
-}
+var isEnable = false
 
 type (
 	// MySQL ...
@@ -36,9 +30,10 @@ type (
 
 // NewToMySQL ...
 func NewToMySQL() gateway.ToMySQL {
+	ctx := context.Background()
 	conn, err := open(30)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		panic(err)
 	}
 
@@ -47,11 +42,20 @@ func NewToMySQL() gateway.ToMySQL {
 	return s
 }
 
-func open(count uint) (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open(pkg.MySQLDSN), &gorm.Config{})
+func open(count uint) (
+	client *gorm.DB,
+	err error,
+
+) {
+	if !isEnable {
+		return client, nil
+	}
+
+	ctx := context.Background()
+	client, err = gorm.Open(mysql.Open(pkg.MySQLDSN), &gorm.Config{})
 	if err != nil {
 		if count == 0 {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			return nil, fmt.Errorf("Retry count over")
 		}
 		time.Sleep(time.Second)
@@ -60,7 +64,7 @@ func open(count uint) (*gorm.DB, error) {
 		return open(count)
 	}
 
-	return db, nil
+	return client, nil
 }
 
 // UpdatePatties ...
@@ -72,7 +76,7 @@ func (receiver *MySQL) UpdatePatties(ctx context.Context, items map[string]int) 
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
 
 		if res.Error != nil {
-			myErr.Logging(res.Error)
+			pkg.Logging(ctx, res.Error)
 			return res.Error
 		}
 

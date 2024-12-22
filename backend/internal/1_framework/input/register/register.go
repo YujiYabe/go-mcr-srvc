@@ -17,12 +17,7 @@ import (
 
 var (
 	orderType = "register"
-	myErr     *pkg.MyErr
 )
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "register")
-}
 
 type (
 	// Register ...
@@ -41,9 +36,11 @@ func NewRegister(receiver controller.ToController) *Register {
 }
 
 func (receiver *Register) Start() {
+	ctx := context.Background()
+
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		log.Fatal(err)
 	}
 	defer watcher.Close()
@@ -73,7 +70,7 @@ func (receiver *Register) Start() {
 					return
 				}
 				if err != nil {
-					myErr.Logging(err)
+					pkg.Logging(ctx, err)
 				}
 			}
 		}
@@ -81,15 +78,16 @@ func (receiver *Register) Start() {
 
 	err = watcher.Add(pkg.RegisterPath)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 	}
 	<-done
 }
 
 func (receiver *Register) OrderAccept() {
+	ctx := context.Background()
 	files, err := os.ReadDir(pkg.RegisterPath)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 	}
 
 	for _, file := range files {
@@ -107,14 +105,14 @@ func (receiver *Register) OrderAccept() {
 
 		raw, err := os.ReadFile(filepath.Clean(currentFilePath))
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			continue
 		}
 
 		product := &domain.Product{}
 		err = json.Unmarshal(raw, product)
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			continue
 		}
 
@@ -135,7 +133,7 @@ func (receiver *Register) OrderAccept() {
 		err = os.Rename(currentFilePath, newFilePath) // オーダー番号返却
 
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 		}
 	}
 

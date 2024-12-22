@@ -4,6 +4,7 @@ import (
 	"context"
 
 	domain "backend/internal/4_domain"
+	"backend/pkg"
 )
 
 // Shipment ...
@@ -11,14 +12,14 @@ func (receiver *Presenter) Shipment(ctx context.Context, order *domain.Order) er
 	// 商品の出荷
 	err := receiver.ToShipment.PutProducts(ctx, order)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
 	// 商品の出荷記録
 	err = receiver.ToShipment.WriteLog(ctx, order)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 

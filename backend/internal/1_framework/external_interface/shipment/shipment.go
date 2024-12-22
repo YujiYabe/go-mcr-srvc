@@ -15,14 +15,6 @@ import (
 	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "shipment")
-}
-
 type Shipment struct{}
 
 // NewToShipment ...
@@ -38,13 +30,13 @@ func (receiver *Shipment) PutProducts(ctx context.Context, order *domain.Order) 
 
 	product, err := json.MarshalIndent(order.Product, "", "    ")
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
 	err = os.WriteFile(yummyFilePath, product, 0777) // #nosec G306
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
@@ -61,7 +53,7 @@ func (receiver *Shipment) WriteLog(ctx context.Context, order *domain.Order) err
 	if err != nil {
 		_, err := os.Create(LogFilePath)
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			return err
 		}
 	}
@@ -69,7 +61,7 @@ func (receiver *Shipment) WriteLog(ctx context.Context, order *domain.Order) err
 	// エラー以外の情報をjson化
 	product, err := json.Marshal(&order.Product)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
@@ -85,14 +77,14 @@ func (receiver *Shipment) WriteLog(ctx context.Context, order *domain.Order) err
 	// ファイル書き込み
 	f, err := os.OpenFile(filepath.Clean(LogFilePath), os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
 	defer func() {
 		err := f.Close()
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			log.Fatal(err)
 		}
 	}()

@@ -1,6 +1,8 @@
 package monitor
 
 import (
+	"backend/pkg"
+	"context"
 	"net/http"
 
 	"github.com/gorilla/websocket"
@@ -15,11 +17,15 @@ func (receiver *Monitor) Index(c echo.Context) error {
 
 // WebSocket ...
 func (receiver *Monitor) WebSocket(c echo.Context) error {
+	ctx := pkg.GetNewContext(
+		c.Request().Context(),
+		c.Response().Header().Get(echo.HeaderXRequestID),
+	)
 	var upgrader = websocket.Upgrader{}
 
 	webSocket, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
@@ -56,8 +62,9 @@ func (receiver *Monitor) Disconnect(agentID string) {
 }
 
 func (receiver *Monitor) sendToAgent(agentID string, orders Orders) {
+	ctx := context.Background()
 	err := receiver.Agents[agentID].Socket.WriteJSON(orders)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 	}
 }

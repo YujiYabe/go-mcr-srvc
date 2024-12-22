@@ -32,6 +32,7 @@ type (
 
 // NewController ...
 func NewController(
+	ToRedis gateway.ToRedis,
 	ToPostgres gateway.ToPostgres,
 	toMySQL gateway.ToMySQL,
 	toMongo gateway.ToMongo,
@@ -42,6 +43,7 @@ func NewController(
 ) {
 	toDomain := domain.NewDomain()
 	toGateway := gateway.NewGateway(
+		ToRedis,
 		ToPostgres,
 		toMySQL,
 		toMongo,

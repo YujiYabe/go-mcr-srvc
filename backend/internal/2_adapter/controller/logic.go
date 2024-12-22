@@ -9,14 +9,6 @@ import (
 	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("interface_adapter", "controller")
-}
-
 // orderChannel ...
 var orderChannel = make(chan OrderChannel)
 
@@ -57,7 +49,7 @@ func (receiver *controller) bulkOrder() {
 		oc := <-orderChannel // Orderメソッドのチャネルの受け取り
 		err := receiver.UseCase.Order(oc.ctx, oc.order)
 		if err != nil {
-			myErr.Logging(err)
+			pkg.Logging(*oc.ctx, err)
 		}
 	}
 }

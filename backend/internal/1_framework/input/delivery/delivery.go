@@ -16,12 +16,7 @@ import (
 
 var (
 	orderType = "delivery"
-	myErr     *pkg.MyErr
 )
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "delivery")
-}
 
 // Delivery ...
 type Delivery struct {
@@ -47,11 +42,12 @@ func NewDelivery(ctrl controller.ToController) *Delivery {
 
 // Start ....
 func (receiver *Delivery) Start() {
+	ctx := context.Background()
 	log.Println("start GRPC ------------------------- ")
 
 	lis, err := net.Listen("tcp", pkg.DeliveryAddress)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
@@ -60,7 +56,7 @@ func (receiver *Delivery) Start() {
 	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
@@ -72,7 +68,7 @@ func (receiver *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*
 	product := &domain.Product{}
 	err := copier.Copy(product, in.Order)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return nil, err
 	}
 	order := &domain.Order{Product: *product}

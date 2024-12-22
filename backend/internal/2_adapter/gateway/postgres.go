@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"backend/pkg"
 	"context"
 )
 
@@ -8,7 +9,7 @@ import (
 func (receiver *Gateway) GetVegetables(ctx context.Context, requestVegetables map[string]int) error {
 	err := receiver.ToPostgres.UpdateVegetables(ctx, requestVegetables)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 
@@ -19,7 +20,7 @@ func (receiver *Gateway) GetVegetables(ctx context.Context, requestVegetables ma
 func (receiver *Gateway) GetIngredients(ctx context.Context, requestIngredients map[string]int) error {
 	err := receiver.ToPostgres.UpdateIngredients(ctx, requestIngredients)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 

@@ -12,14 +12,6 @@ import (
 	"backend/pkg"
 )
 
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("framework_driver", "postgres")
-}
-
 type (
 	// Postgres ...
 	Postgres struct {
@@ -36,9 +28,10 @@ type (
 
 // NewToPostgres ...
 func NewToPostgres() gateway.ToPostgres {
+	ctx := context.Background()
 	conn, err := open(30)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		panic(err)
 	}
 
@@ -48,11 +41,12 @@ func NewToPostgres() gateway.ToPostgres {
 }
 
 func open(count uint) (*gorm.DB, error) {
+	ctx := context.Background()
 	db, err := gorm.Open(postgres.Open(pkg.PostgresDSN), &gorm.Config{})
 
 	if err != nil {
 		if count == 0 {
-			myErr.Logging(err)
+			pkg.Logging(ctx, err)
 			return nil, fmt.Errorf("Retry count over")
 		}
 		time.Sleep(time.Second)
@@ -72,7 +66,7 @@ func (receiver *Postgres) UpdateVegetables(ctx context.Context, items map[string
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
 
 		if res.Error != nil {
-			myErr.Logging(res.Error)
+			pkg.Logging(ctx, res.Error)
 			return res.Error
 		}
 
@@ -92,7 +86,7 @@ func (receiver *Postgres) UpdateIngredients(ctx context.Context, items map[strin
 			UpdateColumn("stock", gorm.Expr("stock - ?", num))
 
 		if res.Error != nil {
-			myErr.Logging(res.Error)
+			pkg.Logging(ctx, res.Error)
 			return res.Error
 		}
 

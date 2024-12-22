@@ -13,10 +13,9 @@ removeall:
 	sudo rm -rf db/engine/mysql/var_lib_mysql/
 	sudo rm -rf db/engine/mysql/data/
 	sudo rm -rf db/engine/postgres/data
+	sudo rm -rf db/engine/redis/data
 	sudo rm -rf db/tool/phpmyadmin/sessions/
 	sudo rm -rf db/tool/pgadmin/root/
-	sudo rm -rf backend/yummy/*.json
-	sudo rm -rf backend/script/order/register/reserved/*.json
 
 
 # ----------------------------

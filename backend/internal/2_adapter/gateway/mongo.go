@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"backend/pkg"
 	"context"
 )
 
@@ -8,7 +9,7 @@ import (
 func (receiver *Gateway) GetBans(ctx context.Context, requestBans map[string]int) error {
 	err := receiver.ToMongo.UpdateBans(ctx, requestBans)
 	if err != nil {
-		myErr.Logging(err)
+		pkg.Logging(ctx, err)
 		return err
 	}
 

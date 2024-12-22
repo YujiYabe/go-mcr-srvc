@@ -4,16 +4,7 @@ import (
 	"context"
 
 	domain "backend/internal/4_domain"
-	"backend/pkg"
 )
-
-var (
-	myErr *pkg.MyErr
-)
-
-func init() {
-	myErr = pkg.NewMyErr("interface_adapter", "gateway")
-}
 
 // Presenter ...
 type Presenter struct {
