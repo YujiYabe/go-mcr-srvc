@@ -55,7 +55,7 @@ func (receiver *PC) IndexPost(c *gin.Context) {
 	}
 	order := &domain.Order{Product: *product}
 
-	receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-	receiver.Controller.Order(&ctx, order)             // オーダー
-	c.JSON(200, order.OrderInfo.OrderNumber)           // オーダー番号返却
+	// receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+	// receiver.Controller.Order(&ctx, order)             // オーダー
+	c.JSON(200, order.OrderInfo.OrderNumber) // オーダー番号返却
 }

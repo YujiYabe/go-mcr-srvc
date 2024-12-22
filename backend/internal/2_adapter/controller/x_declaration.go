@@ -7,6 +7,7 @@ import (
 	"backend/internal/2_adapter/presenter"
 	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
+	"backend/internal/4_domain/struct_object"
 )
 
 type (
@@ -16,17 +17,15 @@ type (
 		OrderNumber int
 	}
 
-	// OrderChannel ...
-	OrderChannel struct {
-		ctx   *context.Context
-		order *domain.Order
-	}
-
 	// ToController ...
 	ToController interface {
 		Start()
-		Reserve(ctx context.Context, order *domain.Order, orderType string)
-		Order(ctx *context.Context, order *domain.Order)
+		GetPersonList(
+			ctx context.Context,
+		) (
+			personList struct_object.PersonList,
+			err error,
+		)
 	}
 )
 

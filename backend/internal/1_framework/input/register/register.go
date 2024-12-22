@@ -15,10 +15,6 @@ import (
 	"backend/pkg"
 )
 
-var (
-	orderType = "register"
-)
-
 type (
 	// Register ...
 	Register struct {
@@ -123,8 +119,8 @@ func (receiver *Register) OrderAccept() {
 		// 標準コンテキストを取得
 		ctx := context.Background()
 
-		receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-		receiver.Controller.Order(&ctx, order)             // オーダー
+		// receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
+		// receiver.Controller.Order(&ctx, order)             // オーダー
 
 		newExtension := order.OrderInfo.OrderNumber + ".json"
 		newFileName := strings.Replace(currentFileName, "json", newExtension, 1)

@@ -4,8 +4,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
+	v1 "backend/internal/1_framework/input/mobile/v1"
 	"backend/internal/2_adapter/controller"
-	domain "backend/internal/4_domain"
 	"backend/pkg"
 )
 
@@ -22,50 +22,47 @@ type (
 )
 
 // NewMobile ...
-func NewMobile(ctrl controller.ToController) *Mobile {
-	mb := &Mobile{
+func NewMobile(
+	controller controller.ToController,
+) (
+	mobile *Mobile,
+) {
+	mobile = &Mobile{
 		EchoEcho:   NewEcho(),
-		Controller: ctrl,
+		Controller: controller,
 	}
 
-	return mb
+	return mobile
 }
 
 // NewEcho ...
 func NewEcho() *echo.Echo {
-	e := echo.New()
-	e.HideBanner = true
+	echoEcho := echo.New()
+	echoEcho.HideBanner = true
 
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "${time_rfc3339}__${status}__${method}__${uri}\n",
-	}))
-	e.Use(middleware.Recover())
+	echoEcho.Use(
+		middleware.LoggerWithConfig(
+			middleware.LoggerConfig{
+				Format:           "${time_custom}__${status}__${method}__${uri}\n",
+				CustomTimeFormat: "06/01/02-15:04:05",
+			},
+		),
+	)
+	echoEcho.Use(middleware.Recover())
+	echoEcho.Use(middleware.RequestID())
 
-	return e
+	return echoEcho
 }
 
 // Start ...
 func (receiver *Mobile) Start() {
-	receiver.EchoEcho.POST("/", receiver.IndexPost)
+	group := receiver.EchoEcho.Group("")
+
+	v1.NewRoute(
+		receiver.EchoEcho,
+		receiver.Controller,
+		group,
+	)
+
 	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.MobilePort))
-}
-
-// IndexPost ...
-func (receiver *Mobile) IndexPost(c echo.Context) error {
-	// 標準コンテキストを取得
-	ctx := c.Request().Context()
-
-	// web_uiのデータ型をControllerに持ち込まないようにproductに変換
-	product := &domain.Product{}
-	if err := c.Bind(product); err != nil {
-		pkg.Logging(ctx, err)
-		return err
-	}
-	order := &domain.Order{Product: *product}
-
-	receiver.Controller.Reserve(ctx, order, orderType) // オーダー番号発行
-	receiver.Controller.Order(&ctx, order)             // オーダー
-	c.JSON(200, order.OrderInfo.OrderNumber)           // オーダー番号返却
-
-	return nil
 }

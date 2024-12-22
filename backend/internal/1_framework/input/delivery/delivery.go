@@ -73,7 +73,7 @@ func (receiver *Server) DeliveryRPC(ctx context.Context, in *DeliveryRequest) (*
 	}
 	order := &domain.Order{Product: *product}
 
-	receiver.Controller.Reserve(ctx, order, orderType)                      // オーダー番号発行
-	receiver.Controller.Order(&ctx, order)                                  // オーダー
+	// receiver.Controller.Reserve(ctx, order, orderType)                      // オーダー番号発行
+	// receiver.Controller.Order(&ctx, order)                                  // オーダー
 	return &DeliveryResponse{OrderNumber: order.OrderInfo.OrderNumber}, nil // オーダー番号返却
 }

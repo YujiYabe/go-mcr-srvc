@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"backend/internal/4_domain/struct_object"
 	"context"
 )
 
@@ -21,8 +22,15 @@ type (
 
 	// ToPostgres ...
 	ToPostgres interface {
-		UpdateVegetables(ctx context.Context, items map[string]int) error
-		UpdateIngredients(ctx context.Context, items map[string]int) error
+		// UpdateVegetables(ctx context.Context, items map[string]int) error
+		// UpdateIngredients(ctx context.Context, items map[string]int) error
+
+		GetPersonList(
+			ctx context.Context,
+		) (
+			personList struct_object.PersonList,
+			err error,
+		)
 	}
 
 	// ToMySQL ...

@@ -56,7 +56,7 @@ func open(count uint) (
 	if err != nil {
 		if count == 0 {
 			pkg.Logging(ctx, err)
-			return nil, fmt.Errorf("Retry count over")
+			return nil, fmt.Errorf("retry count over")
 		}
 		time.Sleep(time.Second)
 		// カウントダウンさせるようにする

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	domain "backend/internal/4_domain"
+	"backend/internal/4_domain/struct_object"
 )
 
 type (
@@ -16,15 +17,19 @@ type (
 
 	// OrderUsecase ...
 	OrderUsecase struct {
-		ctx   *context.Context
-		order *domain.Order
+		ctx context.Context
 	}
 
 	// ToUseCase ...
 	ToUseCase interface {
 		Start()
-		Reserve(ctx context.Context, orderInfo *domain.OrderInfo)
-		Order(ctx *context.Context, order *domain.Order) error
+
+		GetPersonList(
+			ctx context.Context,
+		) (
+			personList struct_object.PersonList,
+			err error,
+		)
 	}
 
 	// ToDomain ...
@@ -35,10 +40,17 @@ type (
 
 	// ToGateway ...
 	ToGateway interface {
-		GetBans(ctx context.Context, requestBans map[string]int) error
-		GetPatties(ctx context.Context, requestPatties map[string]int) error
-		GetVegetables(ctx context.Context, requestVegetables map[string]int) error
-		GetIngredients(ctx context.Context, requestIngredients map[string]int) error
+		// GetBans(ctx context.Context, requestBans map[string]int) error
+		// GetPatties(ctx context.Context, requestPatties map[string]int) error
+		// GetVegetables(ctx context.Context, requestVegetables map[string]int) error
+		// GetIngredients(ctx context.Context, requestIngredients map[string]int) error
+
+		GetPersonList(
+			ctx context.Context,
+		) (
+			personList struct_object.PersonList,
+			err error,
+		)
 	}
 
 	// ToPresenter ...

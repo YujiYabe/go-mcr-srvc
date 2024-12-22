@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"backend/internal/2_adapter/gateway"
+	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
@@ -35,9 +36,9 @@ func NewToPostgres() gateway.ToPostgres {
 		panic(err)
 	}
 
-	s := new(Postgres)
-	s.Conn = conn
-	return s
+	postgres := new(Postgres)
+	postgres.Conn = conn
+	return postgres
 }
 
 func open(count uint) (*gorm.DB, error) {
@@ -47,7 +48,7 @@ func open(count uint) (*gorm.DB, error) {
 	if err != nil {
 		if count == 0 {
 			pkg.Logging(ctx, err)
-			return nil, fmt.Errorf("Retry count over")
+			return nil, fmt.Errorf("retry count over")
 		}
 		time.Sleep(time.Second)
 		count--
@@ -57,42 +58,23 @@ func open(count uint) (*gorm.DB, error) {
 	return db, nil
 }
 
-// UpdateVegetables ...
-func (receiver *Postgres) UpdateVegetables(ctx context.Context, items map[string]int) error {
-	for item, num := range items {
-		res := receiver.Conn.
-			Table("vegetables").
-			Where("name IN (?)", item).
-			UpdateColumn("stock", gorm.Expr("stock - ?", num))
+// GetPersonList ...
+func (receiver *Postgres) GetPersonList(
+	ctx context.Context,
+) (
+	personList struct_object.PersonList,
+	err error,
+) {
+	personList = struct_object.PersonList{}
 
-		if res.Error != nil {
-			pkg.Logging(ctx, res.Error)
-			return res.Error
-		}
+	res := receiver.Conn.
+		Table("persons").
+		Find(personList)
 
-		// 作業時間を擬似的に再現
-		time.Sleep(1 * time.Second)
+	if res.Error != nil {
+		pkg.Logging(ctx, res.Error)
+		return personList, res.Error
 	}
 
-	return nil
-}
-
-// UpdateIngredients ...
-func (receiver *Postgres) UpdateIngredients(ctx context.Context, items map[string]int) error {
-	for item, num := range items {
-		res := receiver.Conn.
-			Table("ingredients").
-			Where("name IN (?)", item).
-			UpdateColumn("stock", gorm.Expr("stock - ?", num))
-
-		if res.Error != nil {
-			pkg.Logging(ctx, res.Error)
-			return res.Error
-		}
-
-		// 作業時間を擬似的に再現
-		time.Sleep(1 * time.Second)
-	}
-
-	return nil
+	return personList, nil
 }
