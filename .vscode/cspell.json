@@ -80,6 +80,8 @@
 		"phpmyadmin",
 		"pkcs",
 		"pmezard",
+		"proto",
+		"protobuf",
 		"protoc",
 		"protoimpl",
 		"protoreflect",
