@@ -66,8 +66,8 @@ func (receiver *Postgres) GetPersonList(
 	personList struct_object.PersonList,
 	err error,
 ) {
-	personList = struct_object.PersonList{}
-	persons := []models.Person{}
+	personList = struct_object.PersonList{} // ドメインロジック用
+	persons := []models.Person{}            // SQL結果保存用
 
 	result := receiver.Conn.
 		Table("persons").
@@ -79,7 +79,7 @@ func (receiver *Postgres) GetPersonList(
 	}
 	for _, person := range persons {
 		args := &struct_object.NewPersonArgs{
-			ID:          person.ID,
+			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
@@ -91,6 +91,51 @@ func (receiver *Postgres) GetPersonList(
 		}
 
 		personList = append(personList, *person)
+	}
+
+	return
+}
+
+// GetPersonByCondition ...
+func (receiver *Postgres) GetPersonByCondition(
+	ctx context.Context,
+	reqPerson struct_object.Person,
+) (
+	resPersonList struct_object.PersonList,
+	err error,
+) {
+	resPersonList = struct_object.PersonList{} // ドメインロジック用
+	persons := []models.Person{}               // SQL結果保存用
+
+	conn := receiver.Conn.Table("persons")
+
+	if !reqPerson.MailAddress.Content.IsNil && reqPerson.MailAddress.Content.Value != "" {
+		conn.Where("mail_address = ?", reqPerson.MailAddress.Content.Value)
+	}
+
+	if !reqPerson.Name.Content.IsNil && reqPerson.Name.Content.Value != "" {
+		conn.Where("name LIKE ?", "%"+reqPerson.Name.Content.Value+"%")
+	}
+
+	result := conn.Find(&persons)
+	if result.Error != nil {
+		pkg.Logging(ctx, result.Error)
+		return resPersonList, result.Error
+	}
+	for _, person := range persons {
+		args := &struct_object.NewPersonArgs{
+			ID:          &person.ID,
+			Name:        &person.Name.String,
+			MailAddress: &person.MailAddress.String,
+		}
+		person := struct_object.NewPerson(args)
+
+		if person.Err != nil {
+			pkg.Logging(ctx, person.Err)
+			return resPersonList, person.Err
+		}
+
+		resPersonList = append(resPersonList, *person)
 	}
 
 	return

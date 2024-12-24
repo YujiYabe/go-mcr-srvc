@@ -1,4 +1,9 @@
 ###  ==============================
-GET http://localhost:1234/v1/person
+GET http://localhost:1234/v1/person?name=a
+Content-Type: application/json
+
+
+###  ==============================
+GET http://localhost:1234/v1/person?localhost:1234/v1/person?mail_address=aaaaaa@gmail.com
 Content-Type: application/json
 

@@ -1,7 +1,7 @@
 package http_parameter
 
-type HTTPParameter struct {
-	ID          int    `json:"status"`
-	Name        string `json:"name"`
-	MailAddress string `json:"mail_address"`
+type V1PersonParameter struct {
+	ID          *int    `json:"id,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	MailAddress *string `json:"mail_address,omitempty"`
 }

@@ -30,6 +30,14 @@ type (
 			personList struct_object.PersonList,
 			err error,
 		)
+
+		GetPersonByCondition(
+			ctx context.Context,
+			reqPerson struct_object.Person,
+		) (
+			resPersonList struct_object.PersonList,
+			err error,
+		)
 	}
 
 	// ToDomain ...
@@ -49,6 +57,14 @@ type (
 			ctx context.Context,
 		) (
 			personList struct_object.PersonList,
+			err error,
+		)
+
+		GetPersonByCondition(
+			ctx context.Context,
+			reqPerson struct_object.Person,
+		) (
+			resPersonList struct_object.PersonList,
 			err error,
 		)
 	}

@@ -99,6 +99,11 @@ func (receiver *PrimitiveInt) SetValue(value int) {
 
 // --------------------------------------
 func (receiver *PrimitiveInt) Validation() error {
+
+	if receiver.IsNil {
+		return nil
+	}
+
 	receiver.ValidationMax()
 	if receiver.Err != nil {
 		return receiver.Err
@@ -144,4 +149,20 @@ func (receiver *PrimitiveInt) ValidationMin() {
 		receiver.SetError("over min limitation")
 		return
 	}
+}
+
+func (receiver *PrimitiveInt) CheckNil(
+	value *int,
+) (
+	valueInt int,
+	isNil bool,
+) {
+	valueInt = 0
+	isNil = true
+	if value != nil {
+		valueInt = *value
+		isNil = false
+	}
+
+	return
 }

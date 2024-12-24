@@ -14,16 +14,19 @@ type ID struct {
 }
 
 func NewID(
-	value int,
+	value *int,
 ) (
 	id ID,
 	err error,
 ) {
 	id = ID{}
-	primitiveInt := primitive_object.PrimitiveInt{}
+	primitiveInt := &primitive_object.PrimitiveInt{}
+
+	valueInt, isNil := primitiveInt.CheckNil(value)
 
 	id.Content = primitive_object.NewPrimitiveInt(
-		primitiveInt.WithValue(value),
+		primitiveInt.WithValue(valueInt),
+		primitiveInt.WithIsNil(isNil),
 		primitiveInt.WithMaxLength(idLengthMax),
 		primitiveInt.WithMinLength(idLengthMin),
 	)

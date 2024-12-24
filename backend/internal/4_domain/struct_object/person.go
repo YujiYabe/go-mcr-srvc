@@ -1,6 +1,8 @@
 package struct_object
 
-import "backend/internal/4_domain/value_object"
+import (
+	"backend/internal/4_domain/value_object"
+)
 
 type PersonList []Person
 
@@ -12,7 +14,7 @@ type Person struct {
 }
 
 type NewPersonArgs struct {
-	ID          int
+	ID          *int
 	Name        *string
 	MailAddress *string
 }

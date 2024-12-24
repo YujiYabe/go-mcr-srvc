@@ -37,3 +37,17 @@ func (receiver *Gateway) GetPersonList(
 ) {
 	return receiver.ToPostgres.GetPersonList(ctx)
 }
+
+// GetPersonByCondition ...
+func (receiver *Gateway) GetPersonByCondition(
+	ctx context.Context,
+	reqPerson struct_object.Person,
+) (
+	resPersonList struct_object.PersonList,
+	err error,
+) {
+	return receiver.ToPostgres.GetPersonByCondition(
+		ctx,
+		reqPerson,
+	)
+}

@@ -17,3 +17,16 @@ func (receiver *useCase) GetPersonList(
 ) {
 	return receiver.ToGateway.GetPersonList(ctx)
 }
+
+func (receiver *useCase) GetPersonByCondition(
+	ctx context.Context,
+	reqPerson struct_object.Person,
+) (
+	resPersonList struct_object.PersonList,
+	err error,
+) {
+	return receiver.ToGateway.GetPersonByCondition(
+		ctx,
+		reqPerson,
+	)
+}

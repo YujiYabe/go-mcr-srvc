@@ -110,6 +110,11 @@ func (receiver *PrimitiveString) SetValue(value string) {
 
 // --------------------------------------
 func (receiver *PrimitiveString) Validation() error {
+
+	if receiver.IsNil {
+		return nil
+	}
+
 	receiver.ValidationMax()
 	if receiver.Err != nil {
 		return receiver.Err

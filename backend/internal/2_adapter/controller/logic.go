@@ -17,3 +17,17 @@ func (receiver *controller) GetPersonList(
 
 	return receiver.UseCase.GetPersonList(ctx)
 }
+
+func (receiver *controller) GetPersonByCondition(
+	ctx context.Context,
+	reqPerson struct_object.Person,
+) (
+	resPersonList struct_object.PersonList,
+	err error,
+) {
+
+	return receiver.UseCase.GetPersonByCondition(
+		ctx,
+		reqPerson,
+	)
+}
