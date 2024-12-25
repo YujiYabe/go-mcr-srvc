@@ -145,7 +145,7 @@ func (receiver *PrimitiveString) ValidationMax() {
 	}
 
 	if utf8.RuneCountInString(receiver.Value) > receiver.MaxLength {
-		receiver.SetError("over max limitation")
+		receiver.SetError("max limitation")
 		return
 	}
 }
@@ -162,7 +162,7 @@ func (receiver *PrimitiveString) ValidationMin() {
 	}
 
 	if utf8.RuneCountInString(receiver.Value) < receiver.MinLength {
-		receiver.SetError("over min limitation")
+		receiver.SetError("min limitation")
 		return
 	}
 }

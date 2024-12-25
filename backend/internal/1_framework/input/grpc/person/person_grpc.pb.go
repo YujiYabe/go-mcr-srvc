@@ -17,7 +17,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PersonClient interface {
-	GetPersonByCondition(ctx context.Context, in *V1PersonParameter, opts ...grpc.CallOption) (*V1PersonParameter, error)
+	GetPersonByCondition(ctx context.Context, in *V1PersonParameter, opts ...grpc.CallOption) (*V1PersonParameterArray, error)
 }
 
 type personClient struct {
@@ -28,8 +28,8 @@ func NewPersonClient(cc grpc.ClientConnInterface) PersonClient {
 	return &personClient{cc}
 }
 
-func (c *personClient) GetPersonByCondition(ctx context.Context, in *V1PersonParameter, opts ...grpc.CallOption) (*V1PersonParameter, error) {
-	out := new(V1PersonParameter)
+func (c *personClient) GetPersonByCondition(ctx context.Context, in *V1PersonParameter, opts ...grpc.CallOption) (*V1PersonParameterArray, error) {
+	out := new(V1PersonParameterArray)
 	err := c.cc.Invoke(ctx, "/person.Person/GetPersonByCondition", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (c *personClient) GetPersonByCondition(ctx context.Context, in *V1PersonPar
 // All implementations must embed UnimplementedPersonServer
 // for forward compatibility
 type PersonServer interface {
-	GetPersonByCondition(context.Context, *V1PersonParameter) (*V1PersonParameter, error)
+	GetPersonByCondition(context.Context, *V1PersonParameter) (*V1PersonParameterArray, error)
 	mustEmbedUnimplementedPersonServer()
 }
 
@@ -49,7 +49,7 @@ type PersonServer interface {
 type UnimplementedPersonServer struct {
 }
 
-func (UnimplementedPersonServer) GetPersonByCondition(context.Context, *V1PersonParameter) (*V1PersonParameter, error) {
+func (UnimplementedPersonServer) GetPersonByCondition(context.Context, *V1PersonParameter) (*V1PersonParameterArray, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPersonByCondition not implemented")
 }
 func (UnimplementedPersonServer) mustEmbedUnimplementedPersonServer() {}

@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"backend/pkg"
 	"context"
 	// "backend/internal/env"
 	// "backend/internal/pkg"
@@ -17,7 +18,7 @@ func (receiver *Redis) ResetPlaceListInRedis(
 		"placeList",
 	).Result()
 	if err != nil {
-		// pkg.Logging(ctx, err)
+		pkg.Logging(ctx, err)
 	}
 
 	return

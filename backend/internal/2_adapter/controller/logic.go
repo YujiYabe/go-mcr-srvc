@@ -25,9 +25,10 @@ func (receiver *controller) GetPersonByCondition(
 	resPersonList struct_object.PersonList,
 	err error,
 ) {
-
-	return receiver.UseCase.GetPersonByCondition(
+	resPersonList, err = receiver.UseCase.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
+
+	return resPersonList, err
 }

@@ -129,7 +129,7 @@ func (receiver *PrimitiveInt) ValidationMax() {
 	}
 
 	if receiver.Value > receiver.MaxLength {
-		receiver.SetError("over max limitation")
+		receiver.SetError("max limitation")
 		return
 	}
 }
@@ -146,7 +146,7 @@ func (receiver *PrimitiveInt) ValidationMin() {
 	}
 
 	if receiver.Value < receiver.MinLength {
-		receiver.SetError("over min limitation")
+		receiver.SetError("min limitation")
 		return
 	}
 }

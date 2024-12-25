@@ -107,7 +107,7 @@ func (receiver *PrimitiveFloat64) ValidationMax() error {
 		return err
 	}
 	if big.NewFloat(*receiver.value).Cmp(big.NewFloat(*receiver.max)) > 0 {
-		return fmt.Errorf("error: %s", "over max limitation")
+		return fmt.Errorf("error: %s", "max limitation")
 	}
 
 	return nil
@@ -118,7 +118,7 @@ func (receiver *PrimitiveFloat64) ValidationMin() error {
 		return err
 	}
 	if big.NewFloat(*receiver.value).Cmp(big.NewFloat(*receiver.min)) < 0 {
-		return fmt.Errorf("error: %s", "over min limitation")
+		return fmt.Errorf("error: %s", "min limitation")
 	}
 
 	return nil

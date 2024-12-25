@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"backend/internal/2_adapter/controller"
+	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
@@ -41,17 +42,17 @@ func (receiver *Person) Start() {
 	ctx := context.Background()
 	log.Println("start GRPC ------------------------- ")
 
-	lis, err := net.Listen("tcp", pkg.DeliveryAddress)
+	listen, err := net.Listen("tcp", pkg.DeliveryAddress)
 	if err != nil {
 		pkg.Logging(ctx, err)
 		log.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
+	server := grpc.NewServer()
 
-	RegisterPersonServer(s, &receiver.Server)
-	reflection.Register(s)
+	RegisterPersonServer(server, &receiver.Server)
+	reflection.Register(server)
 
-	if err := s.Serve(lis); err != nil {
+	if err := server.Serve(listen); err != nil {
 		pkg.Logging(ctx, err)
 		log.Fatalf("failed to serve: %v", err)
 	}
@@ -62,17 +63,46 @@ func (receiver *Server) GetPersonByCondition(
 	ctx context.Context,
 	req *V1PersonParameter,
 ) (
-	*V1PersonParameter,
-	error,
+	v1PersonParameterArray *V1PersonParameterArray,
+	err error,
 ) {
-	id := int32(req.GetId())
+	v1PersonParameterArray = &V1PersonParameterArray{}
+	v1PersonParameterList := []*V1PersonParameter{}
+	id := int(req.GetId())
 	name := req.GetName()
 	mailAddress := req.GetMailAddress()
 
-	resp := &V1PersonParameter{
-		Id:          &id,
-		Name:        &name,
-		MailAddress: &mailAddress,
+	reqPerson := struct_object.NewPerson(
+		&struct_object.NewPersonArgs{
+			ID:          &id,
+			Name:        &name,
+			MailAddress: &mailAddress,
+		},
+	)
+	if reqPerson.Err != nil {
+		pkg.Logging(ctx, reqPerson.Err)
+		return v1PersonParameterArray, reqPerson.Err
 	}
-	return resp, nil
+
+	responseList, err := receiver.Controller.GetPersonByCondition(
+		ctx,
+		*reqPerson,
+	)
+	if err != nil {
+		pkg.Logging(ctx, err)
+		return v1PersonParameterArray, err
+	}
+
+	for _, response := range responseList {
+		id32 := int32(response.ID.Content.Value)
+		v1PersonParameter := &V1PersonParameter{
+			Id:          &id32,
+			Name:        &response.Name.Content.Value,
+			MailAddress: &response.MailAddress.Content.Value,
+		}
+		v1PersonParameterList = append(v1PersonParameterList, v1PersonParameter)
+	}
+
+	v1PersonParameterArray.Persons = v1PersonParameterList
+	return v1PersonParameterArray, nil
 }

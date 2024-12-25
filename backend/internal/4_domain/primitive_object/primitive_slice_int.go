@@ -76,7 +76,7 @@ func (receiver *PrimitiveSliceInt) SetMin(v int64) *PrimitiveSliceInt {
 
 func (receiver *PrimitiveSliceInt) ValidationMax(v int64) error {
 	if v >= *receiver.max {
-		return fmt.Errorf("error: %s", "over max limitation")
+		return fmt.Errorf("error: %s", "max limitation")
 	}
 
 	return nil
@@ -84,7 +84,7 @@ func (receiver *PrimitiveSliceInt) ValidationMax(v int64) error {
 
 func (receiver *PrimitiveSliceInt) ValidationMin(v int64) error {
 	if v >= *receiver.min {
-		return fmt.Errorf("error: %s", "over min limitation")
+		return fmt.Errorf("error: %s", "min limitation")
 	}
 
 	return nil

@@ -79,7 +79,7 @@ func (receiver *PrimitiveSliceString) GetMin() *int {
 
 func (receiver *PrimitiveSliceString) ValidationMax(v string) error {
 	if utf8.RuneCountInString(v) > *receiver.max {
-		return fmt.Errorf("error: %s", "over max limitation")
+		return fmt.Errorf("error: %s", "max limitation")
 	}
 
 	return nil
@@ -87,7 +87,7 @@ func (receiver *PrimitiveSliceString) ValidationMax(v string) error {
 
 func (receiver *PrimitiveSliceString) ValidationMin(v string) error {
 	if utf8.RuneCountInString(v) < *receiver.min {
-		return fmt.Errorf("error: %s", "over min limitation")
+		return fmt.Errorf("error: %s", "min limitation")
 	}
 
 	return nil

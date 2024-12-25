@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -108,12 +109,17 @@ func (receiver *Postgres) GetPersonByCondition(
 	persons := []models.Person{}               // SQL結果保存用
 
 	conn := receiver.Conn.Table("persons")
+	log.Println("== == == == == == == == == == ")
+	log.Printf("%#v\n", reqPerson.Name.Content.Value)
 
 	if !reqPerson.MailAddress.Content.IsNil && reqPerson.MailAddress.Content.Value != "" {
 		conn.Where("mail_address = ?", reqPerson.MailAddress.Content.Value)
 	}
 
 	if !reqPerson.Name.Content.IsNil && reqPerson.Name.Content.Value != "" {
+		log.Println("== == == == == == == == == == ")
+		log.Println("== == == == == == == == == == ")
+		log.Println("== == == == == == == == == == ")
 		conn.Where("name LIKE ?", "%"+reqPerson.Name.Content.Value+"%")
 	}
 

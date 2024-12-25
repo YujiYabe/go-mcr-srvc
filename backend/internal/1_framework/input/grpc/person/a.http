@@ -1,0 +1,7 @@
+proto < ./person.proto
+GRPC localhost:3456/person.Person/GetPersonByCondition
+{
+	"name": " "
+}
+
+GRPC 2  - error: over min limitation

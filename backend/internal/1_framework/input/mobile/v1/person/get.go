@@ -1,7 +1,6 @@
 package person
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -33,10 +32,6 @@ func get(
 		)
 	}
 
-	log.Println("==  person.MailAddress== == == == == == == == == ")
-	log.Printf("%#v\n", c.Param("mail_address"))
-	log.Println("== == == == == == == == == == ")
-
 	reqPerson := struct_object.NewPerson(
 		&struct_object.NewPersonArgs{
 			ID:          person.ID,
@@ -46,6 +41,7 @@ func get(
 	)
 
 	if reqPerson.Err != nil {
+		pkg.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
 			err,

@@ -106,7 +106,7 @@ func (receiver *PrimitiveInt64) ValidationMax() error {
 		return err
 	}
 	if *receiver.value > *receiver.max {
-		return fmt.Errorf("error: %s", "over max limitation")
+		return fmt.Errorf("error: %s", "max limitation")
 	}
 
 	return nil
@@ -117,7 +117,7 @@ func (receiver *PrimitiveInt64) ValidationMin() error {
 		return err
 	}
 	if *receiver.value < *receiver.min {
-		return fmt.Errorf("error: %s", "over min limitation")
+		return fmt.Errorf("error: %s", "min limitation")
 	}
 
 	return nil

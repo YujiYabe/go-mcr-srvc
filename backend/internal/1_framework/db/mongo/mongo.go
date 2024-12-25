@@ -31,7 +31,9 @@ type (
 // NewToMongo ...
 func NewToMongo() gateway.ToMongo {
 	conn, err := open(30)
+	ctx := context.Background()
 	if err != nil {
+		pkg.Logging(ctx, err)
 		panic(err)
 	}
 
@@ -74,7 +76,6 @@ func (receiver *Mongo) UpdateBans(ctx context.Context, items map[string]int) err
 
 		err := bans.FindOne(ctx, filter).Decode(stock)
 		if err != nil {
-
 			pkg.Logging(ctx, err)
 			return err
 		}
