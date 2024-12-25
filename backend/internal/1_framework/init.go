@@ -7,7 +7,7 @@ import (
 	"backend/internal/1_framework/db/redis"
 	"backend/internal/1_framework/external_interface/monitor"
 	"backend/internal/1_framework/external_interface/shipment"
-	"backend/internal/1_framework/input/grpc/delivery"
+	person "backend/internal/1_framework/input/grpc/person"
 	"backend/internal/1_framework/input/mobile"
 	"backend/internal/1_framework/input/pc"
 	"backend/internal/1_framework/input/register"
@@ -18,7 +18,7 @@ type (
 	app struct {
 		mobile   *mobile.Mobile
 		pc       *pc.PC
-		delivery *delivery.Delivery
+		person   *person.Person
 		register *register.Register
 		monitor  *monitor.Monitor
 	}
@@ -37,7 +37,7 @@ func NewApp() *app {
 	)
 
 	a := &app{
-		delivery: delivery.NewDelivery(ctrl),
+		person:   person.NewPerson(ctrl),
 		mobile:   mobile.NewMobile(ctrl),
 		pc:       pc.NewPC(ctrl),
 		register: register.NewRegister(ctrl),
@@ -54,5 +54,5 @@ func (receiver *app) Start() {
 	go receiver.mobile.Start()
 	go receiver.pc.Start()
 	go receiver.register.Start()
-	receiver.delivery.Start()
+	receiver.person.Start()
 }

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package person;
+
+option go_package = "./";
+
+service Person {
+    rpc GetPersonByCondition (V1PersonParameter) returns (V1PersonParameter);
+}
+
+
+message V1PersonParameter {
+    optional int32 id = 1;              // ID
+    optional string name = 2;           // Name
+    optional string mail_address = 3;   // Mail Address
+}
