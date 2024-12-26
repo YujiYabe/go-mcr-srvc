@@ -1,8 +1,9 @@
-package person
+package user
 
 import (
 	"github.com/labstack/echo"
 
+	webUtil "backend/internal/1_framework/input/mobile/web_util"
 	"backend/internal/2_adapter/controller"
 )
 
@@ -11,7 +12,10 @@ func NewRoute(
 	toController controller.ToController,
 	parent *echo.Group,
 ) {
-	group := parent.Group("/person")
+	group := parent.Group(
+		"/user",
+		webUtil.JWTMiddleware(),
+	)
 
 	group.GET(
 		"",
