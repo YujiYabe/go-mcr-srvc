@@ -1,6 +1,7 @@
 package person
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -31,6 +32,11 @@ func get(
 			err,
 		)
 	}
+	log.Println("== rest get== == == == == == == == == ")
+	log.Printf("%#v\n", person.MailAddress)
+	log.Printf("%#v\n", &person.MailAddress)
+	log.Printf("%#v\n", *person.MailAddress)
+	log.Println("== == == ==  == == == == == == ")
 
 	reqPerson := struct_object.NewPerson(
 		&struct_object.NewPersonArgs{

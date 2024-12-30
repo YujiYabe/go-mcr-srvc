@@ -38,6 +38,5 @@ func NewName(
 	)
 
 	err = name.Content.Validation()
-
 	return
 }

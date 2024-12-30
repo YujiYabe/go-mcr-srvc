@@ -10,9 +10,9 @@ service Person {
 
 
 message V1PersonParameter {
-    optional int32 id = 1;              // ID
-    optional string name = 2;           // Name
-    optional string mail_address = 3;   // Mail Address
+    optional int32 id = 1;            // ID
+    optional string name = 2;         // Name
+    optional string mail_address = 3; // Mail Address
 }
 
 message V1PersonParameterArray {

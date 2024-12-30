@@ -48,11 +48,6 @@ type (
 
 	// ToGateway ...
 	ToGateway interface {
-		// GetBans(ctx context.Context, requestBans map[string]int) error
-		// GetPatties(ctx context.Context, requestPatties map[string]int) error
-		// GetVegetables(ctx context.Context, requestVegetables map[string]int) error
-		// GetIngredients(ctx context.Context, requestIngredients map[string]int) error
-
 		GetPersonList(
 			ctx context.Context,
 		) (

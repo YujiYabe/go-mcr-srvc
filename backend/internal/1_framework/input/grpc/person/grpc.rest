@@ -1,6 +1,5 @@
 proto < ./person.proto
 GRPC localhost:3456/person.Person/GetPersonByCondition
 {
-	"name": "a"
+	"mailAddress": "bbbb@gmail.com"
 }
-

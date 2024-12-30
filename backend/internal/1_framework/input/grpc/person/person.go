@@ -68,15 +68,24 @@ func (receiver *Server) GetPersonByCondition(
 ) {
 	v1PersonParameterArray = &V1PersonParameterArray{}
 	v1PersonParameterList := []*V1PersonParameter{}
-	id := int(req.GetId())
-	name := req.GetName()
-	mailAddress := req.GetMailAddress()
+	var id int
+	if req.Id != nil {
+		id = int(req.GetId())
+	}
 
+	name := req.Name
+	mailAddress := req.MailAddress
+
+	log.Println("== grpc get== == == == == == == == == ")
+	log.Printf("%#v\n", id)
+	log.Printf("%#v\n", name)
+	log.Printf("%#v\n", mailAddress)
+	log.Println("== == == == == == == == == == ")
 	reqPerson := struct_object.NewPerson(
 		&struct_object.NewPersonArgs{
 			ID:          &id,
-			Name:        &name,
-			MailAddress: &mailAddress,
+			Name:        name,
+			MailAddress: mailAddress,
 		},
 	)
 	if reqPerson.Err != nil {
