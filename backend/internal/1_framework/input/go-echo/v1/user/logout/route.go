@@ -1,12 +1,12 @@
-package login
+package logout
 
 import (
 	"github.com/labstack/echo"
 
-	webUtil "backend/internal/1_framework/input/mobile/web_util"
-	// "backend/internal/1_framework/input/mobile/v1/user/login"
-	// "backend/internal/1_framework/input/mobile/v1/user/logout"
-	// "backend/internal/1_framework/input/mobile/v1/user/callback"
+	webUtil "backend/internal/1_framework/input/go-echo/web_util"
+	// "backend/internal/1_framework/input/go-echo/v1/user/login"
+	// "backend/internal/1_framework/input/go-echo/v1/user/logout"
+	// "backend/internal/1_framework/input/go-echo/v1/user/callback"
 
 	"backend/internal/2_adapter/controller"
 )
@@ -17,7 +17,7 @@ func NewRoute(
 	parent *echo.Group,
 ) {
 	group := parent.Group(
-		"/login",
+		"/logout",
 		webUtil.JWTMiddleware(),
 	)
 

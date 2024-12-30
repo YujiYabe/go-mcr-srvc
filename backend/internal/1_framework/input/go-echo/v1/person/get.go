@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/input/mobile/http_parameter"
+	"backend/internal/1_framework/input/go-echo/http_parameter"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"

@@ -26,7 +26,6 @@ type (
 	// OrderInfo ...
 	OrderInfo struct {
 		OrderNumber string
-		OrderType   string
 		OrderTime   time.Time
 		PassTime    time.Time
 	}

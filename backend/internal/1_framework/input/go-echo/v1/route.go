@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/input/mobile/v1/person"
+	"backend/internal/1_framework/input/go-echo/v1/person"
 	// "backend/internal/1_framework/web/v1/alcohol"
 	// "backend/internal/1_framework/web/v1/internet"
 	// "backend/internal/1_framework/web/v1/monitor"

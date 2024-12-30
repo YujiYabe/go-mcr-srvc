@@ -4,18 +4,16 @@ import (
 	"backend/internal/1_framework/db/postgres"
 	"backend/internal/1_framework/db/redis"
 	"backend/internal/1_framework/external_interface/monitor"
-	person "backend/internal/1_framework/input/grpc/person"
-	"backend/internal/1_framework/input/mobile"
-	"backend/internal/1_framework/input/pc"
+	mobile "backend/internal/1_framework/input/go-echo"
+	grpcPerson "backend/internal/1_framework/input/grpc/person"
 	"backend/internal/2_adapter/controller"
 )
 
 type (
 	app struct {
-		mobile   *mobile.Mobile
-		pc       *pc.PC
-		person   *person.Person
-		monitor  *monitor.Monitor
+		mobile  *mobile.Mobile
+		person  *grpcPerson.Person
+		monitor *monitor.Monitor
 	}
 )
 
@@ -29,10 +27,9 @@ func NewApp() *app {
 	)
 
 	a := &app{
-		person:   person.NewPerson(ctrl),
-		mobile:   mobile.NewMobile(ctrl),
-		pc:       pc.NewPC(ctrl),
-		monitor:  monitor.NewMonitor(),
+		person:  grpcPerson.NewPerson(ctrl),
+		mobile:  mobile.NewMobile(ctrl),
+		monitor: monitor.NewMonitor(),
 	}
 	ctrl.Start()
 
@@ -43,6 +40,5 @@ func NewApp() *app {
 func (receiver *app) Start() {
 	go receiver.monitor.Start()
 	go receiver.mobile.Start()
-	go receiver.pc.Start()
 	receiver.person.Start()
 }
