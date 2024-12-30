@@ -93,9 +93,7 @@ services:
       - ./backend:/go/src/backend
     ports:
       - ${GO_ECHO_PORT}:${GO_ECHO_PORT}
-      - ${PC_PORT}:${PC_PORT}
       - ${GRPC_PORT}:${GRPC_PORT}
-      # - ${MONITOR_PORT}:${MONITOR_PORT}
     environment:
       - GOPATH=${GOPATH}
     tty: true

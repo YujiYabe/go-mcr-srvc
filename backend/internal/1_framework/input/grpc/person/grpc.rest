@@ -1,7 +1,6 @@
 proto < ./person.proto
 GRPC localhost:3456/person.Person/GetPersonByCondition
 {
-	"name": " "
+	"name": "a"
 }
 
-GRPC 2  - error: over min limitation
