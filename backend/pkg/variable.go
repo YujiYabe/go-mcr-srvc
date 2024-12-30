@@ -21,10 +21,8 @@ var (
 )
 var (
 	backendHost     = "backend"
-	MobilePort      string
-	PCPort          string
-	DeliveryPort    string
-	MonitorPort     string
+	GoEchoPort      string
+	GRPCPort        string
 	DeliveryAddress string
 
 	TZ string
@@ -46,11 +44,9 @@ func init() {
 	}
 
 	TZ = os.Getenv("TZ")
-	MobilePort = os.Getenv("MOBILE_PORT")
-	PCPort = os.Getenv("PC_PORT")
-	DeliveryPort = os.Getenv("DELIVERY_PORT")
-	MonitorPort = os.Getenv("MONITOR_PORT")
-	DeliveryAddress = backendHost + ":" + DeliveryPort
+	GoEchoPort = os.Getenv("GO_ECHO_PORT")
+	GRPCPort = os.Getenv("GRPC_PORT")
+	DeliveryAddress = backendHost + ":" + GRPCPort
 
 	PostgresDSN = "host=postgres" +
 		" user=" + os.Getenv("POSTGRES_USER") +

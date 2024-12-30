@@ -1,4 +1,4 @@
-package mobile
+package goEcho
 
 import (
 	"github.com/labstack/echo"
@@ -10,25 +10,25 @@ import (
 )
 
 type (
-	// Mobile ...
-	Mobile struct {
+	// GoEcho ...
+	GoEcho struct {
 		EchoEcho   *echo.Echo
 		Controller controller.ToController
 	}
 )
 
-// NewMobile ...
-func NewMobile(
+// NewGoEcho ...
+func NewGoEcho(
 	controller controller.ToController,
 ) (
-	mobile *Mobile,
+	goEcho *GoEcho,
 ) {
-	mobile = &Mobile{
+	goEcho = &GoEcho{
 		EchoEcho:   NewEcho(),
 		Controller: controller,
 	}
 
-	return mobile
+	return goEcho
 }
 
 // NewEcho ...
@@ -51,7 +51,7 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (receiver *Mobile) Start() {
+func (receiver *GoEcho) Start() {
 	group := receiver.EchoEcho.Group("")
 
 	v1.NewRoute(
@@ -60,5 +60,5 @@ func (receiver *Mobile) Start() {
 		group,
 	)
 
-	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.MobilePort))
+	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.GoEchoPort))
 }

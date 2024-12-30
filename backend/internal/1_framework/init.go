@@ -3,14 +3,14 @@ package app
 import (
 	"backend/internal/1_framework/db/postgres"
 	"backend/internal/1_framework/db/redis"
-	mobile "backend/internal/1_framework/input/go-echo"
+	goEcho "backend/internal/1_framework/input/go-echo"
 	grpcPerson "backend/internal/1_framework/input/grpc/person"
 	"backend/internal/2_adapter/controller"
 )
 
 type (
 	app struct {
-		mobile *mobile.Mobile
+		goEcho *goEcho.GoEcho
 		person *grpcPerson.Person
 	}
 )
@@ -25,7 +25,7 @@ func NewApp() *app {
 
 	a := &app{
 		person: grpcPerson.NewPerson(ctrl),
-		mobile: mobile.NewMobile(ctrl),
+		goEcho: goEcho.NewGoEcho(ctrl),
 	}
 	ctrl.Start()
 
@@ -34,6 +34,6 @@ func NewApp() *app {
 
 // Start ...
 func (receiver *app) Start() {
-	go receiver.mobile.Start()
+	go receiver.goEcho.Start()
 	receiver.person.Start()
 }
