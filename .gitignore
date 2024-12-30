@@ -21,28 +21,17 @@
 ### Go Patch ###
 */vendor/*
 */Godeps/*
-backend/vendor
-backend/script/order/vendor
 
 # End of https://www.gitignore.io/api/go
 
 /db/engine/mysql/data/*
 /db/engine/mariadb/data/*
 /db/engine/redis/data/*
-gin-bin
 .envrc
 /direnv/*
 direnv
 db/tool/phpmyadmin/sessions/*
 
-*.log
-
 */tmp/main
-backend/yummy/*.json
-backend/script/order/register/*.json
-backend/script/order/register/reserved/*.json
 
-backend/script/order/delivery/vendor/*
-
-backend/bin/air
-backend/bin/gosec
+backend/bin/*

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package person;
 
-option go_package = "./";
+option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_framework/input/grpc/person";
 
 service Person {
     rpc GetPersonByCondition (V1PersonParameter) returns (V1PersonParameterArray);
