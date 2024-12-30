@@ -1,175 +1,148 @@
-[gosec] 2024/12/30 13:04:47 Including rules: default
-[gosec] 2024/12/30 13:04:47 Excluding rules: default
-[gosec] 2024/12/30 13:04:47 Including analyzers: default
-[gosec] 2024/12/30 13:04:47 Excluding analyzers: default
-[gosec] 2024/12/30 13:04:47 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/mongo
-[gosec] 2024/12/30 13:04:47 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/redis
-[gosec] 2024/12/30 13:04:47 Checking package: mongo
-[gosec] 2024/12/30 13:04:47 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/mongo/mongo.go
-[gosec] 2024/12/30 13:04:47 Panic when running SSA analyser on package: mongo
-[gosec] 2024/12/30 13:04:47 Error building the SSA representation of the package "mongo": %!s(<nil>)
-[gosec] 2024/12/30 13:04:47 Checking package: redis
-[gosec] 2024/12/30 13:04:47 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/redis/method.go
-[gosec] 2024/12/30 13:04:47 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/3_usecase
-[gosec] 2024/12/30 13:04:47 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/redis/x_declaration.go
-[gosec] 2024/12/30 13:04:47 Panic when running SSA analyser on package: redis
-[gosec] 2024/12/30 13:04:47 Error building the SSA representation of the package "redis": %!s(<nil>)
-[gosec] 2024/12/30 13:04:47 Checking package: usecase
-[gosec] 2024/12/30 13:04:47 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/3_usecase/logic.go
-[gosec] 2024/12/30 13:04:47 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor
-[gosec] 2024/12/30 13:04:47 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/3_usecase/x_declaration.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/callback
-[gosec] 2024/12/30 13:04:48 Checking package: monitor
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor/monitor.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor/watch.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor/websocket.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: monitor
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "monitor": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: callback
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/callback/get.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/callback/route.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: callback
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "callback": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: gateway
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway/mongo.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway/mysql.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway/postgres.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway/x_declaration.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: gateway
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "gateway": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: pkg
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg/context.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/struct_object
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg/logger.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg/variable.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: pkg
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "pkg": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework
-[gosec] 2024/12/30 13:04:48 Checking package: struct_object
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/struct_object/person.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: struct_object
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "struct_object": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: app
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/init.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: app
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "app": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: user
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/get.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/logout
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/route.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: user
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "user": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/register
-[gosec] 2024/12/30 13:04:48 Checking package: logout
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/logout/get.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/logout/route.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: logout
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "logout": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter
-[gosec] 2024/12/30 13:04:48 Checking package: register
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/register/register.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: register
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "register": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: presenter
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter/monitor.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/cmd
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter/shipment.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter/x_declaration.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: presenter
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "presenter": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/mysql
-[gosec] 2024/12/30 13:04:48 Checking package: main
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/cmd/main.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: main
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "main": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: mysql
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/mysql/mysql.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: mysql
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "mysql": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1
-[gosec] 2024/12/30 13:04:48 Checking package: person
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person/person.go
-[gosec] 2024/12/30 13:04:48 Ignoring generated file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person/person.pb.go
-[gosec] 2024/12/30 13:04:48 Ignoring generated file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person/person_grpc.pb.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: person
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "person": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: v1
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/route.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: v1
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "v1": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/models
-[gosec] 2024/12/30 13:04:48 Checking package: value_object
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object/id.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object/mail_address.go
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object/name.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: value_object
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "value_object": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: models
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/models/db.xo.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/shipment
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/models/person.xo.go
-[gosec] 2024/12/30 13:04:48 Checking package: shipment
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/shipment/shipment.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/http_parameter
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: shipment
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "shipment": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Checking package: http_parameter
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/http_parameter/data.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/login
-[gosec] 2024/12/30 13:04:48 Checking package: login
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/login/get.go
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/login/route.go
-[gosec] 2024/12/30 13:04:48 Panic when running SSA analyser on package: login
-[gosec] 2024/12/30 13:04:48 Error building the SSA representation of the package "login": %!s(<nil>)
-[gosec] 2024/12/30 13:04:48 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/pc
-[gosec] 2024/12/30 13:04:48 Checking package: postgres
-[gosec] 2024/12/30 13:04:48 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/postgres.go
-[gosec] 2024/12/30 13:04:49 Panic when running SSA analyser on package: postgres
-[gosec] 2024/12/30 13:04:49 Error building the SSA representation of the package "postgres": %!s(<nil>)
-[gosec] 2024/12/30 13:04:49 Checking package: pc
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/pc/pc.go
-[gosec] 2024/12/30 13:04:49 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/controller
-[gosec] 2024/12/30 13:04:49 Panic when running SSA analyser on package: pc
-[gosec] 2024/12/30 13:04:49 Error building the SSA representation of the package "pc": %!s(<nil>)
-[gosec] 2024/12/30 13:04:49 Checking package: controller
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/controller/logic.go
-[gosec] 2024/12/30 13:04:49 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/controller/x_declaration.go
-[gosec] 2024/12/30 13:04:49 Panic when running SSA analyser on package: controller
-[gosec] 2024/12/30 13:04:49 Error building the SSA representation of the package "controller": %!s(<nil>)
-[gosec] 2024/12/30 13:04:49 Checking package: mobile
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/mobile.go
-[gosec] 2024/12/30 13:04:49 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/person
-[gosec] 2024/12/30 13:04:49 Panic when running SSA analyser on package: mobile
-[gosec] 2024/12/30 13:04:49 Error building the SSA representation of the package "mobile": %!s(<nil>)
-[gosec] 2024/12/30 13:04:49 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/web_util
-[gosec] 2024/12/30 13:04:49 Checking package: person
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/person/get.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/person/route.go
-[gosec] 2024/12/30 13:04:49 Panic when running SSA analyser on package: person
-[gosec] 2024/12/30 13:04:49 Error building the SSA representation of the package "person": %!s(<nil>)
-[gosec] 2024/12/30 13:04:49 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain
-[gosec] 2024/12/30 13:04:49 Checking package: web_util
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/web_util/auth.go
-[gosec] 2024/12/30 13:04:49 Panic when running SSA analyser on package: web_util
-[gosec] 2024/12/30 13:04:49 Error building the SSA representation of the package "web_util": %!s(<nil>)
-[gosec] 2024/12/30 13:04:49 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object
-[gosec] 2024/12/30 13:04:49 Checking package: domain
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/logic.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/x_declaration.go
-[gosec] 2024/12/30 13:04:49 Checking package: primitive_object
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_bool.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_float64.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_int.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_int64.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_slice_int.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_slice_int64.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_slice_string.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_string.go
-[gosec] 2024/12/30 13:04:49 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_time.go
+[gosec] 2024/12/30 13:22:30 Including rules: default
+[gosec] 2024/12/30 13:22:30 Excluding rules: default
+[gosec] 2024/12/30 13:22:30 Including analyzers: default
+[gosec] 2024/12/30 13:22:30 Excluding analyzers: default
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/cmd
+[gosec] 2024/12/30 13:22:30 Checking package: main
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/cmd/main.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/redis
+[gosec] 2024/12/30 13:22:30 Panic when running SSA analyser on package: main
+[gosec] 2024/12/30 13:22:30 Error building the SSA representation of the package "main": %!s(<nil>)
+[gosec] 2024/12/30 13:22:30 Checking package: redis
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/redis/method.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/http_parameter
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/redis/x_declaration.go
+[gosec] 2024/12/30 13:22:30 Panic when running SSA analyser on package: redis
+[gosec] 2024/12/30 13:22:30 Error building the SSA representation of the package "redis": %!s(<nil>)
+[gosec] 2024/12/30 13:22:30 Checking package: http_parameter
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/http_parameter/data.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/person
+[gosec] 2024/12/30 13:22:30 Checking package: person
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/person/get.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/login
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/person/route.go
+[gosec] 2024/12/30 13:22:30 Panic when running SSA analyser on package: person
+[gosec] 2024/12/30 13:22:30 Error building the SSA representation of the package "person": %!s(<nil>)
+[gosec] 2024/12/30 13:22:30 Checking package: login
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/login/get.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/login/route.go
+[gosec] 2024/12/30 13:22:30 Panic when running SSA analyser on package: login
+[gosec] 2024/12/30 13:22:30 Error building the SSA representation of the package "login": %!s(<nil>)
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/3_usecase
+[gosec] 2024/12/30 13:22:30 Checking package: gateway
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway/postgres.go
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/gateway/x_declaration.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/struct_object
+[gosec] 2024/12/30 13:22:30 Checking package: usecase
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/3_usecase/logic.go
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/3_usecase/x_declaration.go
+[gosec] 2024/12/30 13:22:30 Checking package: struct_object
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/struct_object/person.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework
+[gosec] 2024/12/30 13:22:30 Panic when running SSA analyser on package: struct_object
+[gosec] 2024/12/30 13:22:30 Error building the SSA representation of the package "struct_object": %!s(<nil>)
+[gosec] 2024/12/30 13:22:30 Checking package: app
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/init.go
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person
+[gosec] 2024/12/30 13:22:30 Panic when running SSA analyser on package: app
+[gosec] 2024/12/30 13:22:30 Error building the SSA representation of the package "app": %!s(<nil>)
+[gosec] 2024/12/30 13:22:30 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user
+[gosec] 2024/12/30 13:22:30 Checking package: person
+[gosec] 2024/12/30 13:22:30 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person/person.go
+[gosec] 2024/12/30 13:22:31 Ignoring generated file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person/person.pb.go
+[gosec] 2024/12/30 13:22:31 Ignoring generated file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/grpc/person/person_grpc.pb.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: person
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "person": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Checking package: user
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/get.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/logout
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/route.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: user
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "user": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Checking package: logout
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/logout/get.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/pc
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/logout/route.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: logout
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "logout": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg
+[gosec] 2024/12/30 13:22:31 Checking package: pc
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/pc/pc.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: pc
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "pc": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/models
+[gosec] 2024/12/30 13:22:31 Checking package: pkg
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg/context.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg/logger.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/pkg/variable.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: pkg
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "pkg": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres
+[gosec] 2024/12/30 13:22:31 Checking package: models
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/models/db.xo.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/models/person.xo.go
+[gosec] 2024/12/30 13:22:31 Checking package: postgres
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/db/postgres/postgres.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/web_util
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: postgres
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "postgres": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Checking package: web_util
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/web_util/auth.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: web_util
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "web_util": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor
+[gosec] 2024/12/30 13:22:31 Checking package: domain
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/logic.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/x_declaration.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile
+[gosec] 2024/12/30 13:22:31 Checking package: monitor
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor/monitor.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor/watch.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/external_interface/monitor/websocket.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: monitor
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "monitor": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Checking package: mobile
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/mobile.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: mobile
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "mobile": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/callback
+[gosec] 2024/12/30 13:22:31 Checking package: v1
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/route.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: v1
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "v1": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/controller
+[gosec] 2024/12/30 13:22:31 Checking package: callback
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/callback/get.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/input/mobile/v1/user/callback/route.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: callback
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "callback": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Checking package: controller
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/controller/logic.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/controller/x_declaration.go
+[gosec] 2024/12/30 13:22:31 Panic when running SSA analyser on package: controller
+[gosec] 2024/12/30 13:22:31 Error building the SSA representation of the package "controller": %!s(<nil>)
+[gosec] 2024/12/30 13:22:31 Checking package: presenter
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter/monitor.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/2_adapter/presenter/x_declaration.go
+[gosec] 2024/12/30 13:22:31 Checking package: primitive_object
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_bool.go
+[gosec] 2024/12/30 13:22:31 Import directory: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_float64.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_int.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_int64.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_slice_int.go
+[gosec] 2024/12/30 13:22:31 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_slice_int64.go
+[gosec] 2024/12/30 13:22:32 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_slice_string.go
+[gosec] 2024/12/30 13:22:32 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_string.go
+[gosec] 2024/12/30 13:22:32 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/primitive_object/primitive_time.go
+[gosec] 2024/12/30 13:22:32 Checking package: value_object
+[gosec] 2024/12/30 13:22:32 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object/id.go
+[gosec] 2024/12/30 13:22:32 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object/mail_address.go
+[gosec] 2024/12/30 13:22:32 Checking file: /home/yuji/Workspace/private_dev/go-docker-template/backend/internal/4_domain/value_object/name.go
+[gosec] 2024/12/30 13:22:32 Panic when running SSA analyser on package: value_object
+[gosec] 2024/12/30 13:22:32 Error building the SSA representation of the package "value_object": %!s(<nil>)

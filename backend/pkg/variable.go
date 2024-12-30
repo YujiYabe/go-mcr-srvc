@@ -15,8 +15,6 @@ var (
 	ErrorLogPath   = filepath.Join(StoragePath, "errorlog")
 	LogPath        = filepath.Join(StoragePath, "log")
 	YummyPath      = filepath.Join(currentPath, "yummy")
-	RegisterPath   = filepath.Join(currentPath, "script", "order", "register")
-	ReservedPath   = filepath.Join(RegisterPath, "reserved")
 
 	WebPath   = filepath.Join(currentPath, "web")
 	IndexPath = filepath.Join(WebPath, "*.html")
@@ -31,12 +29,8 @@ var (
 
 	TZ string
 
-	MySQLDSN    string
-	MariaDBDSN  string
 	PostgresDSN string
 
-	MongoDatabase  string
-	MongoDSN       string
 	AssembleNumber int
 )
 
@@ -64,21 +58,5 @@ func init() {
 		" port=" + os.Getenv("POSTGRES_BACK_PORT") +
 		" TimeZone=" + TZ +
 		" dbname=app sslmode=disable"
-
-	MySQLDSN = os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD") +
-		"@tcp(mysql)/" + os.Getenv("MYSQL_DATABASE") +
-		"?charset=utf8&parseTime=True&loc=Local"
-
-	MariaDBDSN = os.Getenv("MARIADB_USER") + ":" + os.Getenv("MARIADB_PASSWORD") +
-		"@tcp(mysql)/" + os.Getenv("MARIADB_DATABASE") +
-		"?charset=utf8&parseTime=True&loc=Local"
-
-	MongoDatabase = os.Getenv("MONGO_INITDB_DATABASE")
-	MongoDSN = "mongodb://" +
-		os.Getenv("MONGO_INITDB_ROOT_USERNAME") +
-		":" +
-		os.Getenv("MONGO_INITDB_ROOT_PASSWORD") +
-		"@mongo:" +
-		os.Getenv("MONG_BACK_PORT")
 
 }

@@ -42,9 +42,6 @@ type (
 func NewController(
 	ToRedis gateway.ToRedis,
 	ToPostgres gateway.ToPostgres,
-	toMySQL gateway.ToMySQL,
-	toMongo gateway.ToMongo,
-	toShipment presenter.ToShipment,
 	toMonitor presenter.ToMonitor,
 ) (
 	toController ToController,
@@ -53,11 +50,8 @@ func NewController(
 	toGateway := gateway.NewGateway(
 		ToRedis,
 		ToPostgres,
-		toMySQL,
-		toMongo,
 	)
 	toPresenter := presenter.NewPresenter(
-		toShipment,
 		toMonitor,
 	)
 	useCase := usecase.NewUseCase(

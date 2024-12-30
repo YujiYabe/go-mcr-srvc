@@ -72,7 +72,6 @@ type (
 	// ToPresenter ...
 	ToPresenter interface {
 		UpdateOrders(ctx context.Context, orderNumber string, phase string)
-		Shipment(ctx context.Context, order *domain.Order) error
 	}
 )
 

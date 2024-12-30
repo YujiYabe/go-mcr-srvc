@@ -89,9 +89,7 @@ func NewEcho() *echo.Echo {
 
 // Start ...
 func (receiver *Monitor) Start() {
-	receiver.RemoveYummy()
 
-	go receiver.Watching()
 	go receiver.SendToAgents()
 
 	receiver.EchoEcho.Renderer = &Template{

@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"backend/pkg"
 )
@@ -27,29 +26,6 @@ func (receiver *Monitor) RemoveYummy() {
 		}
 	}
 
-}
-
-func (receiver *Monitor) Watching() {
-	ctx := context.Background()
-	var currentFiles []string
-
-	for {
-		files, err := os.ReadDir(pkg.YummyPath)
-		if err != nil {
-			pkg.Logging(ctx, err)
-		}
-
-		var newFiles []string
-		for _, file := range files {
-			newFiles = append(newFiles, file.Name())
-		}
-
-		receiver.passedCheck(currentFiles, newFiles)
-
-		currentFiles = newFiles
-
-		time.Sleep(1 * time.Second)
-	}
 }
 
 func (receiver *Monitor) passedCheck(currentFiles, newFiles []string) {
