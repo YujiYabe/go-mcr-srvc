@@ -96,7 +96,7 @@ services:
             - ${MOBILE_PORT}:${MOBILE_PORT}
             - ${PC_PORT}:${PC_PORT}
             - ${DELIVERY_PORT}:${DELIVERY_PORT}
-            - ${MONITOR_PORT}:${MONITOR_PORT}
+            # - ${MONITOR_PORT}:${MONITOR_PORT}
         environment:
             - GOPATH=${GOPATH}
         tty: true

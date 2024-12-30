@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"backend/internal/2_adapter/gateway"
-	"backend/internal/2_adapter/presenter"
 	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
 	"backend/internal/4_domain/struct_object"
@@ -42,7 +41,6 @@ type (
 func NewController(
 	ToRedis gateway.ToRedis,
 	ToPostgres gateway.ToPostgres,
-	toMonitor presenter.ToMonitor,
 ) (
 	toController ToController,
 ) {
@@ -51,13 +49,10 @@ func NewController(
 		ToRedis,
 		ToPostgres,
 	)
-	toPresenter := presenter.NewPresenter(
-		toMonitor,
-	)
+
 	useCase := usecase.NewUseCase(
 		toDomain,
 		toGateway,
-		toPresenter,
 	)
 
 	toController = &controller{

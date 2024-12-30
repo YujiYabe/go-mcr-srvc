@@ -79,11 +79,9 @@ type (
 func NewUseCase(
 	toDomain ToDomain,
 	toGateway ToGateway,
-	toPresenter ToPresenter,
 ) ToUseCase {
 	return &useCase{
-		ToDomain:    toDomain,
-		ToGateway:   toGateway,
-		ToPresenter: toPresenter,
+		ToDomain:  toDomain,
+		ToGateway: toGateway,
 	}
 }

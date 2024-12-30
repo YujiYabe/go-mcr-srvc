@@ -1,4 +1,10 @@
 # ----------------------------
+.PHONY: gomod
+gomod:
+	cd backend && go mod tidy && go mod vendor
+
+
+# ----------------------------
 .PHONY: stop
 stop:
 	docker-compose stop
