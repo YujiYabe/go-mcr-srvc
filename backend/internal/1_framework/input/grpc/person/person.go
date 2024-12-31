@@ -98,7 +98,7 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	for _, response := range responseList {
-		id32 := int32(response.ID.Content.Value)
+		id32 := uint32(response.ID.Content.Value)
 		v1PersonParameter := &V1PersonParameter{
 			Id:          &id32,
 			Name:        &response.Name.Content.Value,

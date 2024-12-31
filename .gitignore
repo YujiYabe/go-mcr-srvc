@@ -37,3 +37,4 @@ db/tool/phpmyadmin/sessions/*
 backend/bin/*
 
 __debug_*
+air.log
