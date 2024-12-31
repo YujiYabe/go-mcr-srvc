@@ -31,6 +31,12 @@ build:
 
 
 # ----------------------------
+.PHONY: debug
+debug:
+	DEBUG_MODE=true docker-compose up
+
+
+# ----------------------------
 .PHONY: up
 up:
 	docker-compose up
@@ -39,6 +45,7 @@ up:
 # ----------------------------
 .PHONY: reup
 reup: build up
+
 
 
 # ----------------------------

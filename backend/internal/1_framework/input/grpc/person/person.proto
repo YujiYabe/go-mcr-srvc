@@ -8,7 +8,6 @@ service Person {
     rpc GetPersonByCondition (V1PersonParameter) returns (V1PersonParameterArray);
 }
 
-
 message V1PersonParameter {
     optional int32 id = 1;            // ID
     optional string name = 2;         // Name

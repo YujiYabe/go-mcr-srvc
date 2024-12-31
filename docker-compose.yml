@@ -1,42 +1,4 @@
 services:
-  # mysql:
-  #     restart: always
-  #     container_name: mysql
-  #     build:
-  #         context: ./db/engine/mysql
-  #         dockerfile: Dockerfile
-  #     environment:
-  #         - MYSQL_DATABASE=${MYSQL_DATABASE}
-  #         - MYSQL_USER=${MYSQL_USER}
-  #         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-  #         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #         - TZ=${TZ}
-  #     ports:
-  #         - ${MYSQL_FRONT_PORT}:${MYSQL_BACK_PORT}
-  #     volumes:
-  #         - ./db/engine/mysql/conf.d:/etc/mysql/conf.d
-  #         - ./db/engine/mysql/initdb.d:/docker-entrypoint-initdb.d
-  #         - ./db/engine/mysql/data:/var/lib/mysql
-
-  # mariadb:
-  #     restart: always
-  #     container_name: mariadb
-  #     build:
-  #         context: ./db/engine/mariadb
-  #         dockerfile: Dockerfile
-  #     environment:
-  #         - MYSQL_DATABASE=${MYSQL_DATABASE}
-  #         - MYSQL_USER=${MYSQL_USER}
-  #         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-  #         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #         - TZ=${TZ}
-  #     ports:
-  #         - ${MARIADB_FRONT_PORT}:${MARIADB_BACK_PORT}
-  #     volumes:
-  #         - ./db/engine/mariadb/conf.d:/etc/mysql/conf.d
-  #         - ./db/engine/mariadb/initdb.d:/docker-entrypoint-initdb.d
-  #         - ./db/engine/mariadb/data:/var/lib/mysql
-
   postgres:
     restart: always
     container_name: postgres
@@ -54,23 +16,6 @@ services:
     volumes:
       - ./db/engine/postgres/initdb.d:/docker-entrypoint-initdb.d
       - ./db/engine/postgres/data:/var/lib/postgres/data
-
-  # mongo:
-  #     restart: always
-  #     container_name: mongo
-  #     build:
-  #         context: ./db/engine/mongo
-  #         dockerfile: Dockerfile
-  #     environment:
-  #         - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-  #         - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-  #         - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-  #         - TZ=${TZ}
-  #     ports:
-  #         - ${MONG_FRONT_PORT}:${MONG_BACK_PORT}
-  #     command: mongod --quiet --logpath /dev/null
-  #     volumes:
-  #         - ./db/engine/mongo/initdb.d:/docker-entrypoint-initdb.d
 
   redis:
     restart: always
@@ -94,61 +39,19 @@ services:
     ports:
       - ${GO_ECHO_PORT}:${GO_ECHO_PORT}
       - ${GRPC_PORT}:${GRPC_PORT}
+      - '2345:2345' # デバッグポート
+    security_opt:
+      - 'seccomp:unconfined' # デバッガに必要
+    cap_add:
+      - SYS_PTRACE # デバッガに必要
     environment:
       - GOPATH=${GOPATH}
+      - DEBUG_MODE=${DEBUG_MODE:-false}
     tty: true
+    stdin_open: true
     links:
       - redis
       - postgres
-      # - mysql
-      # - mongo
     depends_on:
       - redis
       - postgres
-      # - mysql
-      # - mongo
-
-  # phpmyadmin:
-  #     container_name: phpmyadmin
-  #     build:
-  #         context: ./db/tool/phpmyadmin
-  #         dockerfile: Dockerfile
-  #     environment:
-  #         - PMA_ARBITRARY=1
-  #         - PMA_HOST=mysql
-  #         - PMA_USER=root
-  #         - PMA_PASSWORD=password
-  #     ports:
-  #         - "8090:80"
-  #     volumes:
-  #         - "./db/tool/phpmyadmin/sessions:/sessions"
-  #     links:
-  #         - mysql
-  #     depends_on:
-  #         - mysql
-
-  # pgadmin:
-  #     restart: always
-  #     container_name: pgadmin
-  #     hostname: pgadmin
-  #     build:
-  #         context: ./db/tool/pgadmin
-  #         dockerfile: Dockerfile
-  #     ports:
-  #         - 8091:80
-  #     volumes:
-  #         - ./db/tool/pgadmin:/var/lib/pgadmin/storage
-  #     environment:
-  #         PGADMIN_DEFAULT_EMAIL: root
-  #         PGADMIN_DEFAULT_PASSWORD: root
-  #     depends_on:
-  #         - postgres
-
-  # mongo-express:
-  #     image: mongo-express
-  #     restart: always
-  #     ports:
-  #         - 18081:8081
-  #     environment:
-  #         ME_CONFIG_MONGODB_ADMINUSERNAME: user
-  #         ME_CONFIG_MONGODB_ADMINPASSWORD: user

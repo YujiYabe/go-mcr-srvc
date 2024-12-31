@@ -2,9 +2,6 @@
     "cSpell.import": [
         "./.vscode/cspell.json"
     ],
-    "cSpell.ignorePaths": [
-        "settings.json"
-    ],
     "makefile.configureOnOpen": false,
     "sqltools.connections": [
         {
@@ -17,5 +14,5 @@
             "username": "user",
             "password": "user"
         }
-    ]
+    ],
 }

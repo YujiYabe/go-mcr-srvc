@@ -76,11 +76,6 @@ func (receiver *Server) GetPersonByCondition(
 	name := req.Name
 	mailAddress := req.MailAddress
 
-	log.Println("== grpc get== == == == == == == == == ")
-	log.Printf("%#v\n", id)
-	log.Printf("%#v\n", name)
-	log.Printf("%#v\n", mailAddress)
-	log.Println("== == == == == == == == == == ")
 	reqPerson := struct_object.NewPerson(
 		&struct_object.NewPersonArgs{
 			ID:          &id,

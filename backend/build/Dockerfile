@@ -5,6 +5,7 @@ SHELL ["/bin/bash", "-c"]
 
 # RUN go get -u github.com/cosmtrek/air
 RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 # change timezone
 RUN \
@@ -16,5 +17,6 @@ RUN \
 COPY config/.bashrc /root/.bashrc
 
 ENTRYPOINT ["./script/entrypoint.sh"]
+
 
 
