@@ -1,5 +1,6 @@
 # ----------------------------
 .PHONY: gomod
+
 gomod:
 	cd backend && go mod tidy && go mod vendor
 
@@ -40,13 +41,11 @@ debug:
 .PHONY: up
 up:
 	docker-compose up
-	# docker-compose up mysql mongo postgres
+
 
 # ----------------------------
 .PHONY: reup
 reup: build up
-
-
 
 # ----------------------------
 .PHONY: restart
@@ -72,6 +71,14 @@ golint:
 .PHONY: staticcheck
 staticcheck:
 	cd ./backend && ./bin/staticcheck ./...
+
+
+# ----------------------------
+.PHONY: deadcode
+deadcode:
+	cd ./backend && ./bin/deadcode 
+
+
 
 
 # ----------------------------
@@ -106,5 +113,7 @@ install-tools:
 	GOBIN=$(PWD)/backend/bin go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	GOBIN=$(PWD)/backend/bin go install github.com/securego/gosec/v2/cmd/gosec@latest
 	GOBIN=$(PWD)/backend/bin go install honnef.co/go/tools/cmd/staticcheck@latest
+	GOBIN=$(PWD)/backend/bin go install github.com/air-verse/air@latest
+	GOBIN=$(PWD)/backend/bin go install github.com/tsenart/deadcode@latest
 
 
