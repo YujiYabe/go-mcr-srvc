@@ -114,6 +114,8 @@ install-tools:
 	GOBIN=$(PWD)/backend/bin go install github.com/securego/gosec/v2/cmd/gosec@latest
 	GOBIN=$(PWD)/backend/bin go install honnef.co/go/tools/cmd/staticcheck@latest
 	GOBIN=$(PWD)/backend/bin go install github.com/air-verse/air@latest
-	GOBIN=$(PWD)/backend/bin go install github.com/tsenart/deadcode@latest
+	GOBIN=$(PWD)/backend/bin go install golang.org/x/tools/cmd/deadcode@latest
+	
+	
 
 

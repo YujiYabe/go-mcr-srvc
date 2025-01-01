@@ -3,7 +3,6 @@ package web_util
 import (
 	"crypto/rsa"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -47,7 +46,7 @@ func JWTMiddleware() echo.MiddlewareFunc {
 }
 
 // JWTMiddleware validates the JWT token from the Authorization header
-func JWTMiddleware2(next echo.HandlerFunc) echo.HandlerFunc {
+func JWTMiddlewareAuth0(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authHeader := c.Request().Header.Get("Authorization")
 		if authHeader == "" {
@@ -75,9 +74,6 @@ func JWTMiddleware2(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set("user", claims)
-		log.Println("== == == == == == == == == == ")
-		log.Printf("%#v\n", claims)
-		log.Println("== == == == == == == == == == ")
 
 		return next(c)
 	}

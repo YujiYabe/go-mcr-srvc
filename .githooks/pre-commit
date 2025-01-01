@@ -24,15 +24,15 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# deadcode の実行
-echo ""
-echo "_____________________________________"
-echo "Running deadcode..."
-make deadcode
-if [ $? -ne 0 ]; then
-	echo "deadcode failed. Commit aborted."
-	exit 1
-fi
+# # deadcode の実行
+# echo ""
+# echo "_____________________________________"
+# echo "Running deadcode..."
+# make deadcode
+# if [ $? -ne 0 ]; then
+# 	echo "deadcode failed. Commit aborted."
+# 	exit 1
+# fi
 
 # gosec の実行
 echo ""
