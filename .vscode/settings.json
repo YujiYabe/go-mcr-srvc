@@ -2,6 +2,16 @@
     "cSpell.import": [
         "./.vscode/cspell.json"
     ],
+    "cSpell.ignorePaths": [
+        "package-lock.json",
+        "node_modules",
+        "vscode-extension",
+        ".git/{info,lfs,logs,refs,objects}/**",
+        ".git/{index,*refs,*HEAD}",
+        ".vscode",
+        ".vscode-insiders",
+        "settings.json"
+    ],
     "makefile.configureOnOpen": false,
     "sqltools.connections": [
         {
