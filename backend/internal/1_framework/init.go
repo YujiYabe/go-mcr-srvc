@@ -23,11 +23,12 @@ func NewApp() *app {
 		postgres.NewToPostgres(),
 	)
 
+	ctrl.Start()
+
 	a := &app{
 		person: grpcPerson.NewPerson(ctrl),
 		goEcho: goEcho.NewGoEcho(ctrl),
 	}
-	ctrl.Start()
 
 	return a
 }
