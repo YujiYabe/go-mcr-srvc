@@ -60,15 +60,18 @@ resetAll: removeAll build up
 # ----------------------------
 .PHONY: gosec
 gosec:
-	# ./backend/bin/gosec -exclude=G303 ./backend/...
-	# ./backend/bin/gosec -fmt=json -log gosec.log -exclude-generated -concurrency=1 ./backend/...
-	# cd backend && ./bin/gosec -conf ./config/gosec.json ./...
 	cd backend && ./bin/gosec  -exclude=G115 -conf ./config/gosec.json ./...
 
 # ----------------------------
 .PHONY: golint
 golint:
 	cd ./backend ./bin/golangci-lint run ./...
+
+
+# ----------------------------
+.PHONY: staticcheck
+staticcheck:
+	cd ./backend && ./bin/staticcheck ./...
 
 
 # ----------------------------
@@ -102,5 +105,6 @@ install-tools:
 	# Install other tools
 	GOBIN=$(PWD)/backend/bin go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	GOBIN=$(PWD)/backend/bin go install github.com/securego/gosec/v2/cmd/gosec@latest
+	GOBIN=$(PWD)/backend/bin go install honnef.co/go/tools/cmd/staticcheck@latest
 
 

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+echo "Current directory: $(pwd)"
+# exit 0
+
+# リンターの実行
+echo ""
+echo "_____________________________________"
+echo "Running golangci-lint..."
+# ./backend/bin/golangci-lint run ./backend/...
+make golint
+if [ $? -ne 0 ]; then
+	echo "golangci-lint failed. Commit aborted."
+	exit 1
+fi
+
+# staticcheckの実行
+echo ""
+echo "_____________________________________"
+echo "Running staticcheck..."
+make staticcheck
+if [ $? -ne 0 ]; then
+	echo "staticcheck failed. Commit aborted."
+	exit 1
+fi
+
+# セキュリティチェックの実行
+echo ""
+echo "_____________________________________"
+echo "Running gosec..."
+make gosec
+if [ $? -ne 0 ]; then
+	echo "gosec detected issues. Commit aborted."
+	exit 1
+fi
+
+echo "All checks passed. Proceeding with commit."
+exit 0

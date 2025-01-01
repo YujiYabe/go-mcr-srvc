@@ -16,9 +16,9 @@ type (
 	}
 
 	// OrderUsecase ...
-	OrderUsecase struct {
-		ctx context.Context
-	}
+	// OrderUsecase struct {
+	// 	ctx context.Context
+	// }
 
 	// ToUseCase ...
 	ToUseCase interface {
