@@ -2,92 +2,126 @@ package primitive_object
 
 import (
 	"fmt"
-	"unicode/utf8"
+	"sort"
 )
 
 type PrimitiveSliceString struct {
-	value []string
-	max   *int
-	min   *int
+	Err       error // バリデーションエラーを格納
+	Value     []PrimitiveString
+	IsNil     bool // nil状態を示すフラグ
+	MaxLength int  // 最大文字列長 (-1は制限なし)
+	MinLength int  // 最小文字列長 (-1は制限なし)
 }
 
-func NewPrimitiveSliceString() *PrimitiveSliceString {
-	return &PrimitiveSliceString{}
+type PrimitiveSliceStringOption func(*PrimitiveSliceString)
+
+func (receiver *PrimitiveSliceString) WithError(err error) PrimitiveSliceStringOption {
+	return func(s *PrimitiveSliceString) {
+		s.Err = err
+	}
 }
 
-func (receiver *PrimitiveSliceString) GetLength() int {
-	return len(receiver.value)
+func (receiver *PrimitiveSliceString) WithValue(value []PrimitiveString) PrimitiveSliceStringOption {
+	return func(s *PrimitiveSliceString) {
+		s.Value = value
+	}
 }
 
-func (receiver *PrimitiveSliceString) SortAsc() *PrimitiveSliceString {
-	// sort.Strings(receiver.value)
-	return receiver
+func (receiver *PrimitiveSliceString) WithIsNil(isNil bool) PrimitiveSliceStringOption {
+	return func(s *PrimitiveSliceString) {
+		s.IsNil = isNil
+	}
 }
 
-func (receiver *PrimitiveSliceString) SortDesc() *PrimitiveSliceString {
-	// sort.Sort(sort.Reverse(sort.StringSlice(receiver.value)))
-	return receiver
+func (receiver *PrimitiveSliceString) WithMaxLength(value int) PrimitiveSliceStringOption {
+	return func(s *PrimitiveSliceString) {
+		s.MaxLength = value
+	}
 }
 
-func (receiver *PrimitiveSliceString) RemoveDuplicate() *PrimitiveSliceString {
-	return receiver
+func (receiver *PrimitiveSliceString) WithMinLength(value int) PrimitiveSliceStringOption {
+	return func(s *PrimitiveSliceString) {
+		s.MinLength = value
+	}
 }
 
-func (receiver *PrimitiveSliceString) SetMax(v int) *PrimitiveSliceString {
-	receiver.max = &v
-	return receiver
-}
-
-func (receiver *PrimitiveSliceString) SetMin(v int) *PrimitiveSliceString {
-	receiver.min = &v
-	return receiver
-}
-
-func (receiver *PrimitiveSliceString) GetValue() []string {
-	return receiver.value
-}
-
-func (receiver *PrimitiveSliceString) SetValue(v []string) (*PrimitiveSliceString, error) {
-
-	for _, value := range v {
-		// max があればmax判定確認
-		if receiver.GetMax() != nil {
-			if err := receiver.ValidationMax(value); err != nil {
-				return receiver, fmt.Errorf("error: %s", "validation error")
-			}
-		}
-
-		// min があればmin判定確認
-		if receiver.GetMin() != nil {
-			if err := receiver.ValidationMin(value); err != nil {
-				return receiver, fmt.Errorf("error: %s", "validation error")
-			}
-		}
+func NewPrimitiveSliceString(
+	options ...PrimitiveSliceStringOption,
+) (
+	primitiveSliceString *PrimitiveSliceString,
+) {
+	primitiveSliceString = &PrimitiveSliceString{
+		Err:       nil,
+		Value:     []PrimitiveString{},
+		IsNil:     false,
+		MaxLength: -1,
+		MinLength: -1,
 	}
 
-	receiver.value = v
-	return receiver, nil
-}
-
-func (receiver *PrimitiveSliceString) GetMax() *int {
-	return receiver.max
-}
-
-func (receiver *PrimitiveSliceString) GetMin() *int {
-	return receiver.min
-}
-
-func (receiver *PrimitiveSliceString) ValidationMax(v string) error {
-	if utf8.RuneCountInString(v) > *receiver.max {
-		return fmt.Errorf("error: %s", "max limitation")
+	for _, option := range options {
+		option(primitiveSliceString)
 	}
 
-	return nil
+	return
 }
 
-func (receiver *PrimitiveSliceString) ValidationMin(v string) error {
-	if utf8.RuneCountInString(v) < *receiver.min {
-		return fmt.Errorf("error: %s", "min limitation")
+func (receiver *PrimitiveSliceString) SetIsNil(isNil bool) {
+	receiver.IsNil = isNil
+}
+
+func (receiver *PrimitiveSliceString) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *PrimitiveSliceString) SetError(errString string) {
+	receiver.Err = fmt.Errorf("PrimitiveSliceString: %s", errString)
+}
+
+func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return []PrimitiveString{}
+	}
+	return receiver.Value
+}
+
+func (receiver *PrimitiveSliceString) SetValue(value []PrimitiveString) {
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return
+	}
+	receiver.Value = value
+}
+
+func (receiver *PrimitiveSliceString) SortAsc() {
+	sort.Slice(receiver.Value, func(i, j int) bool {
+		return receiver.Value[i].Value < receiver.Value[j].Value
+	})
+}
+
+func (receiver *PrimitiveSliceString) SortDesc() {
+	sort.Slice(receiver.Value, func(i, j int) bool {
+		return receiver.Value[i].Value > receiver.Value[j].Value
+	})
+}
+
+func (receiver *PrimitiveSliceString) Validation() error {
+	if receiver.IsNil {
+		return nil
+	}
+
+	if receiver.MaxLength != -1 && len(receiver.Value) > receiver.MaxLength {
+		return fmt.Errorf("PrimitiveSliceString: length exceeds maximum allowed (%d)", receiver.MaxLength)
+	}
+
+	if receiver.MinLength != -1 && len(receiver.Value) < receiver.MinLength {
+		return fmt.Errorf("PrimitiveSliceString: length is less than minimum required (%d)", receiver.MinLength)
+	}
+
+	for _, v := range receiver.Value {
+		if err := v.Validation(); err != nil {
+			return err
+		}
 	}
 
 	return nil

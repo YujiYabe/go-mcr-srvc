@@ -22,13 +22,16 @@ func NewID(
 	id = ID{}
 	primitiveInt := &primitive_object.PrimitiveInt{}
 
-	valueInt, isNil := primitiveInt.CheckNil(value)
-
+	isNil := primitiveInt.CheckNil(value)
+	valueInt := 0
+	if !isNil {
+		valueInt = *value
+	}
 	id.Content = primitive_object.NewPrimitiveInt(
 		primitiveInt.WithValue(valueInt),
 		primitiveInt.WithIsNil(isNil),
-		primitiveInt.WithMaxLength(idLengthMax),
-		primitiveInt.WithMinLength(idLengthMin),
+		primitiveInt.WithMaxValue(idLengthMax),
+		primitiveInt.WithMinValue(idLengthMin),
 	)
 
 	err = id.Content.Validation()

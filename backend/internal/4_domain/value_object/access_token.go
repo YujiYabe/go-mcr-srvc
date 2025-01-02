@@ -22,8 +22,11 @@ func NewAccessToken(
 	accessToken = AccessToken{}
 	primitiveString := &primitive_object.PrimitiveString{}
 
-	valueString, isNil := primitiveString.CheckNil(value)
-
+	isNil := primitiveString.CheckNil(value)
+	valueString := ""
+	if !isNil {
+		valueString = *value
+	}
 	accessToken.Content = primitive_object.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),

@@ -5,8 +5,7 @@ import (
 )
 
 // Auth0 ...
-type Auth0 struct {
-}
+type Auth0 struct{}
 
 // NewToAuth0 ...
 func NewToAuth0() (

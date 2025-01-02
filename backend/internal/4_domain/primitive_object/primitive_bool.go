@@ -5,67 +5,80 @@ import (
 )
 
 type PrimitiveBool struct {
-	value  *bool
-	canNil *bool
+	Err   error
+	Value bool
+	IsNil bool
 }
 
-func NewPrimitiveBool() *PrimitiveBool {
-	return &PrimitiveBool{}
+type PrimitiveBoolOption func(*PrimitiveBool)
+
+func (receiver *PrimitiveBool) WithError(err error) PrimitiveBoolOption {
+	return func(s *PrimitiveBool) {
+		s.Err = err
+	}
 }
 
-func (receiver *PrimitiveBool) GetPointer() *bool {
-	return receiver.value
+func (receiver *PrimitiveBool) WithValue(value bool) PrimitiveBoolOption {
+	return func(s *PrimitiveBool) {
+		s.Value = value
+	}
+}
+
+func (receiver *PrimitiveBool) WithIsNil(isNil bool) PrimitiveBoolOption {
+	return func(s *PrimitiveBool) {
+		s.IsNil = isNil
+	}
+}
+
+func NewPrimitiveBool(
+	options ...PrimitiveBoolOption,
+) (
+	primitiveBool *PrimitiveBool,
+) {
+	primitiveBool = &PrimitiveBool{
+		Err:   nil,
+		Value: false,
+		IsNil: false,
+	}
+
+	for _, option := range options {
+		option(primitiveBool)
+	}
+
+	return
+}
+
+func (receiver *PrimitiveBool) SetIsNil(isNil bool) {
+	receiver.IsNil = isNil
+}
+
+func (receiver *PrimitiveBool) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *PrimitiveBool) SetError(errString string) {
+	receiver.Err = fmt.Errorf("PrimitiveBool: %s", errString)
 }
 
 func (receiver *PrimitiveBool) GetValue() bool {
-	if receiver.value != nil {
-		return *receiver.value
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return false
 	}
-
-	return false
+	return receiver.Value
 }
 
-func (receiver *PrimitiveBool) SetValue(v *bool) (*PrimitiveBool, error) {
-	receiver.value = v
-
-	// nullがnilであれば判定対象外にヌル
-	canNil := receiver.GetCanNil()
-	if canNil != nil && // canNilに値が入っており
-		!*canNil && // canNilがfalseだが[*canNil == false]
-		receiver.value == nil { // valueがnilの場合
-		return receiver, fmt.Errorf("error: %s", "validation error")
+func (receiver *PrimitiveBool) SetValue(value bool) {
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return
 	}
-
-	if canNil != nil && // canNilに値が入っており
-		*canNil && // canNilがtrueだが[*canNil == true]
-		receiver.value == nil { // valueがnilの場合
-		return receiver, nil
-	}
-
-	if canNil == nil && // canNilに値が入っておらず
-		receiver.value == nil { // valueがnilの場合
-		return receiver, nil // あえて設定しない要素の為このまま返す
-	}
-
-	return receiver, nil
+	receiver.Value = value
 }
 
-func (receiver *PrimitiveBool) GetCanNil() *bool {
-	return receiver.canNil
-}
-
-func (receiver *PrimitiveBool) SetCanNil(v bool) *PrimitiveBool {
-	receiver.canNil = &v
-	return receiver
-}
-
-func (receiver *PrimitiveBool) ValidationNil() error {
-	if receiver.value == nil {
-		return fmt.Errorf("error: %s", " is nil")
+func (receiver *PrimitiveBool) Validation() error {
+	if receiver.IsNil {
+		return nil
 	}
-	return nil
-}
-
-func (receiver *PrimitiveBool) IsNil() bool {
-	return receiver.value == nil
+	return receiver.Err
 }

@@ -4,58 +4,58 @@ import (
 	"fmt"
 )
 
-type PrimitiveInt64 struct {
+type PrimitiveUint64 struct {
 	Err      error
-	Value    int64
+	Value    uint64
 	IsNil    bool
-	MaxValue int64
-	MinValue int64
+	MaxValue uint64
+	MinValue uint64
 }
 
-type PrimitiveInt64Option func(*PrimitiveInt64)
+type PrimitiveUint64Option func(*PrimitiveUint64)
 
-func (receiver *PrimitiveInt64) WithError(err error) PrimitiveInt64Option {
-	return func(s *PrimitiveInt64) {
+func (receiver *PrimitiveUint64) WithError(err error) PrimitiveUint64Option {
+	return func(s *PrimitiveUint64) {
 		s.Err = err
 	}
 }
 
-func (receiver *PrimitiveInt64) WithValue(value int64) PrimitiveInt64Option {
-	return func(s *PrimitiveInt64) {
+func (receiver *PrimitiveUint64) WithValue(value uint64) PrimitiveUint64Option {
+	return func(s *PrimitiveUint64) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveInt64) WithIsNil(isNil bool) PrimitiveInt64Option {
-	return func(s *PrimitiveInt64) {
+func (receiver *PrimitiveUint64) WithIsNil(isNil bool) PrimitiveUint64Option {
+	return func(s *PrimitiveUint64) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveInt64) WithMaxValue(value int64) PrimitiveInt64Option {
-	return func(s *PrimitiveInt64) {
+func (receiver *PrimitiveUint64) WithMaxValue(value uint64) PrimitiveUint64Option {
+	return func(s *PrimitiveUint64) {
 		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveInt64) WithMinValue(value int64) PrimitiveInt64Option {
-	return func(s *PrimitiveInt64) {
+func (receiver *PrimitiveUint64) WithMinValue(value uint64) PrimitiveUint64Option {
+	return func(s *PrimitiveUint64) {
 		s.MinValue = value
 	}
 }
 
-func NewPrimitiveInt64(
-	options ...PrimitiveInt64Option,
+func NewPrimitiveUint64(
+	options ...PrimitiveUint64Option,
 ) (
-	primitiveInt64 *PrimitiveInt64,
+	primitiveInt64 *PrimitiveUint64,
 ) {
 	// デフォルト値を設定
-	primitiveInt64 = &PrimitiveInt64{
+	primitiveInt64 = &PrimitiveUint64{
 		Err:      nil,
 		Value:    0,
 		IsNil:    false,
-		MaxValue: -1,
-		MinValue: -1,
+		MaxValue: 0,
+		MinValue: 0,
 	}
 
 	// オプションを適用
@@ -67,21 +67,21 @@ func NewPrimitiveInt64(
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) SetIsNil(isNil bool) {
+func (receiver *PrimitiveUint64) SetIsNil(isNil bool) {
 	receiver.IsNil = isNil
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) GetError() error {
+func (receiver *PrimitiveUint64) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveInt64) SetError(errString string) {
-	receiver.Err = fmt.Errorf("PrimitiveInt64: %s", errString)
+func (receiver *PrimitiveUint64) SetError(errString string) {
+	receiver.Err = fmt.Errorf("PrimitiveUint64: %s", errString)
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) GetValue() int64 {
+func (receiver *PrimitiveUint64) GetValue() uint64 {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return 0
@@ -89,7 +89,7 @@ func (receiver *PrimitiveInt64) GetValue() int64 {
 	return receiver.Value
 }
 
-func (receiver *PrimitiveInt64) SetValue(value int64) {
+func (receiver *PrimitiveUint64) SetValue(value uint64) {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return
@@ -98,7 +98,7 @@ func (receiver *PrimitiveInt64) SetValue(value int64) {
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) Validation() error {
+func (receiver *PrimitiveUint64) Validation() error {
 	if receiver.IsNil {
 		return nil
 	}
@@ -116,8 +116,8 @@ func (receiver *PrimitiveInt64) Validation() error {
 	return nil
 }
 
-func (receiver *PrimitiveInt64) ValidationMax() {
-	if receiver.MaxValue < 0 {
+func (receiver *PrimitiveUint64) ValidationMax() {
+	if receiver.MaxValue == 0 {
 		// receiver.SetError("max length no defined")
 		return
 	}
@@ -133,8 +133,8 @@ func (receiver *PrimitiveInt64) ValidationMax() {
 	}
 }
 
-func (receiver *PrimitiveInt64) ValidationMin() {
-	if receiver.MinValue < 0 {
+func (receiver *PrimitiveUint64) ValidationMin() {
+	if receiver.MinValue == 0 {
 		// receiver.SetError("min length no defined")
 		return
 	}
@@ -150,8 +150,8 @@ func (receiver *PrimitiveInt64) ValidationMin() {
 	}
 }
 
-func (receiver *PrimitiveInt64) CheckNil(
-	value *int64,
+func (receiver *PrimitiveUint64) CheckNil(
+	value *uint64,
 ) (
 	isNil bool,
 ) {

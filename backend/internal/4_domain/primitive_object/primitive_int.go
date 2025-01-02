@@ -5,11 +5,11 @@ import (
 )
 
 type PrimitiveInt struct {
-	Err       error
-	Value     int
-	IsNil     bool
-	MaxLength int
-	MinLength int
+	Err      error
+	Value    int
+	IsNil    bool
+	MaxValue int
+	MinValue int
 }
 
 type PrimitiveIntOption func(*PrimitiveInt)
@@ -32,15 +32,15 @@ func (receiver *PrimitiveInt) WithIsNil(isNil bool) PrimitiveIntOption {
 	}
 }
 
-func (receiver *PrimitiveInt) WithMaxLength(length int) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithMaxValue(value int) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.MaxLength = length
+		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveInt) WithMinLength(length int) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithMinValue(value int) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.MinLength = length
+		s.MinValue = value
 	}
 }
 
@@ -51,11 +51,11 @@ func NewPrimitiveInt(
 ) {
 	// デフォルト値を設定
 	primitiveInt = &PrimitiveInt{
-		Err:       nil,
-		Value:     0,
-		IsNil:     false,
-		MaxLength: -1,
-		MinLength: -1,
+		Err:      nil,
+		Value:    0,
+		IsNil:    false,
+		MaxValue: -1,
+		MinValue: -1,
 	}
 
 	// オプションを適用
@@ -118,7 +118,7 @@ func (receiver *PrimitiveInt) Validation() error {
 }
 
 func (receiver *PrimitiveInt) ValidationMax() {
-	if receiver.MaxLength < 0 {
+	if receiver.MaxValue < 0 {
 		// receiver.SetError("max length no defined")
 		return
 	}
@@ -128,14 +128,14 @@ func (receiver *PrimitiveInt) ValidationMax() {
 		return
 	}
 
-	if receiver.Value > receiver.MaxLength {
+	if receiver.Value > receiver.MaxValue {
 		receiver.SetError("max limitation")
 		return
 	}
 }
 
 func (receiver *PrimitiveInt) ValidationMin() {
-	if receiver.MinLength < 0 {
+	if receiver.MinValue < 0 {
 		// receiver.SetError("min length no defined")
 		return
 	}
@@ -145,7 +145,7 @@ func (receiver *PrimitiveInt) ValidationMin() {
 		return
 	}
 
-	if receiver.Value < receiver.MinLength {
+	if receiver.Value < receiver.MinValue {
 		receiver.SetError("min limitation")
 		return
 	}
@@ -154,13 +154,10 @@ func (receiver *PrimitiveInt) ValidationMin() {
 func (receiver *PrimitiveInt) CheckNil(
 	value *int,
 ) (
-	valueInt int,
 	isNil bool,
 ) {
-	valueInt = 0
 	isNil = true
 	if value != nil {
-		valueInt = *value
 		isNil = false
 	}
 

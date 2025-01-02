@@ -39,6 +39,7 @@ type (
 		)
 	}
 
+	// ToAuth0 ...
 	ToAuth0 interface {
 		FetchAccessToken(
 			ctx context.Context,

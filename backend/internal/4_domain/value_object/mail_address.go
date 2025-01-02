@@ -27,7 +27,11 @@ func NewMailAddress(
 	mailAddress = MailAddress{}
 	primitiveString := &primitive_object.PrimitiveString{}
 
-	valueString, isNil := primitiveString.CheckNil(value)
+	isNil := primitiveString.CheckNil(value)
+	valueString := ""
+	if !isNil {
+		valueString = *value
+	}
 
 	mailAddress.Content = primitive_object.NewPrimitiveString(
 		primitiveString.WithValue(valueString),

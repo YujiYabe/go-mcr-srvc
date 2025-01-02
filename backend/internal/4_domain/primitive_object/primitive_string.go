@@ -197,13 +197,10 @@ func (receiver *PrimitiveString) ValidationSpell() {
 func (receiver *PrimitiveString) CheckNil(
 	value *string,
 ) (
-	valueString string,
 	isNil bool,
 ) {
-	valueString = ""
 	isNil = true
 	if value != nil {
-		valueString = *value
 		isNil = false
 	}
 

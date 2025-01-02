@@ -6,71 +6,118 @@ import (
 )
 
 type PrimitiveTime struct {
-	value  *time.Time
-	canNil *bool
+	Err      error
+	Value    time.Time
+	IsNil    bool
+	MaxValue time.Time
+	MinValue time.Time
 }
 
-func NewPrimitiveTime() *PrimitiveTime {
-	return &PrimitiveTime{}
+type PrimitiveTimeOption func(*PrimitiveTime)
+
+func (receiver *PrimitiveTime) WithError(err error) PrimitiveTimeOption {
+	return func(s *PrimitiveTime) {
+		s.Err = err
+	}
+}
+
+func (receiver *PrimitiveTime) WithValue(value time.Time) PrimitiveTimeOption {
+	return func(s *PrimitiveTime) {
+		s.Value = value
+	}
+}
+
+func (receiver *PrimitiveTime) WithIsNil(isNil bool) PrimitiveTimeOption {
+	return func(s *PrimitiveTime) {
+		s.IsNil = isNil
+	}
+}
+
+func (receiver *PrimitiveTime) WithMaxValue(maxTime time.Time) PrimitiveTimeOption {
+	return func(s *PrimitiveTime) {
+		s.MaxValue = maxTime
+	}
+}
+
+func (receiver *PrimitiveTime) WithMinValue(minTime time.Time) PrimitiveTimeOption {
+	return func(s *PrimitiveTime) {
+		s.MinValue = minTime
+	}
+}
+
+func NewPrimitiveTime(
+	options ...PrimitiveTimeOption,
+) (
+	primitiveTime *PrimitiveTime,
+) {
+	primitiveTime = &PrimitiveTime{
+		Err:      nil,
+		Value:    time.Time{},
+		IsNil:    false,
+		MaxValue: time.Time{},
+		MinValue: time.Time{},
+	}
+
+	for _, option := range options {
+		option(primitiveTime)
+	}
+
+	return
+}
+
+func (receiver *PrimitiveTime) SetIsNil(isNil bool) {
+	receiver.IsNil = isNil
+}
+
+func (receiver *PrimitiveTime) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *PrimitiveTime) SetError(errString string) {
+	receiver.Err = fmt.Errorf("PrimitiveTime: %s", errString)
 }
 
 func (receiver *PrimitiveTime) GetValue() time.Time {
-	if receiver.value != nil {
-		return *receiver.value
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return time.Time{}
 	}
-
-	return time.Now()
+	return receiver.Value
 }
 
-func (receiver *PrimitiveTime) GetPointer() *time.Time {
-	return receiver.value
+func (receiver *PrimitiveTime) SetValue(value time.Time) {
+	if receiver.IsNil {
+		receiver.SetError("is nil")
+		return
+	}
+	receiver.Value = value
 }
 
-func (receiver *PrimitiveTime) SetValue(v *time.Time) (*PrimitiveTime, error) {
-	receiver.value = v
-
-	// nullがnilであれば判定対象外にヌル
-	canNil := receiver.GetCanNil()
-	if canNil != nil && // canNilに値が入っており
-		!*canNil && // canNilがfalseだが[*canNil == false]
-		receiver.value == nil { // valueがnilの場合
-		return receiver, fmt.Errorf("error: %s", "validation error")
+func (receiver *PrimitiveTime) Validation() error {
+	if receiver.IsNil {
+		return nil
 	}
 
-	if canNil != nil && // canNilに値が入っており
-		*canNil && // canNilがtrueだが[*canNil == true]
-		receiver.value == nil { // valueがnilの場合
-		return receiver, nil
+	if !receiver.MaxValue.IsZero() && receiver.Value.After(receiver.MaxValue) {
+		return fmt.Errorf("value exceeds maximum allowed time")
 	}
 
-	if canNil == nil && // canNilに値が入っておらず
-		receiver.value == nil { // valueがnilの場合
-		return receiver, nil // あえて設定しない要素の為このまま返す
+	if !receiver.MinValue.IsZero() && receiver.Value.Before(receiver.MinValue) {
+		return fmt.Errorf("value is before minimum allowed time")
 	}
 
-	return receiver, nil
-}
-
-func (receiver *PrimitiveTime) GetCanNil() *bool {
-	return receiver.canNil
-}
-
-func (receiver *PrimitiveTime) SetCanNil(v bool) *PrimitiveTime {
-	receiver.canNil = &v
-	return receiver
-}
-
-func (receiver *PrimitiveTime) ValidationNil() error {
-	if receiver.value == nil {
-		return fmt.Errorf("error: %s", " is nil")
-	}
 	return nil
 }
 
-func (receiver *PrimitiveTime) IsNil() bool {
-	return receiver.value == nil
-}
+func (receiver *PrimitiveTime) CheckNil(
+	value *time.Time,
+) (
+	isNil bool,
+) {
+	isNil = true
+	if value != nil {
+		isNil = false
+	}
 
-func (receiver *PrimitiveTime) GetNow() time.Time {
-	return time.Now()
+	return
 }

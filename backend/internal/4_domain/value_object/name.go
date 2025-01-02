@@ -27,7 +27,11 @@ func NewName(
 	name = Name{}
 	primitiveString := &primitive_object.PrimitiveString{}
 
-	valueString, isNil := primitiveString.CheckNil(value)
+	isNil := primitiveString.CheckNil(value)
+	valueString := ""
+	if !isNil {
+		valueString = *value
+	}
 
 	name.Content = primitive_object.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
