@@ -11,8 +11,13 @@ import (
 
 type RowData []string
 
-func (receiver *RowData) append(appendData string) {
-	*receiver = append(*receiver, appendData)
+func (receiver *RowData) append(
+	appendData string,
+) {
+	*receiver = append(
+		*receiver,
+		appendData,
+	)
 }
 
 func Logging(
@@ -35,7 +40,8 @@ func Logging(
 	if errorContent, ok := data.(error); ok {
 		logContent = errorContent.Error() // エラー内容
 	} else {
-		logContent = fmt.Sprintf("%#v", data)
+		logContent = fmt.Sprintf(
+			"%#v", data)
 	}
 	rowData.append(logContent)
 

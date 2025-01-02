@@ -81,7 +81,10 @@ func (receiver *PrimitiveUint32) GetError() error {
 func (receiver *PrimitiveUint32) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("PrimitiveUint32: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"PrimitiveUint32: %s",
+		errString,
+	)
 }
 
 // --------------------------------------

@@ -21,7 +21,13 @@ func get(
 	claims := c.Get("user").(jwt.MapClaims)
 	username := claims["sub"].(string) // Example: "sub" from the token claims
 
-	return c.String(http.StatusOK, fmt.Sprintf("Welcome to the protected endpoint, %s!", username))
+	return c.String(
+		http.StatusOK,
+		fmt.Sprintf(
+			"Welcome to the protected endpoint, %s!",
+			username,
+		),
+	)
 
 	// ctx := pkg.GetNewContext(
 	// 	c.Request().Context(),

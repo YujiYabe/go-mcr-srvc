@@ -91,7 +91,10 @@ func (receiver *PrimitiveInt64) GetError() error {
 func (receiver *PrimitiveInt64) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("PrimitiveInt64: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"PrimitiveInt64: %s",
+		errString,
+	)
 }
 
 // --------------------------------------

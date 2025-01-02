@@ -92,7 +92,10 @@ func (receiver *PrimitiveInt32) GetError() error {
 func (receiver *PrimitiveInt32) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("PrimitiveInt32: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"PrimitiveInt32: %s",
+		errString,
+	)
 }
 
 func (receiver *PrimitiveInt32) GetValue() int32 {

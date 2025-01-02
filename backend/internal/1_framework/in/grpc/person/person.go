@@ -106,7 +106,10 @@ func (receiver *Server) GetPersonByCondition(
 			Name:        &name,
 			MailAddress: &mailAddress,
 		}
-		v1PersonParameterList = append(v1PersonParameterList, v1PersonParameter)
+		v1PersonParameterList = append(
+			v1PersonParameterList,
+			v1PersonParameter,
+		)
 	}
 
 	v1PersonParameterArray.Persons = v1PersonParameterList

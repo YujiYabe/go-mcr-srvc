@@ -48,7 +48,10 @@ func (receiver *PrimitiveSliceInt) GetError() error {
 func (receiver *PrimitiveSliceInt) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("error: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"error: %s",
+		errString,
+	)
 }
 
 // Validate validates the PrimitiveSliceInt

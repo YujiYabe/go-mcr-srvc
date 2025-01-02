@@ -65,11 +65,13 @@ func (receiver MailAddress) Validation() error {
 	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 	matched, err := regexp.MatchString(emailPattern, receiver.Content.Value)
 	if err != nil {
-		return fmt.Errorf("failed to validate email format: %w", err)
+		return fmt.Errorf(
+			"failed to validate email format: %w", err)
 	}
 
 	if !matched {
-		return fmt.Errorf("invalid email format: %s", receiver.Content.Value)
+		return fmt.Errorf(
+			"invalid email format: %s", receiver.Content.Value)
 	}
 
 	return nil

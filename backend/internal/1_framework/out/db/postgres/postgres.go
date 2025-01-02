@@ -42,7 +42,8 @@ func open(count uint) (*gorm.DB, error) {
 	if err != nil {
 		if count == 0 {
 			pkg.Logging(ctx, err)
-			return nil, fmt.Errorf("retry count over")
+			return nil, fmt.Errorf(
+				"retry count over")
 		}
 		time.Sleep(time.Second)
 		count--
@@ -83,7 +84,10 @@ func (receiver *Postgres) GetPersonList(
 			return personList, person.Err
 		}
 
-		personList = append(personList, *person)
+		personList = append(
+			personList,
+			*person,
+		)
 	}
 
 	return
@@ -128,7 +132,10 @@ func (receiver *Postgres) GetPersonByCondition(
 			return resPersonList, person.Err
 		}
 
-		resPersonList = append(resPersonList, *person)
+		resPersonList = append(
+			resPersonList,
+			*person,
+		)
 	}
 
 	return

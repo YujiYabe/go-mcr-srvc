@@ -78,7 +78,10 @@ func (receiver *PrimitiveTime) GetError() error {
 func (receiver *PrimitiveTime) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("PrimitiveTime: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"PrimitiveTime: %s",
+		errString,
+	)
 }
 
 func (receiver *PrimitiveTime) GetValue() time.Time {
@@ -103,11 +106,13 @@ func (receiver *PrimitiveTime) Validation() error {
 	}
 
 	if !receiver.MaxValue.IsZero() && receiver.Value.After(receiver.MaxValue) {
-		return fmt.Errorf("value exceeds maximum allowed time")
+		return fmt.Errorf(
+			"value exceeds maximum allowed time")
 	}
 
 	if !receiver.MinValue.IsZero() && receiver.Value.Before(receiver.MinValue) {
-		return fmt.Errorf("value is before minimum allowed time")
+		return fmt.Errorf(
+			"value is before minimum allowed time")
 	}
 
 	return nil

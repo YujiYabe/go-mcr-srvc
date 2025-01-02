@@ -70,5 +70,7 @@ func (receiver *GoEcho) Start() {
 		}
 	}
 
-	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.GoEchoPort))
+	receiver.EchoEcho.Logger.Fatal(
+		receiver.EchoEcho.Start(":" + pkg.GoEchoPort),
+	)
 }

@@ -78,7 +78,10 @@ func (receiver *PrimitiveSliceString) GetError() error {
 func (receiver *PrimitiveSliceString) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("PrimitiveSliceString: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"PrimitiveSliceString: %s",
+		errString,
+	)
 }
 
 func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
@@ -115,11 +118,13 @@ func (receiver *PrimitiveSliceString) Validation() error {
 	}
 
 	if receiver.MaxLength != -1 && len(receiver.Value) > receiver.MaxLength {
-		return fmt.Errorf("PrimitiveSliceString: length exceeds maximum allowed (%d)", receiver.MaxLength)
+		return fmt.Errorf(
+			"PrimitiveSliceString: length exceeds maximum allowed (%d)", receiver.MaxLength)
 	}
 
 	if receiver.MinLength != -1 && len(receiver.Value) < receiver.MinLength {
-		return fmt.Errorf("PrimitiveSliceString: length is less than minimum required (%d)", receiver.MinLength)
+		return fmt.Errorf(
+			"PrimitiveSliceString: length is less than minimum required (%d)", receiver.MinLength)
 	}
 
 	for _, v := range receiver.Value {

@@ -102,7 +102,10 @@ func (receiver *PrimitiveString) GetError() error {
 func (receiver *PrimitiveString) SetError(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf("error: %s", errString)
+	receiver.Err = fmt.Errorf(
+		"error: %s",
+		errString,
+	)
 }
 
 // --------------------------------------

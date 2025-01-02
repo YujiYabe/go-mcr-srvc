@@ -59,14 +59,6 @@ func fetchAccessToken(
 		)
 	}
 
-	if err != nil {
-		pkg.Logging(ctx, err)
-		return c.JSON(
-			http.StatusBadRequest,
-			err,
-		)
-	}
-
 	return c.JSON(
 		http.StatusOK,
 		accessToken.Content.GetValue(),
