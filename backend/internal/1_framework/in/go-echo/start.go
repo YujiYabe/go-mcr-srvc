@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	v1 "backend/internal/1_framework/input/go-echo/v1"
+	v1 "backend/internal/1_framework/in/go-echo/v1"
 	"backend/internal/2_adapter/controller"
 	"backend/pkg"
 )

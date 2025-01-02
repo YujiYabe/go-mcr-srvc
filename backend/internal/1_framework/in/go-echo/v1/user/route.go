@@ -3,10 +3,10 @@ package user
 import (
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/input/go-echo/v1/user/callback"
-	"backend/internal/1_framework/input/go-echo/v1/user/login"
-	"backend/internal/1_framework/input/go-echo/v1/user/logout"
-	webUtil "backend/internal/1_framework/input/go-echo/web_util"
+	"backend/internal/1_framework/in/go-echo/v1/user/callback"
+	"backend/internal/1_framework/in/go-echo/v1/user/login"
+	"backend/internal/1_framework/in/go-echo/v1/user/logout"
+	webUtil "backend/internal/1_framework/in/go-echo/web_util"
 	"backend/internal/2_adapter/controller"
 )
 

@@ -3,7 +3,7 @@ package withmiddleware
 import (
 	"github.com/labstack/echo"
 
-	webUtil "backend/internal/1_framework/input/go-echo/web_util"
+	webUtil "backend/internal/1_framework/in/go-echo/web_util"
 	"backend/internal/2_adapter/controller"
 )
 

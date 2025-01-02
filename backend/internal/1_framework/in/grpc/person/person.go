@@ -98,15 +98,18 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	for _, response := range responseList {
-		id32 := uint32(response.ID.Content.Value)
+		id32 := uint32(response.ID.Content.GetValue())
+		name := response.Name.Content.GetValue()
+		mailAddress := response.MailAddress.Content.GetValue()
 		v1PersonParameter := &V1PersonParameter{
 			Id:          &id32,
-			Name:        &response.Name.Content.Value,
-			MailAddress: &response.MailAddress.Content.Value,
+			Name:        &name,
+			MailAddress: &mailAddress,
 		}
 		v1PersonParameterList = append(v1PersonParameterList, v1PersonParameter)
 	}
 
 	v1PersonParameterArray.Persons = v1PersonParameterList
 	return v1PersonParameterArray, nil
+
 }

@@ -102,12 +102,12 @@ func (receiver *Postgres) GetPersonByCondition(
 
 	conn := receiver.Conn.Table("persons")
 
-	if !reqPerson.MailAddress.Content.IsNil && reqPerson.MailAddress.Content.Value != "" {
-		conn.Where("mail_address = ?", reqPerson.MailAddress.Content.Value)
+	if !reqPerson.MailAddress.Content.IsNil && reqPerson.MailAddress.Content.GetValue() != "" {
+		conn.Where("mail_address = ?", reqPerson.MailAddress.Content.GetValue())
 	}
 
-	if !reqPerson.Name.Content.IsNil && reqPerson.Name.Content.Value != "" {
-		conn.Where("name LIKE ?", "%"+reqPerson.Name.Content.Value+"%")
+	if !reqPerson.Name.Content.IsNil && reqPerson.Name.Content.GetValue() != "" {
+		conn.Where("name LIKE ?", "%"+reqPerson.Name.Content.GetValue()+"%")
 	}
 
 	result := conn.Find(&persons)

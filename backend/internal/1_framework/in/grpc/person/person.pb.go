@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.1
 // 	protoc        v5.29.2
-// source: backend/internal/1_framework/input/grpc/person/person.proto
+// source: backend/internal/1_framework/in/grpc/person/person.proto
 
 package person
 

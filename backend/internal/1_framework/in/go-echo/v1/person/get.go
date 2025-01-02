@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/input/go-echo/http_parameter"
+	"backend/internal/1_framework/in/go-echo/http_parameter"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
@@ -63,12 +63,15 @@ func get(
 
 	responseList := []http_parameter.V1Person{}
 	for _, person := range personList {
+		id := person.ID.Content.GetValue()
+		name := person.Name.Content.GetValue()
+		mailAddress := person.MailAddress.Content.GetValue()
 		responseList = append(
 			responseList,
 			http_parameter.V1Person{
-				ID:          &person.ID.Content.Value,
-				Name:        &person.Name.Content.Value,
-				MailAddress: &person.MailAddress.Content.Value,
+				ID:          &id,
+				Name:        &name,
+				MailAddress: &mailAddress,
 			},
 		)
 	}
