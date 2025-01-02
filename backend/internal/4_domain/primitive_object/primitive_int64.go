@@ -14,31 +14,41 @@ type PrimitiveInt64 struct {
 
 type PrimitiveInt64Option func(*PrimitiveInt64)
 
-func (receiver *PrimitiveInt64) WithError(err error) PrimitiveInt64Option {
+func (receiver *PrimitiveInt64) WithError(
+	err error,
+) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
 		s.Err = err
 	}
 }
 
-func (receiver *PrimitiveInt64) WithValue(value int64) PrimitiveInt64Option {
+func (receiver *PrimitiveInt64) WithValue(
+	value int64,
+) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveInt64) WithIsNil(isNil bool) PrimitiveInt64Option {
+func (receiver *PrimitiveInt64) WithIsNil(
+	isNil bool,
+) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveInt64) WithMaxValue(value int64) PrimitiveInt64Option {
+func (receiver *PrimitiveInt64) WithMaxValue(
+	value int64,
+) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
 		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveInt64) WithMinValue(value int64) PrimitiveInt64Option {
+func (receiver *PrimitiveInt64) WithMinValue(
+	value int64,
+) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
 		s.MinValue = value
 	}
@@ -67,7 +77,9 @@ func NewPrimitiveInt64(
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) SetIsNil(isNil bool) {
+func (receiver *PrimitiveInt64) SetIsNil(
+	isNil bool,
+) {
 	receiver.IsNil = isNil
 }
 
@@ -76,7 +88,9 @@ func (receiver *PrimitiveInt64) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveInt64) SetError(errString string) {
+func (receiver *PrimitiveInt64) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("PrimitiveInt64: %s", errString)
 }
 
@@ -89,7 +103,9 @@ func (receiver *PrimitiveInt64) GetValue() int64 {
 	return receiver.Value
 }
 
-func (receiver *PrimitiveInt64) SetValue(value int64) {
+func (receiver *PrimitiveInt64) SetValue(
+	value int64,
+) {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return

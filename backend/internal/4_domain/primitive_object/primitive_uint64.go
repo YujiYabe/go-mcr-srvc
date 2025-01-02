@@ -14,7 +14,9 @@ type PrimitiveUint64 struct {
 
 type PrimitiveUint64Option func(*PrimitiveUint64)
 
-func (receiver *PrimitiveUint64) WithError(err error) PrimitiveUint64Option {
+func (receiver *PrimitiveUint64) WithError(
+	err error,
+) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
 		s.Err = err
 	}
@@ -76,7 +78,9 @@ func (receiver *PrimitiveUint64) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveUint64) SetError(errString string) {
+func (receiver *PrimitiveUint64) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("PrimitiveUint64: %s", errString)
 }
 

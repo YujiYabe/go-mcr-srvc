@@ -19,13 +19,21 @@ func NewRoute(
 
 	group.POST(
 		"/fetchAccessToken",
-		func(c echo.Context) (err error) { return fetchAccessToken(c, toController) },
+		func(c echo.Context) (
+			err error,
+		) {
+			return fetchAccessToken(c, toController)
+		},
 		// webUtil.JWTMiddleware(),
 	)
 
 	group.GET(
 		"/protected",
-		func(c echo.Context) (err error) { return protected(c, toController) },
+		func(c echo.Context) (
+			err error,
+		) {
+			return protected(c, toController)
+		},
 		webUtil.JWTMiddleware(),
 	)
 }

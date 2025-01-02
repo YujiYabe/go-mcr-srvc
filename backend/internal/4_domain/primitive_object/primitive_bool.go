@@ -12,19 +12,25 @@ type PrimitiveBool struct {
 
 type PrimitiveBoolOption func(*PrimitiveBool)
 
-func (receiver *PrimitiveBool) WithError(err error) PrimitiveBoolOption {
+func (receiver *PrimitiveBool) WithError(
+	err error,
+) PrimitiveBoolOption {
 	return func(s *PrimitiveBool) {
 		s.Err = err
 	}
 }
 
-func (receiver *PrimitiveBool) WithValue(value bool) PrimitiveBoolOption {
+func (receiver *PrimitiveBool) WithValue(
+	value bool,
+) PrimitiveBoolOption {
 	return func(s *PrimitiveBool) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveBool) WithIsNil(isNil bool) PrimitiveBoolOption {
+func (receiver *PrimitiveBool) WithIsNil(
+	isNil bool,
+) PrimitiveBoolOption {
 	return func(s *PrimitiveBool) {
 		s.IsNil = isNil
 	}
@@ -48,7 +54,9 @@ func NewPrimitiveBool(
 	return
 }
 
-func (receiver *PrimitiveBool) SetIsNil(isNil bool) {
+func (receiver *PrimitiveBool) SetIsNil(
+	isNil bool,
+) {
 	receiver.IsNil = isNil
 }
 
@@ -56,8 +64,13 @@ func (receiver *PrimitiveBool) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveBool) SetError(errString string) {
-	receiver.Err = fmt.Errorf("PrimitiveBool: %s", errString)
+func (receiver *PrimitiveBool) SetError(
+	errString string,
+) {
+	receiver.Err = fmt.Errorf(
+		"PrimitiveBool: %s",
+		errString,
+	)
 }
 
 func (receiver *PrimitiveBool) GetValue() bool {
@@ -68,7 +81,9 @@ func (receiver *PrimitiveBool) GetValue() bool {
 	return receiver.Value
 }
 
-func (receiver *PrimitiveBool) SetValue(value bool) {
+func (receiver *PrimitiveBool) SetValue(
+	value bool,
+) {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return

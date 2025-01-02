@@ -15,31 +15,41 @@ type PrimitiveInt32 struct {
 
 type PrimitiveInt32Option func(*PrimitiveInt32)
 
-func (receiver *PrimitiveInt32) WithError(err error) PrimitiveInt32Option {
+func (receiver *PrimitiveInt32) WithError(
+	err error,
+) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
 		s.Err = err
 	}
 }
 
-func (receiver *PrimitiveInt32) WithValue(value int32) PrimitiveInt32Option {
+func (receiver *PrimitiveInt32) WithValue(
+	value int32,
+) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveInt32) WithIsNil(isNil bool) PrimitiveInt32Option {
+func (receiver *PrimitiveInt32) WithIsNil(
+	isNil bool,
+) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveInt32) WithMaxValue(value int32) PrimitiveInt32Option {
+func (receiver *PrimitiveInt32) WithMaxValue(
+	value int32,
+) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
 		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveInt32) WithMinValue(value int32) PrimitiveInt32Option {
+func (receiver *PrimitiveInt32) WithMinValue(
+	value int32,
+) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
 		s.MinValue = value
 	}
@@ -68,7 +78,9 @@ func NewPrimitiveInt32(
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt32) SetIsNil(isNil bool) {
+func (receiver *PrimitiveInt32) SetIsNil(
+	isNil bool,
+) {
 	receiver.IsNil = isNil
 }
 
@@ -77,7 +89,9 @@ func (receiver *PrimitiveInt32) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveInt32) SetError(errString string) {
+func (receiver *PrimitiveInt32) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("PrimitiveInt32: %s", errString)
 }
 
@@ -89,7 +103,9 @@ func (receiver *PrimitiveInt32) GetValue() int32 {
 	return receiver.Value
 }
 
-func (receiver *PrimitiveInt32) SetValue(value int32) {
+func (receiver *PrimitiveInt32) SetValue(
+	value int32,
+) {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return
@@ -98,7 +114,9 @@ func (receiver *PrimitiveInt32) SetValue(value int32) {
 }
 
 // 指定した桁で四捨五入するメソッド
-func (receiver *PrimitiveInt32) RoundToDigit(digit int32) {
+func (receiver *PrimitiveInt32) RoundToDigit(
+	digit int32,
+) {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return

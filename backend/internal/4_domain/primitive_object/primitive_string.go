@@ -21,7 +21,9 @@ type PrimitiveString struct {
 type PrimitiveStringOption func(*PrimitiveString)
 
 // WithError はエラーを設定するオプションを返します
-func (receiver *PrimitiveString) WithError(err error) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithError(
+	err error,
+) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.Err = err
 	}
@@ -97,7 +99,9 @@ func (receiver *PrimitiveString) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveString) SetError(errString string) {
+func (receiver *PrimitiveString) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("error: %s", errString)
 }
 

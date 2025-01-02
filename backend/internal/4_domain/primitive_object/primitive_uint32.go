@@ -14,7 +14,9 @@ type PrimitiveUint32 struct {
 
 type PrimitiveUint32Option func(*PrimitiveUint32)
 
-func (receiver *PrimitiveUint32) WithError(err error) PrimitiveUint32Option {
+func (receiver *PrimitiveUint32) WithError(
+	err error,
+) PrimitiveUint32Option {
 	return func(s *PrimitiveUint32) {
 		s.Err = err
 	}
@@ -76,7 +78,9 @@ func (receiver *PrimitiveUint32) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveUint32) SetError(errString string) {
+func (receiver *PrimitiveUint32) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("PrimitiveUint32: %s", errString)
 }
 

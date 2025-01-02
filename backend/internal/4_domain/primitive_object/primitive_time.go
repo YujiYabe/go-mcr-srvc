@@ -15,7 +15,9 @@ type PrimitiveTime struct {
 
 type PrimitiveTimeOption func(*PrimitiveTime)
 
-func (receiver *PrimitiveTime) WithError(err error) PrimitiveTimeOption {
+func (receiver *PrimitiveTime) WithError(
+	err error,
+) PrimitiveTimeOption {
 	return func(s *PrimitiveTime) {
 		s.Err = err
 	}
@@ -73,7 +75,9 @@ func (receiver *PrimitiveTime) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveTime) SetError(errString string) {
+func (receiver *PrimitiveTime) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("PrimitiveTime: %s", errString)
 }
 

@@ -23,7 +23,11 @@ func NewRoute(
 
 	group.GET(
 		"",
-		func(c echo.Context) (err error) { return get(c, toController) },
+		func(c echo.Context) (
+			err error,
+		) {
+			return get(c, toController)
+		},
 	)
 
 }

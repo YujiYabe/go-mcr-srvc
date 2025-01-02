@@ -14,31 +14,41 @@ type PrimitiveInt struct {
 
 type PrimitiveIntOption func(*PrimitiveInt)
 
-func (receiver *PrimitiveInt) WithError(err error) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithError(
+	err error,
+) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
 		s.Err = err
 	}
 }
 
-func (receiver *PrimitiveInt) WithValue(value int) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithValue(
+	value int,
+) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveInt) WithIsNil(isNil bool) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithIsNil(
+	isNil bool,
+) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveInt) WithMaxValue(value int) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithMaxValue(
+	value int,
+) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
 		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveInt) WithMinValue(value int) PrimitiveIntOption {
+func (receiver *PrimitiveInt) WithMinValue(
+	value int,
+) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
 		s.MinValue = value
 	}
@@ -67,7 +77,9 @@ func NewPrimitiveInt(
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt) SetIsNil(isNil bool) {
+func (receiver *PrimitiveInt) SetIsNil(
+	isNil bool,
+) {
 	receiver.IsNil = isNil
 }
 
@@ -76,7 +88,9 @@ func (receiver *PrimitiveInt) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveInt) SetError(errString string) {
+func (receiver *PrimitiveInt) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("error: %s", errString)
 }
 
@@ -89,7 +103,9 @@ func (receiver *PrimitiveInt) GetValue() int {
 	return receiver.Value
 }
 
-func (receiver *PrimitiveInt) SetValue(value int) {
+func (receiver *PrimitiveInt) SetValue(
+	value int,
+) {
 	if receiver.IsNil {
 		receiver.SetError("is nil")
 		return

@@ -15,7 +15,9 @@ type PrimitiveSliceString struct {
 
 type PrimitiveSliceStringOption func(*PrimitiveSliceString)
 
-func (receiver *PrimitiveSliceString) WithError(err error) PrimitiveSliceStringOption {
+func (receiver *PrimitiveSliceString) WithError(
+	err error,
+) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.Err = err
 	}
@@ -73,7 +75,9 @@ func (receiver *PrimitiveSliceString) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveSliceString) SetError(errString string) {
+func (receiver *PrimitiveSliceString) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("PrimitiveSliceString: %s", errString)
 }
 

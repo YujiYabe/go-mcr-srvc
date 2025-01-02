@@ -17,7 +17,9 @@ func (receiver *Credential) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *Credential) SetError(err error) *Credential {
+func (receiver *Credential) SetError(
+	err error,
+) *Credential {
 	if receiver.Err == nil {
 		receiver.Err = err
 	}

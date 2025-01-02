@@ -23,7 +23,9 @@ func (receiver *Person) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *Person) SetError(err error) *Person {
+func (receiver *Person) SetError(
+	err error,
+) *Person {
 	if receiver.Err == nil {
 		receiver.Err = err
 	}

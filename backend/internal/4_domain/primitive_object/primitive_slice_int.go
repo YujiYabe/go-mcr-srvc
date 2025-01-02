@@ -45,7 +45,9 @@ func (receiver *PrimitiveSliceInt) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveSliceInt) SetError(errString string) {
+func (receiver *PrimitiveSliceInt) SetError(
+	errString string,
+) {
 	receiver.Err = fmt.Errorf("error: %s", errString)
 }
 
