@@ -1,11 +1,11 @@
 package app
 
 import (
-	"backend/internal/1_framework/db/postgres"
-	"backend/internal/1_framework/db/redis"
 	goEcho "backend/internal/1_framework/in/go-echo"
 	grpcPerson "backend/internal/1_framework/in/grpc/person"
 	"backend/internal/1_framework/out/auth0"
+	"backend/internal/1_framework/out/db/postgres"
+	"backend/internal/1_framework/out/db/redis"
 	"backend/internal/2_adapter/controller"
 )
 

@@ -8,7 +8,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"backend/internal/1_framework/db/postgres/models"
+	"backend/internal/1_framework/out/db/postgres/models"
 	"backend/internal/2_adapter/gateway"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
