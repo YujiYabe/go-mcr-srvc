@@ -1,6 +1,8 @@
 package goEcho
 
 import (
+	"log"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
@@ -59,6 +61,14 @@ func (receiver *GoEcho) Start() {
 		receiver.Controller,
 		group,
 	)
+
+	isShowRoute := false
+	if isShowRoute {
+		routes := receiver.EchoEcho.Routes()
+		for _, route := range routes {
+			log.Printf("%#v\n", route)
+		}
+	}
 
 	receiver.EchoEcho.Logger.Fatal(receiver.EchoEcho.Start(":" + pkg.GoEchoPort))
 }

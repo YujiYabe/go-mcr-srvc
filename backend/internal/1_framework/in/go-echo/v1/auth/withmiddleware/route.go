@@ -14,13 +14,13 @@ func NewRoute(
 ) {
 	group := parent.Group(
 		"/withmiddleware",
-		webUtil.JWTMiddleware(),
+		// webUtil.JWTMiddleware(),
 	)
 
-	group.GET(
-		"/getAccessToken",
-		func(c echo.Context) (err error) { return getAccessToken(c, toController) },
-		webUtil.JWTMiddleware(),
+	group.POST(
+		"/fetchAccessToken",
+		func(c echo.Context) (err error) { return fetchAccessToken(c, toController) },
+		// webUtil.JWTMiddleware(),
 	)
 
 	group.GET(

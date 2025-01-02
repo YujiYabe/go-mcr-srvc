@@ -12,7 +12,7 @@ import (
 	"backend/pkg"
 )
 
-func getAccessToken(
+func fetchAccessToken(
 	c echo.Context,
 	toController controller.ToController,
 ) (
@@ -23,9 +23,9 @@ func getAccessToken(
 		c.Response().Header().Get(echo.HeaderXRequestID),
 	)
 
-	v1credential := http_parameter.V1Credential{}
+	v1Credential := http_parameter.V1Credential{}
 
-	if err := c.Bind(&v1credential); err != nil {
+	if err := c.Bind(&v1Credential); err != nil {
 		pkg.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
@@ -35,8 +35,8 @@ func getAccessToken(
 
 	credential := struct_object.NewCredential(
 		&struct_object.NewCredentialArgs{
-			ClientID:     v1credential.ClientID,
-			ClientSecret: v1credential.ClientSecret,
+			ClientID:     v1Credential.ClientID,
+			ClientSecret: v1Credential.ClientSecret,
 		},
 	)
 
@@ -61,7 +61,7 @@ func getAccessToken(
 	}
 
 	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", accessToken)
+	pkg.Logging(ctx, accessToken.Content.GetValue())
 	log.Println("== == == == == == == == == == ")
 
 	// if err != nil {

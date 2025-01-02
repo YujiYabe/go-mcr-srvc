@@ -16,3 +16,14 @@ Content-Type: application/json
   "audience": "https://auth0my-yayuji.com",
   "grant_type": "client_credentials"
 }
+
+
+###
+# get access token
+POST http://localhost:1234/v1/auth/withmiddleware/fetchAccessToken
+Content-Type: application/json
+
+{
+  "client_id": "jVHOlYQKt6Tgkrf670NpRdEaSmm8ZCdX",
+  "client_secret": "ZbT0VUI6Txyxj2oyxoOhO2fYSFe6U4eIbhdquIyoQX6kqr-J3iFN7fSyfy8CHWYq"
+}
