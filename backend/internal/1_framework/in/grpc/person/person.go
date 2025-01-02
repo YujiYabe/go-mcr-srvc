@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	grpcUtil "backend/internal/1_framework/in/grpc/grpc_util"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
@@ -47,7 +48,9 @@ func (receiver *Person) Start() {
 		pkg.Logging(ctx, err)
 		log.Fatalf("failed to listen: %v", err)
 	}
-	server := grpc.NewServer()
+	server := grpc.NewServer(
+		grpc.UnaryInterceptor(grpcUtil.RequestIDInterceptor), // UnaryInterceptor を設定
+	)
 
 	RegisterPersonServer(server, &receiver.Server)
 	reflection.Register(server)
@@ -113,6 +116,6 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	v1PersonParameterArray.Persons = v1PersonParameterList
-	return v1PersonParameterArray, nil
 
+	return v1PersonParameterArray, nil
 }

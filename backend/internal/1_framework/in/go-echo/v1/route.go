@@ -5,6 +5,7 @@ import (
 
 	"backend/internal/1_framework/in/go-echo/v1/auth"
 	"backend/internal/1_framework/in/go-echo/v1/person"
+	webUtil "backend/internal/1_framework/in/go-echo/web_util"
 	"backend/internal/2_adapter/controller"
 )
 
@@ -13,7 +14,10 @@ func NewRoute(
 	toController controller.ToController,
 	parent *echo.Group,
 ) {
-	group := parent.Group("/v1")
+	group := parent.Group(
+		"/v1",
+		webUtil.ContextMiddleware(),
+	)
 
 	person.NewRoute(
 		EchoEcho,

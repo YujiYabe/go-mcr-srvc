@@ -51,7 +51,9 @@ func JWTMiddleware() echo.MiddlewareFunc {
 				return echo.NewHTTPError(
 					http.StatusUnauthorized,
 					fmt.Sprintf(
-						"Invalid token: %v", err),
+						"Invalid token: %v",
+						err,
+					),
 				)
 			}
 
@@ -83,7 +85,9 @@ func JWTMiddlewareAuth0(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// Auth0の公開鍵を取得
 		jwksURL := fmt.Sprintf(
-			"https://%s/.well-known/jwks.json", os.Getenv("AUTH0_DOMAIN"))
+			"https://%s/.well-known/jwks.json",
+			os.Getenv("AUTH0_DOMAIN"),
+		)
 
 		claims := jwt.MapClaims{}
 		token, err := jwt.ParseWithClaims(
@@ -116,14 +120,20 @@ func validateAndGetKey(
 	// Tokenの署名方式を確認
 	if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 		return nil, fmt.Errorf(
-			"unexpected signing method: %v", token.Header["alg"])
+			"unexpected signing method: %v",
+			token.Header["alg"],
+		)
 	}
 
 	// Auth0から公開鍵を取得し、検証に使用
-	cert, err := getRSAPublicKey(jwksURL, token)
+	cert, err := getRSAPublicKey(
+		jwksURL,
+		token,
+	)
 	if err != nil {
 		return nil, err
 	}
+
 	return cert, nil
 }
 
@@ -141,21 +151,18 @@ func getRSAPublicKey(
 		keyfunc.Options{},
 	)
 	if err != nil {
-		return nil, fmt.Errorf(
-			"failed to get JWKS: %w", err)
+		return nil, fmt.Errorf("failed to get JWKS: %w", err)
 	}
 
 	// Extract the RSA public key for the token
 	key, err := jwks.Keyfunc(token)
 	if err != nil {
-		return nil, fmt.Errorf(
-			"failed to extract RSA key: %w", err)
+		return nil, fmt.Errorf("failed to extract RSA key: %w", err)
 	}
 
 	rsaKey, ok := key.(*rsa.PublicKey)
 	if !ok {
-		return nil, fmt.Errorf(
-			"key is not an RSA public key")
+		return nil, fmt.Errorf("key is not an RSA public key")
 	}
 
 	return rsaKey, nil
