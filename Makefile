@@ -18,10 +18,6 @@ removeAll:
 	docker system prune -f
 	sudo rm -rf db/engine/postgres/data
 	sudo rm -rf db/engine/redis/data
-	# sudo rm -rf db/engine/mysql/var_lib_mysql/
-	# sudo rm -rf db/engine/mysql/data/
-	# sudo rm -rf db/tool/phpmyadmin/sessions/
-	# sudo rm -rf db/tool/pgadmin/root/
 
 
 # ----------------------------
@@ -106,8 +102,8 @@ install-tools:
 	mkdir -p backend/bin
 	
 	# Install protoc compiler
-	GOBIN=$(PWD)/backend/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	GOBIN=$(PWD)/backend/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	# GOBIN=$(PWD)/backend/bin go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	# GOBIN=$(PWD)/backend/bin go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	
 	# Install other tools
 	GOBIN=$(PWD)/backend/bin go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest

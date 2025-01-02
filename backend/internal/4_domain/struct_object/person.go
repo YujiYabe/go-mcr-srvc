@@ -31,7 +31,9 @@ func (receiver *Person) SetError(err error) *Person {
 	return receiver
 }
 
-func NewPerson(args *NewPersonArgs) (
+func NewPerson(
+	args *NewPersonArgs,
+) (
 	person *Person,
 ) {
 	var err error

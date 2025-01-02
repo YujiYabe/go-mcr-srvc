@@ -7,6 +7,7 @@ import (
 	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
 	"backend/internal/4_domain/struct_object"
+	"backend/internal/4_domain/value_object"
 )
 
 type (
@@ -34,6 +35,14 @@ type (
 			resPersonList struct_object.PersonList,
 			err error,
 		)
+
+		GetAccessToken(
+			ctx context.Context,
+			credential struct_object.Credential,
+		) (
+			accessToken value_object.AccessToken,
+			err error,
+		)
 	}
 )
 
@@ -41,6 +50,7 @@ type (
 func NewController(
 	ToRedis gateway.ToRedis,
 	ToPostgres gateway.ToPostgres,
+	ToAuth0 gateway.ToAuth0,
 ) (
 	toController ToController,
 ) {
@@ -48,6 +58,7 @@ func NewController(
 	toGateway := gateway.NewGateway(
 		ToRedis,
 		ToPostgres,
+		ToAuth0,
 	)
 
 	useCase := usecase.NewUseCase(

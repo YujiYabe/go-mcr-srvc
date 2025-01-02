@@ -19,13 +19,6 @@ type (
 	Postgres struct {
 		Conn *gorm.DB
 	}
-
-	// // Vegetable ...
-	// Vegetable struct {
-	// 	ID    int
-	// 	Name  string
-	// 	Stock int
-	// }
 )
 
 // NewToPostgres ...

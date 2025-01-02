@@ -1,0 +1,18 @@
+@YOUR_JWT_TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpoOVpwVkQ5VW1majl4c1IyLTBzdCJ9.eyJpc3MiOiJodHRwczovL2Rldi1mZTAwemViMjN1a2U4emxzLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJqVkhPbFlRS3Q2VGdrcmY2NzBOcFJkRWFTbW04WkNkWEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9hdXRoMG15LXlheXVqaS5jb20iLCJpYXQiOjE3MzU2MDk4NTYsImV4cCI6MTczNTY5NjI1NiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoialZIT2xZUUt0NlRna3JmNjcwTnBSZEVhU21tOFpDZFgifQ.AOAeSeuC2K0tfKtJHR82o3NhtjpugbXe9dWtthxvJaoHpZkFBDdh9FQN7_QQqwjM5-hn3sd40cs1Ut9ub_01k1gXRjE_YNJM4EOMbxEDEVtHM6ep8NPSQr8nb0ajJJKWmjV2DJLx0m6z4HmXjWtKM5y0O6BU3lpCDdTH4TI1Qfv_QhszUlpdaMQ2OrzPv3UgC6JRqO4dRNtictcODzD-L8CoUx1ACpQeMWpF2a0zXrI3ROt6lMr9_O-nsqRsq98USoakdiyBlHUhlgxjhB8EmM4DyW0DUMnNTKv-yu7vS94cdo7hjkyg8RTO_3opbNpBTPn2mNv9CPvd9SlZVrms7w
+# 保護されたエンドポイント (JWTトークンが必要)
+GET http://localhost:8080/protected HTTP/1.1
+Authorization: Bearer {{YOUR_JWT_TOKEN}}
+Content-Type: application/json
+
+
+###
+# get access token
+POST https://dev-fe00zeb23uke8zls.us.auth0.com/oauth/token
+Content-Type: application/json
+
+{
+  "client_id": "jVHOlYQKt6Tgkrf670NpRdEaSmm8ZCdX",
+  "client_secret": "ZbT0VUI6Txyxj2oyxoOhO2fYSFe6U4eIbhdquIyoQX6kqr-J3iFN7fSyfy8CHWYq",
+  "audience": "https://auth0my-yayuji.com",
+  "grant_type": "client_credentials"
+}

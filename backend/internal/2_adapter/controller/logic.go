@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"backend/internal/4_domain/struct_object"
+	"backend/internal/4_domain/value_object"
 )
 
 func (receiver *controller) Start() {}
@@ -31,4 +32,19 @@ func (receiver *controller) GetPersonByCondition(
 	)
 
 	return resPersonList, err
+}
+
+func (receiver *controller) GetAccessToken(
+	ctx context.Context,
+	credential struct_object.Credential,
+) (
+	accessToken value_object.AccessToken,
+	err error,
+) {
+	accessToken, err = receiver.UseCase.GetAccessToken(
+		ctx,
+		credential,
+	)
+
+	return
 }

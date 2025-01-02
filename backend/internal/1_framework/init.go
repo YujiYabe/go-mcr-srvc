@@ -1,6 +1,7 @@
 package app
 
 import (
+	"backend/internal/1_framework/db/external/auth0"
 	"backend/internal/1_framework/db/postgres"
 	"backend/internal/1_framework/db/redis"
 	goEcho "backend/internal/1_framework/input/go-echo"
@@ -21,6 +22,7 @@ func NewApp() *app {
 	ctrl := controller.NewController(
 		redis.NewToRedis(),
 		postgres.NewToPostgres(),
+		auth0.NewToAuth0(),
 	)
 
 	ctrl.Start()

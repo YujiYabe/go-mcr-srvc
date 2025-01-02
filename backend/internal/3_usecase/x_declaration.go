@@ -5,6 +5,7 @@ import (
 
 	domain "backend/internal/4_domain"
 	"backend/internal/4_domain/struct_object"
+	"backend/internal/4_domain/value_object"
 )
 
 type (
@@ -38,6 +39,14 @@ type (
 			resPersonList struct_object.PersonList,
 			err error,
 		)
+
+		GetAccessToken(
+			ctx context.Context,
+			credential struct_object.Credential,
+		) (
+			accessToken value_object.AccessToken,
+			err error,
+		)
 	}
 
 	// ToDomain ...
@@ -60,6 +69,14 @@ type (
 			reqPerson struct_object.Person,
 		) (
 			resPersonList struct_object.PersonList,
+			err error,
+		)
+
+		GetAccessToken(
+			ctx context.Context,
+			credential struct_object.Credential,
+		) (
+			accessToken value_object.AccessToken,
 			err error,
 		)
 	}

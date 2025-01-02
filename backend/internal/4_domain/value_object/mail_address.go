@@ -1,6 +1,9 @@
 package value_object
 
 import (
+	"fmt"
+	"regexp"
+
 	"backend/internal/4_domain/primitive_object"
 )
 
@@ -34,8 +37,36 @@ func NewMailAddress(
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
 
+	// 文字列そのもののバリデーション
 	err = mailAddress.Content.Validation()
-	// メールアドレス自体のバリデーション
+	if err != nil {
+		return
+	}
+
+	// メールアドレスのバリデーション
+	err = mailAddress.Validation()
+	if err != nil {
+		return
+	}
 
 	return
+}
+
+func (receiver MailAddress) Validation() error {
+	if receiver.Content.IsNil {
+		return nil
+	}
+
+	// メールアドレスの正規表現パターン
+	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	matched, err := regexp.MatchString(emailPattern, receiver.Content.Value)
+	if err != nil {
+		return fmt.Errorf("failed to validate email format: %w", err)
+	}
+
+	if !matched {
+		return fmt.Errorf("invalid email format: %s", receiver.Content.Value)
+	}
+
+	return nil
 }

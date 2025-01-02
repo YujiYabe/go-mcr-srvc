@@ -1,8 +1,9 @@
 package gateway
 
 import (
-	"backend/internal/4_domain/struct_object"
 	"context"
+
+	"backend/internal/4_domain/struct_object"
 )
 
 // GetPersonList ...

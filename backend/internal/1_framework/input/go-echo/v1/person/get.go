@@ -22,7 +22,7 @@ func get(
 		c.Response().Header().Get(echo.HeaderXRequestID),
 	)
 
-	person := http_parameter.V1PersonParameter{}
+	person := http_parameter.V1Person{}
 
 	if err := c.Bind(&person); err != nil {
 		pkg.Logging(ctx, err)
@@ -41,10 +41,10 @@ func get(
 	)
 
 	if reqPerson.Err != nil {
-		pkg.Logging(ctx, err)
+		pkg.Logging(ctx, reqPerson.Err)
 		return c.JSON(
 			http.StatusBadRequest,
-			err,
+			reqPerson.Err,
 		)
 	}
 
@@ -61,11 +61,11 @@ func get(
 		)
 	}
 
-	responseList := []http_parameter.V1PersonParameter{}
+	responseList := []http_parameter.V1Person{}
 	for _, person := range personList {
 		responseList = append(
 			responseList,
-			http_parameter.V1PersonParameter{
+			http_parameter.V1Person{
 				ID:          &person.ID.Content.Value,
 				Name:        &person.Name.Content.Value,
 				MailAddress: &person.MailAddress.Content.Value,
@@ -77,4 +77,5 @@ func get(
 		http.StatusOK,
 		responseList,
 	)
+
 }

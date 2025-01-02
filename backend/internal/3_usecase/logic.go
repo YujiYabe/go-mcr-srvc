@@ -1,8 +1,10 @@
 package usecase
 
 import (
-	"backend/internal/4_domain/struct_object"
 	"context"
+
+	"backend/internal/4_domain/struct_object"
+	"backend/internal/4_domain/value_object"
 )
 
 // Start ...
@@ -29,4 +31,18 @@ func (receiver *useCase) GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
+}
+
+func (receiver *useCase) GetAccessToken(
+	ctx context.Context,
+	credential struct_object.Credential,
+) (
+	accessToken value_object.AccessToken,
+	err error,
+) {
+	accessToken, err = receiver.ToGateway.GetAccessToken(
+		ctx,
+		credential,
+	)
+	return
 }
