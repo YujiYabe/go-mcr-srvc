@@ -15,10 +15,10 @@ func (receiver *Gateway) FetchAccessToken(
 	accessToken value_object.AccessToken,
 	err error,
 ) {
-	//  receiver.ToPostgres.GetPersonByCondition(
-	// 	ctx,
-	// 	reqPerson,
-	// )
+	accessToken, err = receiver.ToAuth0.FetchAccessToken(
+		ctx,
+		credential,
+	)
 
 	return
 }

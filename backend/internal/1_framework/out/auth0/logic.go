@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"backend/internal/4_domain/struct_object"
@@ -62,13 +61,9 @@ func (receiver *Auth0) FetchAccessToken(
 	accessToken, err = value_object.NewAccessToken(
 		&tokenResponse.AccessToken,
 	)
-	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", accessToken)
-	log.Printf("%#v\n", err)
-	log.Println("== == == == == == == == == == ")
 	if err != nil {
 		return accessToken, err
 	}
 
-	return accessToken, nil
+	return
 }

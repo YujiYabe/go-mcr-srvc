@@ -1,7 +1,6 @@
 package withmiddleware
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -60,32 +59,16 @@ func fetchAccessToken(
 		)
 	}
 
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, accessToken.Content.GetValue())
-	log.Println("== == == == == == == == == == ")
-
-	// if err != nil {
-	// 	pkg.Logging(ctx, err)
-	// 	return c.JSON(
-	// 		http.StatusBadRequest,
-	// 		err,
-	// 	)
-	// }
-
-	// responseList := []http_parameter.V1CredentialParameter{}
-	// for _, Credential := range CredentialList {
-	// 	responseList = append(
-	// 		responseList,
-	// 		http_parameter.V1CredentialParameter{
-	// 			ID:          &Credential.ID.Content.Value,
-	// 			Name:        &Credential.Name.Content.Value,
-	// 			MailAddress: &Credential.MailAddress.Content.Value,
-	// 		},
-	// 	)
-	// }
+	if err != nil {
+		pkg.Logging(ctx, err)
+		return c.JSON(
+			http.StatusBadRequest,
+			err,
+		)
+	}
 
 	return c.JSON(
 		http.StatusOK,
-		nil,
+		accessToken.Content.GetValue(),
 	)
 }
