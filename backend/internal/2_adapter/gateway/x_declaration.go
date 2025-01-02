@@ -40,7 +40,7 @@ type (
 	}
 
 	ToAuth0 interface {
-		GetAccessToken(
+		FetchAccessToken(
 			ctx context.Context,
 			credential struct_object.Credential,
 		) (

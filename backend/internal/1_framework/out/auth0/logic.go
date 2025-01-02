@@ -12,8 +12,8 @@ import (
 )
 
 // ...
-// GetAccessToken ...
-func (receiver *Auth0) GetAccessToken(
+// FetchAccessToken ...
+func (receiver *Auth0) FetchAccessToken(
 	ctx context.Context,
 	credential struct_object.Credential,
 ) (

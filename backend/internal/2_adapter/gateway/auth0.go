@@ -7,8 +7,8 @@ import (
 	"backend/internal/4_domain/value_object"
 )
 
-// GetAccessToken ...
-func (receiver *Gateway) GetAccessToken(
+// FetchAccessToken ...
+func (receiver *Gateway) FetchAccessToken(
 	ctx context.Context,
 	credential struct_object.Credential,
 ) (

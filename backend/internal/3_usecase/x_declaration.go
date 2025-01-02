@@ -40,7 +40,7 @@ type (
 			err error,
 		)
 
-		GetAccessToken(
+		FetchAccessToken(
 			ctx context.Context,
 			credential struct_object.Credential,
 		) (
@@ -72,7 +72,7 @@ type (
 			err error,
 		)
 
-		GetAccessToken(
+		FetchAccessToken(
 			ctx context.Context,
 			credential struct_object.Credential,
 		) (

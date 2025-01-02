@@ -33,14 +33,14 @@ func (receiver *useCase) GetPersonByCondition(
 	)
 }
 
-func (receiver *useCase) GetAccessToken(
+func (receiver *useCase) FetchAccessToken(
 	ctx context.Context,
 	credential struct_object.Credential,
 ) (
 	accessToken value_object.AccessToken,
 	err error,
 ) {
-	accessToken, err = receiver.ToGateway.GetAccessToken(
+	accessToken, err = receiver.ToGateway.FetchAccessToken(
 		ctx,
 		credential,
 	)

@@ -48,7 +48,7 @@ func fetchAccessToken(
 		)
 	}
 
-	accessToken, err := toController.GetAccessToken(
+	accessToken, err := toController.FetchAccessToken(
 		ctx,
 		*credential,
 	)

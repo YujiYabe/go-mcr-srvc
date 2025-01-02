@@ -34,14 +34,14 @@ func (receiver *controller) GetPersonByCondition(
 	return resPersonList, err
 }
 
-func (receiver *controller) GetAccessToken(
+func (receiver *controller) FetchAccessToken(
 	ctx context.Context,
 	credential struct_object.Credential,
 ) (
 	accessToken value_object.AccessToken,
 	err error,
 ) {
-	accessToken, err = receiver.UseCase.GetAccessToken(
+	accessToken, err = receiver.UseCase.FetchAccessToken(
 		ctx,
 		credential,
 	)
