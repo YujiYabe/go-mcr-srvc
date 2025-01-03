@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-func generateCorrelationID(
+func generateTraceID(
 	existingID string,
 ) string {
 	if existingID == "" {
@@ -17,44 +17,44 @@ func generateCorrelationID(
 	return existingID
 }
 
-func setCorrelationIDContext(
+func setTraceIDContext(
 	c echo.Context,
-	correlationID string,
+	traceID string,
 ) {
 	ctx := context.WithValue(
 		c.Request().Context(),
-		pkg.CorrelationIDKey,
-		correlationID,
+		pkg.TraceIDKey,
+		traceID,
 	)
 
 	c.SetRequest(c.Request().WithContext(ctx))
 }
 
-func setCorrelationIDHeader(
+func setTraceIDHeader(
 	c echo.Context,
-	correlationID string,
+	traceID string,
 ) {
 	c.Response().Header().Set(
-		string(pkg.CorrelationIDKey),
-		correlationID,
+		string(pkg.TraceIDKey),
+		traceID,
 	)
 }
 
 func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			correlationID := generateCorrelationID(
-				pkg.GetCorrelationID(c.Request().Context()),
+			traceID := generateTraceID(
+				pkg.GetTraceID(c.Request().Context()),
 			)
 
-			setCorrelationIDContext(
+			setTraceIDContext(
 				c,
-				correlationID,
+				traceID,
 			)
 
-			setCorrelationIDHeader(
+			setTraceIDHeader(
 				c,
-				correlationID,
+				traceID,
 			)
 
 			return next(c)

@@ -8,48 +8,48 @@ import (
 // contextKey はコンテキストのキー型を定義します
 type contextKey string
 
-// correlationID は共通リクエストIDを格納するためのコンテキストキーです
-const CorrelationIDKey contextKey = "X-Correlation-ID"
+// traceID は共通リクエストIDを格納するためのコンテキストキーです
+const TraceIDKey contextKey = "X-Trace-ID"
 
 // GetNewContext は新しいコンテキストを生成します
-// X-Request-IDヘッダーの値をコンテキストに埋め込みます
+// X-Trace-IDヘッダーの値をコンテキストに埋め込みます
 //
 // パラメータ:
 //   - ctx: 親コンテキスト
-//   - correlationID: X-Request-IDヘッダーの値
+//   - traceID: X-Trace-IDヘッダーの値
 //
 // 戻り値:
 //   - newCtx: 新しく生成されたコンテキスト
 func GetNewContext(
 	ctx context.Context,
-	correlationID string,
+	traceID string,
 ) (
 	newCtx context.Context,
 ) {
 	newCtx = context.WithValue(
 		ctx,
-		CorrelationIDKey,
-		correlationID,
+		TraceIDKey,
+		traceID,
 	)
 
 	return
 }
 
-// GetCorrelationID はコンテキストからリクエストIDを取得します
+// GetTraceID はコンテキストからリクエストIDを取得します
 //
 // パラメータ:
 //   - ctx: リクエストIDを含むコンテキスト
 //
 // 戻り値:
-//   - requestIDString: 取得したリクエストID。取得できない場合は空文字列
-func GetCorrelationID(
+//   - traceIDString: 取得したリクエストID。取得できない場合は空文字列
+func GetTraceID(
 	ctx context.Context,
 ) (
-	correlationIDString string,
+	traceIDString string,
 ) {
-	requestID, ok := ctx.Value(CorrelationIDKey).(string)
+	traceID, ok := ctx.Value(TraceIDKey).(string)
 	if ok {
-		correlationIDString = requestID
+		traceIDString = traceID
 	}
 
 	return

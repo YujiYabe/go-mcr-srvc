@@ -47,7 +47,7 @@ func NewEcho() *echo.Echo {
 		),
 	)
 	echoEcho.Use(middleware.Recover())
-	echoEcho.Use(middleware.RequestID())
+	// echoEcho.Use(middleware.RequestID())
 
 	return echoEcho
 }

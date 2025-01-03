@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	timeFormat = "06-01-02-15:04:05.000000"
+	timeFormat = "06-01-02-15:04:05.000000000"
 )
 
 // Person ...
@@ -62,7 +62,7 @@ func (receiver *Person) Start() {
 	}
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(
-			grpcUtil.CorrelationIDInterceptor,
+			grpcUtil.TraceIDInterceptor,
 		),
 	)
 
@@ -136,8 +136,8 @@ func (receiver *Server) GetPersonByCondition(
 	v1PersonParameterArray.Persons = v1PersonParameterList
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
-		XCorrelationID: pkg.GetCorrelationID(ctx),
-		Timestamp:      time.Now().Format(timeFormat),
+		XTraceID:  pkg.GetTraceID(ctx),
+		Timestamp: time.Now().Format(timeFormat),
 	}
 
 	return

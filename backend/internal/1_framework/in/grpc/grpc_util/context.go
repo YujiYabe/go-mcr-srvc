@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func CorrelationIDInterceptor(
+func TraceIDInterceptor(
 	ctx context.Context,
 	req interface{},
 	info *grpc.UnaryServerInfo,
@@ -17,24 +17,24 @@ func CorrelationIDInterceptor(
 ) (interface{}, error) {
 	// メタデータからリクエストIDを取得
 	md, ok := metadata.FromIncomingContext(ctx)
-	var correlationID string
+	var traceID string
 	if ok {
-		values := md["XCorrelationID"]
+		values := md["XTraceID"]
 		if len(values) > 0 {
-			correlationID = values[0]
+			traceID = values[0]
 		}
 	}
 
 	// リクエストIDが無い場合は新規生成
-	if correlationID == "" {
-		correlationID = uuid.New().String()
+	if traceID == "" {
+		traceID = uuid.New().String()
 	}
 
 	// リクエストIDをコンテキストに追加
 	ctx = context.WithValue(
 		ctx,
-		pkg.CorrelationIDKey,
-		correlationID,
+		pkg.TraceIDKey,
+		traceID,
 	)
 
 	// ログ出力
