@@ -7,13 +7,29 @@ import (
 	"backend/internal/4_domain/value_object"
 )
 
-type (
-	Gateway struct {
-		ToRedis    ToRedis
-		ToPostgres ToPostgres
-		ToAuth0    ToAuth0
-	}
+type Gateway struct {
+	ToRedis    ToRedis
+	ToPostgres ToPostgres
+	ToAuth0    ToAuth0
+	ToGRPC     ToGRPC
+}
 
+// NewGateway ...
+func NewGateway(
+	toRedis ToRedis,
+	toPostgres ToPostgres,
+	toAuth0 ToAuth0,
+	toGRPC ToGRPC,
+) *Gateway {
+	return &Gateway{
+		ToRedis:    toRedis,
+		ToPostgres: toPostgres,
+		ToAuth0:    toAuth0,
+		ToGRPC:     toGRPC,
+	}
+}
+
+type (
 	// ToRedis ...
 	ToRedis interface {
 		ResetPlaceListInRedis(
@@ -49,17 +65,13 @@ type (
 			err error,
 		)
 	}
-)
 
-// NewGateway ...
-func NewGateway(
-	toRedis ToRedis,
-	toPostgres ToPostgres,
-	toAuth0 ToAuth0,
-) *Gateway {
-	return &Gateway{
-		ToRedis:    toRedis,
-		ToPostgres: toPostgres,
-		ToAuth0:    toAuth0,
+	// ToGRPC ...
+	ToGRPC interface {
+		RequestToAuth0(
+			ctx context.Context,
+		) (
+			err error,
+		)
 	}
-}
+)

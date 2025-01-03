@@ -6,6 +6,7 @@ import (
 	auth0Client "backend/internal/1_framework/out/auth0_client"
 	postgresClient "backend/internal/1_framework/out/db/postgres_client"
 	redisClient "backend/internal/1_framework/out/db/redis_client"
+	grpcClient "backend/internal/1_framework/out/grpc_client"
 	"backend/internal/2_adapter/controller"
 )
 
@@ -23,6 +24,7 @@ func NewApp() *app {
 		redisClient.NewToRedis(),
 		postgresClient.NewToPostgres(),
 		auth0Client.NewToAuth0(),
+		grpcClient.NewToGRPC(),
 	)
 
 	ctrl.Start()

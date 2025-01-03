@@ -51,6 +51,7 @@ func NewController(
 	ToRedis gateway.ToRedis,
 	ToPostgres gateway.ToPostgres,
 	ToAuth0 gateway.ToAuth0,
+	ToGRPC gateway.ToGRPC,
 ) (
 	toController ToController,
 ) {
@@ -59,6 +60,7 @@ func NewController(
 		ToRedis,
 		ToPostgres,
 		ToAuth0,
+		ToGRPC,
 	)
 
 	useCase := usecase.NewUseCase(
