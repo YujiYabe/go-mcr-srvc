@@ -1,4 +1,4 @@
-package auth0
+package auth0_client
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 
 // ...
 // FetchAccessToken ...
-func (receiver *Auth0) FetchAccessToken(
+func (receiver *Auth0Client) FetchAccessToken(
 	ctx context.Context,
 	credential struct_object.Credential,
 ) (

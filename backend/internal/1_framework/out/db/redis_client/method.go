@@ -1,4 +1,4 @@
-package redis
+package redis_client
 
 import (
 	"backend/pkg"
@@ -8,7 +8,7 @@ import (
 )
 
 // ResetPlaceListInRedis ...
-func (receiver *Redis) ResetPlaceListInRedis(
+func (receiver *RedisClient) ResetPlaceListInRedis(
 	ctx context.Context,
 ) (
 	err error,

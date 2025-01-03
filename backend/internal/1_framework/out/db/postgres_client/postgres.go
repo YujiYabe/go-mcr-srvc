@@ -1,4 +1,4 @@
-package postgres
+package postgres_client
 
 import (
 	"context"
@@ -8,15 +8,15 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"backend/internal/1_framework/out/db/postgres/models"
+	"backend/internal/1_framework/out/db/postgres_client/models"
 	"backend/internal/2_adapter/gateway"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
 type (
-	// Postgres ...
-	Postgres struct {
+	// PostgresClient ...
+	PostgresClient struct {
 		Conn *gorm.DB
 	}
 )
@@ -30,9 +30,9 @@ func NewToPostgres() gateway.ToPostgres {
 		panic(err)
 	}
 
-	postgres := new(Postgres)
-	postgres.Conn = conn
-	return postgres
+	postgresClient := new(PostgresClient)
+	postgresClient.Conn = conn
+	return postgresClient
 }
 
 func open(count uint) (*gorm.DB, error) {
@@ -54,7 +54,7 @@ func open(count uint) (*gorm.DB, error) {
 }
 
 // GetPersonList ...
-func (receiver *Postgres) GetPersonList(
+func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
 ) (
 	personList struct_object.PersonList,
@@ -94,7 +94,7 @@ func (receiver *Postgres) GetPersonList(
 }
 
 // GetPersonByCondition ...
-func (receiver *Postgres) GetPersonByCondition(
+func (receiver *PostgresClient) GetPersonByCondition(
 	ctx context.Context,
 	reqPerson struct_object.Person,
 ) (

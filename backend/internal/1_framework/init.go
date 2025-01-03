@@ -3,9 +3,9 @@ package app
 import (
 	goEcho "backend/internal/1_framework/in/go-echo"
 	grpcPerson "backend/internal/1_framework/in/grpc/person"
-	"backend/internal/1_framework/out/auth0"
-	"backend/internal/1_framework/out/db/postgres"
-	"backend/internal/1_framework/out/db/redis"
+	auth0Client "backend/internal/1_framework/out/auth0_client"
+	postgresClient "backend/internal/1_framework/out/db/postgres_client"
+	redisClient "backend/internal/1_framework/out/db/redis_client"
 	"backend/internal/2_adapter/controller"
 )
 
@@ -20,9 +20,9 @@ type (
 func NewApp() *app {
 
 	ctrl := controller.NewController(
-		redis.NewToRedis(),
-		postgres.NewToPostgres(),
-		auth0.NewToAuth0(),
+		redisClient.NewToRedis(),
+		postgresClient.NewToPostgres(),
+		auth0Client.NewToAuth0(),
 	)
 
 	ctrl.Start()

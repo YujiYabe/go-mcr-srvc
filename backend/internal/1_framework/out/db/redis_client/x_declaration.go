@@ -1,4 +1,4 @@
-package redis
+package redis_client
 
 import (
 	"github.com/redis/go-redis/v9"
@@ -7,8 +7,8 @@ import (
 )
 
 type (
-	// Redis ...
-	Redis struct {
+	// RedisClient ...
+	RedisClient struct {
 		Conn *redis.Client
 	}
 )
@@ -23,10 +23,10 @@ func NewToRedis() (
 		DB:       0,  // use default DB
 	})
 
-	redis := new(Redis)
-	redis.Conn = conn
+	redisClient := new(RedisClient)
+	redisClient.Conn = conn
 
-	toRedis = redis
+	toRedis = redisClient
 	return
 }
 
