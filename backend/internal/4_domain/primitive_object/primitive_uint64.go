@@ -22,25 +22,33 @@ func (receiver *PrimitiveUint64) WithError(
 	}
 }
 
-func (receiver *PrimitiveUint64) WithValue(value uint64) PrimitiveUint64Option {
+func (receiver *PrimitiveUint64) WithValue(
+	value uint64,
+) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveUint64) WithIsNil(isNil bool) PrimitiveUint64Option {
+func (receiver *PrimitiveUint64) WithIsNil(
+	isNil bool,
+) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveUint64) WithMaxValue(value uint64) PrimitiveUint64Option {
+func (receiver *PrimitiveUint64) WithMaxValue(
+	value uint64,
+) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
 		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveUint64) WithMinValue(value uint64) PrimitiveUint64Option {
+func (receiver *PrimitiveUint64) WithMinValue(
+	value uint64,
+) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
 		s.MinValue = value
 	}
@@ -69,7 +77,9 @@ func NewPrimitiveUint64(
 }
 
 // --------------------------------------
-func (receiver *PrimitiveUint64) SetIsNil(isNil bool) {
+func (receiver *PrimitiveUint64) SetIsNil(
+	isNil bool,
+) {
 	receiver.IsNil = isNil
 }
 

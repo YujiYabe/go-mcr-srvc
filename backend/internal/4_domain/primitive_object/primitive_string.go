@@ -30,14 +30,18 @@ func (receiver *PrimitiveString) WithError(
 }
 
 // WithValue は文字列値を設定するオプションを返します
-func (receiver *PrimitiveString) WithValue(value string) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithValue(
+	value string,
+) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.Value = value
 	}
 }
 
 // WithIsNil はnil状態を設定するオプションを返します
-func (receiver *PrimitiveString) WithIsNil(isNil bool) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithIsNil(
+	isNil bool,
+) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.IsNil = isNil
 	}
@@ -45,7 +49,9 @@ func (receiver *PrimitiveString) WithIsNil(isNil bool) PrimitiveStringOption {
 
 // WithMaxLength は最大文字列長を設定するオプションを返します
 
-func (receiver *PrimitiveString) WithMaxLength(length int) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithMaxLength(
+	length int,
+) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.MaxLength = length
 	}
@@ -53,14 +59,18 @@ func (receiver *PrimitiveString) WithMaxLength(length int) PrimitiveStringOption
 
 // WithMinLength は最小文字列長を設定するオプションを返します
 
-func (receiver *PrimitiveString) WithMinLength(length int) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithMinLength(
+	length int,
+) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.MinLength = length
 	}
 }
 
 // WithCheckSpell は禁止文字列リストを設定するオプションを返します
-func (receiver *PrimitiveString) WithCheckSpell(spellList []string) PrimitiveStringOption {
+func (receiver *PrimitiveString) WithCheckSpell(
+	spellList []string,
+) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.SpellList = spellList
 	}

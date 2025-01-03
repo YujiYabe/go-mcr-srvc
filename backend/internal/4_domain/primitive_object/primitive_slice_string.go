@@ -9,8 +9,8 @@ type PrimitiveSliceString struct {
 	Err       error // バリデーションエラーを格納
 	Value     []PrimitiveString
 	IsNil     bool // nil状態を示すフラグ
-	MaxLength int  // 最大文字列長 (-1は制限なし)
-	MinLength int  // 最小文字列長 (-1は制限なし)
+	MaxLength int  // 最大列長 (-1は制限なし)
+	MinLength int  // 最小列長 (-1は制限なし)
 }
 
 type PrimitiveSliceStringOption func(*PrimitiveSliceString)
@@ -23,25 +23,33 @@ func (receiver *PrimitiveSliceString) WithError(
 	}
 }
 
-func (receiver *PrimitiveSliceString) WithValue(value []PrimitiveString) PrimitiveSliceStringOption {
+func (receiver *PrimitiveSliceString) WithValue(
+	value []PrimitiveString,
+) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveSliceString) WithIsNil(isNil bool) PrimitiveSliceStringOption {
+func (receiver *PrimitiveSliceString) WithIsNil(
+	isNil bool,
+) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveSliceString) WithMaxLength(value int) PrimitiveSliceStringOption {
+func (receiver *PrimitiveSliceString) WithMaxLength(
+	value int,
+) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.MaxLength = value
 	}
 }
 
-func (receiver *PrimitiveSliceString) WithMinLength(value int) PrimitiveSliceStringOption {
+func (receiver *PrimitiveSliceString) WithMinLength(
+	value int,
+) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.MinLength = value
 	}
@@ -67,7 +75,9 @@ func NewPrimitiveSliceString(
 	return
 }
 
-func (receiver *PrimitiveSliceString) SetIsNil(isNil bool) {
+func (receiver *PrimitiveSliceString) SetIsNil(
+	isNil bool,
+) {
 	receiver.IsNil = isNil
 }
 
@@ -119,12 +129,16 @@ func (receiver *PrimitiveSliceString) Validation() error {
 
 	if receiver.MaxLength != -1 && len(receiver.Value) > receiver.MaxLength {
 		return fmt.Errorf(
-			"PrimitiveSliceString: length exceeds maximum allowed (%d)", receiver.MaxLength)
+			"PrimitiveSliceString: length exceeds maximum allowed (%d)",
+			receiver.MaxLength,
+		)
 	}
 
 	if receiver.MinLength != -1 && len(receiver.Value) < receiver.MinLength {
 		return fmt.Errorf(
-			"PrimitiveSliceString: length is less than minimum required (%d)", receiver.MinLength)
+			"PrimitiveSliceString: length is less than minimum required (%d)",
+			receiver.MinLength,
+		)
 	}
 
 	for _, v := range receiver.Value {

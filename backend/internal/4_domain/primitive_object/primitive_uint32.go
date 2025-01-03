@@ -22,25 +22,33 @@ func (receiver *PrimitiveUint32) WithError(
 	}
 }
 
-func (receiver *PrimitiveUint32) WithValue(value uint32) PrimitiveUint32Option {
+func (receiver *PrimitiveUint32) WithValue(
+	value uint32,
+) PrimitiveUint32Option {
 	return func(s *PrimitiveUint32) {
 		s.Value = value
 	}
 }
 
-func (receiver *PrimitiveUint32) WithIsNil(isNil bool) PrimitiveUint32Option {
+func (receiver *PrimitiveUint32) WithIsNil(
+	isNil bool,
+) PrimitiveUint32Option {
 	return func(s *PrimitiveUint32) {
 		s.IsNil = isNil
 	}
 }
 
-func (receiver *PrimitiveUint32) WithMaxValue(value uint32) PrimitiveUint32Option {
+func (receiver *PrimitiveUint32) WithMaxValue(
+	value uint32,
+) PrimitiveUint32Option {
 	return func(s *PrimitiveUint32) {
 		s.MaxValue = value
 	}
 }
 
-func (receiver *PrimitiveUint32) WithMinValue(value uint32) PrimitiveUint32Option {
+func (receiver *PrimitiveUint32) WithMinValue(
+	value uint32,
+) PrimitiveUint32Option {
 	return func(s *PrimitiveUint32) {
 		s.MinValue = value
 	}
