@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.2
-// source: backend/internal/1_framework/in/grpc/person/person.proto
+// source: backend/internal/1_framework/grpc_parameter/person.proto
 
-package person
+package grpc_parameter
 
 import (
 	context "context"
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Person_GetPersonByCondition_FullMethodName = "/person.Person/GetPersonByCondition"
+	Person_GetPersonByCondition_FullMethodName = "/grpc_parameter.Person/GetPersonByCondition"
 )
 
 // PersonClient is the client API for Person service.
@@ -108,7 +108,7 @@ func _Person_GetPersonByCondition_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Person_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "person.Person",
+	ServiceName: "grpc_parameter.Person",
 	HandlerType: (*PersonServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -117,5 +117,5 @@ var Person_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "backend/internal/1_framework/in/grpc/person/person.proto",
+	Metadata: "backend/internal/1_framework/grpc_parameter/person.proto",
 }

@@ -11,25 +11,15 @@ func (receiver *GRPCClient) RequestToAuth0(
 ) (
 	err error,
 ) {
-	// conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// defer conn.Close()
-	// cpbconn := cpb.NewSendContentServiceClient(conn)
 
-	// ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	// defer cancel()
-
-	// res, err := cpbconn.SendContentRPC(ctx, request)
+	// // gRPCコネクションの作成
+	// conn, err := grpc.DialContext(
+	// 	ctx,
+	// 	"localhost:3456",
+	// 	grpc.WithInsecure(),
+	// )
 	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// gRPCコネクションの作成
-	// conn, err := grpc.Dial("hogehoge:3456", grpc.WithInsecure())
-	// if err != nil {
-	// 	return fmt.Errorf("failed to connect: %v", err)
+	// 	log.Fatalf("Failed to connect: %v", err)
 	// }
 	// defer conn.Close()
 

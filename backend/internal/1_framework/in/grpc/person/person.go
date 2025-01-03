@@ -11,6 +11,8 @@ import (
 
 	// grpcUtil "backend/internal/1_framework/in/grpc/grpc_util"
 	grpcUtil "backend/internal/1_framework/in/grpc/grpc_util"
+	// "backend/internal/1_framework/grpc_parameter"
+	grpcParameter "backend/internal/1_framework/grpc_parameter"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
@@ -27,7 +29,7 @@ type Person struct {
 
 // Server ...
 type Server struct {
-	UnimplementedPersonServer
+	grpcParameter.UnimplementedPersonServer
 	Controller controller.ToController
 }
 
@@ -53,7 +55,7 @@ func (receiver *Person) Start() {
 	defer cancel()
 	log.Println("start GRPC ------------------------- ")
 
-	listen, err := net.Listen("tcp", pkg.DeliveryAddress)
+	listen, err := net.Listen("tcp", pkg.GRPCAddress)
 	if err != nil {
 		pkg.Logging(ctx, err)
 		log.Fatalf("failed to listen: %v", err)
@@ -64,7 +66,7 @@ func (receiver *Person) Start() {
 		),
 	)
 
-	RegisterPersonServer(server, &receiver.Server)
+	grpcParameter.RegisterPersonServer(server, &receiver.Server)
 	reflection.Register(server)
 
 	if err := server.Serve(listen); err != nil {
@@ -77,14 +79,14 @@ func (receiver *Person) Start() {
 // Implementation of the GetPersonByCondition method
 func (receiver *Server) GetPersonByCondition(
 	ctx context.Context,
-	req *V1PersonParameter,
+	req *grpcParameter.V1PersonParameter,
 ) (
-	v1GetPersonByConditionResponse *V1GetPersonByConditionResponse,
+	v1GetPersonByConditionResponse *grpcParameter.V1GetPersonByConditionResponse,
 	err error,
 ) {
-	v1GetPersonByConditionResponse = &V1GetPersonByConditionResponse{}
-	v1PersonParameterArray := &V1PersonParameterArray{}
-	v1PersonParameterList := []*V1PersonParameter{}
+	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
+	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
+	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
 
 	var id int
 	if req.Id != nil {
@@ -120,7 +122,7 @@ func (receiver *Server) GetPersonByCondition(
 		id32 := uint32(response.ID.Content.GetValue())
 		name := response.Name.Content.GetValue()
 		mailAddress := response.MailAddress.Content.GetValue()
-		v1PersonParameter := &V1PersonParameter{
+		v1PersonParameter := &grpcParameter.V1PersonParameter{
 			Id:          &id32,
 			Name:        &name,
 			MailAddress: &mailAddress,
@@ -133,7 +135,7 @@ func (receiver *Server) GetPersonByCondition(
 
 	v1PersonParameterArray.Persons = v1PersonParameterList
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
-	v1GetPersonByConditionResponse.V1CommonParameter = &V1CommonParameter{
+	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
 		XCorrelationID: pkg.GetCorrelationID(ctx),
 		Timestamp:      time.Now().Format(timeFormat),
 	}

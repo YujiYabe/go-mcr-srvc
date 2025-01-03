@@ -1,14 +1,15 @@
 
+
 ### --------------------------------
-proto < ./person.proto
-GRPC localhost:3456/person.Person/GetPersonByCondition
+proto < ../../../grpc_parameter/person.proto
+GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
 	"mailAddress": "bbbb@gmail.com"
 }
 
 ### --------------------------------
-proto < ./person.proto
-GRPC localhost:3456/person.Person/GetPersonByCondition
+proto < ../../../grpc_parameter/person.proto
+GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
 	"name": "a"
 }

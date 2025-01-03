@@ -13,10 +13,10 @@ var (
 	currentPath, _ = os.Getwd()
 )
 var (
-	backendHost     = "backend"
-	GoEchoPort      string
-	GRPCPort        string
-	DeliveryAddress string
+	backendHost = "backend"
+	GoEchoPort  string
+	GRPCPort    string
+	GRPCAddress string
 
 	TZ string
 
@@ -39,7 +39,7 @@ func init() {
 	TZ = os.Getenv("TZ")
 	GoEchoPort = os.Getenv("GO_ECHO_PORT")
 	GRPCPort = os.Getenv("GRPC_PORT")
-	DeliveryAddress = backendHost + ":" + GRPCPort
+	GRPCAddress = backendHost + ":" + GRPCPort
 
 	PostgresDSN = "host=postgres" +
 		" user=" + os.Getenv("POSTGRES_USER") +
