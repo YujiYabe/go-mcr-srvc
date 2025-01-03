@@ -136,7 +136,7 @@ func (receiver *Server) GetPersonByCondition(
 	v1PersonParameterArray.Persons = v1PersonParameterList
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
-		XTraceID:  pkg.GetTraceID(ctx),
+		TraceID:   pkg.GetTraceID(ctx),
 		Timestamp: time.Now().Format(timeFormat),
 	}
 

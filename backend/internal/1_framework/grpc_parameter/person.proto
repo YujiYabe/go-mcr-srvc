@@ -9,12 +9,12 @@ service Person {
 }
 
 message V1CommonParameter {
-    string XTraceID = 1;
+    string traceID = 1;
     string timestamp = 2;  
 }
 
 message V1GetPersonByConditionResponse {
-    V1CommonParameter v1CommonParameter = 1; // V1CommonParameter
+    V1CommonParameter v1CommonParameter = 1;           // V1CommonParameter
     V1PersonParameterArray v1PersonParameterArray = 2; // V1PersonParameterArray
 }
 
@@ -26,5 +26,5 @@ message V1PersonParameter {
 }
 
 message V1PersonParameterArray {
-    repeated V1PersonParameter persons = 2;  // Array of V1PersonParameter
+    repeated V1PersonParameter persons = 2; // Array of V1PersonParameter
 }

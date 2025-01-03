@@ -44,5 +44,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
+echo ""
+echo "_____________________________________"
 echo "All checks passed. Proceeding with commit."
 exit 0

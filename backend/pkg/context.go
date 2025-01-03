@@ -9,7 +9,7 @@ import (
 type contextKey string
 
 // traceID は共通リクエストIDを格納するためのコンテキストキーです
-const TraceIDKey contextKey = "X-Trace-ID"
+const TraceIDKey contextKey = "traceID"
 
 // GetNewContext は新しいコンテキストを生成します
 // X-Trace-IDヘッダーの値をコンテキストに埋め込みます

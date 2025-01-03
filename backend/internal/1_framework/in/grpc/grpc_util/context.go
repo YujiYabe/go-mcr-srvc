@@ -19,7 +19,7 @@ func TraceIDInterceptor(
 	md, ok := metadata.FromIncomingContext(ctx)
 	var traceID string
 	if ok {
-		values := md["XTraceID"]
+		values := md["TraceID"]
 		if len(values) > 0 {
 			traceID = values[0]
 		}
