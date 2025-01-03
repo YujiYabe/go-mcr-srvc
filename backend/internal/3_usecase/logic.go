@@ -26,6 +26,7 @@ func (receiver *useCase) GetPersonByCondition(
 ) (
 	resPersonList struct_object.PersonList,
 	err error,
+
 ) {
 	return receiver.ToGateway.GetPersonByCondition(
 		ctx,

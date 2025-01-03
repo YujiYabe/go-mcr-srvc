@@ -1,20 +1,14 @@
 package grpc_util
 
 import (
+	"backend/pkg"
 	"context"
 	"log"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
-	// プロトバフで生成されたパッケージ
 )
-
-// UnaryInterceptor の実装
-// Define a custom type for the context key
-type contextKey string
-
-const requestIDKey contextKey = "requestID"
 
 func RequestIDInterceptor(
 	ctx context.Context,
@@ -38,7 +32,11 @@ func RequestIDInterceptor(
 	}
 
 	// リクエストIDをコンテキストに追加
-	ctx = context.WithValue(ctx, requestIDKey, requestID)
+	ctx = context.WithValue(
+		ctx,
+		pkg.CorrelationIDKey,
+		requestID,
+	)
 
 	// ログ出力
 	log.Printf("Handling request: %s", requestID)
