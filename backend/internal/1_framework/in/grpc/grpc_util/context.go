@@ -3,7 +3,6 @@ package grpc_util
 import (
 	"backend/pkg"
 	"context"
-	"log"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
@@ -39,7 +38,6 @@ func CorrelationIDInterceptor(
 	)
 
 	// ログ出力
-	log.Printf("Handling request: %s", correlationID)
 
 	// 次のハンドラーを呼び出す
 	return handler(ctx, req)
