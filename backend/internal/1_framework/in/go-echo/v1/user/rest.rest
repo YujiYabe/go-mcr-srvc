@@ -1,4 +1,0 @@
-###  ==============================
-GET http://localhost:1234/v1/user
-Content-Type: application/json
-

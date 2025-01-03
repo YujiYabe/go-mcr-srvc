@@ -17,10 +17,7 @@ func get(
 ) (
 	err error,
 ) {
-	ctx := pkg.GetNewContext(
-		c.Request().Context(),
-		c.Response().Header().Get(echo.HeaderXRequestID),
-	)
+	ctx := c.Request().Context()
 
 	person := http_parameter.V1Person{}
 

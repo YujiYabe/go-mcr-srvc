@@ -8,26 +8,55 @@ import (
 	"github.com/labstack/echo"
 )
 
+func generateCorrelationID(
+	existingID string,
+) string {
+	if existingID == "" {
+		return uuid.New().String()
+	}
+	return existingID
+}
+
+func setCorrelationIDContext(
+	c echo.Context,
+	correlationID string,
+) {
+	ctx := context.WithValue(
+		c.Request().Context(),
+		pkg.CorrelationIDKey,
+		correlationID,
+	)
+
+	c.SetRequest(c.Request().WithContext(ctx))
+}
+
+func setCorrelationIDHeader(
+	c echo.Context,
+	correlationID string,
+) {
+	c.Response().Header().Set(
+		string(pkg.CorrelationIDKey),
+		correlationID,
+	)
+}
+
 func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			correlationID := pkg.GetCorrelationID(c.Request().Context())
+			correlationID := generateCorrelationID(
+				pkg.GetCorrelationID(c.Request().Context()),
+			)
 
-			if correlationID == "" {
-				correlationID = uuid.New().String() // 新しいリクエストIDを生成
-			}
-
-			// リクエストIDをコンテキストに追加
-			ctx := context.WithValue(c.Request().Context(), pkg.CorrelationIDKey, correlationID)
-			c.SetRequest(c.Request().WithContext(ctx))
-
-			// レスポンスヘッダーに相関IDを設定 TODO: レスポンスに含めてよいか要調査
-			c.Response().Header().Set(
-				string(pkg.CorrelationIDKey),
+			setCorrelationIDContext(
+				c,
 				correlationID,
 			)
 
-			// 次のハンドラを呼び出す
+			setCorrelationIDHeader(
+				c,
+				correlationID,
+			)
+
 			return next(c)
 		}
 	}

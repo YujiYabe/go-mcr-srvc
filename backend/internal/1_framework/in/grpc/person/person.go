@@ -59,7 +59,9 @@ func (receiver *Person) Start() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	server := grpc.NewServer(
-		grpc.UnaryInterceptor(grpcUtil.RequestIDInterceptor), // UnaryInterceptor を設定
+		grpc.UnaryInterceptor(
+			grpcUtil.CorrelationIDInterceptor,
+		),
 	)
 
 	RegisterPersonServer(server, &receiver.Server)

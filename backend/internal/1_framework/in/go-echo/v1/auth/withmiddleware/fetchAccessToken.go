@@ -17,10 +17,7 @@ func fetchAccessToken(
 ) (
 	err error,
 ) {
-	ctx := pkg.GetNewContext(
-		c.Request().Context(),
-		c.Response().Header().Get(echo.HeaderXRequestID),
-	)
+	ctx := c.Request().Context()
 
 	v1Credential := http_parameter.V1Credential{}
 
