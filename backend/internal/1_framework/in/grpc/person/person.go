@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -13,6 +14,10 @@ import (
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
+)
+
+const (
+	timeFormat = "06-01-02-15:04:05.000000"
 )
 
 // Person ...
@@ -41,7 +46,11 @@ func NewPerson(
 
 // Start ....
 func (receiver *Person) Start() {
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		30*time.Second,
+	)
+	defer cancel()
 	log.Println("start GRPC ------------------------- ")
 
 	listen, err := net.Listen("tcp", pkg.DeliveryAddress)
@@ -60,6 +69,7 @@ func (receiver *Person) Start() {
 		pkg.Logging(ctx, err)
 		log.Fatalf("failed to serve: %v", err)
 	}
+
 }
 
 // Implementation of the GetPersonByCondition method
@@ -67,11 +77,13 @@ func (receiver *Server) GetPersonByCondition(
 	ctx context.Context,
 	req *V1PersonParameter,
 ) (
-	v1PersonParameterArray *V1PersonParameterArray,
+	v1GetPersonByConditionResponse *V1GetPersonByConditionResponse,
 	err error,
 ) {
-	v1PersonParameterArray = &V1PersonParameterArray{}
+	v1GetPersonByConditionResponse = &V1GetPersonByConditionResponse{}
+	v1PersonParameterArray := &V1PersonParameterArray{}
 	v1PersonParameterList := []*V1PersonParameter{}
+
 	var id int
 	if req.Id != nil {
 		id = int(req.GetId())
@@ -89,7 +101,8 @@ func (receiver *Server) GetPersonByCondition(
 	)
 	if reqPerson.Err != nil {
 		pkg.Logging(ctx, reqPerson.Err)
-		return v1PersonParameterArray, reqPerson.Err
+		err = reqPerson.Err
+		return
 	}
 
 	responseList, err := receiver.Controller.GetPersonByCondition(
@@ -98,7 +111,7 @@ func (receiver *Server) GetPersonByCondition(
 	)
 	if err != nil {
 		pkg.Logging(ctx, err)
-		return v1PersonParameterArray, err
+		return
 	}
 
 	for _, response := range responseList {
@@ -117,6 +130,11 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	v1PersonParameterArray.Persons = v1PersonParameterList
+	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
+	v1GetPersonByConditionResponse.V1CommonParameter = &V1CommonParameter{
+		XCorrelationID: pkg.GetCorrelationID(ctx),
+		Timestamp:      time.Now().Format(timeFormat),
+	}
 
-	return v1PersonParameterArray, nil
+	return
 }

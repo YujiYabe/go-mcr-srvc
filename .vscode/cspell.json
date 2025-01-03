@@ -92,6 +92,7 @@
 		"proto",
 		"protobuf",
 		"protoc",
+		"protogen",
 		"protoimpl",
 		"protoreflect",
 		"psql",
