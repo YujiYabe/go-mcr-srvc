@@ -19,6 +19,5 @@ func (receiver *Gateway) FetchAccessToken(
 		ctx,
 		credential,
 	)
-
 	return
 }

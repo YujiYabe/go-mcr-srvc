@@ -13,6 +13,5 @@ func (receiver *Gateway) ViaGRPC(
 	err = receiver.ToGRPC.ViaGRPC(
 		ctx,
 	)
-
 	return
 }

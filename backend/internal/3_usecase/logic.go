@@ -17,7 +17,8 @@ func (receiver *useCase) GetPersonList(
 	personList struct_object.PersonList,
 	err error,
 ) {
-	return receiver.ToGateway.GetPersonList(ctx)
+	personList, err = receiver.ToGateway.GetPersonList(ctx)
+	return
 }
 
 func (receiver *useCase) GetPersonByCondition(
@@ -26,12 +27,12 @@ func (receiver *useCase) GetPersonByCondition(
 ) (
 	resPersonList struct_object.PersonList,
 	err error,
-
 ) {
-	return receiver.ToGateway.GetPersonByCondition(
+	resPersonList, err = receiver.ToGateway.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
+	return
 }
 
 func (receiver *useCase) FetchAccessToken(
@@ -56,6 +57,5 @@ func (receiver *useCase) ViaGRPC(
 	err = receiver.ToGateway.ViaGRPC(
 		ctx,
 	)
-
 	return
 }

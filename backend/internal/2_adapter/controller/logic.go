@@ -15,8 +15,8 @@ func (receiver *controller) GetPersonList(
 	personList struct_object.PersonList,
 	err error,
 ) {
-
-	return receiver.UseCase.GetPersonList(ctx)
+	personList, err = receiver.UseCase.GetPersonList(ctx)
+	return
 }
 
 func (receiver *controller) GetPersonByCondition(
@@ -30,8 +30,7 @@ func (receiver *controller) GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
-
-	return resPersonList, err
+	return
 }
 
 func (receiver *controller) FetchAccessToken(
@@ -45,7 +44,6 @@ func (receiver *controller) FetchAccessToken(
 		ctx,
 		credential,
 	)
-
 	return
 }
 
@@ -57,6 +55,5 @@ func (receiver *controller) ViaGRPC(
 	err = receiver.UseCase.ViaGRPC(
 		ctx,
 	)
-
 	return
 }

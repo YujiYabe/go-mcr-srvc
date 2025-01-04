@@ -25,8 +25,9 @@ func (receiver *Gateway) GetPersonByCondition(
 	resPersonList struct_object.PersonList,
 	err error,
 ) {
-	return receiver.ToPostgres.GetPersonByCondition(
+	resPersonList, err = receiver.ToPostgres.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
+	return
 }

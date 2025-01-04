@@ -51,7 +51,7 @@ func (receiver *Person) Start() {
 		30*time.Second,
 	)
 	defer cancel()
-	log.Println("start GRPC ------------------------- ")
+	log.Println("------------------------- start GRPC ------------------------- ")
 
 	listen, err := net.Listen("tcp", pkg.GRPCAddress)
 	if err != nil {

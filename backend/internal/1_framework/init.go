@@ -19,14 +19,12 @@ type (
 
 // NewApp ...
 func NewApp() *app {
-
 	ctrl := controller.NewController(
 		redisClient.NewToRedis(),
 		postgresClient.NewToPostgres(),
 		auth0Client.NewToAuth0(),
 		grpcClient.NewToGRPC(),
 	)
-
 	ctrl.Start()
 
 	a := &app{
