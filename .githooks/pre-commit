@@ -14,15 +14,15 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# # staticcheck の実行
-# echo ""
-# echo "_____________________________________"
-# echo "Running staticcheck..."
-# make staticcheck
-# if [ $? -ne 0 ]; then
-# 	echo "staticcheck failed. Commit aborted."
-# 	exit 1
-# fi
+# staticcheck の実行
+echo ""
+echo "_____________________________________"
+echo "Running staticcheck..."
+make staticcheck
+if [ $? -ne 0 ]; then
+	echo "staticcheck failed. Commit aborted."
+	exit 1
+fi
 
 # # deadcode の実行
 # echo ""

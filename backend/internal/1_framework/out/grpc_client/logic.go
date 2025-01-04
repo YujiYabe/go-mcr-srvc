@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+
 	// "backend/internal/1_framework/grpc_parameter"
 	"backend/internal/1_framework/grpc_parameter"
 )
@@ -18,12 +20,11 @@ func (receiver *GRPCClient) ViaGRPC(
 	err error,
 ) {
 	// gRPCコネクションの作成
-	conn, err := grpc.DialContext(
-		ctx,
-		// "172.18.0.4:3456",
+	conn, err := grpc.NewClient(
 		"backend:3456",
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
+
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
