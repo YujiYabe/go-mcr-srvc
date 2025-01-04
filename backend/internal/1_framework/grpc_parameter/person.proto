@@ -7,11 +7,67 @@ option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_f
 service Person {
     rpc GetPersonByCondition (V1GetPersonByConditionRequest) returns (V1GetPersonByConditionResponse);
 }
+message V1ImmutableParameter { // 不変な情報
+    string traceID = 1;              // リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
+    int64 requestStartTime = 2;      // リクエスト情報: リクエストの開始時刻（Unix timestamp）
+    string clientIP = 3;             // リクエスト情報: クライアントのIPアドレス
+    string userAgent = 4;            // リクエスト情報: クライアントのユーザーエージェント情報
+    string userID = 5;               // ユーザー認証情報: ユーザーを一意に識別するID
+    repeated string permissions = 6; // ユーザー認証情報: ユーザーに付与された権限リスト
+    string accessToken = 7;          // ユーザー認証情報: ユーザー認証用のJWTトークン
+    string tenantID = 8;             // ビジネスコンテキスト: マルチテナント環境での所属テナントID
+    string locale = 9;               // ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）
+    string timezone = 10;            // ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
+}
+
+message V1MutableParameter {         // リクエスト処理中に変更される可能性のある情報
+    string timestamp = 1;            // 分散システム制御情報: 処理の各段階での時刻記録
+    int32 retryCount = 2;            // 分散システム制御情報: リトライ試行回数の現在値
+    bool circuitBreakerEnabled = 3;  // 分散システム制御情報: サーキットブレーカーの現在の有効状態
+    int32 rateLimit = 4;             // 分散システム制御情報: 現在の速度制限値（リクエスト/秒）
+    int32 timeoutSeconds = 5;        // リクエスト情報: リクエスト処理の残り時間（秒）
+    int32 resourceQuota = 6;         // デバッグ/モニタリング情報: 割り当てられたリソース使用量の制限値
+    bool samplingEnabled = 7;        // デバッグ/モニタリング情報: パフォーマンスサンプリングの有効状態
+    bool debugMode = 8;              // デバッグ/モニタリング情報: デバッグモードの有効状態
+}
 
 message V1CommonParameter {
-    string traceID = 1;
-    string timestamp = 2;  
+    V1ImmutableParameter immutable = 1;
+    V1MutableParameter mutable = 2;
 }
+
+// ーーーーーーーーーーーーーーーーーーー
+// message V1CommonParameter {
+//     // 既存のtraceID
+//     string traceID = 1;
+//     // string timestamp = 2;  
+
+//     // ユーザー認証情報
+//     string userID = 2;
+//     repeated string permissions = 3;
+//     string accessToken = 4;
+
+//     // リクエスト情報
+//     int64 requestStartTime = 5;
+//     int32 timeoutSeconds = 6;
+//     string clientIP = 7;
+//     string userAgent = 8;
+
+//     // 分散システム制御情報
+//     bool circuitBreakerEnabled = 9;
+//     int32 retryCount = 10;
+//     int32 rateLimit = 11;
+
+//     // ビジネスコンテキスト
+//     string tenantID = 12;
+//     string locale = 13;
+//     string timezone = 14;
+
+//     // デバッグ/モニタリング情報
+//     bool samplingEnabled = 15;
+//     bool debugMode = 16;
+//     int32 resourceQuota = 17;
+// }
 
 message V1GetPersonByConditionRequest {
     optional V1CommonParameter v1CommonParameter = 1; // V1CommonParameter

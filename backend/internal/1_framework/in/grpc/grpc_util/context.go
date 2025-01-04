@@ -41,5 +41,4 @@ func TraceIDInterceptor(
 
 	// 次のハンドラーを呼び出す
 	return handler(ctx, req)
-
 }
