@@ -3,7 +3,7 @@ package withmiddleware
 import (
 	"github.com/labstack/echo"
 
-	webUtil "backend/internal/1_framework/in/go-echo/web_util"
+	httpMiddleware "backend/internal/1_framework/middleware/http"
 	"backend/internal/2_adapter/controller"
 )
 
@@ -14,7 +14,7 @@ func NewRoute(
 ) {
 	group := parent.Group(
 		"/withmiddleware",
-		// webUtil.JWTMiddleware(),
+		// httpMiddleware.JWTMiddleware(),
 	)
 
 	group.POST(
@@ -24,7 +24,7 @@ func NewRoute(
 		) {
 			return fetchAccessToken(c, toController)
 		},
-		// webUtil.JWTMiddleware(),
+		// httpMiddleware.JWTMiddleware(),
 	)
 
 	group.GET(
@@ -34,6 +34,6 @@ func NewRoute(
 		) {
 			return protected(c, toController)
 		},
-		webUtil.JWTMiddleware(),
+		httpMiddleware.JWTMiddleware(),
 	)
 }

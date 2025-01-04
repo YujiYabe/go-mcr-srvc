@@ -9,8 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 
-	// "backend/internal/1_framework/grpc_parameter"
-	"backend/internal/1_framework/grpc_parameter"
+	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/pkg"
 )
 
@@ -32,16 +31,16 @@ func (receiver *GRPCClient) ViaGRPC(
 	defer conn.Close()
 
 	// クライアントの作成
-	client := grpc_parameter.NewPersonClient(conn)
+	client := grpcParameter.NewPersonClient(conn)
 
 	name := "a"
 	// リクエストの作成
-	v1GetPersonByConditionRequest := &grpc_parameter.V1GetPersonByConditionRequest{
-		V1PersonParameter: &grpc_parameter.V1PersonParameter{
+	v1GetPersonByConditionRequest := &grpcParameter.V1GetPersonByConditionRequest{
+		V1PersonParameter: &grpcParameter.V1PersonParameter{
 			Name: &name,
 		},
-		V1CommonParameter: &grpc_parameter.V1CommonParameter{
-			Immutable: &grpc_parameter.V1ImmutableParameter{
+		V1CommonParameter: &grpcParameter.V1CommonParameter{
+			Immutable: &grpcParameter.V1ImmutableParameter{
 				TraceID: pkg.GetTraceID(ctx),
 			},
 		},

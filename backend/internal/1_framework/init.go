@@ -1,19 +1,24 @@
 package app
 
 import (
+	//
 	goEcho "backend/internal/1_framework/in/go-echo"
-	grpcPerson "backend/internal/1_framework/in/grpc/person"
+	goGRPC "backend/internal/1_framework/in/go-grpc"
+
+	//
 	auth0Client "backend/internal/1_framework/out/auth0_client"
 	postgresClient "backend/internal/1_framework/out/db/postgres_client"
 	redisClient "backend/internal/1_framework/out/db/redis_client"
 	grpcClient "backend/internal/1_framework/out/grpc_client"
+
+	//
 	"backend/internal/2_adapter/controller"
 )
 
 type (
 	app struct {
 		goEcho *goEcho.GoEcho
-		person *grpcPerson.Person
+		goGRPC *goGRPC.GoGRPC
 	}
 )
 
@@ -28,7 +33,7 @@ func NewApp() *app {
 	ctrl.Start()
 
 	a := &app{
-		person: grpcPerson.NewPerson(ctrl),
+		goGRPC: goGRPC.NewGoGRPC(ctrl),
 		goEcho: goEcho.NewGoEcho(ctrl),
 	}
 
@@ -38,5 +43,5 @@ func NewApp() *app {
 // Start ...
 func (receiver *app) Start() {
 	go receiver.goEcho.Start()
-	receiver.person.Start()
+	receiver.goGRPC.Start()
 }

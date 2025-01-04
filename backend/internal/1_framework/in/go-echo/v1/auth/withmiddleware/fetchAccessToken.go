@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/http_parameter"
+	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
@@ -19,7 +19,7 @@ func fetchAccessToken(
 ) {
 	ctx := c.Request().Context()
 
-	v1Credential := http_parameter.V1Credential{}
+	v1Credential := httpParameter.V1Credential{}
 
 	if err := c.Bind(&v1Credential); err != nil {
 		pkg.Logging(ctx, err)

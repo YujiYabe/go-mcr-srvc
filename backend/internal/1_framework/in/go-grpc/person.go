@@ -1,77 +1,18 @@
-package person
+package goGRPC
 
 import (
 	"context"
 	"log"
-	"net"
 	"time"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
-
-	grpcParameter "backend/internal/1_framework/grpc_parameter"
-	grpcUtil "backend/internal/1_framework/in/grpc/grpc_util"
-	"backend/internal/2_adapter/controller"
+	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
-const (
-	timeFormat = "06-01-02-15:04:05.000000000"
-)
-
-// Person ...
-type Person struct {
+// GoGRPC ...
+type GoGRPC struct {
 	Server
-}
-
-// Server ...
-type Server struct {
-	grpcParameter.UnimplementedPersonServer
-	Controller controller.ToController
-}
-
-// NewPerson ...
-func NewPerson(
-	ctrl controller.ToController,
-) *Person {
-	d := &Person{
-		Server: Server{
-			Controller: ctrl,
-		},
-	}
-
-	return d
-}
-
-// Start ....
-func (receiver *Person) Start() {
-	ctx, cancel := context.WithTimeout(
-		context.Background(),
-		30*time.Second,
-	)
-	defer cancel()
-	log.Println("------------------------- start GRPC ------------------------- ")
-
-	listen, err := net.Listen("tcp", pkg.GRPCAddress)
-	if err != nil {
-		pkg.Logging(ctx, err)
-		log.Fatalf("failed to listen: %v", err)
-	}
-	server := grpc.NewServer(
-		grpc.UnaryInterceptor(
-			grpcUtil.TraceIDInterceptor,
-		),
-	)
-
-	grpcParameter.RegisterPersonServer(server, &receiver.Server)
-	reflection.Register(server)
-
-	if err := server.Serve(listen); err != nil {
-		pkg.Logging(ctx, err)
-		log.Fatalf("failed to serve: %v", err)
-	}
-
 }
 
 // Implementation of the GetPersonByCondition method
