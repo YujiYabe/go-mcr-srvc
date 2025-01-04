@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	grpcParameter "backend/internal/1_framework/grpc_parameter"
 	grpcUtil "backend/internal/1_framework/in/grpc/grpc_util"
+	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"

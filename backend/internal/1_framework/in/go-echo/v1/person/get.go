@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 
-	"backend/internal/1_framework/http_parameter"
+	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
@@ -19,7 +19,7 @@ func get(
 ) {
 	ctx := c.Request().Context()
 
-	person := http_parameter.V1Person{}
+	person := httpParameter.V1Person{}
 
 	if err := c.Bind(&person); err != nil {
 		pkg.Logging(ctx, err)
@@ -58,14 +58,14 @@ func get(
 		)
 	}
 
-	responseList := []http_parameter.V1Person{}
+	responseList := []httpParameter.V1Person{}
 	for _, person := range personList {
 		id := person.ID.Content.GetValue()
 		name := person.Name.Content.GetValue()
 		mailAddress := person.MailAddress.Content.GetValue()
 		responseList = append(
 			responseList,
-			http_parameter.V1Person{
+			httpParameter.V1Person{
 				ID:          &id,
 				Name:        &name,
 				MailAddress: &mailAddress,
