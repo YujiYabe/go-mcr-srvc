@@ -9,6 +9,11 @@ Content-Type: application/json
 
 
 ###  ==============================
+GET http://localhost:1234/v1/person/viaGRPC?name=a
+Content-Type: application/json
+
+
+###  ==============================
 GET http://localhost:1234/v1/person/viaGRPC?mailAddress=bbbb@gmail.com
 Content-Type: application/json
 

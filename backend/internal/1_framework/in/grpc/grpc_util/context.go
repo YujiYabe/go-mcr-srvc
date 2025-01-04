@@ -19,7 +19,7 @@ func TraceIDInterceptor(
 	md, ok := metadata.FromIncomingContext(ctx)
 	var traceID string
 	if ok {
-		values := md["TraceID"]
+		values := md.Get(string(pkg.TraceIDKey))
 		if len(values) > 0 {
 			traceID = values[0]
 		}
@@ -41,4 +41,5 @@ func TraceIDInterceptor(
 
 	// 次のハンドラーを呼び出す
 	return handler(ctx, req)
+
 }

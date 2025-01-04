@@ -1,6 +1,7 @@
 package person
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -47,6 +48,9 @@ func viaGRPC(
 	// 	ctx,
 	// 	*reqPerson,
 	// )
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, pkg.GetTraceID(ctx))
+	log.Println("== == == == == == == == == == ")
 
 	err = toController.ViaGRPC(
 		ctx,

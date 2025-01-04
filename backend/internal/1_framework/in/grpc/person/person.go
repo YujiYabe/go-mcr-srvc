@@ -84,7 +84,7 @@ func (receiver *Server) GetPersonByCondition(
 ) {
 
 	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", pkg.GetTraceID(ctx))
+	pkg.Logging(ctx, pkg.GetTraceID(ctx))
 	log.Println("== == == == == == == == == == ")
 
 	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
