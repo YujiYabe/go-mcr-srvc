@@ -77,26 +77,39 @@ func (receiver *Person) Start() {
 // Implementation of the GetPersonByCondition method
 func (receiver *Server) GetPersonByCondition(
 	ctx context.Context,
-	req *grpcParameter.V1PersonParameter,
+	req *grpcParameter.V1GetPersonByConditionRequest,
 ) (
 	v1GetPersonByConditionResponse *grpcParameter.V1GetPersonByConditionResponse,
 	err error,
 ) {
+
+	log.Println("== == == == == == == == == == ")
+	log.Printf("%#v\n", pkg.GetTraceID(ctx))
+	log.Println("== == == == == == == == == == ")
+
 	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
 	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
 
-	var id int
-	if req.Id != nil {
-		id = int(req.GetId())
+	var id *int
+	if req.V1PersonParameter.GetId() != 0 {
+		id = new(int)
+		*id = int(req.V1PersonParameter.GetId())
 	}
 
-	name := req.Name
-	mailAddress := req.MailAddress
+	var name *string
+	if req.V1PersonParameter.Name != nil {
+		name = req.V1PersonParameter.Name
+	}
+
+	var mailAddress *string
+	if req.V1PersonParameter.MailAddress != nil {
+		mailAddress = req.V1PersonParameter.MailAddress
+	}
 
 	reqPerson := struct_object.NewPerson(
 		&struct_object.NewPersonArgs{
-			ID:          &id,
+			ID:          id,
 			Name:        name,
 			MailAddress: mailAddress,
 		},
@@ -139,4 +152,5 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	return
+
 }

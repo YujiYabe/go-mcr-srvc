@@ -5,7 +5,7 @@ package grpc_parameter;
 option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_framework/in/grpc_parameter";
 
 service Person {
-    rpc GetPersonByCondition (V1PersonParameter) returns (V1GetPersonByConditionResponse);
+    rpc GetPersonByCondition (V1GetPersonByConditionRequest) returns (V1GetPersonByConditionResponse);
 }
 
 message V1CommonParameter {

@@ -10,6 +10,7 @@ import (
 
 	// "backend/internal/1_framework/grpc_parameter"
 	"backend/internal/1_framework/grpc_parameter"
+	"backend/pkg"
 )
 
 // ...
@@ -19,12 +20,16 @@ func (receiver *GRPCClient) ViaGRPC(
 ) (
 	err error,
 ) {
+
+	log.Println("== == == == == == == == == == ")
+	log.Printf("%#v\n", pkg.GetTraceID(ctx))
+	log.Println("== == == == == == == == == == ")
+
 	// gRPCコネクションの作成
 	conn, err := grpc.NewClient(
 		"backend:3456",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
-
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
@@ -38,12 +43,15 @@ func (receiver *GRPCClient) ViaGRPC(
 	v1PersonParameter := &grpc_parameter.V1PersonParameter{
 		Name: &name,
 	}
-	// v1GetPersonByConditionRequest := &grpc_parameter.V1GetPersonByConditionRequest{
-	// 	V1PersonParameter: v1PersonParameter,
-	// }
+	v1GetPersonByConditionRequest := &grpc_parameter.V1GetPersonByConditionRequest{
+		V1PersonParameter: v1PersonParameter,
+	}
 
 	// gRPCリクエストの実行
-	resp, err := client.GetPersonByCondition(ctx, v1PersonParameter)
+	resp, err := client.GetPersonByCondition(
+		ctx,
+		v1GetPersonByConditionRequest,
+	)
 	log.Println("== == == == == == == == == == ")
 	log.Printf("%#v\n", *resp.V1PersonParameterArray.Persons[0].MailAddress)
 	log.Println("== == == == == == == == == == ")

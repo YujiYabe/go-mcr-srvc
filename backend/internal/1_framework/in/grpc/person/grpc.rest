@@ -4,14 +4,31 @@
 proto < ../../../grpc_parameter/person.proto
 GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
-	"mailAddress": "bbbb@gmail.com"
+	"v1PersonParameter": {
+		"mailAddress": "aaaa@gmail.com"
+	}
 }
 
 ### --------------------------------
 proto < ../../../grpc_parameter/person.proto
 GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
-	"name": "a"
+	"v1PersonParameter": {
+		"name": "b"
+	}
 }
 
 ### --------------------------------
+proto < ../../../grpc_parameter/person.proto
+GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
+{
+	"common": {
+		"traceID": "test-trace-id",
+		"timestamp": "2024-01-01T00:00:00Z"
+	},
+	"parameter": {
+		"id": 1,
+		"name": "test user",
+		"mail_address": "test@example.com"
+	}
+}
