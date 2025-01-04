@@ -8,18 +8,23 @@ import (
 	"backend/internal/4_domain/value_object"
 )
 
+// NewUseCase ...
+func NewUseCase(
+	toDomain ToDomain,
+	toGateway ToGateway,
+) ToUseCase {
+	return &useCase{
+		ToDomain:  toDomain,
+		ToGateway: toGateway,
+	}
+}
+
 type (
 	// useCase ...
 	useCase struct {
-		ToDomain    ToDomain
-		ToGateway   ToGateway
-		ToPresenter ToPresenter
+		ToDomain  ToDomain
+		ToGateway ToGateway
 	}
-
-	// OrderUsecase ...
-	// OrderUsecase struct {
-	// 	ctx context.Context
-	// }
 
 	// ToUseCase ...
 	ToUseCase interface {
@@ -45,6 +50,12 @@ type (
 			credential struct_object.Credential,
 		) (
 			accessToken value_object.AccessToken,
+			err error,
+		)
+
+		ViaGRPC(
+			ctx context.Context,
+		) (
 			err error,
 		)
 	}
@@ -79,21 +90,11 @@ type (
 			accessToken value_object.AccessToken,
 			err error,
 		)
-	}
 
-	// ToPresenter ...
-	ToPresenter interface {
-		UpdateOrders(ctx context.Context, orderNumber string, phase string)
+		ViaGRPC(
+			ctx context.Context,
+		) (
+			err error,
+		)
 	}
 )
-
-// NewUseCase ...
-func NewUseCase(
-	toDomain ToDomain,
-	toGateway ToGateway,
-) ToUseCase {
-	return &useCase{
-		ToDomain:  toDomain,
-		ToGateway: toGateway,
-	}
-}

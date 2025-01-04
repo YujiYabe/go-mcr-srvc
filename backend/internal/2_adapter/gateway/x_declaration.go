@@ -68,7 +68,7 @@ type (
 
 	// ToGRPC ...
 	ToGRPC interface {
-		RequestToAuth0(
+		ViaGRPC(
 			ctx context.Context,
 		) (
 			err error,

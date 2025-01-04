@@ -10,6 +10,35 @@ import (
 	"backend/internal/4_domain/value_object"
 )
 
+// NewController ...
+func NewController(
+	ToRedis gateway.ToRedis,
+	ToPostgres gateway.ToPostgres,
+	ToAuth0 gateway.ToAuth0,
+	ToGRPC gateway.ToGRPC,
+) (
+	toController ToController,
+) {
+	toDomain := domain.NewDomain()
+	toGateway := gateway.NewGateway(
+		ToRedis,
+		ToPostgres,
+		ToAuth0,
+		ToGRPC,
+	)
+
+	useCase := usecase.NewUseCase(
+		toDomain,
+		toGateway,
+	)
+
+	toController = &controller{
+		UseCase: useCase,
+	}
+
+	return
+}
+
 type (
 	// controller ...
 	controller struct {
@@ -43,34 +72,11 @@ type (
 			accessToken value_object.AccessToken,
 			err error,
 		)
+
+		ViaGRPC(
+			ctx context.Context,
+		) (
+			err error,
+		)
 	}
 )
-
-// NewController ...
-func NewController(
-	ToRedis gateway.ToRedis,
-	ToPostgres gateway.ToPostgres,
-	ToAuth0 gateway.ToAuth0,
-	ToGRPC gateway.ToGRPC,
-) (
-	toController ToController,
-) {
-	toDomain := domain.NewDomain()
-	toGateway := gateway.NewGateway(
-		ToRedis,
-		ToPostgres,
-		ToAuth0,
-		ToGRPC,
-	)
-
-	useCase := usecase.NewUseCase(
-		toDomain,
-		toGateway,
-	)
-
-	toController = &controller{
-		UseCase: useCase,
-	}
-
-	return
-}

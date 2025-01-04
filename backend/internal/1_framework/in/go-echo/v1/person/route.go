@@ -21,4 +21,13 @@ func NewRoute(
 			return get(c, toController)
 		},
 	)
+
+	group.GET(
+		"/viaGRPC",
+		func(c echo.Context) (
+			err error,
+		) {
+			return viaGRPC(c, toController)
+		},
+	)
 }

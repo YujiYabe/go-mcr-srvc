@@ -47,3 +47,15 @@ func (receiver *useCase) FetchAccessToken(
 	)
 	return
 }
+
+func (receiver *useCase) ViaGRPC(
+	ctx context.Context,
+) (
+	err error,
+) {
+	err = receiver.ToGateway.ViaGRPC(
+		ctx,
+	)
+
+	return
+}

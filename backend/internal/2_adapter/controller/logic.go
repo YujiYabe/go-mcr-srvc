@@ -48,3 +48,15 @@ func (receiver *controller) FetchAccessToken(
 
 	return
 }
+
+func (receiver *controller) ViaGRPC(
+	ctx context.Context,
+) (
+	err error,
+) {
+	err = receiver.UseCase.ViaGRPC(
+		ctx,
+	)
+
+	return
+}
