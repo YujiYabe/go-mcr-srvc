@@ -1,4 +1,4 @@
-package grpc_util
+package grpc_middleware
 
 import (
 	"backend/pkg"

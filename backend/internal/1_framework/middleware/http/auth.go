@@ -1,4 +1,4 @@
-package web_util
+package http_middleware
 
 import (
 	"crypto/rsa"

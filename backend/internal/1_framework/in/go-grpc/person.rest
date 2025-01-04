@@ -1,7 +1,6 @@
 
-
 ### --------------------------------
-proto < ../../../grpc_parameter/person.proto
+proto < ../../parameter/grpc/person.proto
 GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
 	"v1PersonParameter": {
@@ -10,7 +9,7 @@ GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 }
 
 ### --------------------------------
-proto < ../../../grpc_parameter/person.proto
+proto < ../../parameter/grpc/person.proto
 GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
 	"v1PersonParameter": {
@@ -19,7 +18,7 @@ GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 }
 
 ### --------------------------------
-proto < ../../../grpc_parameter/person.proto
+proto < ../../parameter/grpc/person.proto
 GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 {
 	"common": {
