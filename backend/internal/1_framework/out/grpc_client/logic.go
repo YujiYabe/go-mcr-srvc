@@ -42,7 +42,9 @@ func (receiver *GRPCClient) ViaGRPC(
 			Name: &name,
 		},
 		V1CommonParameter: &grpc_parameter.V1CommonParameter{
-			TraceID: pkg.GetTraceID(ctx),
+			Immutable: &grpc_parameter.V1ImmutableParameter{
+				TraceID: pkg.GetTraceID(ctx),
+			},
 		},
 	}
 
