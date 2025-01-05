@@ -1,7 +1,7 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
 const (
@@ -10,7 +10,7 @@ const (
 )
 
 type ID struct {
-	Content *primitive_object.PrimitiveInt
+	Content *primitiveObject.PrimitiveInt
 }
 
 func NewID(
@@ -20,14 +20,14 @@ func NewID(
 	err error,
 ) {
 	id = ID{}
-	primitiveInt := &primitive_object.PrimitiveInt{}
+	primitiveInt := &primitiveObject.PrimitiveInt{}
 
 	isNil := primitiveInt.CheckNil(value)
 	valueInt := 0
 	if !isNil {
 		valueInt = *value
 	}
-	id.Content = primitive_object.NewPrimitiveInt(
+	id.Content = primitiveObject.NewPrimitiveInt(
 		primitiveInt.WithValue(valueInt),
 		primitiveInt.WithIsNil(isNil),
 		primitiveInt.WithMaxValue(idLengthMax),

@@ -1,7 +1,7 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
 const (
@@ -15,7 +15,7 @@ var nameCheckSpell = []string{
 }
 
 type Name struct {
-	Content *primitive_object.PrimitiveString
+	Content *primitiveObject.PrimitiveString
 }
 
 func NewName(
@@ -25,7 +25,7 @@ func NewName(
 	err error,
 ) {
 	name = Name{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	primitiveString := &primitiveObject.PrimitiveString{}
 
 	isNil := primitiveString.CheckNil(value)
 	valueString := ""
@@ -33,7 +33,7 @@ func NewName(
 		valueString = *value
 	}
 
-	name.Content = primitive_object.NewPrimitiveString(
+	name.Content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(nameLengthMax),

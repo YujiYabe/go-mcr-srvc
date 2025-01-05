@@ -1,7 +1,7 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
 const (
@@ -10,7 +10,7 @@ const (
 )
 
 type AccessToken struct {
-	Content *primitive_object.PrimitiveString
+	Content *primitiveObject.PrimitiveString
 }
 
 func NewAccessToken(
@@ -20,14 +20,14 @@ func NewAccessToken(
 	err error,
 ) {
 	accessToken = AccessToken{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	primitiveString := &primitiveObject.PrimitiveString{}
 
 	isNil := primitiveString.CheckNil(value)
 	valueString := ""
 	if !isNil {
 		valueString = *value
 	}
-	accessToken.Content = primitive_object.NewPrimitiveString(
+	accessToken.Content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(accessTokenLengthMax),

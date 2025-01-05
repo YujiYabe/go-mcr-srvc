@@ -11,6 +11,8 @@ import (
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
+	valueObject "backend/internal/4_domain/value_object"
+
 	"backend/pkg"
 )
 
@@ -49,7 +51,7 @@ func (receiver *GRPCClient) ViaGRPC(
 
 	ctx = metadata.AppendToOutgoingContext(
 		ctx,
-		string(grpcMiddleware.TraceIDKey),
+		string(valueObject.TraceIDMetaName),
 		grpcMiddleware.GetTraceID(ctx),
 	)
 	log.Println("== == == == == == == == == == ")

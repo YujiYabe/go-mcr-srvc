@@ -6,6 +6,8 @@ import (
 	"unicode/utf8"
 )
 
+type ContextKey string
+
 // PrimitiveString は文字列値に対してバリデーション機能を提供する構造体です。
 // nil チェック、長さ制限、禁止文字列のチェックなどの機能を備えています。
 type PrimitiveString struct {

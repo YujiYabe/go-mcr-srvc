@@ -53,7 +53,7 @@ func (receiver *GoGRPC) Start() {
 	}
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(
-			grpcMiddleware.TraceIDInterceptor,
+			grpcMiddleware.MetadataToContext,
 		),
 	)
 

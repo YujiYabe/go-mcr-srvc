@@ -1,11 +1,11 @@
 package struct_object
 
-import "backend/internal/4_domain/value_object"
+import valueObject "backend/internal/4_domain/value_object"
 
 type Credential struct {
 	Err          error
-	ClientID     value_object.ClientID
-	ClientSecret value_object.ClientSecret
+	ClientID     valueObject.ClientID
+	ClientSecret valueObject.ClientSecret
 }
 
 type NewCredentialArgs struct {
@@ -35,13 +35,13 @@ func NewCredential(
 	var err error
 	accessToken = &Credential{}
 
-	accessToken.ClientID, err = value_object.NewClientID(args.ClientID)
+	accessToken.ClientID, err = valueObject.NewClientID(args.ClientID)
 	if err != nil {
 		accessToken.SetError(err)
 		return
 	}
 
-	accessToken.ClientSecret, err = value_object.NewClientSecret(args.ClientSecret)
+	accessToken.ClientSecret, err = valueObject.NewClientSecret(args.ClientSecret)
 	if err != nil {
 		accessToken.SetError(err)
 		return

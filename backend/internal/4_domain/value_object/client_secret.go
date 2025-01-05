@@ -1,7 +1,7 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
 const (
@@ -10,7 +10,7 @@ const (
 )
 
 type ClientSecret struct {
-	Content *primitive_object.PrimitiveString
+	Content *primitiveObject.PrimitiveString
 }
 
 func NewClientSecret(
@@ -20,7 +20,7 @@ func NewClientSecret(
 	err error,
 ) {
 	clientSecret = ClientSecret{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	primitiveString := &primitiveObject.PrimitiveString{}
 
 	isNil := primitiveString.CheckNil(value)
 	valueString := ""
@@ -28,7 +28,7 @@ func NewClientSecret(
 		valueString = *value
 	}
 
-	clientSecret.Content = primitive_object.NewPrimitiveString(
+	clientSecret.Content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(clientSecretLengthMax),

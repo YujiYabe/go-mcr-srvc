@@ -1,10 +1,9 @@
 package value_object
 
 import (
+	"backend/internal/4_domain/primitive_object"
 	"fmt"
 	"regexp"
-
-	"backend/internal/4_domain/primitive_object"
 )
 
 const (

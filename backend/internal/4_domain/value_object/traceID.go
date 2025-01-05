@@ -1,18 +1,21 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
 const (
-	traceIDLengthMax   = 99999999999
-	traceIDLengthMin   = 0
-	TraceIDMetaName    = "trace-id"
-	TraceIDContextName = "traceID"
+	TraceIDMetaName    primitiveObject.ContextKey = "trace-id"
+	TraceIDContextName primitiveObject.ContextKey = "traceID"
+)
+
+const (
+	traceIDLengthMax = 99999999999
+	traceIDLengthMin = 0
 )
 
 type TraceID struct {
-	Content *primitive_object.PrimitiveString
+	Content *primitiveObject.PrimitiveString
 }
 
 func NewTraceID(
@@ -22,14 +25,14 @@ func NewTraceID(
 	err error,
 ) {
 	traceID = TraceID{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	primitiveString := &primitiveObject.PrimitiveString{}
 
 	isNil := primitiveString.CheckNil(value)
 	valueString := ""
 	if !isNil {
 		valueString = *value
 	}
-	traceID.Content = primitive_object.NewPrimitiveString(
+	traceID.Content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(traceIDLengthMax),
