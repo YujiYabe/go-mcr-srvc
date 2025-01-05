@@ -86,7 +86,7 @@ xo:
 # ----------------------------
 .PHONY: gen-grpc
 gen-grpc:
-	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/grpc_parameter -name "*.proto" -type f -exec \
+	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/parameter/grpc -name "*.proto" -type f -exec \
 		protoc \
 		--go_out=. \
 		--go_opt=paths=source_relative \

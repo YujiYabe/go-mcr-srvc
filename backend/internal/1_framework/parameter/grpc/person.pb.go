@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.1
 // 	protoc        v5.29.2
-// source: backend/internal/1_framework/grpc_parameter/person.proto
+// source: backend/internal/1_framework/parameter/grpc/person.proto
 
-package grpc_parameter
+package grpc
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -38,7 +38,7 @@ type V1ImmutableParameter struct {
 
 func (x *V1ImmutableParameter) Reset() {
 	*x = V1ImmutableParameter{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[0]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -50,7 +50,7 @@ func (x *V1ImmutableParameter) String() string {
 func (*V1ImmutableParameter) ProtoMessage() {}
 
 func (x *V1ImmutableParameter) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[0]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,7 +63,7 @@ func (x *V1ImmutableParameter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1ImmutableParameter.ProtoReflect.Descriptor instead.
 func (*V1ImmutableParameter) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{0}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *V1ImmutableParameter) GetTraceID() string {
@@ -152,7 +152,7 @@ type V1MutableParameter struct {
 
 func (x *V1MutableParameter) Reset() {
 	*x = V1MutableParameter{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[1]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -164,7 +164,7 @@ func (x *V1MutableParameter) String() string {
 func (*V1MutableParameter) ProtoMessage() {}
 
 func (x *V1MutableParameter) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[1]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -177,7 +177,7 @@ func (x *V1MutableParameter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1MutableParameter.ProtoReflect.Descriptor instead.
 func (*V1MutableParameter) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{1}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *V1MutableParameter) GetTimestamp() string {
@@ -246,7 +246,7 @@ type V1CommonParameter struct {
 
 func (x *V1CommonParameter) Reset() {
 	*x = V1CommonParameter{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[2]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -258,7 +258,7 @@ func (x *V1CommonParameter) String() string {
 func (*V1CommonParameter) ProtoMessage() {}
 
 func (x *V1CommonParameter) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[2]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -271,7 +271,7 @@ func (x *V1CommonParameter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1CommonParameter.ProtoReflect.Descriptor instead.
 func (*V1CommonParameter) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{2}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *V1CommonParameter) GetImmutable() *V1ImmutableParameter {
@@ -298,7 +298,7 @@ type V1GetPersonByConditionRequest struct {
 
 func (x *V1GetPersonByConditionRequest) Reset() {
 	*x = V1GetPersonByConditionRequest{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[3]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -310,7 +310,7 @@ func (x *V1GetPersonByConditionRequest) String() string {
 func (*V1GetPersonByConditionRequest) ProtoMessage() {}
 
 func (x *V1GetPersonByConditionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[3]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -323,7 +323,7 @@ func (x *V1GetPersonByConditionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1GetPersonByConditionRequest.ProtoReflect.Descriptor instead.
 func (*V1GetPersonByConditionRequest) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{3}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *V1GetPersonByConditionRequest) GetV1CommonParameter() *V1CommonParameter {
@@ -350,7 +350,7 @@ type V1GetPersonByConditionResponse struct {
 
 func (x *V1GetPersonByConditionResponse) Reset() {
 	*x = V1GetPersonByConditionResponse{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[4]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -362,7 +362,7 @@ func (x *V1GetPersonByConditionResponse) String() string {
 func (*V1GetPersonByConditionResponse) ProtoMessage() {}
 
 func (x *V1GetPersonByConditionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[4]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -375,7 +375,7 @@ func (x *V1GetPersonByConditionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1GetPersonByConditionResponse.ProtoReflect.Descriptor instead.
 func (*V1GetPersonByConditionResponse) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{4}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *V1GetPersonByConditionResponse) GetV1CommonParameter() *V1CommonParameter {
@@ -403,7 +403,7 @@ type V1PersonParameter struct {
 
 func (x *V1PersonParameter) Reset() {
 	*x = V1PersonParameter{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[5]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -415,7 +415,7 @@ func (x *V1PersonParameter) String() string {
 func (*V1PersonParameter) ProtoMessage() {}
 
 func (x *V1PersonParameter) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[5]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -428,7 +428,7 @@ func (x *V1PersonParameter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1PersonParameter.ProtoReflect.Descriptor instead.
 func (*V1PersonParameter) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{5}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *V1PersonParameter) GetId() uint32 {
@@ -461,7 +461,7 @@ type V1PersonParameterArray struct {
 
 func (x *V1PersonParameterArray) Reset() {
 	*x = V1PersonParameterArray{}
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[6]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -473,7 +473,7 @@ func (x *V1PersonParameterArray) String() string {
 func (*V1PersonParameterArray) ProtoMessage() {}
 
 func (x *V1PersonParameterArray) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[6]
+	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -486,7 +486,7 @@ func (x *V1PersonParameterArray) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use V1PersonParameterArray.ProtoReflect.Descriptor instead.
 func (*V1PersonParameterArray) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP(), []int{6}
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *V1PersonParameterArray) GetPersons() []*V1PersonParameter {
@@ -496,12 +496,12 @@ func (x *V1PersonParameterArray) GetPersons() []*V1PersonParameter {
 	return nil
 }
 
-var File_backend_internal_1_framework_grpc_parameter_person_proto protoreflect.FileDescriptor
+var File_backend_internal_1_framework_parameter_grpc_person_proto protoreflect.FileDescriptor
 
-var file_backend_internal_1_framework_grpc_parameter_person_proto_rawDesc = []byte{
+var file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc = []byte{
 	0x0a, 0x38, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e,
-	0x61, 0x6c, 0x2f, 0x31, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x77, 0x6f, 0x72, 0x6b, 0x2f, 0x67,
-	0x72, 0x70, 0x63, 0x5f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x2f, 0x70, 0x65,
+	0x61, 0x6c, 0x2f, 0x31, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x77, 0x6f, 0x72, 0x6b, 0x2f, 0x70,
+	0x61, 0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x70, 0x65,
 	0x72, 0x73, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0e, 0x67, 0x72, 0x70, 0x63,
 	0x5f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x22, 0xc2, 0x02, 0x0a, 0x14, 0x56,
 	0x31, 0x49, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x65,
@@ -602,29 +602,29 @@ var file_backend_internal_1_framework_grpc_parameter_person_proto_rawDesc = []by
 	0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e,
 	0x2e, 0x67, 0x72, 0x70, 0x63, 0x5f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x2e,
 	0x56, 0x31, 0x47, 0x65, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x42, 0x79, 0x43, 0x6f, 0x6e,
-	0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x57,
-	0x5a, 0x55, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x59, 0x75, 0x6a,
+	0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x54,
+	0x5a, 0x52, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x59, 0x75, 0x6a,
 	0x69, 0x59, 0x61, 0x62, 0x65, 0x2f, 0x67, 0x6f, 0x2d, 0x64, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x2d,
 	0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x2f, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64,
 	0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x31, 0x5f, 0x66, 0x72, 0x61, 0x6d,
-	0x65, 0x77, 0x6f, 0x72, 0x6b, 0x2f, 0x69, 0x6e, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x5f, 0x70, 0x61,
-	0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x77, 0x6f, 0x72, 0x6b, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x2f,
+	0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescOnce sync.Once
-	file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescData = file_backend_internal_1_framework_grpc_parameter_person_proto_rawDesc
+	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescOnce sync.Once
+	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData = file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc
 )
 
-func file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescGZIP() []byte {
-	file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescOnce.Do(func() {
-		file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescData = protoimpl.X.CompressGZIP(file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescData)
+func file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP() []byte {
+	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescOnce.Do(func() {
+		file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData = protoimpl.X.CompressGZIP(file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData)
 	})
-	return file_backend_internal_1_framework_grpc_parameter_person_proto_rawDescData
+	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData
 }
 
-var file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_backend_internal_1_framework_grpc_parameter_person_proto_goTypes = []any{
+var file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_backend_internal_1_framework_parameter_grpc_person_proto_goTypes = []any{
 	(*V1ImmutableParameter)(nil),           // 0: grpc_parameter.V1ImmutableParameter
 	(*V1MutableParameter)(nil),             // 1: grpc_parameter.V1MutableParameter
 	(*V1CommonParameter)(nil),              // 2: grpc_parameter.V1CommonParameter
@@ -633,7 +633,7 @@ var file_backend_internal_1_framework_grpc_parameter_person_proto_goTypes = []an
 	(*V1PersonParameter)(nil),              // 5: grpc_parameter.V1PersonParameter
 	(*V1PersonParameterArray)(nil),         // 6: grpc_parameter.V1PersonParameterArray
 }
-var file_backend_internal_1_framework_grpc_parameter_person_proto_depIdxs = []int32{
+var file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs = []int32{
 	0, // 0: grpc_parameter.V1CommonParameter.immutable:type_name -> grpc_parameter.V1ImmutableParameter
 	1, // 1: grpc_parameter.V1CommonParameter.mutable:type_name -> grpc_parameter.V1MutableParameter
 	2, // 2: grpc_parameter.V1GetPersonByConditionRequest.v1CommonParameter:type_name -> grpc_parameter.V1CommonParameter
@@ -650,29 +650,29 @@ var file_backend_internal_1_framework_grpc_parameter_person_proto_depIdxs = []in
 	0, // [0:7] is the sub-list for field type_name
 }
 
-func init() { file_backend_internal_1_framework_grpc_parameter_person_proto_init() }
-func file_backend_internal_1_framework_grpc_parameter_person_proto_init() {
-	if File_backend_internal_1_framework_grpc_parameter_person_proto != nil {
+func init() { file_backend_internal_1_framework_parameter_grpc_person_proto_init() }
+func file_backend_internal_1_framework_parameter_grpc_person_proto_init() {
+	if File_backend_internal_1_framework_parameter_grpc_person_proto != nil {
 		return
 	}
-	file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[3].OneofWrappers = []any{}
-	file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes[5].OneofWrappers = []any{}
+	file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[3].OneofWrappers = []any{}
+	file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_backend_internal_1_framework_grpc_parameter_person_proto_rawDesc,
+			RawDescriptor: file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_backend_internal_1_framework_grpc_parameter_person_proto_goTypes,
-		DependencyIndexes: file_backend_internal_1_framework_grpc_parameter_person_proto_depIdxs,
-		MessageInfos:      file_backend_internal_1_framework_grpc_parameter_person_proto_msgTypes,
+		GoTypes:           file_backend_internal_1_framework_parameter_grpc_person_proto_goTypes,
+		DependencyIndexes: file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs,
+		MessageInfos:      file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes,
 	}.Build()
-	File_backend_internal_1_framework_grpc_parameter_person_proto = out.File
-	file_backend_internal_1_framework_grpc_parameter_person_proto_rawDesc = nil
-	file_backend_internal_1_framework_grpc_parameter_person_proto_goTypes = nil
-	file_backend_internal_1_framework_grpc_parameter_person_proto_depIdxs = nil
+	File_backend_internal_1_framework_parameter_grpc_person_proto = out.File
+	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc = nil
+	file_backend_internal_1_framework_parameter_grpc_person_proto_goTypes = nil
+	file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs = nil
 }
