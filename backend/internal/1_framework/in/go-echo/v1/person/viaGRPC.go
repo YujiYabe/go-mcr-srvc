@@ -8,14 +8,9 @@ import (
 	"github.com/labstack/echo"
 
 	"backend/internal/2_adapter/controller"
+	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
-
-// contextKey はコンテキストのキー型を定義します
-type contextKey string
-
-// traceID は共通リクエストIDを格納するためのコンテキストキーです
-const TraceIDKey contextKey = "traceID"
 
 func viaGRPC(
 	c echo.Context,
@@ -105,7 +100,7 @@ func GetTraceID(
 ) (
 	traceIDString string,
 ) {
-	traceID, ok := ctx.Value(TraceIDKey).(string)
+	traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string)
 	if ok {
 		traceIDString = traceID
 	}

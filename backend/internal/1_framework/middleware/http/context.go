@@ -5,15 +5,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
-
 	"google.golang.org/grpc/metadata"
+
+	valueObject "backend/internal/4_domain/value_object"
 )
-
-// contextKey はコンテキストのキー型を定義します
-type contextKey string
-
-// traceID は共通リクエストIDを格納するためのコンテキストキーです
-const TraceIDKey contextKey = "traceID"
 
 func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
@@ -46,7 +41,7 @@ func setTraceIDContext(
 ) {
 	ctx := context.WithValue(
 		c.Request().Context(),
-		TraceIDKey,
+		valueObject.TraceIDContextName,
 		traceID,
 	)
 
@@ -58,34 +53,9 @@ func setTraceIDHeader(
 	traceID string,
 ) {
 	c.Response().Header().Set(
-		string(TraceIDKey),
+		string(valueObject.TraceIDContextName),
 		traceID,
 	)
-}
-
-// GetNewContext は新しいコンテキストを生成します
-// X-Trace-IDヘッダーの値をコンテキストに埋め込みます
-//
-// パラメータ:
-//   - ctx: 親コンテキスト
-//   - traceID: X-Trace-IDヘッダーの値
-//
-// 戻り値:
-//   - newCtx: 新しく生成されたコンテキスト
-func GetNewContext(
-	ctx context.Context,
-	keyName contextKey,
-	keyValue interface{},
-) (
-	newCtx context.Context,
-) {
-	newCtx = context.WithValue(
-		ctx,
-		keyName,
-		keyValue,
-	)
-
-	return
 }
 
 // GetTraceID はコンテキストからリクエストIDを取得します
@@ -100,7 +70,7 @@ func GetTraceID(
 ) (
 	traceIDString string,
 ) {
-	traceID, ok := ctx.Value(TraceIDKey).(string)
+	traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string)
 	if ok {
 		traceIDString = traceID
 	}
@@ -112,10 +82,9 @@ func GetTraceID(
 func ConvertToMetadata(
 	ctx context.Context,
 ) metadata.MD {
-	traceID := ctx.Value(TraceIDKey).(string)
 	return metadata.New(
 		map[string]string{
-			"trace-id": traceID, // メタデータ用にハイフン区切りに変換
+			string(valueObject.TraceIDMetaName): ctx.Value(valueObject.TraceIDContextName).(string), // メタデータ用にハイフン区切りに変換
 		},
 	)
 }
