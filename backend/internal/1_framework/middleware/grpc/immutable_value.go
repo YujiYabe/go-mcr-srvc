@@ -19,7 +19,9 @@ func traceIDToContext(
 ) {
 	var traceID string
 
-	values := md.Get(string(valueObject.TraceIDMetaName))
+	values := md.Get(
+		string(valueObject.TraceIDMetaName),
+	)
 	if len(values) > 0 {
 		traceID = values[0]
 	}
@@ -47,7 +49,9 @@ func requestStartTimeToContext(
 ) {
 	var requestStartTime int64
 
-	values := md.Get(string(valueObject.RequestStartTimeMetaName))
+	values := md.Get(
+		string(valueObject.RequestStartTimeMetaName),
+	)
 	if len(values) > 0 {
 		parsedTime, err := strconv.ParseInt(values[0], 10, 64)
 		if err == nil {

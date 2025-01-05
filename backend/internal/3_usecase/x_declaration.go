@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 
-	domain "backend/internal/4_domain"
 	structObject "backend/internal/4_domain/struct_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
@@ -62,8 +61,6 @@ type (
 
 	// ToDomain ...
 	ToDomain interface {
-		ParseOrder(ctx context.Context, order *domain.Order) *domain.Assemble
-		CookHamburgers(ctx context.Context, hamburgers []domain.Hamburger) error
 	}
 
 	// ToGateway ...
