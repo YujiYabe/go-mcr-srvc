@@ -94,7 +94,7 @@ func (receiver *Server) GetPersonByCondition(
 			TraceID: grpcMiddleware.GetTraceID(ctx),
 		},
 		Mutable: &grpcParameter.V1MutableParameter{
-			Timestamp: time.Now().Format(timeFormat),
+			TimeStamp: time.Now().Format(timeFormat),
 		},
 	}
 

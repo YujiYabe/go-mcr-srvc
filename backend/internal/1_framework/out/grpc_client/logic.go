@@ -24,6 +24,7 @@ func (receiver *GRPCClient) ViaGRPC(
 	err error,
 ) {
 	// gRPCコネクションの作成
+
 	conn, err := grpc.NewClient(
 		"backend:3456",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),

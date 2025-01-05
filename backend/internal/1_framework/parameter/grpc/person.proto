@@ -7,7 +7,12 @@ option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_f
 service Person {
     rpc GetPersonByCondition (V1GetPersonByConditionRequest) returns (V1GetPersonByConditionResponse);
 }
-message V1ImmutableParameter { // 不変な情報
+
+
+
+
+
+message V1ImmutableParameter {       // 不変な情報
     string traceID = 1;              // リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
     int64 requestStartTime = 2;      // リクエスト情報: リクエストの開始時刻（Unix timestamp）
     string clientIP = 3;             // リクエスト情報: クライアントのIPアドレス
@@ -34,18 +39,29 @@ message V1MutableParameter {         // リクエスト処理中に変更され�
 message V1CommonParameter {
     V1ImmutableParameter immutable = 1;
     V1MutableParameter mutable = 2;
+    V1Error error = 3; 
 }
+
+message V1Error { 
+    string code = 1;                // エラーコード (例: INVALID_PARAMETER, NOT_FOUND)
+    string message = 2;             // エラーメッセージ
+    string detail = 3;              // 詳細なエラー情報
+    string field = 4;               // エラーが発生したフィールド名
+    repeated V1Error nested = 5;    // ネストされたエラー情報
+}
+
 
 message V1GetPersonByConditionRequest {
     optional V1CommonParameter v1CommonParameter = 1; // V1CommonParameter
     V1PersonParameter v1PersonParameter = 2; // V1PersonParameterArray
 }
 
-message V1GetPersonByConditionResponse {
-    V1CommonParameter v1CommonParameter = 1;           // V1CommonParameter
-    V1PersonParameterArray v1PersonParameterArray = 2; // V1PersonParameterArray
-}
 
+// PersonサービスのResponse定義を更新
+message V1GetPersonByConditionResponse {
+    V1CommonParameter v1CommonParameter = 1;
+    V1PersonParameterArray v1PersonParameterArray = 2;
+}
 
 message V1PersonParameter {
     optional uint32 id = 2;           // ID
