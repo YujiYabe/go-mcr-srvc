@@ -7,6 +7,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 type RowData []string
@@ -25,7 +27,7 @@ func Logging(
 	data interface{},
 ) {
 	traceID := ""
-	if val, ok := ctx.Value(TraceIDKey).(string); ok {
+	if val, ok := ctx.Value(valueObject.TraceIDContextName).(string); ok {
 		traceID = val
 	}
 	_, fullPath, line, _ := runtime.Caller(1)

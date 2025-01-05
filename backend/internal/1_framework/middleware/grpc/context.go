@@ -1,13 +1,18 @@
 package grpc_middleware
 
 import (
-	"backend/pkg"
 	"context"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
+
+// contextKey はコンテキストのキー型を定義します
+type contextKey string
+
+// traceID は共通リクエストIDを格納するためのコンテキストキーです
+const TraceIDKey contextKey = "traceID"
 
 func TraceIDInterceptor(
 	ctx context.Context,
@@ -19,7 +24,7 @@ func TraceIDInterceptor(
 	md, ok := metadata.FromIncomingContext(ctx)
 	var traceID string
 	if ok {
-		values := md.Get(string(pkg.TraceIDKey))
+		values := md.Get(string(TraceIDKey))
 		if len(values) > 0 {
 			traceID = values[0]
 		}
@@ -33,7 +38,7 @@ func TraceIDInterceptor(
 	// リクエストIDをコンテキストに追加
 	ctx = context.WithValue(
 		ctx,
-		pkg.TraceIDKey,
+		TraceIDKey,
 		traceID,
 	)
 
@@ -41,4 +46,24 @@ func TraceIDInterceptor(
 
 	// 次のハンドラーを呼び出す
 	return handler(ctx, req)
+}
+
+// GetTraceID はコンテキストからリクエストIDを取得します
+//
+// パラメータ:
+//   - ctx: リクエストIDを含むコンテキスト
+//
+// 戻り値:
+//   - traceIDString: 取得したリクエストID。取得できない場合は空文字列
+func GetTraceID(
+	ctx context.Context,
+) (
+	traceIDString string,
+) {
+	traceID, ok := ctx.Value(TraceIDKey).(string)
+	if ok {
+		traceIDString = traceID
+	}
+
+	return
 }

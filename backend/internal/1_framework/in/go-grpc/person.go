@@ -5,7 +5,9 @@ import (
 	"log"
 	"time"
 
+	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
+
 	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
@@ -25,7 +27,7 @@ func (receiver *Server) GetPersonByCondition(
 ) {
 
 	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, pkg.GetTraceID(ctx))
+	pkg.Logging(ctx, grpcMiddleware.GetTraceID(ctx))
 	log.Println("== == == == == == == == == == ")
 
 	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
@@ -89,7 +91,7 @@ func (receiver *Server) GetPersonByCondition(
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
 		Immutable: &grpcParameter.V1ImmutableParameter{
-			TraceID: pkg.GetTraceID(ctx),
+			TraceID: grpcMiddleware.GetTraceID(ctx),
 		},
 		Mutable: &grpcParameter.V1MutableParameter{
 			Timestamp: time.Now().Format(timeFormat),

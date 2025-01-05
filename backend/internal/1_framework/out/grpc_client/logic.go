@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 
+	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/pkg"
 )
@@ -41,18 +42,18 @@ func (receiver *GRPCClient) ViaGRPC(
 		},
 		V1CommonParameter: &grpcParameter.V1CommonParameter{
 			Immutable: &grpcParameter.V1ImmutableParameter{
-				TraceID: pkg.GetTraceID(ctx),
+				TraceID: grpcMiddleware.GetTraceID(ctx),
 			},
 		},
 	}
 
 	ctx = metadata.AppendToOutgoingContext(
 		ctx,
-		string(pkg.TraceIDKey),
-		pkg.GetTraceID(ctx),
+		string(grpcMiddleware.TraceIDKey),
+		grpcMiddleware.GetTraceID(ctx),
 	)
 	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, pkg.GetTraceID(ctx))
+	pkg.Logging(ctx, grpcMiddleware.GetTraceID(ctx))
 	log.Println("== == == == == == == == == == ")
 
 	// gRPCリクエストの実行

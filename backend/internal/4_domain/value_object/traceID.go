@@ -5,8 +5,10 @@ import (
 )
 
 const (
-	traceIDLengthMax = 99999999999
-	traceIDLengthMin = 0
+	traceIDLengthMax   = 99999999999
+	traceIDLengthMin   = 0
+	TraceIDMetaName    = "trace-id"
+	TraceIDContextName = "traceID"
 )
 
 type TraceID struct {
