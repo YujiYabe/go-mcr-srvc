@@ -3,11 +3,10 @@ package grpc_middleware
 import (
 	"context"
 
-	valueObject "backend/internal/4_domain/value_object"
-
-	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 func MetadataToContext(
@@ -19,41 +18,14 @@ func MetadataToContext(
 	// メタデータからリクエストIDを取得
 	md, ok := metadata.FromIncomingContext(ctx)
 
-	// ログ出力
-	if ok {
+	if ok { // メタデータが存在する場合、以下各パラメータをコンテキストに追加
 		ctx = traceIDToContext(ctx, md)
+		ctx = requestStartTimeToContext(ctx, md)
+		ctx = timestampToContext(ctx, md)
 	}
 
 	// 次のハンドラーを呼び出す
 	return handler(ctx, req)
-}
-
-func traceIDToContext(
-	nowCtx context.Context,
-	md metadata.MD,
-) (
-	newCtx context.Context,
-) {
-	var traceID string
-
-	values := md.Get(string(valueObject.TraceIDMetaName))
-	if len(values) > 0 {
-		traceID = values[0]
-	}
-
-	// リクエストIDが無い場合は新規生成
-	if traceID == "" {
-		traceID = uuid.New().String()
-	}
-
-	// リクエストIDをコンテキストに追加
-	newCtx = context.WithValue(
-		nowCtx,
-		valueObject.TraceIDContextName,
-		traceID,
-	)
-
-	return
 }
 
 // GetTraceID はコンテキストからリクエストIDを取得します

@@ -21,7 +21,7 @@ message V1ImmutableParameter { // 不変な情報
 }
 
 message V1MutableParameter {         // リクエスト処理中に変更される可能性のある情報
-    string timestamp = 1;            // 分散システム制御情報: 処理の各段階での時刻記録
+    string timeStamp = 1;            // 分散システム制御情報: 処理の各段階での時刻記録
     int32 retryCount = 2;            // 分散システム制御情報: リトライ試行回数の現在値
     bool circuitBreakerEnabled = 3;  // 分散システム制御情報: サーキットブレーカーの現在の有効状態
     int32 rateLimit = 4;             // 分散システム制御情報: 現在の速度制限値（リクエスト/秒）
