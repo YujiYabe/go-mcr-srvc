@@ -7,7 +7,7 @@ import (
 
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
-	"backend/internal/4_domain/struct_object"
+	structObject "backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
@@ -29,8 +29,8 @@ func fetchAccessToken(
 		)
 	}
 
-	credential := struct_object.NewCredential(
-		&struct_object.NewCredentialArgs{
+	credential := structObject.NewCredential(
+		&structObject.NewCredentialArgs{
 			ClientID:     v1Credential.ClientID,
 			ClientSecret: v1Credential.ClientSecret,
 		},

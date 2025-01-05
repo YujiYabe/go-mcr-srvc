@@ -3,7 +3,7 @@ package gateway
 import (
 	"context"
 
-	"backend/internal/4_domain/struct_object"
+	structObject "backend/internal/4_domain/struct_object"
 )
 
 // GetPersonList ...
@@ -11,7 +11,7 @@ func (receiver *Gateway) GetPersonList(
 	ctx context.Context,
 
 ) (
-	personList struct_object.PersonList,
+	personList structObject.PersonList,
 	err error,
 ) {
 	return receiver.ToPostgres.GetPersonList(ctx)
@@ -20,9 +20,9 @@ func (receiver *Gateway) GetPersonList(
 // GetPersonByCondition ...
 func (receiver *Gateway) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson struct_object.Person,
+	reqPerson structObject.Person,
 ) (
-	resPersonList struct_object.PersonList,
+	resPersonList structObject.PersonList,
 	err error,
 ) {
 	resPersonList, err = receiver.ToPostgres.GetPersonByCondition(

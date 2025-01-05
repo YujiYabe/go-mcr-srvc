@@ -6,17 +6,17 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	structObject "backend/internal/4_domain/struct_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 // ...
 // FetchAccessToken ...
 func (receiver *Auth0Client) FetchAccessToken(
 	ctx context.Context,
-	credential struct_object.Credential,
+	credential structObject.Credential,
 ) (
-	accessToken value_object.AccessToken,
+	accessToken valueObject.AccessToken,
 	err error,
 ) {
 	payload := map[string]string{
@@ -58,7 +58,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 		return accessToken, err
 	}
 
-	accessToken, err = value_object.NewAccessToken(
+	accessToken, err = valueObject.NewAccessToken(
 		&tokenResponse.AccessToken,
 	)
 	if err != nil {

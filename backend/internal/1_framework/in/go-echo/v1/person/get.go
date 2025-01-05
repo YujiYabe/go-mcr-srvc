@@ -7,7 +7,7 @@ import (
 
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
-	"backend/internal/4_domain/struct_object"
+	structObject "backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
@@ -29,8 +29,8 @@ func get(
 		)
 	}
 
-	reqPerson := struct_object.NewPerson(
-		&struct_object.NewPersonArgs{
+	reqPerson := structObject.NewPerson(
+		&structObject.NewPersonArgs{
 			ID:          person.ID,
 			Name:        person.Name,
 			MailAddress: person.MailAddress,

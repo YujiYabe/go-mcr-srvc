@@ -6,8 +6,8 @@ import (
 	"backend/internal/2_adapter/gateway"
 	usecase "backend/internal/3_usecase"
 	domain "backend/internal/4_domain"
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	structObject "backend/internal/4_domain/struct_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 // NewController ...
@@ -53,23 +53,23 @@ type (
 		GetPersonList(
 			ctx context.Context,
 		) (
-			personList struct_object.PersonList,
+			personList structObject.PersonList,
 			err error,
 		)
 
 		GetPersonByCondition(
 			ctx context.Context,
-			reqPerson struct_object.Person,
+			reqPerson structObject.Person,
 		) (
-			resPersonList struct_object.PersonList,
+			resPersonList structObject.PersonList,
 			err error,
 		)
 
 		FetchAccessToken(
 			ctx context.Context,
-			credential struct_object.Credential,
+			credential structObject.Credential,
 		) (
-			accessToken value_object.AccessToken,
+			accessToken valueObject.AccessToken,
 			err error,
 		)
 

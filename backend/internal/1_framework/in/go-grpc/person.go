@@ -7,8 +7,8 @@ import (
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
+	structObject "backend/internal/4_domain/struct_object"
 
-	"backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
@@ -50,8 +50,8 @@ func (receiver *Server) GetPersonByCondition(
 		mailAddress = req.V1PersonParameter.MailAddress
 	}
 
-	reqPerson := struct_object.NewPerson(
-		&struct_object.NewPersonArgs{
+	reqPerson := structObject.NewPerson(
+		&structObject.NewPersonArgs{
 			ID:          id,
 			Name:        name,
 			MailAddress: mailAddress,

@@ -10,7 +10,7 @@ import (
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	"backend/internal/2_adapter/gateway"
-	"backend/internal/4_domain/struct_object"
+	structObject "backend/internal/4_domain/struct_object"
 	"backend/pkg"
 )
 
@@ -57,10 +57,10 @@ func open(count uint) (*gorm.DB, error) {
 func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
 ) (
-	personList struct_object.PersonList,
+	personList structObject.PersonList,
 	err error,
 ) {
-	personList = struct_object.PersonList{} // ドメインロジック用
+	personList = structObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}            // SQL結果保存用
 
 	result := receiver.Conn.
@@ -72,12 +72,12 @@ func (receiver *PostgresClient) GetPersonList(
 		return personList, result.Error
 	}
 	for _, person := range persons {
-		args := &struct_object.NewPersonArgs{
+		args := &structObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := struct_object.NewPerson(args)
+		person := structObject.NewPerson(args)
 
 		if person.Err != nil {
 			pkg.Logging(ctx, person.Err)
@@ -96,12 +96,12 @@ func (receiver *PostgresClient) GetPersonList(
 // GetPersonByCondition ...
 func (receiver *PostgresClient) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson struct_object.Person,
+	reqPerson structObject.Person,
 ) (
-	resPersonList struct_object.PersonList,
+	resPersonList structObject.PersonList,
 	err error,
 ) {
-	resPersonList = struct_object.PersonList{} // ドメインロジック用
+	resPersonList = structObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}               // SQL結果保存用
 
 	conn := receiver.Conn.Table("persons")
@@ -120,12 +120,12 @@ func (receiver *PostgresClient) GetPersonByCondition(
 		return resPersonList, result.Error
 	}
 	for _, person := range persons {
-		args := &struct_object.NewPersonArgs{
+		args := &structObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := struct_object.NewPerson(args)
+		person := structObject.NewPerson(args)
 
 		if person.Err != nil {
 			pkg.Logging(ctx, person.Err)
