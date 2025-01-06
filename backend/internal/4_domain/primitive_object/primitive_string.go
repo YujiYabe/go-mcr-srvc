@@ -111,56 +111,60 @@ func (receiver *PrimitiveString) GetError() error {
 	return receiver.Err
 }
 
-func (receiver *PrimitiveString) SetError(
+func (receiver *PrimitiveString) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"error: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
+}
+
+func (receiver *PrimitiveString) SetError(
+	err error,
+) {
+	receiver.Err = err
 }
 
 // --------------------------------------
 func (receiver *PrimitiveString) GetValue() string {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return ""
 	}
 	return receiver.Value
 }
 
 func (receiver *PrimitiveString) SetValue(value string) {
-	// if receiver.IsNil {
-	// 	receiver.SetError("is nil")
-	// 	return
-	// }
 	receiver.IsNil = false
 	receiver.Value = value
 }
 
 // Validation は全てのバリデーションチェックを実行します
-func (receiver *PrimitiveString) Validation() error {
+func (receiver *PrimitiveString) Validation() {
 
 	if receiver.IsNil {
-		return nil
+		return
 	}
 
 	receiver.ValidationMax()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
 	receiver.ValidationMin()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
 	receiver.ValidationSpell()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
-	return nil
+	return
 }
 
 // ValidationMax は最大文字列長のチェックを行います
@@ -171,12 +175,12 @@ func (receiver *PrimitiveString) ValidationMax() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if utf8.RuneCountInString(receiver.Value) > receiver.MaxLength {
-		receiver.SetError("max limitation")
+		receiver.SetErrorString("max limitation")
 		return
 	}
 }
@@ -189,12 +193,12 @@ func (receiver *PrimitiveString) ValidationMin() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if utf8.RuneCountInString(receiver.Value) < receiver.MinLength {
-		receiver.SetError("min limitation")
+		receiver.SetErrorString("min limitation")
 		return
 	}
 }
@@ -206,7 +210,7 @@ func (receiver *PrimitiveString) ValidationSpell() {
 	}
 	for _, spell := range receiver.SpellList {
 		if strings.Contains(receiver.Value, spell) {
-			receiver.SetError("detect target spell : " + spell)
+			receiver.SetErrorString("detect target spell : " + spell)
 			return
 		}
 	}

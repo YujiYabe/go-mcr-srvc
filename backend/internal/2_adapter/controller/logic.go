@@ -38,9 +38,8 @@ func (receiver *controller) FetchAccessToken(
 	credential structObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
-	err error,
 ) {
-	accessToken, err = receiver.UseCase.FetchAccessToken(
+	accessToken = receiver.UseCase.FetchAccessToken(
 		ctx,
 		credential,
 	)

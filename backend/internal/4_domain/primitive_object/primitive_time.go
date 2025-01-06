@@ -84,17 +84,25 @@ func (receiver *PrimitiveTime) GetError() error {
 }
 
 func (receiver *PrimitiveTime) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveTime) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveTime: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 func (receiver *PrimitiveTime) GetValue() time.Time {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return time.Time{}
 	}
 	return receiver.Value
@@ -102,30 +110,40 @@ func (receiver *PrimitiveTime) GetValue() time.Time {
 
 func (receiver *PrimitiveTime) SetValue(value time.Time) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
 }
 
-func (receiver *PrimitiveTime) Validation() error {
-	if receiver.IsNil {
-		return nil
-	}
-
+func (receiver *PrimitiveTime) ValidateMaxValue() {
 	if !receiver.MaxValue.IsZero() && receiver.Value.After(receiver.MaxValue) {
-		return fmt.Errorf(
-			"value exceeds maximum allowed time",
-		)
+		receiver.Err = fmt.Errorf("PrimitiveTime: value exceeds maximum allowed time")
 	}
+}
 
+func (receiver *PrimitiveTime) ValidateMinValue() {
 	if !receiver.MinValue.IsZero() && receiver.Value.Before(receiver.MinValue) {
-		return fmt.Errorf(
-			"value is before minimum allowed time",
-		)
+		receiver.Err = fmt.Errorf("PrimitiveTime: value is before minimum allowed time")
+	}
+}
+
+func (receiver *PrimitiveTime) Validation() {
+	if receiver.IsNil {
+		return
 	}
 
-	return nil
+	receiver.ValidateMaxValue()
+	if receiver.Err != nil {
+		return
+	}
+
+	receiver.ValidateMinValue()
+	if receiver.Err != nil {
+		return
+	}
+
+	return
 }
 
 func (receiver *PrimitiveTime) CheckNil(

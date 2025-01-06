@@ -87,18 +87,26 @@ func (receiver *PrimitiveUint32) GetError() error {
 }
 
 func (receiver *PrimitiveUint32) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveUint32) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveUint32: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 // --------------------------------------
 func (receiver *PrimitiveUint32) GetValue() uint32 {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return 0
 	}
 	return receiver.Value
@@ -106,7 +114,7 @@ func (receiver *PrimitiveUint32) GetValue() uint32 {
 
 func (receiver *PrimitiveUint32) SetValue(value uint32) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
@@ -138,12 +146,12 @@ func (receiver *PrimitiveUint32) ValidationMax() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value > receiver.MaxValue {
-		receiver.SetError("max limitation")
+		receiver.SetErrorString("max limitation")
 		return
 	}
 }
@@ -155,12 +163,12 @@ func (receiver *PrimitiveUint32) ValidationMin() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value < receiver.MinValue {
-		receiver.SetError("min limitation")
+		receiver.SetErrorString("min limitation")
 		return
 	}
 }

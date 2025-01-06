@@ -29,27 +29,28 @@ func fetchAccessToken(
 		)
 	}
 
+	//-------------------------
 	credential := structObject.NewCredential(
 		&structObject.NewCredentialArgs{
 			ClientID:     v1Credential.ClientID,
 			ClientSecret: v1Credential.ClientSecret,
 		},
 	)
-
-	if credential.Err != nil {
-		pkg.Logging(ctx, credential.Err)
+	if credential.GetError() != nil {
+		pkg.Logging(ctx, credential.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
-			credential.Err,
+			credential.GetError(),
 		)
 	}
 
-	accessToken, err := toController.FetchAccessToken(
+	//-------------------------
+	accessToken := toController.FetchAccessToken(
 		ctx,
 		*credential,
 	)
-	if err != nil {
-		pkg.Logging(ctx, err)
+	if accessToken.GetError() != nil {
+		pkg.Logging(ctx, accessToken.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
 			err,

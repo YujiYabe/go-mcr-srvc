@@ -17,7 +17,6 @@ func (receiver *Auth0Client) FetchAccessToken(
 	credential structObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
-	err error,
 ) {
 	payload := map[string]string{
 		"client_id":     credential.ClientID.Content.GetValue(),
@@ -28,7 +27,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		return accessToken, err
+		accessToken.SetError(err)
+		return
 	}
 
 	req, err := http.NewRequestWithContext(
@@ -38,7 +38,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 		bytes.NewBuffer(jsonData),
 	)
 	if err != nil {
-		return accessToken, err
+		accessToken.SetError(err)
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -46,7 +47,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return accessToken, err
+		accessToken.SetError(err)
+		return
 	}
 	defer resp.Body.Close()
 
@@ -55,15 +57,13 @@ func (receiver *Auth0Client) FetchAccessToken(
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		return accessToken, err
+		accessToken.SetError(err)
+		return
 	}
 
-	accessToken, err = valueObject.NewAccessToken(
+	accessToken = valueObject.NewAccessToken(
 		&tokenResponse.AccessToken,
 	)
-	if err != nil {
-		return accessToken, err
-	}
 
 	return
 }

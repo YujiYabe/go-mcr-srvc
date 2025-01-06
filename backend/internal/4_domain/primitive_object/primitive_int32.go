@@ -90,17 +90,25 @@ func (receiver *PrimitiveInt32) GetError() error {
 }
 
 func (receiver *PrimitiveInt32) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveInt32) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveInt32: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 func (receiver *PrimitiveInt32) GetValue() int32 {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return 0
 	}
 	return receiver.Value
@@ -110,7 +118,7 @@ func (receiver *PrimitiveInt32) SetValue(
 	value int32,
 ) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
@@ -121,7 +129,7 @@ func (receiver *PrimitiveInt32) RoundToDigit(
 	digit int32,
 ) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
@@ -135,37 +143,37 @@ func (receiver *PrimitiveInt32) RoundToDigit(
 	receiver.Value = rounded
 }
 
-func (receiver *PrimitiveInt32) Validation() error {
+func (receiver *PrimitiveInt32) Validation() {
 	if receiver.IsNil {
-		return nil
+		return
 	}
 
 	receiver.ValidationMax()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
 	receiver.ValidationMin()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
-	return nil
+	return
 }
 
 func (receiver *PrimitiveInt32) ValidationMax() {
 	if receiver.MaxValue < 0 {
-		// receiver.SetError("max length no defined")
+		// receiver.SetErrorString("max length no defined")
 		return
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value > receiver.MaxValue {
-		receiver.SetError("max limitation")
+		receiver.SetErrorString("max limitation")
 		return
 	}
 }
@@ -177,12 +185,12 @@ func (receiver *PrimitiveInt32) ValidationMin() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value < receiver.MinValue {
-		receiver.SetError("min limitation")
+		receiver.SetErrorString("min limitation")
 		return
 	}
 }

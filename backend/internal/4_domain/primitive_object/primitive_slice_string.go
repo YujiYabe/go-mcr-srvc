@@ -86,17 +86,25 @@ func (receiver *PrimitiveSliceString) GetError() error {
 }
 
 func (receiver *PrimitiveSliceString) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveSliceString) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveSliceString: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return []PrimitiveString{}
 	}
 	return receiver.Value
@@ -104,7 +112,7 @@ func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 
 func (receiver *PrimitiveSliceString) SetValue(value []PrimitiveString) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
@@ -141,9 +149,11 @@ func (receiver *PrimitiveSliceString) Validation() error {
 		)
 	}
 
-	for _, v := range receiver.Value {
-		if err := v.Validation(); err != nil {
-			return err
+	for _, value := range receiver.Value {
+		value.Validation()
+		if value.GetError() != nil {
+			receiver.SetError(value.GetError())
+			break
 		}
 	}
 

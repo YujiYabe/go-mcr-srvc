@@ -9,17 +9,17 @@ service Person {
 }
 
 
-message V1ImmutableParameter {       // 不変な情報
-    string traceID = 1;              // リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
-    int64 requestStartTime = 2;      // リクエスト情報: リクエストの開始時刻（Unix timestamp）
-    string clientIP = 3;             // リクエスト情報: クライアントのIPアドレス
-    string userAgent = 4;            // リクエスト情報: クライアントのユーザーエージェント情報
-    string userID = 5;               // ユーザー認証情報: ユーザーを一意に識別するID
-    repeated string permissions = 6; // ユーザー認証情報: ユーザーに付与された権限リスト
-    string accessToken = 7;          // ユーザー認証情報: ユーザー認証用のJWTトークン
-    string tenantID = 8;             // ビジネスコンテキスト: マルチテナント環境での所属テナントID
-    string locale = 9;               // ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）
-    string timezone = 10;            // ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
+message V1ImmutableParameter {            // 不変な情報
+    string traceID = 1;                   // リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
+    int64 requestStartTime = 2;           // リクエスト情報: リクエストの開始時刻（Unix timestamp）
+    string clientIP = 3;                  // リクエスト情報: クライアントのIPアドレス
+    string userAgent = 4;                 // リクエスト情報: クライアントのユーザーエージェント情報
+    string userID = 5;                    // ユーザー認証情報: ユーザーを一意に識別するID
+    repeated string permissionList = 6;   // ユーザー認証情報: ユーザーに付与された権限リスト
+    string accessToken = 7;               // ユーザー認証情報: ユーザー認証用のJWTトークン
+    string tenantID = 8;                  // ビジネスコンテキスト: マルチテナント環境での所属テナントID
+    string locale = 9;                    // ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）
+    string timezone = 10;                 // ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
 }
 
 message V1MutableParameter {         // リクエスト処理中に変更される可能性のある情報

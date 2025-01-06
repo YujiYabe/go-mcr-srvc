@@ -10,6 +10,7 @@ const (
 )
 
 type ClientID struct {
+	Err     error
 	Content *primitiveObject.PrimitiveString
 }
 
@@ -17,7 +18,6 @@ func NewClientID(
 	value *string,
 ) (
 	clientID ClientID,
-	err error,
 ) {
 	clientID = ClientID{}
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -34,7 +34,18 @@ func NewClientID(
 		primitiveString.WithMinLength(clientIDLengthMin),
 	)
 
-	err = clientID.Content.Validation()
+	if clientID.Content.GetError() != nil {
+		clientID.SetError(clientID.Content.GetError())
+	}
 
 	return
+}
+func (receiver *ClientID) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *ClientID) SetError(
+	err error,
+) {
+	receiver.Err = err
 }

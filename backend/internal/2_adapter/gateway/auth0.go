@@ -13,9 +13,8 @@ func (receiver *Gateway) FetchAccessToken(
 	credential structObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
-	err error,
 ) {
-	accessToken, err = receiver.ToAuth0.FetchAccessToken(
+	accessToken = receiver.ToAuth0.FetchAccessToken(
 		ctx,
 		credential,
 	)

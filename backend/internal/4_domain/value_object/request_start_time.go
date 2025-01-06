@@ -15,6 +15,7 @@ const (
 )
 
 type RequestStartTime struct {
+	Err     error
 	Content *primitiveObject.PrimitiveInt64
 }
 
@@ -22,7 +23,6 @@ func NewRequestStartTime(
 	value *int64,
 ) (
 	requestStartTime RequestStartTime,
-	err error,
 ) {
 	requestStartTime = RequestStartTime{}
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
@@ -39,7 +39,19 @@ func NewRequestStartTime(
 		primitiveInt64.WithMinValue(requestStartTimeLengthMin),
 	)
 
-	err = requestStartTime.Content.Validation()
+	requestStartTime.Content.Validation()
+	if requestStartTime.Content.GetError() != nil {
+		requestStartTime.SetError(requestStartTime.Content.GetError())
+	}
 
 	return
+}
+func (receiver *RequestStartTime) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *RequestStartTime) SetError(
+	err error,
+) {
+	receiver.Err = err
 }

@@ -2,6 +2,12 @@ package value_object
 
 import (
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"fmt"
+)
+
+const (
+	AccessTokenMetaName    primitiveObject.ContextKey = "access-token"
+	AccessTokenContextName primitiveObject.ContextKey = "AccessToken"
 )
 
 const (
@@ -10,6 +16,7 @@ const (
 )
 
 type AccessToken struct {
+	Err     error
 	Content *primitiveObject.PrimitiveString
 }
 
@@ -17,7 +24,6 @@ func NewAccessToken(
 	value *string,
 ) (
 	accessToken AccessToken,
-	err error,
 ) {
 	accessToken = AccessToken{}
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -34,7 +40,31 @@ func NewAccessToken(
 		primitiveString.WithMinLength(accessTokenLengthMin),
 	)
 
-	err = accessToken.Content.Validation()
+	accessToken.Content.Validation()
+	if accessToken.Content.GetError() != nil {
+		accessToken.SetError(accessToken.Content.GetError())
+	}
 
 	return
+}
+
+func (receiver *AccessToken) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *AccessToken) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *AccessToken) SetErrorString(
+	errString string,
+) {
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
+	)
 }

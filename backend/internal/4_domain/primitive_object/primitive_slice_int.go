@@ -48,11 +48,19 @@ func (receiver *PrimitiveSliceInt) GetError() error {
 }
 
 func (receiver *PrimitiveSliceInt) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveSliceInt) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"error: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
@@ -73,8 +81,10 @@ func (receiver *PrimitiveSliceInt) Validation() error {
 	}
 
 	for _, value := range receiver.Value {
-		if err := value.Validation(); err != nil {
-			return err
+		value.Validation()
+		if value.GetError() != nil {
+			receiver.SetError(value.GetError())
+			break
 		}
 	}
 
@@ -84,13 +94,13 @@ func (receiver *PrimitiveSliceInt) Validation() error {
 // ValidationMax は最大文字列長のチェックを行います
 func (receiver *PrimitiveSliceInt) ValidationMax() {
 	if receiver.MaxLength != -1 && len(receiver.Value) > receiver.MaxLength {
-		receiver.SetError("max limitation")
+		receiver.SetErrorString("max limitation")
 	}
 }
 
 func (receiver *PrimitiveSliceInt) ValidationMin() {
 	if receiver.MinLength != -1 && len(receiver.Value) < receiver.MinLength {
-		receiver.SetError("min limitation")
+		receiver.SetErrorString("min limitation")
 	}
 }
 

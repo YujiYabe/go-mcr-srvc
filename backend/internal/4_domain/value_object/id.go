@@ -10,6 +10,7 @@ const (
 )
 
 type ID struct {
+	Err     error
 	Content *primitiveObject.PrimitiveInt
 }
 
@@ -17,7 +18,6 @@ func NewID(
 	value *int,
 ) (
 	id ID,
-	err error,
 ) {
 	id = ID{}
 	primitiveInt := &primitiveObject.PrimitiveInt{}
@@ -34,7 +34,20 @@ func NewID(
 		primitiveInt.WithMinValue(idLengthMin),
 	)
 
-	err = id.Content.Validation()
+	id.Content.Validation()
+	if id.Content.GetError() != nil {
+		id.SetError(id.Content.GetError())
+	}
 
 	return
+}
+
+func (receiver *ID) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *ID) SetError(
+	err error,
+) {
+	receiver.Err = err
 }

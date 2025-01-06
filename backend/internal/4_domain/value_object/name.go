@@ -15,6 +15,7 @@ var nameCheckSpell = []string{
 }
 
 type Name struct {
+	Err     error
 	Content *primitiveObject.PrimitiveString
 }
 
@@ -22,7 +23,6 @@ func NewName(
 	value *string,
 ) (
 	name Name,
-	err error,
 ) {
 	name = Name{}
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -41,6 +41,19 @@ func NewName(
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 
-	err = name.Content.Validation()
+	name.Content.Validation()
+	if name.Content.GetError() != nil {
+		name.SetError(name.Content.GetError())
+	}
+
 	return
+}
+func (receiver *Name) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *Name) SetError(
+	err error,
+) {
+	receiver.Err = err
 }

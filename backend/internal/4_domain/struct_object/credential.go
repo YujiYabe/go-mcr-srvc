@@ -32,18 +32,17 @@ func NewCredential(
 ) (
 	accessToken *Credential,
 ) {
-	var err error
 	accessToken = &Credential{}
 
-	accessToken.ClientID, err = valueObject.NewClientID(args.ClientID)
-	if err != nil {
-		accessToken.SetError(err)
+	accessToken.ClientID = valueObject.NewClientID(args.ClientID)
+	if accessToken.ClientID.Err != nil {
+		accessToken.SetError(accessToken.ClientID.Err)
 		return
 	}
 
-	accessToken.ClientSecret, err = valueObject.NewClientSecret(args.ClientSecret)
-	if err != nil {
-		accessToken.SetError(err)
+	accessToken.ClientSecret = valueObject.NewClientSecret(args.ClientSecret)
+	if accessToken.ClientSecret.Err != nil {
+		accessToken.SetError(accessToken.ClientSecret.Err)
 		return
 	}
 

@@ -40,9 +40,8 @@ func (receiver *useCase) FetchAccessToken(
 	credential structObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
-	err error,
 ) {
-	accessToken, err = receiver.ToGateway.FetchAccessToken(
+	accessToken = receiver.ToGateway.FetchAccessToken(
 		ctx,
 		credential,
 	)

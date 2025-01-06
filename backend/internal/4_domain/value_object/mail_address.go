@@ -14,6 +14,7 @@ const (
 var mailAddressCheckSpell = []string{}
 
 type MailAddress struct {
+	Err     error
 	Content *primitive_object.PrimitiveString
 }
 
@@ -21,7 +22,6 @@ func NewMailAddress(
 	value *string,
 ) (
 	mailAddress MailAddress,
-	err error,
 ) {
 	mailAddress = MailAddress{}
 	primitiveString := &primitive_object.PrimitiveString{}
@@ -41,37 +41,66 @@ func NewMailAddress(
 	)
 
 	// 文字列そのもののバリデーション
-	err = mailAddress.Content.Validation()
-	if err != nil {
+	mailAddress.Validation()
+	if mailAddress.GetError() != nil {
+		mailAddress.SetError(mailAddress.Content.GetError())
 		return
 	}
 
 	// メールアドレスのバリデーション
-	err = mailAddress.Validation()
-	if err != nil {
+	mailAddress.Validation()
+	if mailAddress.GetError() != nil {
 		return
 	}
 
 	return
 }
 
-func (receiver MailAddress) Validation() error {
+func (receiver MailAddress) Validation() {
 	if receiver.Content.IsNil {
-		return nil
+		return
 	}
 
 	// メールアドレスの正規表現パターン
-	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}`
+
 	matched, err := regexp.MatchString(emailPattern, receiver.Content.Value)
 	if err != nil {
-		return fmt.Errorf(
-			"failed to validate email format: %w", err)
+		receiver.SetError(
+			fmt.Errorf(
+				"failed to validate email format: %w", err,
+			),
+		)
+		return
 	}
 
 	if !matched {
-		return fmt.Errorf(
-			"invalid email format: %s", receiver.Content.Value)
+		receiver.SetError(
+			fmt.Errorf(
+				"invalid email format: %s", receiver.Content.Value,
+			),
+		)
+		return
 	}
+}
 
-	return nil
+func (receiver *MailAddress) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *MailAddress) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *MailAddress) SetErrorString(
+	errString string,
+) {
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
+	)
 }

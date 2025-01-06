@@ -36,24 +36,23 @@ func NewPerson(
 ) (
 	person *Person,
 ) {
-	var err error
 	person = &Person{}
 
-	person.ID, err = valueObject.NewID(args.ID)
-	if err != nil {
-		person.SetError(err)
+	person.ID = valueObject.NewID(args.ID)
+	if person.ID.Err != nil {
+		person.SetError(person.ID.Err)
 		return
 	}
 
-	person.Name, err = valueObject.NewName(args.Name)
-	if err != nil {
-		person.SetError(err)
+	person.Name = valueObject.NewName(args.Name)
+	if person.Name.Err != nil {
+		person.SetError(person.Name.Err)
 		return
 	}
 
-	person.MailAddress, err = valueObject.NewMailAddress(args.MailAddress)
-	if err != nil {
-		person.SetError(err)
+	person.MailAddress = valueObject.NewMailAddress(args.MailAddress)
+	if person.MailAddress.Err != nil {
+		person.SetError(person.MailAddress.Err)
 		return
 	}
 

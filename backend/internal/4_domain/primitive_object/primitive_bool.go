@@ -65,17 +65,25 @@ func (receiver *PrimitiveBool) GetError() error {
 }
 
 func (receiver *PrimitiveBool) SetError(
+	err error,
+) {
+	receiver.SetError(err)
+}
+
+func (receiver *PrimitiveBool) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveBool: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 func (receiver *PrimitiveBool) GetValue() bool {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return false
 	}
 	return receiver.Value
@@ -85,15 +93,12 @@ func (receiver *PrimitiveBool) SetValue(
 	value bool,
 ) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
 }
 
-func (receiver *PrimitiveBool) Validation() error {
-	if receiver.IsNil {
-		return nil
-	}
-	return receiver.Err
+func (receiver *PrimitiveBool) Validation() {
+	// TODO : バリデーションチェックを実装する
 }

@@ -89,18 +89,26 @@ func (receiver *PrimitiveInt64) GetError() error {
 }
 
 func (receiver *PrimitiveInt64) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveInt64) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveInt64: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt64) GetValue() int64 {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return 0
 	}
 	return receiver.Value
@@ -110,29 +118,29 @@ func (receiver *PrimitiveInt64) SetValue(
 	value int64,
 ) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) Validation() error {
+func (receiver *PrimitiveInt64) Validation() {
 	if receiver.IsNil {
-		return nil
+		return
 	}
 
 	receiver.ValidationMax()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
 	receiver.ValidationMin()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
-	return nil
+	return
 }
 
 func (receiver *PrimitiveInt64) ValidationMax() {
@@ -142,29 +150,29 @@ func (receiver *PrimitiveInt64) ValidationMax() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value > receiver.MaxValue {
-		receiver.SetError("max limitation")
+		receiver.SetErrorString("max limitation")
 		return
 	}
 }
 
 func (receiver *PrimitiveInt64) ValidationMin() {
 	if receiver.MinValue < 0 {
-		// receiver.SetError("min length no defined")
+		// receiver.SetErrorString("min length no defined")
 		return
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value < receiver.MinValue {
-		receiver.SetError("min limitation")
+		receiver.SetErrorString("min limitation")
 		return
 	}
 }

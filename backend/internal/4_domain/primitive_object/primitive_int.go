@@ -1,8 +1,6 @@
 package primitive_object
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type PrimitiveInt struct {
 	Err      error
@@ -89,18 +87,26 @@ func (receiver *PrimitiveInt) GetError() error {
 }
 
 func (receiver *PrimitiveInt) SetError(
+	err error,
+) {
+	receiver.Err = err
+}
+
+func (receiver *PrimitiveInt) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"error: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt) GetValue() int {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return 0
 	}
 	return receiver.Value
@@ -110,30 +116,30 @@ func (receiver *PrimitiveInt) SetValue(
 	value int,
 ) {
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 	receiver.Value = value
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt) Validation() error {
+func (receiver *PrimitiveInt) Validation() {
 
 	if receiver.IsNil {
-		return nil
+		return
 	}
 
 	receiver.ValidationMax()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
 	receiver.ValidationMin()
 	if receiver.Err != nil {
-		return receiver.Err
+		return
 	}
 
-	return nil
+	return
 }
 
 func (receiver *PrimitiveInt) ValidationMax() {
@@ -143,29 +149,29 @@ func (receiver *PrimitiveInt) ValidationMax() {
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value > receiver.MaxValue {
-		receiver.SetError("max limitation")
+		receiver.SetErrorString("max limitation")
 		return
 	}
 }
 
 func (receiver *PrimitiveInt) ValidationMin() {
 	if receiver.MinValue < 0 {
-		// receiver.SetError("min length no defined")
+		// receiver.SetErrorString("min length no defined")
 		return
 	}
 
 	if receiver.IsNil {
-		receiver.SetError("is nil")
+		receiver.SetErrorString("is nil")
 		return
 	}
 
 	if receiver.Value < receiver.MinValue {
-		receiver.SetError("min limitation")
+		receiver.SetErrorString("min limitation")
 		return
 	}
 }

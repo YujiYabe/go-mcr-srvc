@@ -62,7 +62,6 @@ type (
 			credential structObject.Credential,
 		) (
 			accessToken valueObject.AccessToken,
-			err error,
 		)
 	}
 

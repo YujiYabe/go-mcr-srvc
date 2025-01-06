@@ -10,6 +10,7 @@ const (
 )
 
 type ClientSecret struct {
+	Err     error
 	Content *primitiveObject.PrimitiveString
 }
 
@@ -17,7 +18,6 @@ func NewClientSecret(
 	value *string,
 ) (
 	clientSecret ClientSecret,
-	err error,
 ) {
 	clientSecret = ClientSecret{}
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -35,7 +35,19 @@ func NewClientSecret(
 		primitiveString.WithMinLength(clientSecretLengthMin),
 	)
 
-	err = clientSecret.Content.Validation()
+	clientSecret.Content.Validation()
+	if clientSecret.Content.GetError() != nil {
+		clientSecret.SetError(clientSecret.Content.GetError())
+	}
 
 	return
+}
+func (receiver *ClientSecret) GetError() error {
+	return receiver.Err
+}
+
+func (receiver *ClientSecret) SetError(
+	err error,
+) {
+	receiver.Err = err
 }
