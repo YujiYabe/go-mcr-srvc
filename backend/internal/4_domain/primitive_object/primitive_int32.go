@@ -158,7 +158,6 @@ func (receiver *PrimitiveInt32) Validation() {
 		return
 	}
 
-	return
 }
 
 func (receiver *PrimitiveInt32) ValidationMax() {

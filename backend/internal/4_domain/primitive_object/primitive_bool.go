@@ -67,7 +67,7 @@ func (receiver *PrimitiveBool) GetError() error {
 func (receiver *PrimitiveBool) SetError(
 	err error,
 ) {
-	receiver.SetError(err)
+	receiver.Err = err
 }
 
 func (receiver *PrimitiveBool) SetErrorString(

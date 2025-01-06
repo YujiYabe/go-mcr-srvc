@@ -140,7 +140,6 @@ func (receiver *PrimitiveInt64) Validation() {
 		return
 	}
 
-	return
 }
 
 func (receiver *PrimitiveInt64) ValidationMax() {

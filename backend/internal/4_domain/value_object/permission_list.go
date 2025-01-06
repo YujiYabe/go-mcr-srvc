@@ -10,8 +10,8 @@ const (
 )
 
 const (
-	permissionListLengthMax = 99999999999
-	permissionListLengthMin = 0
+// permissionListLengthMax = 99999999999
+// permissionListLengthMin = 0
 )
 
 type PermissionList struct {

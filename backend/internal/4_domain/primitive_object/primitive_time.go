@@ -143,7 +143,6 @@ func (receiver *PrimitiveTime) Validation() {
 		return
 	}
 
-	return
 }
 
 func (receiver *PrimitiveTime) CheckNil(

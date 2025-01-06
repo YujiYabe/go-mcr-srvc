@@ -164,7 +164,6 @@ func (receiver *PrimitiveString) Validation() {
 		return
 	}
 
-	return
 }
 
 // ValidationMax は最大文字列長のチェックを行います
