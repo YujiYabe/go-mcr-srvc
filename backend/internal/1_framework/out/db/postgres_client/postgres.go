@@ -67,10 +67,14 @@ func (receiver *PostgresClient) GetPersonList(
 		Find(&persons)
 
 	if result.Error != nil {
-		pkg.Logging(ctx, result.Error)
 		personList.SetError(ctx, result.Error)
 		return
 	}
+
+	if result.RowsAffected == 0 {
+		return
+	}
+
 	for _, person := range persons {
 		args := &groupObject.NewPersonArgs{
 			ID:          &person.ID,

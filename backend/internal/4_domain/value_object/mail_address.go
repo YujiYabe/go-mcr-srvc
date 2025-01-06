@@ -1,12 +1,13 @@
 package value_object
 
 import (
-	"backend/pkg"
 	"context"
 	"fmt"
+	"log"
 	"regexp"
 
 	"backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -37,6 +38,7 @@ func (receiver *MailAddress) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
+	log.Println("== SetValue 1 == == == == == == == == == ")
 	// 値の格納前にバリデーション。
 	primitiveString := &primitive_object.PrimitiveString{}
 
@@ -46,9 +48,11 @@ func (receiver *MailAddress) SetValue(
 		primitiveString.WithMinLength(mailAddressLengthMin),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
+	log.Println("== SetValue 2 == == == == == == == == == ")
 
 	// 文字列そのもののバリデーション
 	receiver.content.Validation()
+	log.Println("== SetValue 3 == == == == == == == == == ")
 	if receiver.content.GetError() != nil {
 		receiver.SetError(
 			ctx,
@@ -56,6 +60,7 @@ func (receiver *MailAddress) SetValue(
 		)
 		return
 	}
+	log.Println("== SetValue 4 == == == == == == == == == ")
 
 	// メールアドレスのバリデーション
 	receiver.Validation(ctx)

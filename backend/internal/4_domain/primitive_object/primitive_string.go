@@ -2,6 +2,7 @@ package primitive_object
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"unicode/utf8"
 )
@@ -96,13 +97,20 @@ func NewPrimitiveString(
 ) (
 	primitiveString *PrimitiveString,
 ) {
+
+	var defaultValue string
+	var defaultIsNil bool
+
+	var defaultMaxLength int = -1
+	var defaultMinLength int = -1
+
 	// デフォルト値を設定
 	primitiveString = &PrimitiveString{
 		err:       nil,
-		value:     "",
-		isNil:     false,
-		MaxLength: -1,
-		MinLength: -1,
+		value:     defaultValue,
+		isNil:     defaultIsNil,
+		MaxLength: defaultMaxLength,
+		MinLength: defaultMinLength,
 		SpellList: []string{},
 	}
 
@@ -216,17 +224,25 @@ func (receiver *PrimitiveString) ValidationMax() {
 // ValidationMin は最小文字列長のチェックを行います
 // --------------------------------------
 func (receiver *PrimitiveString) ValidationMin() {
-	if receiver.MinLength < 0 {
-		// receiver.SetError("min length no defined")
+	log.Println("==receiver.GetIsNil() == == == == == == == == == ")
+	log.Printf("%#v\n", receiver.GetIsNil())
+	log.Println("== == == == == == == == == == ")
+
+	if !receiver.GetIsNil() {
 		return
 	}
 
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+	if receiver.MinLength < 0 {
 		return
 	}
+
+	log.Println("== == == == == == == == == == ")
+	log.Printf("%#v\n", utf8.RuneCountInString(receiver.value))
+	log.Printf("%#v\n", receiver.MinLength)
+	log.Println("== == == == == == == == == == ")
 
 	if utf8.RuneCountInString(receiver.value) < receiver.MinLength {
+
 		receiver.SetErrorString("min limitation")
 		return
 	}

@@ -1,0 +1,18 @@
+[
+    {
+        "type": "File",
+        "name": "/home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/in/go-grpc/person-grpc.rest",
+        "parent_id": null,
+        "workspaceRoot": "/home/yuji/Workspace/private_dev/go-docker-template",
+        "workspacePath": "backend/internal/1_framework/in/go-grpc/person-grpc.rest",
+        "id": "N2wPqcCfFZ1zIplV"
+    },
+    {
+        "type": "File",
+        "name": "/home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/in/go-echo/v1/person/rest.rest",
+        "parent_id": null,
+        "workspaceRoot": "/home/yuji/Workspace/private_dev/go-docker-template",
+        "workspacePath": "backend/internal/1_framework/in/go-echo/v1/person/rest.rest",
+        "id": "ki57WOMnULc2QSe9"
+    }
+]

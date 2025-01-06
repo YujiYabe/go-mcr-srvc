@@ -1,6 +1,10 @@
 package group_object
 
-import "context"
+import (
+	"context"
+
+	"backend/pkg"
+)
 
 type PersonList struct {
 	err     error
@@ -16,10 +20,12 @@ func (receiver *PersonList) GetError() error {
 }
 
 func (receiver *PersonList) SetError(
-	ctx context.Context, err error,
+	ctx context.Context,
+	err error,
 ) {
 	if receiver.err == nil {
 		receiver.err = err
+		pkg.Logging(ctx, err)
 	}
 }
 

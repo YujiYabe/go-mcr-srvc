@@ -1,9 +1,11 @@
 package group_object
 
 import (
+	"context"
+	"log"
+
 	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
-	"context"
 )
 
 type Person struct {
@@ -29,6 +31,7 @@ func (receiver *Person) SetError(
 ) {
 	if receiver.err == nil {
 		receiver.err = err
+		pkg.Logging(ctx, receiver.GetError())
 	}
 }
 
@@ -40,26 +43,27 @@ func NewPerson(
 ) {
 	person = &Person{}
 
-	person.ID = valueObject.NewID(ctx, args.ID)
-	if person.ID.GetError() != nil {
-		pkg.Logging(ctx, person.GetError())
-		person.SetError(ctx, person.ID.GetError())
-		return
-	}
+	// person.ID = valueObject.NewID(ctx, args.ID)
+	// if person.ID.GetError() != nil {
+	// 	person.SetError(ctx, person.ID.GetError())
+	// 	return
+	// }
 
-	person.Name = valueObject.NewName(ctx, args.Name)
-	if person.Name.GetError() != nil {
-		pkg.Logging(ctx, person.Name.GetError())
-		person.SetError(ctx, person.Name.GetError())
-		return
-	}
+	// log.Println("== NewPerson 1== == == == == == == == == ")
+	// person.Name = valueObject.NewName(ctx, args.Name)
+	// if person.Name.GetError() != nil {
+	// 	person.SetError(ctx, person.Name.GetError())
+	// 	return
+	// }
+
+	log.Println("== NewPerson 2== == == == == == == == == ")
 
 	person.MailAddress = valueObject.NewMailAddress(ctx, args.MailAddress)
 	if person.MailAddress.GetError() != nil {
-		pkg.Logging(ctx, person.MailAddress.GetError())
 		person.SetError(ctx, person.MailAddress.GetError())
 		return
 	}
+	log.Println("== NewPerson 3== == == == == == == == == ")
 
 	return
 }
