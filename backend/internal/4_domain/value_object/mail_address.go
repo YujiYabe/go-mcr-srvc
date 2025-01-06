@@ -2,7 +2,6 @@ package value_object
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"regexp"
 
@@ -29,15 +28,23 @@ func NewMailAddress(
 	mailAddress MailAddress,
 ) {
 	mailAddress = MailAddress{}
-	primitiveString := &primitiveObject.PrimitiveString{}
+	mailAddress.SetValue(ctx, value)
 
+	return
+}
+
+func (receiver *MailAddress) SetValue(
+	ctx context.Context,
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
 	isNil := primitiveString.CheckNil(value)
 	valueString := ""
 	if !isNil {
 		valueString = *value
 	}
 
-	mailAddress.content = primitiveObject.NewPrimitiveString(
+	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(mailAddressLengthMax),
@@ -45,62 +52,15 @@ func NewMailAddress(
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
 
-	mailAddress.content.Validation()
-	if mailAddress.content.GetError() != nil {
-		mailAddress.SetError(
-			ctx,
-			mailAddress.content.GetError(),
-		)
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(ctx, receiver.content.GetError())
+		return
 	}
 
-	debug := mailAddress.content
-	jsonPrint, _ := json.MarshalIndent(debug, "", "    ")
-	fmt.Println(" ----------------------------------- ")
-	fmt.Printf("%+v\n", debug)
-	fmt.Println(" ----------------------------------- ")
-	fmt.Printf("%#v\n", debug)
-	fmt.Println(" ----------------------------------- ")
-	fmt.Println(string(jsonPrint))
-	fmt.Println(" ----------------------------------- ")
-
-	return
+	// メールアドレスのバリデーション
+	receiver.Validation(ctx)
 }
-
-// func (receiver *MailAddress) SetValue(
-// 	ctx context.Context,
-// 	value *string,
-// ) {
-// 	log.Println("== SetValue 1 == == == == == == == == == ")
-// 	// 値の格納前にバリデーション。
-// 	primitiveString := &primitiveObject.PrimitiveString{}
-
-// 	receiver.content = primitiveObject.NewPrimitiveString(
-// 		primitiveString.WithValue(value),
-// 		primitiveString.WithMaxLength(mailAddressLengthMax),
-// 		primitiveString.WithMinLength(mailAddressLengthMin),
-// 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
-// 	)
-// 	log.Println("== SetValue 2 == == == == == == == == == ")
-
-// 	// 文字列そのもののバリデーション
-// 	receiver.content.Validation()
-// 	log.Println("== SetValue 3 == == == == == == == == == ")
-// 	if receiver.content.GetError() != nil {
-// 		receiver.SetError(
-// 			ctx,
-// 			receiver.content.GetError(),
-// 		)
-// 		return
-// 	}
-// 	log.Println("== SetValue 4 == == == == == == == == == ")
-
-// 	// メールアドレスのバリデーション
-// 	receiver.Validation(ctx)
-// 	if receiver.GetError() != nil {
-// 		return
-// 	}
-
-// }
 
 func (receiver *MailAddress) GetValue() string {
 	return receiver.content.GetValue()
