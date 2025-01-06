@@ -8,13 +8,13 @@ gomod:
 # ----------------------------
 .PHONY: stop
 stop:
-	docker-compose stop
+	docker compose stop
 
 
 # ----------------------------
 .PHONY: removeAll
 removeAll:
-	docker-compose stop
+	docker compose stop
 	docker system prune -f
 	sudo rm -rf db/engine/postgres/data
 	sudo rm -rf db/engine/redis/data
@@ -23,20 +23,20 @@ removeAll:
 # ----------------------------
 .PHONY: build
 build:
-	docker-compose build
-	# docker-compose build --no-cache
+	docker compose build
+	# docker compose build --no-cache
 
 
 # ----------------------------
 .PHONY: debug
 debug:
-	DEBUG_MODE=true docker-compose up
+	DEBUG_MODE=true docker compose up
 
 
 # ----------------------------
 .PHONY: up
 up:
-	docker-compose up
+	docker compose up
 
 
 # ----------------------------
