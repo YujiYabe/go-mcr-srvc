@@ -80,6 +80,7 @@ func NewPrimitiveUint32(
 func (receiver *PrimitiveUint32) SetIsNil(isNil bool) {
 	receiver.isNil = isNil
 }
+
 // --------------------------------------
 func (receiver *PrimitiveUint32) GetIsNil() bool {
 	return receiver.isNil
@@ -116,12 +117,15 @@ func (receiver *PrimitiveUint32) GetValue() uint32 {
 	return receiver.value
 }
 
-func (receiver *PrimitiveUint32) SetValue(value uint32) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+func (receiver *PrimitiveUint32) SetValue(
+	value *uint32,
+) {
+	if value == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
 // --------------------------------------

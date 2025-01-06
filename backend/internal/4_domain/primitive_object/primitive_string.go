@@ -150,9 +150,15 @@ func (receiver *PrimitiveString) GetValue() string {
 }
 
 // --------------------------------------
-func (receiver *PrimitiveString) SetValue(value string) {
-	receiver.isNil = false
-	receiver.value = value
+func (receiver *PrimitiveString) SetValue(
+	value *string,
+) {
+	if value == nil {
+		receiver.SetIsNil(true)
+		return
+	}
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
 // Validation は全てのバリデーションチェックを実行します

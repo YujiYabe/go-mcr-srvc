@@ -110,12 +110,15 @@ func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 	return receiver.value
 }
 
-func (receiver *PrimitiveSliceString) SetValue(value []PrimitiveString) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+func (receiver *PrimitiveSliceString) SetValue(
+	valueList []PrimitiveString,
+) {
+	if valueList == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = valueList
 }
 
 func (receiver *PrimitiveSliceString) SortAsc() {

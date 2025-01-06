@@ -115,13 +115,14 @@ func (receiver *PrimitiveInt64) GetValue() int64 {
 }
 
 func (receiver *PrimitiveInt64) SetValue(
-	value int64,
+	value *int64,
 ) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+	if value == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
 // --------------------------------------

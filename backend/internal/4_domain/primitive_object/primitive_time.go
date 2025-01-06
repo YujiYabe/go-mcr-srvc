@@ -113,12 +113,15 @@ func (receiver *PrimitiveTime) GetValue() time.Time {
 	return receiver.value
 }
 
-func (receiver *PrimitiveTime) SetValue(value time.Time) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+func (receiver *PrimitiveTime) SetValue(
+	value *time.Time,
+) {
+	if value == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
 func (receiver *PrimitiveTime) ValidateMaxValue() {

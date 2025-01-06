@@ -115,13 +115,14 @@ func (receiver *PrimitiveInt32) GetValue() int32 {
 }
 
 func (receiver *PrimitiveInt32) SetValue(
-	value int32,
+	value *int32,
 ) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+	if value == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
 // 指定した桁で四捨五入するメソッド
