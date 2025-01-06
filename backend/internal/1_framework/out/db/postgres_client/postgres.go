@@ -122,6 +122,7 @@ func (receiver *PostgresClient) GetPersonByCondition(
 		resPersonList.SetError(ctx, result.Error)
 		return
 	}
+
 	for _, person := range persons {
 		args := &groupObject.NewPersonArgs{
 			ID:          &person.ID,

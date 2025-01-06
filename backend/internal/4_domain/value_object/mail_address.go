@@ -2,11 +2,11 @@ package value_object
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"log"
 	"regexp"
 
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
 	"backend/pkg"
 )
 
@@ -19,7 +19,7 @@ var mailAddressCheckSpell = []string{}
 
 type MailAddress struct {
 	err     error
-	content *primitive_object.PrimitiveString
+	content *primitiveObject.PrimitiveString
 }
 
 func NewMailAddress(
@@ -29,46 +29,78 @@ func NewMailAddress(
 	mailAddress MailAddress,
 ) {
 	mailAddress = MailAddress{}
-	mailAddress.SetValue(ctx, value)
+	primitiveString := &primitiveObject.PrimitiveString{}
 
-	return
-}
+	isNil := primitiveString.CheckNil(value)
+	valueString := ""
+	if !isNil {
+		valueString = *value
+	}
 
-func (receiver *MailAddress) SetValue(
-	ctx context.Context,
-	value *string,
-) {
-	log.Println("== SetValue 1 == == == == == == == == == ")
-	// 値の格納前にバリデーション。
-	primitiveString := &primitive_object.PrimitiveString{}
-
-	receiver.content = primitive_object.NewPrimitiveString(
-		primitiveString.WithValue(value),
+	mailAddress.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(valueString),
+		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(mailAddressLengthMax),
 		primitiveString.WithMinLength(mailAddressLengthMin),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
-	log.Println("== SetValue 2 == == == == == == == == == ")
 
-	// 文字列そのもののバリデーション
-	receiver.content.Validation()
-	log.Println("== SetValue 3 == == == == == == == == == ")
-	if receiver.content.GetError() != nil {
-		receiver.SetError(
+	mailAddress.content.Validation()
+	if mailAddress.content.GetError() != nil {
+		mailAddress.SetError(
 			ctx,
-			receiver.content.GetError(),
+			mailAddress.content.GetError(),
 		)
-		return
-	}
-	log.Println("== SetValue 4 == == == == == == == == == ")
-
-	// メールアドレスのバリデーション
-	receiver.Validation(ctx)
-	if receiver.GetError() != nil {
-		return
 	}
 
+	debug := mailAddress.content
+	jsonPrint, _ := json.MarshalIndent(debug, "", "    ")
+	fmt.Println(" ----------------------------------- ")
+	fmt.Printf("%+v\n", debug)
+	fmt.Println(" ----------------------------------- ")
+	fmt.Printf("%#v\n", debug)
+	fmt.Println(" ----------------------------------- ")
+	fmt.Println(string(jsonPrint))
+	fmt.Println(" ----------------------------------- ")
+
+	return
 }
+
+// func (receiver *MailAddress) SetValue(
+// 	ctx context.Context,
+// 	value *string,
+// ) {
+// 	log.Println("== SetValue 1 == == == == == == == == == ")
+// 	// 値の格納前にバリデーション。
+// 	primitiveString := &primitiveObject.PrimitiveString{}
+
+// 	receiver.content = primitiveObject.NewPrimitiveString(
+// 		primitiveString.WithValue(value),
+// 		primitiveString.WithMaxLength(mailAddressLengthMax),
+// 		primitiveString.WithMinLength(mailAddressLengthMin),
+// 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
+// 	)
+// 	log.Println("== SetValue 2 == == == == == == == == == ")
+
+// 	// 文字列そのもののバリデーション
+// 	receiver.content.Validation()
+// 	log.Println("== SetValue 3 == == == == == == == == == ")
+// 	if receiver.content.GetError() != nil {
+// 		receiver.SetError(
+// 			ctx,
+// 			receiver.content.GetError(),
+// 		)
+// 		return
+// 	}
+// 	log.Println("== SetValue 4 == == == == == == == == == ")
+
+// 	// メールアドレスのバリデーション
+// 	receiver.Validation(ctx)
+// 	if receiver.GetError() != nil {
+// 		return
+// 	}
+
+// }
 
 func (receiver *MailAddress) GetValue() string {
 	return receiver.content.GetValue()

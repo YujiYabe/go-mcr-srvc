@@ -29,29 +29,50 @@ func NewName(
 	name Name,
 ) {
 	name = Name{}
-	name.SetValue(ctx, value)
+	// name.SetValue(ctx, value)
 
-	return
-}
-
-func (receiver *Name) SetValue(
-	ctx context.Context,
-	value *string,
-) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	receiver.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(value),
+	isNil := primitiveString.CheckNil(value)
+	valueString := ""
+	if !isNil {
+		valueString = *value
+	}
+
+	name.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(valueString),
+		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(nameLengthMax),
 		primitiveString.WithMinLength(nameLengthMin),
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx, receiver.content.GetError())
+	name.content.Validation()
+	if name.content.GetError() != nil {
+		name.SetError(ctx, name.content.GetError())
 	}
+
+	return
 }
+
+// func (receiver *Name) SetValue(
+// 	ctx context.Context,
+// 	value *string,
+// ) {
+// 	primitiveString := &primitiveObject.PrimitiveString{}
+
+// 	receiver.content = primitiveObject.NewPrimitiveString(
+// 		primitiveString.WithValue(value),
+// 		primitiveString.WithMaxLength(nameLengthMax),
+// 		primitiveString.WithMinLength(nameLengthMin),
+// 		primitiveString.WithCheckSpell(nameCheckSpell),
+// 	)
+
+// 	receiver.content.Validation()
+// 	if receiver.content.GetError() != nil {
+// 		receiver.SetError(ctx, receiver.content.GetError())
+// 	}
+// }
 
 func (receiver *Name) GetError() error {
 	return receiver.err

@@ -40,7 +40,7 @@ func (receiver *TimeStamp) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 	receiver.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(value),
+		// primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(timeStampLengthMax),
 		primitiveString.WithMinLength(timeStampLengthMin),
 	)

@@ -24,31 +24,52 @@ func NewID(
 	id ID,
 ) {
 	id = ID{}
-	id.SetValue(ctx, value)
-
-	return
-}
-
-func (receiver *ID) SetValue(
-	ctx context.Context,
-	value *int,
-) {
+	// id.SetValue(ctx, value)
 	primitiveInt := &primitiveObject.PrimitiveInt{}
 
-	receiver.content = primitiveObject.NewPrimitiveInt(
-		primitiveInt.WithValue(value),
+	isNil := primitiveInt.CheckNil(value)
+	valueInt := 0
+	if !isNil {
+		valueInt = *value
+	}
+	id.content = primitiveObject.NewPrimitiveInt(
+		primitiveInt.WithValue(valueInt),
+		primitiveInt.WithIsNil(isNil),
 		primitiveInt.WithMaxValue(idLengthMax),
 		primitiveInt.WithMinValue(idLengthMin),
 	)
 
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		receiver.SetError(
+	id.content.Validation()
+	if id.content.GetError() != nil {
+		id.SetError(
 			ctx,
-			receiver.content.GetError(),
+			id.content.GetError(),
 		)
 	}
+
+	return
 }
+
+// func (receiver *ID) SetValue(
+// 	ctx context.Context,
+// 	value *int,
+// ) {
+// 	primitiveInt := &primitiveObject.PrimitiveInt{}
+
+// 	receiver.content = primitiveObject.NewPrimitiveInt(
+// 		primitiveInt.WithValue(value),
+// 		primitiveInt.WithMaxValue(idLengthMax),
+// 		primitiveInt.WithMinValue(idLengthMin),
+// 	)
+
+// 	receiver.content.Validation()
+// 	if receiver.content.GetError() != nil {
+// 		receiver.SetError(
+// 			ctx,
+// 			receiver.content.GetError(),
+// 		)
+// 	}
+// }
 
 func (receiver *ID) GetError() error {
 	return receiver.err

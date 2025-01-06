@@ -2,7 +2,6 @@ package primitive_object
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"unicode/utf8"
 )
@@ -16,9 +15,9 @@ type PrimitiveString struct {
 	err       error    // バリデーションエラーを格納
 	value     string   // 実際の文字列値
 	isNil     bool     // nil状態を示すフラグ
-	MaxLength int      // 最大文字列長 (-1は制限なし)
-	MinLength int      // 最小文字列長 (-1は制限なし)
-	SpellList []string // チェック対象の禁止文字列リスト
+	maxLength int      // 最大文字列長 (-1は制限なし)
+	minLength int      // 最小文字列長 (-1は制限なし)
+	spellList []string // チェック対象の禁止文字列リスト
 }
 
 // --------------------------------------
@@ -38,16 +37,10 @@ func (receiver *PrimitiveString) WithError(
 // --------------------------------------
 // WithValue は文字列値を設定するオプションを返します
 func (receiver *PrimitiveString) WithValue(
-	value *string,
+	value string,
 ) PrimitiveStringOption {
-	receiver.SetIsNil(true)
-	var resValue string
-	if value != nil {
-		receiver.SetIsNil(false)
-		resValue = *value
-	}
 	return func(s *PrimitiveString) {
-		s.value = resValue
+		s.value = value
 	}
 }
 
@@ -67,7 +60,7 @@ func (receiver *PrimitiveString) WithMaxLength(
 	length int,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.MaxLength = length
+		s.maxLength = length
 	}
 }
 
@@ -77,7 +70,7 @@ func (receiver *PrimitiveString) WithMinLength(
 	length int,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.MinLength = length
+		s.minLength = length
 	}
 }
 
@@ -87,7 +80,7 @@ func (receiver *PrimitiveString) WithCheckSpell(
 	spellList []string,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.SpellList = spellList
+		s.spellList = spellList
 	}
 }
 
@@ -98,20 +91,14 @@ func NewPrimitiveString(
 	primitiveString *PrimitiveString,
 ) {
 
-	var defaultValue string
-	var defaultIsNil bool
-
-	var defaultMaxLength int = -1
-	var defaultMinLength int = -1
-
 	// デフォルト値を設定
 	primitiveString = &PrimitiveString{
 		err:       nil,
-		value:     defaultValue,
-		isNil:     defaultIsNil,
-		MaxLength: defaultMaxLength,
-		MinLength: defaultMinLength,
-		SpellList: []string{},
+		value:     "",
+		isNil:     false,
+		maxLength: -1,
+		minLength: -1,
+		spellList: []string{},
 	}
 
 	// オプションを適用
@@ -158,8 +145,7 @@ func (receiver *PrimitiveString) SetError(
 
 // --------------------------------------
 func (receiver *PrimitiveString) GetValue() string {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+	if receiver.GetIsNil() {
 		return ""
 	}
 	return receiver.value
@@ -181,22 +167,22 @@ func (receiver *PrimitiveString) SetValue(
 // --------------------------------------
 func (receiver *PrimitiveString) Validation() {
 
-	if receiver.isNil {
+	if receiver.GetIsNil() {
 		return
 	}
 
 	receiver.ValidationMax()
-	if receiver.err != nil {
+	if receiver.GetError() != nil {
 		return
 	}
 
 	receiver.ValidationMin()
-	if receiver.err != nil {
+	if receiver.GetError() != nil {
 		return
 	}
 
 	receiver.ValidationSpell()
-	if receiver.err != nil {
+	if receiver.GetError() != nil {
 		return
 	}
 
@@ -205,17 +191,17 @@ func (receiver *PrimitiveString) Validation() {
 // ValidationMax は最大文字列長のチェックを行います
 // --------------------------------------
 func (receiver *PrimitiveString) ValidationMax() {
-	if receiver.MaxLength < 0 {
+	if receiver.maxLength < 0 {
 		// receiver.SetError("max length no defined")
 		return
 	}
 
-	if receiver.isNil {
+	if receiver.GetIsNil() {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if utf8.RuneCountInString(receiver.value) > receiver.MaxLength {
+	if utf8.RuneCountInString(receiver.value) > receiver.maxLength {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -224,25 +210,15 @@ func (receiver *PrimitiveString) ValidationMax() {
 // ValidationMin は最小文字列長のチェックを行います
 // --------------------------------------
 func (receiver *PrimitiveString) ValidationMin() {
-	log.Println("==receiver.GetIsNil() == == == == == == == == == ")
-	log.Printf("%#v\n", receiver.GetIsNil())
-	log.Println("== == == == == == == == == == ")
-
-	if !receiver.GetIsNil() {
+	if receiver.GetIsNil() {
 		return
 	}
 
-	if receiver.MinLength < 0 {
+	if receiver.minLength < 0 {
 		return
 	}
 
-	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", utf8.RuneCountInString(receiver.value))
-	log.Printf("%#v\n", receiver.MinLength)
-	log.Println("== == == == == == == == == == ")
-
-	if utf8.RuneCountInString(receiver.value) < receiver.MinLength {
-
+	if utf8.RuneCountInString(receiver.value) < receiver.minLength {
 		receiver.SetErrorString("min limitation")
 		return
 	}
@@ -251,10 +227,10 @@ func (receiver *PrimitiveString) ValidationMin() {
 // ValidationSpell は禁止文字列のチェックを行います
 // --------------------------------------
 func (receiver *PrimitiveString) ValidationSpell() {
-	if len(receiver.SpellList) == 0 {
+	if len(receiver.spellList) == 0 {
 		return
 	}
-	for _, spell := range receiver.SpellList {
+	for _, spell := range receiver.spellList {
 		if strings.Contains(receiver.value, spell) {
 			receiver.SetErrorString("detect target spell : " + spell)
 			return

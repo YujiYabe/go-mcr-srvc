@@ -37,6 +37,7 @@ func get(
 			MailAddress: person.MailAddress,
 		},
 	)
+
 	if reqPerson.GetError() != nil {
 		pkg.Logging(ctx, reqPerson.GetError())
 		return c.JSON(

@@ -7,8 +7,8 @@ type PrimitiveInt struct {
 	err      error
 	value    int
 	isNil    bool
-	MaxValue int
-	MinValue int
+	maxValue int
+	minValue int
 }
 
 // --------------------------------------
@@ -25,16 +25,10 @@ func (receiver *PrimitiveInt) WithError(
 
 // --------------------------------------
 func (receiver *PrimitiveInt) WithValue(
-	value *int,
+	value int,
 ) PrimitiveIntOption {
-	receiver.SetIsNil(true)
-	var resValue int
-	if value != nil {
-		receiver.SetIsNil(false)
-		resValue = *value
-	}
 	return func(s *PrimitiveInt) {
-		s.value = resValue
+		s.value = value
 	}
 }
 
@@ -52,7 +46,7 @@ func (receiver *PrimitiveInt) WithMaxValue(
 	value int,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.MaxValue = value
+		s.maxValue = value
 	}
 }
 
@@ -61,7 +55,7 @@ func (receiver *PrimitiveInt) WithMinValue(
 	value int,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.MinValue = value
+		s.minValue = value
 	}
 }
 
@@ -76,8 +70,8 @@ func NewPrimitiveInt(
 		err:      nil,
 		value:    0,
 		isNil:    false,
-		MaxValue: -1,
-		MinValue: -1,
+		maxValue: -1,
+		minValue: -1,
 	}
 
 	// オプションを適用
@@ -139,7 +133,7 @@ func (receiver *PrimitiveInt) SetErrorString(
 
 // --------------------------------------
 func (receiver *PrimitiveInt) GetValue() int {
-	if receiver.isNil {
+	if receiver.GetIsNil() {
 		return 0
 	}
 
@@ -161,7 +155,7 @@ func (receiver *PrimitiveInt) SetValue(
 // --------------------------------------
 func (receiver *PrimitiveInt) Validation() {
 
-	if receiver.isNil {
+	if receiver.GetIsNil() {
 		return
 	}
 
@@ -179,17 +173,16 @@ func (receiver *PrimitiveInt) Validation() {
 
 // --------------------------------------
 func (receiver *PrimitiveInt) ValidationMax() {
-	if receiver.MaxValue < 0 {
-		// receiver.SetError("max length no defined")
+	if receiver.maxValue < 0 { //上限値なし
 		return
 	}
 
-	if receiver.isNil {
+	if receiver.GetIsNil() {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value > receiver.MaxValue {
+	if receiver.value > receiver.maxValue {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -197,17 +190,16 @@ func (receiver *PrimitiveInt) ValidationMax() {
 
 // --------------------------------------
 func (receiver *PrimitiveInt) ValidationMin() {
-	if receiver.MinValue < 0 {
-		// receiver.SetErrorString("min length no defined")
+	if receiver.minValue < 0 { //下限値なし
 		return
 	}
 
-	if receiver.isNil {
+	if receiver.GetIsNil() {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value < receiver.MinValue {
+	if receiver.value < receiver.minValue {
 		receiver.SetErrorString("min limitation")
 		return
 	}

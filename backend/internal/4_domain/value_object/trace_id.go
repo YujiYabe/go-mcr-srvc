@@ -39,7 +39,7 @@ func (receiver *TraceID) SetValue(
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(value),
+		// primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(traceIDLengthMax),
 		primitiveString.WithMinLength(traceIDLengthMin),
 	)

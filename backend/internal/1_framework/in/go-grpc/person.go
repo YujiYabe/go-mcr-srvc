@@ -2,7 +2,6 @@ package goGRPC
 
 import (
 	"context"
-	"log"
 	"time"
 
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
@@ -26,10 +25,6 @@ func (receiver *Server) GetPersonByCondition(
 	err error,
 ) {
 	traceID := valueObject.GetTraceID(ctx)
-
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
-	log.Println("== == == == == == == == == == ")
 
 	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
