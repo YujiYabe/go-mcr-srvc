@@ -68,7 +68,7 @@ func (receiver *PostgresClient) GetPersonList(
 
 	if result.Error != nil {
 		pkg.Logging(ctx, result.Error)
-		personList.SetError(result.Error)
+		personList.SetError(ctx, result.Error)
 		return
 	}
 	for _, person := range persons {
@@ -77,11 +77,10 @@ func (receiver *PostgresClient) GetPersonList(
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := groupObject.NewPerson(args)
+		person := groupObject.NewPerson(ctx, args)
 
 		if person.GetError() != nil {
-			pkg.Logging(ctx, person.GetError())
-			personList.SetError(person.GetError())
+			personList.SetError(ctx, person.GetError())
 			return
 		}
 
@@ -116,8 +115,7 @@ func (receiver *PostgresClient) GetPersonByCondition(
 
 	result := conn.Find(&persons)
 	if result.Error != nil {
-		pkg.Logging(ctx, result.Error)
-		resPersonList.SetError(result.Error)
+		resPersonList.SetError(ctx, result.Error)
 		return
 	}
 	for _, person := range persons {
@@ -126,11 +124,11 @@ func (receiver *PostgresClient) GetPersonByCondition(
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := groupObject.NewPerson(args)
+		person := groupObject.NewPerson(ctx, args)
 
 		if person.GetError() != nil {
 			pkg.Logging(ctx, person.GetError())
-			resPersonList.SetError(person.GetError())
+			resPersonList.SetError(ctx, person.GetError())
 			return
 		}
 

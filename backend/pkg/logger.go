@@ -7,11 +7,13 @@ import (
 	"runtime"
 	"strings"
 	"time"
-
-	valueObject "backend/internal/4_domain/value_object"
 )
 
 type RowData []string
+
+const (
+	traceIDContextName = "traceID"
+)
 
 func (receiver *RowData) append(
 	appendData string,
@@ -27,7 +29,7 @@ func Logging(
 	data interface{},
 ) {
 	traceID := ""
-	if val, ok := ctx.Value(valueObject.TraceIDContextName).(string); ok {
+	if val, ok := ctx.Value(traceIDContextName).(string); ok {
 		traceID = val
 	}
 	_, fullPath, line, _ := runtime.Caller(1)

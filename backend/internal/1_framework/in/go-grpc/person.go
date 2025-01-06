@@ -52,6 +52,7 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	reqPerson := groupObject.NewPerson(
+		ctx,
 		&groupObject.NewPersonArgs{
 			ID:          id,
 			Name:        name,

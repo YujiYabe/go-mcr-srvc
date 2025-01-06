@@ -1,6 +1,11 @@
 package group_object
 
-import valueObject "backend/internal/4_domain/value_object"
+import (
+	"context"
+
+	valueObject "backend/internal/4_domain/value_object"
+	"backend/pkg"
+)
 
 type Credential struct {
 	err          error
@@ -18,7 +23,7 @@ func (receiver *Credential) GetError() error {
 }
 
 func (receiver *Credential) SetError(
-	err error,
+	ctx context.Context, err error,
 ) {
 	if receiver.err == nil {
 		receiver.err = err
@@ -26,21 +31,27 @@ func (receiver *Credential) SetError(
 }
 
 func NewCredential(
+	ctx context.Context,
 	args *NewCredentialArgs,
 ) (
 	accessToken *Credential,
 ) {
 	accessToken = &Credential{}
 
-	accessToken.ClientID = valueObject.NewClientID(args.ClientID)
+	accessToken.ClientID = valueObject.NewClientID(
+		ctx,
+		args.ClientID,
+	)
 	if accessToken.ClientID.GetError() != nil {
-		accessToken.SetError(accessToken.ClientID.GetError())
+		pkg.Logging(ctx, accessToken.ClientID.GetError())
+		accessToken.SetError(ctx, accessToken.ClientID.GetError())
 		return
 	}
 
-	accessToken.ClientSecret = valueObject.NewClientSecret(args.ClientSecret)
+	accessToken.ClientSecret = valueObject.NewClientSecret(ctx, args.ClientSecret)
 	if accessToken.ClientSecret.GetError() != nil {
-		accessToken.SetError(accessToken.ClientSecret.GetError())
+		pkg.Logging(ctx, accessToken.ClientSecret.GetError())
+		accessToken.SetError(ctx, accessToken.ClientSecret.GetError())
 		return
 	}
 

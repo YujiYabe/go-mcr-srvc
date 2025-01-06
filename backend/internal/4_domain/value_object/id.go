@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -15,17 +18,19 @@ type ID struct {
 }
 
 func NewID(
+	ctx context.Context,
 	value *int,
 ) (
 	id ID,
 ) {
 	id = ID{}
-	id.SetValue(value)
+	id.SetValue(ctx, value)
 
 	return
 }
 
 func (receiver *ID) SetValue(
+	ctx context.Context,
 	value *int,
 ) {
 	primitiveInt := &primitiveObject.PrimitiveInt{}
@@ -38,7 +43,10 @@ func (receiver *ID) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
 	}
 }
 
@@ -47,9 +55,11 @@ func (receiver *ID) GetError() error {
 }
 
 func (receiver *ID) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *ID) GetValue() int {

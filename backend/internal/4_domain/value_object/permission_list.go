@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -20,6 +23,7 @@ type PermissionList struct {
 }
 
 func NewPermissionList(
+	ctx context.Context,
 	valueList []*string,
 ) (
 	permissionList PermissionList,
@@ -30,9 +34,12 @@ func NewPermissionList(
 	}
 
 	for _, value := range valueList {
-		permission := NewPermission(value)
+		permission := NewPermission(ctx, value)
 		if permission.GetError() != nil {
-			permissionList.SetError(permission.GetError())
+			permissionList.SetError(
+				ctx,
+				permission.GetError(),
+			)
 			return
 		}
 
@@ -50,9 +57,9 @@ func (receiver *PermissionList) GetError() error {
 }
 
 func (receiver *PermissionList) SetError(
+	ctx context.Context,
 	err error,
 ) {
-	if receiver.err == nil {
-		receiver.err = err
-	}
+	receiver.err = err
+	pkg.Logging(ctx, receiver.err)
 }

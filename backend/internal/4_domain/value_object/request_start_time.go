@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -20,17 +23,19 @@ type RequestStartTime struct {
 }
 
 func NewRequestStartTime(
+	ctx context.Context,
 	value *int64,
 ) (
 	requestStartTime RequestStartTime,
 ) {
 	requestStartTime = RequestStartTime{}
-	requestStartTime.SetValue(value)
+	requestStartTime.SetValue(ctx, value)
 
 	return
 }
 
 func (receiver *RequestStartTime) SetValue(
+	ctx context.Context,
 	value *int64,
 ) {
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
@@ -43,7 +48,10 @@ func (receiver *RequestStartTime) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
 	}
 }
 
@@ -52,9 +60,11 @@ func (receiver *RequestStartTime) GetError() error {
 }
 
 func (receiver *RequestStartTime) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.err)
 }
 
 func (receiver *RequestStartTime) GetValue() int64 {

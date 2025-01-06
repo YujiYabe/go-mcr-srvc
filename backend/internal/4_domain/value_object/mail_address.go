@@ -1,9 +1,12 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	"backend/pkg"
+	"context"
 	"fmt"
 	"regexp"
+
+	"backend/internal/4_domain/primitive_object"
 )
 
 const (
@@ -19,17 +22,19 @@ type MailAddress struct {
 }
 
 func NewMailAddress(
+	ctx context.Context,
 	value *string,
 ) (
 	mailAddress MailAddress,
 ) {
 	mailAddress = MailAddress{}
-	mailAddress.SetValue(value)
+	mailAddress.SetValue(ctx, value)
 
 	return
 }
 
 func (receiver *MailAddress) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	// 値の格納前にバリデーション。
@@ -43,14 +48,20 @@ func (receiver *MailAddress) SetValue(
 	)
 
 	// 文字列そのもののバリデーション
-	receiver.Validation()
-	if receiver.GetError() != nil {
-		receiver.SetError(receiver.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
 		return
 	}
 
 	// メールアドレスのバリデーション
-	receiver.Validation()
+	receiver.Validation(ctx)
+	if receiver.GetError() != nil {
+		return
+	}
 
 }
 
@@ -63,15 +74,19 @@ func (receiver *MailAddress) GetError() error {
 }
 
 func (receiver *MailAddress) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *MailAddress) SetErrorString(
+	ctx context.Context,
 	errString string,
 ) {
 	receiver.SetError(
+		ctx,
 		fmt.Errorf(
 			"error: %s",
 			errString,
@@ -83,7 +98,9 @@ func (receiver *MailAddress) GetIsNil() bool {
 	return receiver.content.GetIsNil()
 }
 
-func (receiver MailAddress) Validation() {
+func (receiver MailAddress) Validation(
+	ctx context.Context,
+) {
 	if receiver.GetIsNil() {
 		return
 	}
@@ -97,6 +114,7 @@ func (receiver MailAddress) Validation() {
 	)
 	if err != nil {
 		receiver.SetError(
+			ctx,
 			fmt.Errorf(
 				"failed to validate email format: %w", err,
 			),
@@ -106,6 +124,7 @@ func (receiver MailAddress) Validation() {
 
 	if !matched {
 		receiver.SetError(
+			ctx,
 			fmt.Errorf(
 				"invalid email format: %s", receiver.GetValue(),
 			),

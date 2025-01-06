@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -15,16 +18,18 @@ type ClientID struct {
 }
 
 func NewClientID(
+	ctx context.Context,
 	value *string,
 ) (
 	clientID ClientID,
 ) {
 	clientID = ClientID{}
-	clientID.SetValue(value)
+	clientID.SetValue(ctx, value)
 	return
 }
 
 func (receiver *ClientID) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -36,7 +41,10 @@ func (receiver *ClientID) SetValue(
 	)
 
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
 	}
 }
 
@@ -45,9 +53,11 @@ func (receiver *ClientID) GetError() error {
 }
 
 func (receiver *ClientID) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *ClientID) GetValue() string {

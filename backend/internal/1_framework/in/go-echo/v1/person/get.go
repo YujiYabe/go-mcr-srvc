@@ -30,6 +30,7 @@ func get(
 	}
 
 	reqPerson := groupObject.NewPerson(
+		ctx,
 		&groupObject.NewPersonArgs{
 			ID:          person.ID,
 			Name:        person.Name,

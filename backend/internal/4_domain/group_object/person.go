@@ -1,6 +1,10 @@
 package group_object
 
-import valueObject "backend/internal/4_domain/value_object"
+import (
+	valueObject "backend/internal/4_domain/value_object"
+	"backend/pkg"
+	"context"
+)
 
 type Person struct {
 	err         error
@@ -20,6 +24,7 @@ func (receiver *Person) GetError() error {
 }
 
 func (receiver *Person) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	if receiver.err == nil {
@@ -28,27 +33,31 @@ func (receiver *Person) SetError(
 }
 
 func NewPerson(
+	ctx context.Context,
 	args *NewPersonArgs,
 ) (
 	person *Person,
 ) {
 	person = &Person{}
 
-	person.ID = valueObject.NewID(args.ID)
+	person.ID = valueObject.NewID(ctx, args.ID)
 	if person.ID.GetError() != nil {
-		person.SetError(person.ID.GetError())
+		pkg.Logging(ctx, person.GetError())
+		person.SetError(ctx, person.ID.GetError())
 		return
 	}
 
-	person.Name = valueObject.NewName(args.Name)
+	person.Name = valueObject.NewName(ctx, args.Name)
 	if person.Name.GetError() != nil {
-		person.SetError(person.Name.GetError())
+		pkg.Logging(ctx, person.Name.GetError())
+		person.SetError(ctx, person.Name.GetError())
 		return
 	}
 
-	person.MailAddress = valueObject.NewMailAddress(args.MailAddress)
+	person.MailAddress = valueObject.NewMailAddress(ctx, args.MailAddress)
 	if person.MailAddress.GetError() != nil {
-		person.SetError(person.MailAddress.GetError())
+		pkg.Logging(ctx, person.MailAddress.GetError())
+		person.SetError(ctx, person.MailAddress.GetError())
 		return
 	}
 

@@ -27,7 +27,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		accessToken.SetError(err)
+		accessToken.SetError(ctx, err)
 		return
 	}
 
@@ -38,7 +38,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 		bytes.NewBuffer(jsonData),
 	)
 	if err != nil {
-		accessToken.SetError(err)
+		accessToken.SetError(ctx, err)
 		return
 	}
 
@@ -47,7 +47,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		accessToken.SetError(err)
+		accessToken.SetError(ctx, err)
 		return
 	}
 	defer resp.Body.Close()
@@ -57,11 +57,12 @@ func (receiver *Auth0Client) FetchAccessToken(
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		accessToken.SetError(err)
+		accessToken.SetError(ctx, err)
 		return
 	}
 
 	accessToken = valueObject.NewAccessToken(
+		ctx,
 		&tokenResponse.AccessToken,
 	)
 

@@ -1,5 +1,7 @@
 package group_object
 
+import "context"
+
 type PersonList struct {
 	err     error
 	Content []Person
@@ -14,7 +16,7 @@ func (receiver *PersonList) GetError() error {
 }
 
 func (receiver *PersonList) SetError(
-	err error,
+	ctx context.Context, err error,
 ) {
 	if receiver.err == nil {
 		receiver.err = err
@@ -22,6 +24,7 @@ func (receiver *PersonList) SetError(
 }
 
 func NewPersonList(
+	ctx context.Context,
 	args *NewPersonListArgs,
 ) (
 	personList PersonList,
@@ -29,9 +32,9 @@ func NewPersonList(
 	personList = PersonList{}
 
 	for _, args := range args.Content {
-		person := NewPerson(&args)
+		person := NewPerson(ctx, &args)
 		if person.GetError() != nil {
-			personList.SetError(person.GetError())
+			personList.SetError(ctx, person.GetError())
 			break
 		}
 

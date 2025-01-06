@@ -4,6 +4,7 @@ import (
 	"context"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -22,6 +23,7 @@ type TraceID struct {
 }
 
 func NewTraceID(
+	ctx context.Context,
 	value *string,
 ) (
 	traceID TraceID,
@@ -31,6 +33,7 @@ func NewTraceID(
 	return
 }
 func (receiver *TraceID) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -43,7 +46,7 @@ func (receiver *TraceID) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(ctx, receiver.content.GetError())
 	}
 
 }
@@ -57,9 +60,11 @@ func (receiver *TraceID) GetError() error {
 }
 
 func (receiver *TraceID) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.err)
 }
 
 func GetTraceID(

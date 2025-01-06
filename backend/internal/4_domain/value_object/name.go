@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -20,17 +23,19 @@ type Name struct {
 }
 
 func NewName(
+	ctx context.Context,
 	value *string,
 ) (
 	name Name,
 ) {
 	name = Name{}
-	name.SetValue(value)
+	name.SetValue(ctx, value)
 
 	return
 }
 
 func (receiver *Name) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -44,7 +49,7 @@ func (receiver *Name) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
 
@@ -53,9 +58,11 @@ func (receiver *Name) GetError() error {
 }
 
 func (receiver *Name) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *Name) GetValue() string {

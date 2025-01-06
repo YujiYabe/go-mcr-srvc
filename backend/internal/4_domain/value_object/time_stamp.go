@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -20,17 +23,19 @@ type TimeStamp struct {
 }
 
 func NewTimeStamp(
+	ctx context.Context,
 	value *string,
 ) (
 	timeStamp TimeStamp,
 ) {
 	timeStamp = TimeStamp{}
-	timeStamp.SetValue(value)
+	timeStamp.SetValue(ctx, value)
 
 	return
 }
 
 func (receiver *TimeStamp) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -42,7 +47,10 @@ func (receiver *TimeStamp) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
 	}
 
 }
@@ -52,9 +60,11 @@ func (receiver *TimeStamp) GetError() error {
 }
 
 func (receiver *TimeStamp) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.err)
 }
 
 func (receiver *TimeStamp) GetValue() string {

@@ -31,6 +31,7 @@ func fetchAccessToken(
 
 	//-------------------------
 	credential := groupObject.NewCredential(
+		ctx,
 		&groupObject.NewCredentialArgs{
 			ClientID:     v1Credential.ClientID,
 			ClientSecret: v1Credential.ClientSecret,

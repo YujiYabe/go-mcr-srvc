@@ -1,7 +1,10 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -20,16 +23,18 @@ type Permission struct {
 }
 
 func NewPermission(
+	ctx context.Context,
 	value *string,
 ) (
 	permission Permission,
 ) {
 	permission = Permission{}
-	permission.SetValue(value)
+	permission.SetValue(ctx, value)
 	return
 }
 
 func (receiver *Permission) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	// 値の格納前にバリデーション。
@@ -43,7 +48,10 @@ func (receiver *Permission) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(receiver.content.GetError())
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
 	}
 }
 
@@ -52,9 +60,11 @@ func (receiver *Permission) GetError() error {
 }
 
 func (receiver *Permission) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.err)
 }
 
 func (receiver *Permission) GetValue() string {

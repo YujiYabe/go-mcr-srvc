@@ -1,8 +1,11 @@
 package value_object
 
 import (
-	primitiveObject "backend/internal/4_domain/primitive_object"
+	"context"
 	"fmt"
+
+	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -21,17 +24,19 @@ type AccessToken struct {
 }
 
 func NewAccessToken(
+	ctx context.Context,
 	value *string,
 ) (
 	accessToken AccessToken,
 ) {
 	accessToken = AccessToken{}
-	accessToken.SetValue(value)
+	accessToken.SetValue(ctx, value)
 
 	return
 }
 
 func (receiver *AccessToken) SetValue(
+	ctx context.Context,
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -43,9 +48,8 @@ func (receiver *AccessToken) SetValue(
 	)
 
 	receiver.content.Validation()
-	if receiver.GetError() != nil {
-		receiver.SetError(receiver.GetError())
-		return
+	if receiver.content.GetError() != nil {
+		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
 
@@ -54,15 +58,19 @@ func (receiver *AccessToken) GetError() error {
 }
 
 func (receiver *AccessToken) SetError(
+	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *AccessToken) SetErrorString(
+	ctx context.Context,
 	errString string,
 ) {
 	receiver.SetError(
+		ctx,
 		fmt.Errorf(
 			"error: %s",
 			errString,
