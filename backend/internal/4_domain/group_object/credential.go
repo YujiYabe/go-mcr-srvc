@@ -3,7 +3,7 @@ package group_object
 import valueObject "backend/internal/4_domain/value_object"
 
 type Credential struct {
-	Err          error
+	err          error
 	ClientID     valueObject.ClientID
 	ClientSecret valueObject.ClientSecret
 }
@@ -14,14 +14,14 @@ type NewCredentialArgs struct {
 }
 
 func (receiver *Credential) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *Credential) SetError(
 	err error,
 ) {
-	if receiver.Err == nil {
-		receiver.Err = err
+	if receiver.err == nil {
+		receiver.err = err
 	}
 }
 
@@ -33,14 +33,14 @@ func NewCredential(
 	accessToken = &Credential{}
 
 	accessToken.ClientID = valueObject.NewClientID(args.ClientID)
-	if accessToken.ClientID.Err != nil {
-		accessToken.SetError(accessToken.ClientID.Err)
+	if accessToken.ClientID.GetError() != nil {
+		accessToken.SetError(accessToken.ClientID.GetError())
 		return
 	}
 
 	accessToken.ClientSecret = valueObject.NewClientSecret(args.ClientSecret)
-	if accessToken.ClientSecret.Err != nil {
-		accessToken.SetError(accessToken.ClientSecret.Err)
+	if accessToken.ClientSecret.GetError() != nil {
+		accessToken.SetError(accessToken.ClientSecret.GetError())
 		return
 	}
 

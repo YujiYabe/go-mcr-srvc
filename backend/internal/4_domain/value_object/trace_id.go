@@ -17,8 +17,8 @@ const (
 )
 
 type TraceID struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewTraceID(
@@ -35,16 +35,16 @@ func NewTraceID(
 	if !isNil {
 		valueString = *value
 	}
-	traceID.Content = primitiveObject.NewPrimitiveString(
+	traceID.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(traceIDLengthMax),
 		primitiveString.WithMinLength(traceIDLengthMin),
 	)
 
-	traceID.Content.Validation()
-	if traceID.Content.GetError() != nil {
-		traceID.SetError(traceID.Content.GetError())
+	traceID.content.Validation()
+	if traceID.content.GetError() != nil {
+		traceID.SetError(traceID.content.GetError())
 	}
 
 	return
@@ -63,11 +63,15 @@ func GetTraceID(
 	return
 }
 func (receiver *TraceID) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *TraceID) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *TraceID) GetValue() string {
+	return receiver.content.GetValue()
 }

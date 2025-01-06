@@ -13,9 +13,8 @@ func (receiver *controller) GetPersonList(
 	ctx context.Context,
 ) (
 	personList groupObject.PersonList,
-	err error,
 ) {
-	personList, err = receiver.UseCase.GetPersonList(ctx)
+	personList = receiver.UseCase.GetPersonList(ctx)
 	return
 }
 

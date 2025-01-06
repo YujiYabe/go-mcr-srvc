@@ -58,7 +58,6 @@ func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
 ) (
 	personList groupObject.PersonList,
-	err error,
 ) {
 	personList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}          // SQL結果保存用
@@ -69,7 +68,8 @@ func (receiver *PostgresClient) GetPersonList(
 
 	if result.Error != nil {
 		pkg.Logging(ctx, result.Error)
-		return personList, result.Error
+		personList.SetError(result.Error)
+		return
 	}
 	for _, person := range persons {
 		args := &groupObject.NewPersonArgs{
@@ -79,9 +79,10 @@ func (receiver *PostgresClient) GetPersonList(
 		}
 		person := groupObject.NewPerson(args)
 
-		if person.Err != nil {
-			pkg.Logging(ctx, person.Err)
-			return personList, person.Err
+		if person.GetError() != nil {
+			pkg.Logging(ctx, person.GetError())
+			personList.SetError(person.GetError())
+			return
 		}
 
 		personList.Content = append(
@@ -105,12 +106,12 @@ func (receiver *PostgresClient) GetPersonByCondition(
 
 	conn := receiver.Conn.Table("persons")
 
-	if !reqPerson.MailAddress.Content.IsNil && reqPerson.MailAddress.Content.GetValue() != "" {
-		conn.Where("mail_address = ?", reqPerson.MailAddress.Content.GetValue())
+	if !reqPerson.MailAddress.GetIsNil() && reqPerson.MailAddress.GetValue() != "" {
+		conn.Where("mail_address = ?", reqPerson.MailAddress.GetValue())
 	}
 
-	if !reqPerson.Name.Content.IsNil && reqPerson.Name.Content.GetValue() != "" {
-		conn.Where("name LIKE ?", "%"+reqPerson.Name.Content.GetValue()+"%")
+	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {
+		conn.Where("name LIKE ?", "%"+reqPerson.Name.GetValue()+"%")
 	}
 
 	result := conn.Find(&persons)
@@ -127,9 +128,9 @@ func (receiver *PostgresClient) GetPersonByCondition(
 		}
 		person := groupObject.NewPerson(args)
 
-		if person.Err != nil {
-			pkg.Logging(ctx, person.Err)
-			resPersonList.SetError(person.Err)
+		if person.GetError() != nil {
+			pkg.Logging(ctx, person.GetError())
+			resPersonList.SetError(person.GetError())
 			return
 		}
 

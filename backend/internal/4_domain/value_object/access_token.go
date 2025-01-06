@@ -16,8 +16,8 @@ const (
 )
 
 type AccessToken struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewAccessToken(
@@ -33,29 +33,29 @@ func NewAccessToken(
 	if !isNil {
 		valueString = *value
 	}
-	accessToken.Content = primitiveObject.NewPrimitiveString(
+	accessToken.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(accessTokenLengthMax),
 		primitiveString.WithMinLength(accessTokenLengthMin),
 	)
 
-	accessToken.Content.Validation()
-	if accessToken.Content.GetError() != nil {
-		accessToken.SetError(accessToken.Content.GetError())
+	accessToken.content.Validation()
+	if accessToken.content.GetError() != nil {
+		accessToken.SetError(accessToken.content.GetError())
 	}
 
 	return
 }
 
 func (receiver *AccessToken) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *AccessToken) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 func (receiver *AccessToken) SetErrorString(
@@ -67,4 +67,8 @@ func (receiver *AccessToken) SetErrorString(
 			errString,
 		),
 	)
+}
+
+func (receiver *AccessToken) GetValue() string {
+	return receiver.content.GetValue()
 }

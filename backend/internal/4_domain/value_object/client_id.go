@@ -10,8 +10,8 @@ const (
 )
 
 type ClientID struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewClientID(
@@ -27,25 +27,29 @@ func NewClientID(
 	if !isNil {
 		valueString = *value
 	}
-	clientID.Content = primitiveObject.NewPrimitiveString(
+	clientID.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(clientIDLengthMax),
 		primitiveString.WithMinLength(clientIDLengthMin),
 	)
 
-	if clientID.Content.GetError() != nil {
-		clientID.SetError(clientID.Content.GetError())
+	if clientID.content.GetError() != nil {
+		clientID.SetError(clientID.content.GetError())
 	}
 
 	return
 }
 func (receiver *ClientID) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *ClientID) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *ClientID) GetValue() string {
+	return receiver.content.GetValue()
 }

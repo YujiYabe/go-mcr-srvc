@@ -5,9 +5,9 @@ import (
 )
 
 type PrimitiveUint64 struct {
-	Err      error
-	Value    uint64
-	IsNil    bool
+	err      error
+	value    uint64
+	isNil    bool
 	MaxValue uint64
 	MinValue uint64
 }
@@ -18,7 +18,7 @@ func (receiver *PrimitiveUint64) WithError(
 	err error,
 ) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
-		s.Err = err
+		s.err = err
 	}
 }
 
@@ -26,7 +26,7 @@ func (receiver *PrimitiveUint64) WithValue(
 	value uint64,
 ) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
-		s.Value = value
+		s.value = value
 	}
 }
 
@@ -34,7 +34,7 @@ func (receiver *PrimitiveUint64) WithIsNil(
 	isNil bool,
 ) PrimitiveUint64Option {
 	return func(s *PrimitiveUint64) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
@@ -61,9 +61,9 @@ func NewPrimitiveUint64(
 ) {
 	// デフォルト値を設定
 	primitiveInt64 = &PrimitiveUint64{
-		Err:      nil,
-		Value:    0,
-		IsNil:    false,
+		err:      nil,
+		value:    0,
+		isNil:    false,
 		MaxValue: 0,
 		MinValue: 0,
 	}
@@ -80,18 +80,18 @@ func NewPrimitiveUint64(
 func (receiver *PrimitiveUint64) SetIsNil(
 	isNil bool,
 ) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
 }
 
 // --------------------------------------
 func (receiver *PrimitiveUint64) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PrimitiveUint64) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 func (receiver *PrimitiveUint64) SetErrorString(
@@ -107,35 +107,35 @@ func (receiver *PrimitiveUint64) SetErrorString(
 
 // --------------------------------------
 func (receiver *PrimitiveUint64) GetValue() uint64 {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return 0
 	}
-	return receiver.Value
+	return receiver.value
 }
 
 func (receiver *PrimitiveUint64) SetValue(value uint64) {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
-	receiver.Value = value
+	receiver.value = value
 }
 
 // --------------------------------------
 func (receiver *PrimitiveUint64) Validation() error {
-	if receiver.IsNil {
+	if receiver.isNil {
 		return nil
 	}
 
 	receiver.ValidationMax()
-	if receiver.Err != nil {
-		return receiver.Err
+	if receiver.err != nil {
+		return receiver.err
 	}
 
 	receiver.ValidationMin()
-	if receiver.Err != nil {
-		return receiver.Err
+	if receiver.err != nil {
+		return receiver.err
 	}
 
 	return nil
@@ -147,12 +147,12 @@ func (receiver *PrimitiveUint64) ValidationMax() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value > receiver.MaxValue {
+	if receiver.value > receiver.MaxValue {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -164,12 +164,12 @@ func (receiver *PrimitiveUint64) ValidationMin() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value < receiver.MinValue {
+	if receiver.value < receiver.MinValue {
 		receiver.SetErrorString("min limitation")
 		return
 	}

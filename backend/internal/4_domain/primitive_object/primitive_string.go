@@ -11,9 +11,9 @@ type ContextKey string
 // PrimitiveString は文字列値に対してバリデーション機能を提供する構造体です。
 // nil チェック、長さ制限、禁止文字列のチェックなどの機能を備えています。
 type PrimitiveString struct {
-	Err       error    // バリデーションエラーを格納
-	Value     string   // 実際の文字列値
-	IsNil     bool     // nil状態を示すフラグ
+	err       error    // バリデーションエラーを格納
+	value     string   // 実際の文字列値
+	isNil     bool     // nil状態を示すフラグ
 	MaxLength int      // 最大文字列長 (-1は制限なし)
 	MinLength int      // 最小文字列長 (-1は制限なし)
 	SpellList []string // チェック対象の禁止文字列リスト
@@ -27,7 +27,7 @@ func (receiver *PrimitiveString) WithError(
 	err error,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.Err = err
+		s.err = err
 	}
 }
 
@@ -36,7 +36,7 @@ func (receiver *PrimitiveString) WithValue(
 	value string,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.Value = value
+		s.value = value
 	}
 }
 
@@ -45,7 +45,7 @@ func (receiver *PrimitiveString) WithIsNil(
 	isNil bool,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
@@ -85,9 +85,9 @@ func NewPrimitiveString(
 ) {
 	// デフォルト値を設定
 	primitiveString = &PrimitiveString{
-		Err:       nil,
-		Value:     "",
-		IsNil:     false,
+		err:       nil,
+		value:     "",
+		isNil:     false,
 		MaxLength: -1,
 		MinLength: -1,
 		SpellList: []string{},
@@ -103,12 +103,17 @@ func NewPrimitiveString(
 
 // --------------------------------------
 func (receiver *PrimitiveString) SetIsNil(isNil bool) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
+}
+
+// --------------------------------------
+func (receiver *PrimitiveString) GetIsNil() bool {
+	return receiver.isNil
 }
 
 // --------------------------------------
 func (receiver *PrimitiveString) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PrimitiveString) SetErrorString(
@@ -125,42 +130,42 @@ func (receiver *PrimitiveString) SetErrorString(
 func (receiver *PrimitiveString) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 // --------------------------------------
 func (receiver *PrimitiveString) GetValue() string {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return ""
 	}
-	return receiver.Value
+	return receiver.value
 }
 
 func (receiver *PrimitiveString) SetValue(value string) {
-	receiver.IsNil = false
-	receiver.Value = value
+	receiver.isNil = false
+	receiver.value = value
 }
 
 // Validation は全てのバリデーションチェックを実行します
 func (receiver *PrimitiveString) Validation() {
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		return
 	}
 
 	receiver.ValidationMax()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
 	receiver.ValidationMin()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
 	receiver.ValidationSpell()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
@@ -173,12 +178,12 @@ func (receiver *PrimitiveString) ValidationMax() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if utf8.RuneCountInString(receiver.Value) > receiver.MaxLength {
+	if utf8.RuneCountInString(receiver.value) > receiver.MaxLength {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -191,12 +196,12 @@ func (receiver *PrimitiveString) ValidationMin() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if utf8.RuneCountInString(receiver.Value) < receiver.MinLength {
+	if utf8.RuneCountInString(receiver.value) < receiver.MinLength {
 		receiver.SetErrorString("min limitation")
 		return
 	}
@@ -208,7 +213,7 @@ func (receiver *PrimitiveString) ValidationSpell() {
 		return
 	}
 	for _, spell := range receiver.SpellList {
-		if strings.Contains(receiver.Value, spell) {
+		if strings.Contains(receiver.value, spell) {
 			receiver.SetErrorString("detect target spell : " + spell)
 			return
 		}

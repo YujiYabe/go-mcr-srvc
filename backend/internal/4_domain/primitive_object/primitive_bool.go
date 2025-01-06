@@ -5,9 +5,9 @@ import (
 )
 
 type PrimitiveBool struct {
-	Err   error
-	Value bool
-	IsNil bool
+	err   error
+	value bool
+	isNil bool
 }
 
 type PrimitiveBoolOption func(*PrimitiveBool)
@@ -16,7 +16,7 @@ func (receiver *PrimitiveBool) WithError(
 	err error,
 ) PrimitiveBoolOption {
 	return func(s *PrimitiveBool) {
-		s.Err = err
+		s.err = err
 	}
 }
 
@@ -24,7 +24,7 @@ func (receiver *PrimitiveBool) WithValue(
 	value bool,
 ) PrimitiveBoolOption {
 	return func(s *PrimitiveBool) {
-		s.Value = value
+		s.value = value
 	}
 }
 
@@ -32,7 +32,7 @@ func (receiver *PrimitiveBool) WithIsNil(
 	isNil bool,
 ) PrimitiveBoolOption {
 	return func(s *PrimitiveBool) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
@@ -42,9 +42,9 @@ func NewPrimitiveBool(
 	primitiveBool *PrimitiveBool,
 ) {
 	primitiveBool = &PrimitiveBool{
-		Err:   nil,
-		Value: false,
-		IsNil: false,
+		err:   nil,
+		value: false,
+		isNil: false,
 	}
 
 	for _, option := range options {
@@ -57,17 +57,17 @@ func NewPrimitiveBool(
 func (receiver *PrimitiveBool) SetIsNil(
 	isNil bool,
 ) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
 }
 
 func (receiver *PrimitiveBool) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PrimitiveBool) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 func (receiver *PrimitiveBool) SetErrorString(
@@ -82,21 +82,21 @@ func (receiver *PrimitiveBool) SetErrorString(
 }
 
 func (receiver *PrimitiveBool) GetValue() bool {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return false
 	}
-	return receiver.Value
+	return receiver.value
 }
 
 func (receiver *PrimitiveBool) SetValue(
 	value bool,
 ) {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
-	receiver.Value = value
+	receiver.value = value
 }
 
 func (receiver *PrimitiveBool) Validation() {

@@ -15,8 +15,8 @@ const (
 )
 
 type PermissionList struct {
-	Err     error
-	Content []Permission
+	err     error
+	content []Permission
 }
 
 func NewPermissionList(
@@ -26,30 +26,33 @@ func NewPermissionList(
 ) {
 
 	permissionList = PermissionList{
-		Content: []Permission{},
+		content: []Permission{},
 	}
 
 	for _, value := range valueList {
 		permission := NewPermission(value)
-		if permission.Err != nil {
-			permissionList.SetError(permission.Err)
+		if permission.GetError() != nil {
+			permissionList.SetError(permission.GetError())
 			return
 		}
 
-		permissionList.Content = append(permissionList.Content, permission)
+		permissionList.content = append(
+			permissionList.content,
+			permission,
+		)
 	}
 
 	return
 }
 
 func (receiver *PermissionList) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PermissionList) SetError(
 	err error,
 ) {
-	if receiver.Err == nil {
-		receiver.Err = err
+	if receiver.err == nil {
+		receiver.err = err
 	}
 }

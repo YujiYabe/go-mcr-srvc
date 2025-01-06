@@ -10,8 +10,8 @@ const (
 )
 
 type ClientSecret struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewClientSecret(
@@ -28,26 +28,30 @@ func NewClientSecret(
 		valueString = *value
 	}
 
-	clientSecret.Content = primitiveObject.NewPrimitiveString(
+	clientSecret.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(clientSecretLengthMax),
 		primitiveString.WithMinLength(clientSecretLengthMin),
 	)
 
-	clientSecret.Content.Validation()
-	if clientSecret.Content.GetError() != nil {
-		clientSecret.SetError(clientSecret.Content.GetError())
+	clientSecret.content.Validation()
+	if clientSecret.content.GetError() != nil {
+		clientSecret.SetError(clientSecret.content.GetError())
 	}
 
 	return
 }
 func (receiver *ClientSecret) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *ClientSecret) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *ClientSecret) GetValue() string {
+	return receiver.content.GetValue()
 }

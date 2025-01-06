@@ -3,9 +3,9 @@ package primitive_object
 import "fmt"
 
 type PrimitiveInt struct {
-	Err      error
-	Value    int
-	IsNil    bool
+	err      error
+	value    int
+	isNil    bool
 	MaxValue int
 	MinValue int
 }
@@ -16,7 +16,7 @@ func (receiver *PrimitiveInt) WithError(
 	err error,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.Err = err
+		s.err = err
 	}
 }
 
@@ -24,7 +24,7 @@ func (receiver *PrimitiveInt) WithValue(
 	value int,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.Value = value
+		s.value = value
 	}
 }
 
@@ -32,7 +32,7 @@ func (receiver *PrimitiveInt) WithIsNil(
 	isNil bool,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
@@ -59,9 +59,9 @@ func NewPrimitiveInt(
 ) {
 	// デフォルト値を設定
 	primitiveInt = &PrimitiveInt{
-		Err:      nil,
-		Value:    0,
-		IsNil:    false,
+		err:      nil,
+		value:    0,
+		isNil:    false,
 		MaxValue: -1,
 		MinValue: -1,
 	}
@@ -78,18 +78,18 @@ func NewPrimitiveInt(
 func (receiver *PrimitiveInt) SetIsNil(
 	isNil bool,
 ) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PrimitiveInt) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 func (receiver *PrimitiveInt) SetErrorString(
@@ -105,37 +105,37 @@ func (receiver *PrimitiveInt) SetErrorString(
 
 // --------------------------------------
 func (receiver *PrimitiveInt) GetValue() int {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return 0
 	}
-	return receiver.Value
+	return receiver.value
 }
 
 func (receiver *PrimitiveInt) SetValue(
 	value int,
 ) {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
-	receiver.Value = value
+	receiver.value = value
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt) Validation() {
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		return
 	}
 
 	receiver.ValidationMax()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
 	receiver.ValidationMin()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
@@ -147,12 +147,12 @@ func (receiver *PrimitiveInt) ValidationMax() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value > receiver.MaxValue {
+	if receiver.value > receiver.MaxValue {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -164,12 +164,12 @@ func (receiver *PrimitiveInt) ValidationMin() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value < receiver.MinValue {
+	if receiver.value < receiver.MinValue {
 		receiver.SetErrorString("min limitation")
 		return
 	}

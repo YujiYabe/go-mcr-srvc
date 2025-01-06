@@ -15,8 +15,8 @@ var nameCheckSpell = []string{
 }
 
 type Name struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewName(
@@ -33,7 +33,7 @@ func NewName(
 		valueString = *value
 	}
 
-	name.Content = primitiveObject.NewPrimitiveString(
+	name.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(nameLengthMax),
@@ -41,19 +41,27 @@ func NewName(
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 
-	name.Content.Validation()
-	if name.Content.GetError() != nil {
-		name.SetError(name.Content.GetError())
+	name.content.Validation()
+	if name.content.GetError() != nil {
+		name.SetError(name.content.GetError())
 	}
 
 	return
 }
 func (receiver *Name) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *Name) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *Name) GetValue() string {
+	return receiver.content.GetValue()
+}
+
+func (receiver *Name) GetIsNil() bool {
+	return receiver.content.GetIsNil()
 }

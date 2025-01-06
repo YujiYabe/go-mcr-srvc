@@ -3,7 +3,7 @@ package group_object
 import valueObject "backend/internal/4_domain/value_object"
 
 type Person struct {
-	Err         error
+	err         error
 	ID          valueObject.ID
 	Name        valueObject.Name
 	MailAddress valueObject.MailAddress
@@ -16,14 +16,14 @@ type NewPersonArgs struct {
 }
 
 func (receiver *Person) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *Person) SetError(
 	err error,
 ) {
-	if receiver.Err == nil {
-		receiver.Err = err
+	if receiver.err == nil {
+		receiver.err = err
 	}
 }
 
@@ -35,20 +35,20 @@ func NewPerson(
 	person = &Person{}
 
 	person.ID = valueObject.NewID(args.ID)
-	if person.ID.Err != nil {
-		person.SetError(person.ID.Err)
+	if person.ID.GetError() != nil {
+		person.SetError(person.ID.GetError())
 		return
 	}
 
 	person.Name = valueObject.NewName(args.Name)
-	if person.Name.Err != nil {
-		person.SetError(person.Name.Err)
+	if person.Name.GetError() != nil {
+		person.SetError(person.Name.GetError())
 		return
 	}
 
 	person.MailAddress = valueObject.NewMailAddress(args.MailAddress)
-	if person.MailAddress.Err != nil {
-		person.SetError(person.MailAddress.Err)
+	if person.MailAddress.GetError() != nil {
+		person.SetError(person.MailAddress.GetError())
 		return
 	}
 

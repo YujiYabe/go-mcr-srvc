@@ -6,9 +6,9 @@ import (
 )
 
 type PrimitiveInt32 struct {
-	Err      error
-	Value    int32
-	IsNil    bool
+	err      error
+	value    int32
+	isNil    bool
 	MaxValue int32
 	MinValue int32
 }
@@ -19,7 +19,7 @@ func (receiver *PrimitiveInt32) WithError(
 	err error,
 ) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
-		s.Err = err
+		s.err = err
 	}
 }
 
@@ -27,7 +27,7 @@ func (receiver *PrimitiveInt32) WithValue(
 	value int32,
 ) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
-		s.Value = value
+		s.value = value
 	}
 }
 
@@ -35,7 +35,7 @@ func (receiver *PrimitiveInt32) WithIsNil(
 	isNil bool,
 ) PrimitiveInt32Option {
 	return func(s *PrimitiveInt32) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
@@ -62,9 +62,9 @@ func NewPrimitiveInt32(
 ) {
 	// デフォルト値を設定
 	primitiveInt32 = &PrimitiveInt32{
-		Err:      nil,
-		Value:    0,
-		IsNil:    false,
+		err:      nil,
+		value:    0,
+		isNil:    false,
 		MaxValue: -1,
 		MinValue: -1,
 	}
@@ -81,18 +81,18 @@ func NewPrimitiveInt32(
 func (receiver *PrimitiveInt32) SetIsNil(
 	isNil bool,
 ) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt32) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PrimitiveInt32) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 func (receiver *PrimitiveInt32) SetErrorString(
@@ -107,28 +107,28 @@ func (receiver *PrimitiveInt32) SetErrorString(
 }
 
 func (receiver *PrimitiveInt32) GetValue() int32 {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return 0
 	}
-	return receiver.Value
+	return receiver.value
 }
 
 func (receiver *PrimitiveInt32) SetValue(
 	value int32,
 ) {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
-	receiver.Value = value
+	receiver.value = value
 }
 
 // 指定した桁で四捨五入するメソッド
 func (receiver *PrimitiveInt32) RoundToDigit(
 	digit int32,
 ) {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
@@ -138,23 +138,23 @@ func (receiver *PrimitiveInt32) RoundToDigit(
 		multiplier *= 10
 	}
 
-	value := float64(receiver.Value) / float64(multiplier)
+	value := float64(receiver.value) / float64(multiplier)
 	rounded := int32(math.Round(value) * float64(multiplier))
-	receiver.Value = rounded
+	receiver.value = rounded
 }
 
 func (receiver *PrimitiveInt32) Validation() {
-	if receiver.IsNil {
+	if receiver.isNil {
 		return
 	}
 
 	receiver.ValidationMax()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
 	receiver.ValidationMin()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
@@ -166,12 +166,12 @@ func (receiver *PrimitiveInt32) ValidationMax() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value > receiver.MaxValue {
+	if receiver.value > receiver.MaxValue {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -183,12 +183,12 @@ func (receiver *PrimitiveInt32) ValidationMin() {
 		return
 	}
 
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value < receiver.MinValue {
+	if receiver.value < receiver.MinValue {
 		receiver.SetErrorString("min limitation")
 		return
 	}

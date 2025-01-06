@@ -36,11 +36,11 @@ func get(
 			MailAddress: person.MailAddress,
 		},
 	)
-	if reqPerson.Err != nil {
-		pkg.Logging(ctx, reqPerson.Err)
+	if reqPerson.GetError() != nil {
+		pkg.Logging(ctx, reqPerson.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
-			reqPerson.Err,
+			reqPerson.GetError(),
 		)
 	}
 
@@ -59,9 +59,9 @@ func get(
 
 	responseList := []httpParameter.V1Person{}
 	for _, person := range personList.Content {
-		id := person.ID.Content.GetValue()
-		name := person.Name.Content.GetValue()
-		mailAddress := person.MailAddress.Content.GetValue()
+		id := person.ID.GetValue()
+		name := person.Name.GetValue()
+		mailAddress := person.MailAddress.GetValue()
 		responseList = append(
 			responseList,
 			httpParameter.V1Person{

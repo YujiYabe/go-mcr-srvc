@@ -15,9 +15,8 @@ func (receiver *useCase) GetPersonList(
 	ctx context.Context,
 ) (
 	personList groupObject.PersonList,
-	err error,
 ) {
-	personList, err = receiver.ToGateway.GetPersonList(ctx)
+	personList = receiver.ToGateway.GetPersonList(ctx)
 	return
 }
 

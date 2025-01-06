@@ -33,7 +33,6 @@ type (
 			ctx context.Context,
 		) (
 			personList groupObject.PersonList,
-			err error,
 		)
 
 		GetPersonByCondition(
@@ -67,7 +66,6 @@ type (
 			ctx context.Context,
 		) (
 			personList groupObject.PersonList,
-			err error,
 		)
 
 		GetPersonByCondition(

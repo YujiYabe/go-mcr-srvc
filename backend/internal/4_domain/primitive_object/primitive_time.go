@@ -6,9 +6,9 @@ import (
 )
 
 type PrimitiveTime struct {
-	Err      error
-	Value    time.Time
-	IsNil    bool
+	err      error
+	value    time.Time
+	isNil    bool
 	MaxValue time.Time
 	MinValue time.Time
 }
@@ -19,7 +19,7 @@ func (receiver *PrimitiveTime) WithError(
 	err error,
 ) PrimitiveTimeOption {
 	return func(s *PrimitiveTime) {
-		s.Err = err
+		s.err = err
 	}
 }
 
@@ -27,7 +27,7 @@ func (receiver *PrimitiveTime) WithValue(
 	value time.Time,
 ) PrimitiveTimeOption {
 	return func(s *PrimitiveTime) {
-		s.Value = value
+		s.value = value
 	}
 }
 
@@ -35,7 +35,7 @@ func (receiver *PrimitiveTime) WithIsNil(
 	isNil bool,
 ) PrimitiveTimeOption {
 	return func(s *PrimitiveTime) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
@@ -61,9 +61,9 @@ func NewPrimitiveTime(
 	primitiveTime *PrimitiveTime,
 ) {
 	primitiveTime = &PrimitiveTime{
-		Err:      nil,
-		Value:    time.Time{},
-		IsNil:    false,
+		err:      nil,
+		value:    time.Time{},
+		isNil:    false,
 		MaxValue: time.Time{},
 		MinValue: time.Time{},
 	}
@@ -76,17 +76,22 @@ func NewPrimitiveTime(
 }
 
 func (receiver *PrimitiveTime) SetIsNil(isNil bool) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
+}
+
+// --------------------------------------
+func (receiver *PrimitiveTime) GetIsNil() bool {
+	return receiver.isNil
 }
 
 func (receiver *PrimitiveTime) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *PrimitiveTime) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
 }
 
 func (receiver *PrimitiveTime) SetErrorString(
@@ -101,45 +106,45 @@ func (receiver *PrimitiveTime) SetErrorString(
 }
 
 func (receiver *PrimitiveTime) GetValue() time.Time {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return time.Time{}
 	}
-	return receiver.Value
+	return receiver.value
 }
 
 func (receiver *PrimitiveTime) SetValue(value time.Time) {
-	if receiver.IsNil {
+	if receiver.isNil {
 		receiver.SetErrorString("is nil")
 		return
 	}
-	receiver.Value = value
+	receiver.value = value
 }
 
 func (receiver *PrimitiveTime) ValidateMaxValue() {
-	if !receiver.MaxValue.IsZero() && receiver.Value.After(receiver.MaxValue) {
-		receiver.Err = fmt.Errorf("PrimitiveTime: value exceeds maximum allowed time")
+	if !receiver.MaxValue.IsZero() && receiver.value.After(receiver.MaxValue) {
+		receiver.err = fmt.Errorf("PrimitiveTime: value exceeds maximum allowed time")
 	}
 }
 
 func (receiver *PrimitiveTime) ValidateMinValue() {
-	if !receiver.MinValue.IsZero() && receiver.Value.Before(receiver.MinValue) {
-		receiver.Err = fmt.Errorf("PrimitiveTime: value is before minimum allowed time")
+	if !receiver.MinValue.IsZero() && receiver.value.Before(receiver.MinValue) {
+		receiver.err = fmt.Errorf("PrimitiveTime: value is before minimum allowed time")
 	}
 }
 
 func (receiver *PrimitiveTime) Validation() {
-	if receiver.IsNil {
+	if receiver.isNil {
 		return
 	}
 
 	receiver.ValidateMaxValue()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 
 	receiver.ValidateMinValue()
-	if receiver.Err != nil {
+	if receiver.err != nil {
 		return
 	}
 

@@ -59,6 +59,6 @@ func fetchAccessToken(
 
 	return c.JSON(
 		http.StatusOK,
-		accessToken.Content.GetValue(),
+		accessToken.GetValue(),
 	)
 }

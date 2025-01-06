@@ -11,7 +11,6 @@ func (receiver *Gateway) GetPersonList(
 
 ) (
 	personList groupObject.PersonList,
-	err error,
 ) {
 	return receiver.ToPostgres.GetPersonList(ctx)
 }

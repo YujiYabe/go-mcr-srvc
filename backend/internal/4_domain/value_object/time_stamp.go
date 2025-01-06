@@ -15,8 +15,8 @@ const (
 )
 
 type TimeStamp struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewTimeStamp(
@@ -32,26 +32,30 @@ func NewTimeStamp(
 	if !isNil {
 		valueString = *value
 	}
-	timeStamp.Content = primitiveObject.NewPrimitiveString(
+	timeStamp.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(timeStampLengthMax),
 		primitiveString.WithMinLength(timeStampLengthMin),
 	)
 
-	timeStamp.Content.Validation()
-	if timeStamp.Content.GetError() != nil {
-		timeStamp.SetError(timeStamp.Content.GetError())
+	timeStamp.content.Validation()
+	if timeStamp.content.GetError() != nil {
+		timeStamp.SetError(timeStamp.content.GetError())
 	}
 
 	return
 }
 func (receiver *TimeStamp) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *TimeStamp) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *TimeStamp) GetValue() string {
+	return receiver.content.GetValue()
 }

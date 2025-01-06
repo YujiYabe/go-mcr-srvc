@@ -15,8 +15,8 @@ const (
 )
 
 type Permission struct {
-	Err     error
-	Content *primitiveObject.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewPermission(
@@ -32,26 +32,30 @@ func NewPermission(
 	if !isNil {
 		valueString = *value
 	}
-	permission.Content = primitiveObject.NewPrimitiveString(
+	permission.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(valueString),
 		primitiveString.WithIsNil(isNil),
 		primitiveString.WithMaxLength(permissionLengthMax),
 		primitiveString.WithMinLength(permissionLengthMin),
 	)
 
-	permission.Content.Validation()
-	if permission.Content.GetError() != nil {
-		permission.SetError(permission.Content.GetError())
+	permission.content.Validation()
+	if permission.content.GetError() != nil {
+		permission.SetError(permission.content.GetError())
 	}
 
 	return
 }
 func (receiver *Permission) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *Permission) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *Permission) GetValue() string {
+	return receiver.content.GetValue()
 }

@@ -55,7 +55,6 @@ type (
 			ctx context.Context,
 		) (
 			personList groupObject.PersonList,
-			err error,
 		)
 
 		GetPersonByCondition(

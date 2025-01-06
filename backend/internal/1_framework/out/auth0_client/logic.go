@@ -19,8 +19,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 	accessToken valueObject.AccessToken,
 ) {
 	payload := map[string]string{
-		"client_id":     credential.ClientID.Content.GetValue(),
-		"client_secret": credential.ClientSecret.Content.GetValue(),
+		"client_id":     credential.ClientID.GetValue(),
+		"client_secret": credential.ClientSecret.GetValue(),
 		"audience":      "https://auth0my-yayuji.com",
 		"grant_type":    "client_credentials",
 	}

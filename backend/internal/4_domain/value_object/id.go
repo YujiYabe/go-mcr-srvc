@@ -10,8 +10,8 @@ const (
 )
 
 type ID struct {
-	Err     error
-	Content *primitiveObject.PrimitiveInt
+	err     error
+	content *primitiveObject.PrimitiveInt
 }
 
 func NewID(
@@ -27,27 +27,31 @@ func NewID(
 	if !isNil {
 		valueInt = *value
 	}
-	id.Content = primitiveObject.NewPrimitiveInt(
+	id.content = primitiveObject.NewPrimitiveInt(
 		primitiveInt.WithValue(valueInt),
 		primitiveInt.WithIsNil(isNil),
 		primitiveInt.WithMaxValue(idLengthMax),
 		primitiveInt.WithMinValue(idLengthMin),
 	)
 
-	id.Content.Validation()
-	if id.Content.GetError() != nil {
-		id.SetError(id.Content.GetError())
+	id.content.Validation()
+	if id.content.GetError() != nil {
+		id.SetError(id.content.GetError())
 	}
 
 	return
 }
 
 func (receiver *ID) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *ID) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *ID) GetValue() int {
+	return receiver.content.GetValue()
 }

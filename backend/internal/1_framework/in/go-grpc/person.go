@@ -58,9 +58,9 @@ func (receiver *Server) GetPersonByCondition(
 			MailAddress: mailAddress,
 		},
 	)
-	if reqPerson.Err != nil {
-		pkg.Logging(ctx, reqPerson.Err)
-		err = reqPerson.Err
+	if reqPerson.GetError() != nil {
+		pkg.Logging(ctx, reqPerson.GetError())
+		err = reqPerson.GetError()
 		return
 	}
 
@@ -74,9 +74,9 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	for _, response := range responseList.Content {
-		id32 := uint32(response.ID.Content.GetValue())
-		name := response.Name.Content.GetValue()
-		mailAddress := response.MailAddress.Content.GetValue()
+		id32 := uint32(response.ID.GetValue())
+		name := response.Name.GetValue()
+		mailAddress := response.MailAddress.GetValue()
 		v1PersonParameter := &grpcParameter.V1PersonParameter{
 			Id:          &id32,
 			Name:        &name,

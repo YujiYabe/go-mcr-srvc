@@ -15,8 +15,8 @@ const (
 )
 
 type RequestStartTime struct {
-	Err     error
-	Content *primitiveObject.PrimitiveInt64
+	err     error
+	content *primitiveObject.PrimitiveInt64
 }
 
 func NewRequestStartTime(
@@ -32,26 +32,30 @@ func NewRequestStartTime(
 	if !isNil {
 		valueInt64 = *value
 	}
-	requestStartTime.Content = primitiveObject.NewPrimitiveInt64(
+	requestStartTime.content = primitiveObject.NewPrimitiveInt64(
 		primitiveInt64.WithValue(valueInt64),
 		primitiveInt64.WithIsNil(isNil),
 		primitiveInt64.WithMaxValue(requestStartTimeLengthMax),
 		primitiveInt64.WithMinValue(requestStartTimeLengthMin),
 	)
 
-	requestStartTime.Content.Validation()
-	if requestStartTime.Content.GetError() != nil {
-		requestStartTime.SetError(requestStartTime.Content.GetError())
+	requestStartTime.content.Validation()
+	if requestStartTime.content.GetError() != nil {
+		requestStartTime.SetError(requestStartTime.content.GetError())
 	}
 
 	return
 }
 func (receiver *RequestStartTime) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
 func (receiver *RequestStartTime) SetError(
 	err error,
 ) {
-	receiver.Err = err
+	receiver.err = err
+}
+
+func (receiver *RequestStartTime) GetValue() int64 {
+	return receiver.content.GetValue()
 }
