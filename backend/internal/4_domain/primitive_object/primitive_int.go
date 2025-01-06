@@ -2,6 +2,7 @@ package primitive_object
 
 import "fmt"
 
+// --------------------------------------
 type PrimitiveInt struct {
 	err      error
 	value    int
@@ -10,6 +11,7 @@ type PrimitiveInt struct {
 	MinValue int
 }
 
+// --------------------------------------
 type PrimitiveIntOption func(*PrimitiveInt)
 
 // --------------------------------------
@@ -23,10 +25,16 @@ func (receiver *PrimitiveInt) WithError(
 
 // --------------------------------------
 func (receiver *PrimitiveInt) WithValue(
-	value int,
+	value *int,
 ) PrimitiveIntOption {
+	receiver.SetIsNil(true)
+	var resValue int
+	if value != nil {
+		receiver.SetIsNil(false)
+		resValue = *value
+	}
 	return func(s *PrimitiveInt) {
-		s.value = value
+		s.value = resValue
 	}
 }
 
@@ -93,6 +101,19 @@ func (receiver *PrimitiveInt) SetIsNil(
 }
 
 // --------------------------------------
+func (receiver *PrimitiveInt) CheckNil(
+	value *int,
+) (
+	isNil bool,
+) {
+	isNil = true
+	if value != nil {
+		isNil = false
+	}
+	return
+}
+
+// --------------------------------------
 func (receiver *PrimitiveInt) GetError() error {
 	return receiver.err
 }
@@ -119,9 +140,9 @@ func (receiver *PrimitiveInt) SetErrorString(
 // --------------------------------------
 func (receiver *PrimitiveInt) GetValue() int {
 	if receiver.isNil {
-		receiver.SetErrorString("is nil")
 		return 0
 	}
+
 	return receiver.value
 }
 
@@ -190,18 +211,4 @@ func (receiver *PrimitiveInt) ValidationMin() {
 		receiver.SetErrorString("min limitation")
 		return
 	}
-}
-
-// --------------------------------------
-func (receiver *PrimitiveInt) CheckNil(
-	value *int,
-) (
-	isNil bool,
-) {
-	isNil = true
-	if value != nil {
-		isNil = false
-	}
-
-	return
 }

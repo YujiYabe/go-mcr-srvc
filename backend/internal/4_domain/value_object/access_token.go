@@ -26,26 +26,27 @@ func NewAccessToken(
 	accessToken AccessToken,
 ) {
 	accessToken = AccessToken{}
+	accessToken.SetValue(value)
+
+	return
+}
+
+func (receiver *AccessToken) SetValue(
+	value *string,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	accessToken.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(accessTokenLengthMax),
 		primitiveString.WithMinLength(accessTokenLengthMin),
 	)
 
-	accessToken.content.Validation()
-	if accessToken.content.GetError() != nil {
-		accessToken.SetError(accessToken.content.GetError())
+	receiver.content.Validation()
+	if receiver.GetError() != nil {
+		receiver.SetError(receiver.GetError())
+		return
 	}
-
-	return
 }
 
 func (receiver *AccessToken) GetError() error {

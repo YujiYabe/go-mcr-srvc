@@ -20,28 +20,28 @@ func NewClientSecret(
 	clientSecret ClientSecret,
 ) {
 	clientSecret = ClientSecret{}
+	clientSecret.SetValue(value)
+
+	return
+}
+
+func (receiver *ClientSecret) SetValue(
+	value *string,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-
-	clientSecret.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(clientSecretLengthMax),
 		primitiveString.WithMinLength(clientSecretLengthMin),
 	)
 
-	clientSecret.content.Validation()
-	if clientSecret.content.GetError() != nil {
-		clientSecret.SetError(clientSecret.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
-
-	return
 }
+
 func (receiver *ClientSecret) GetError() error {
 	return receiver.err
 }

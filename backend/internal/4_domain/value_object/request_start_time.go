@@ -25,27 +25,28 @@ func NewRequestStartTime(
 	requestStartTime RequestStartTime,
 ) {
 	requestStartTime = RequestStartTime{}
+	requestStartTime.SetValue(value)
+
+	return
+}
+
+func (receiver *RequestStartTime) SetValue(
+	value *int64,
+) {
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
 
-	isNil := primitiveInt64.CheckNil(value)
-	var valueInt64 int64 = 0
-	if !isNil {
-		valueInt64 = *value
-	}
-	requestStartTime.content = primitiveObject.NewPrimitiveInt64(
-		primitiveInt64.WithValue(valueInt64),
-		primitiveInt64.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveInt64(
+		primitiveInt64.WithValue(value),
 		primitiveInt64.WithMaxValue(requestStartTimeLengthMax),
 		primitiveInt64.WithMinValue(requestStartTimeLengthMin),
 	)
 
-	requestStartTime.content.Validation()
-	if requestStartTime.content.GetError() != nil {
-		requestStartTime.SetError(requestStartTime.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
-
-	return
 }
+
 func (receiver *RequestStartTime) GetError() error {
 	return receiver.err
 }

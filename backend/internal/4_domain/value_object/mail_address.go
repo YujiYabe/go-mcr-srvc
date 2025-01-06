@@ -34,15 +34,9 @@ func (receiver *MailAddress) SetValue(
 ) {
 	// 値の格納前にバリデーション。
 	primitiveString := &primitive_object.PrimitiveString{}
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
 
 	receiver.content = primitive_object.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(mailAddressLengthMax),
 		primitiveString.WithMinLength(mailAddressLengthMin),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
@@ -57,9 +51,7 @@ func (receiver *MailAddress) SetValue(
 
 	// メールアドレスのバリデーション
 	receiver.Validation()
-	if receiver.GetError() != nil {
-		return
-	}
+
 }
 
 func (receiver *MailAddress) GetValue() string {

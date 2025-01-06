@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+// --------------------------------------
 type PrimitiveInt32 struct {
 	err      error
 	value    int32
@@ -13,8 +14,10 @@ type PrimitiveInt32 struct {
 	MinValue int32
 }
 
+// --------------------------------------
 type PrimitiveInt32Option func(*PrimitiveInt32)
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) WithError(
 	err error,
 ) PrimitiveInt32Option {
@@ -23,14 +26,22 @@ func (receiver *PrimitiveInt32) WithError(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) WithValue(
-	value int32,
+	value *int32,
 ) PrimitiveInt32Option {
+	receiver.SetIsNil(true)
+	var resValue int32
+	if value != nil {
+		receiver.SetIsNil(false)
+		resValue = *value
+	}
 	return func(s *PrimitiveInt32) {
-		s.value = value
+		s.value = resValue
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) WithIsNil(
 	isNil bool,
 ) PrimitiveInt32Option {
@@ -39,6 +50,7 @@ func (receiver *PrimitiveInt32) WithIsNil(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) WithMaxValue(
 	value int32,
 ) PrimitiveInt32Option {
@@ -47,6 +59,7 @@ func (receiver *PrimitiveInt32) WithMaxValue(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) WithMinValue(
 	value int32,
 ) PrimitiveInt32Option {
@@ -55,6 +68,7 @@ func (receiver *PrimitiveInt32) WithMinValue(
 	}
 }
 
+// --------------------------------------
 func NewPrimitiveInt32(
 	options ...PrimitiveInt32Option,
 ) (
@@ -78,6 +92,11 @@ func NewPrimitiveInt32(
 }
 
 // --------------------------------------
+func (receiver *PrimitiveInt32) GetIsNil() bool {
+	return receiver.isNil
+}
+
+// --------------------------------------
 func (receiver *PrimitiveInt32) SetIsNil(
 	isNil bool,
 ) {
@@ -85,16 +104,31 @@ func (receiver *PrimitiveInt32) SetIsNil(
 }
 
 // --------------------------------------
+func (receiver *PrimitiveInt32) CheckNil(
+	value *int32,
+) (
+	isNil bool,
+) {
+	isNil = true
+	if value != nil {
+		isNil = false
+	}
+	return
+}
+
+// --------------------------------------
 func (receiver *PrimitiveInt32) GetError() error {
 	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) SetErrorString(
 	errString string,
 ) {
@@ -106,6 +140,7 @@ func (receiver *PrimitiveInt32) SetErrorString(
 	)
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) GetValue() int32 {
 	if receiver.isNil {
 		receiver.SetErrorString("is nil")
@@ -114,6 +149,7 @@ func (receiver *PrimitiveInt32) GetValue() int32 {
 	return receiver.value
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) SetValue(
 	value *int32,
 ) {
@@ -126,6 +162,7 @@ func (receiver *PrimitiveInt32) SetValue(
 }
 
 // 指定した桁で四捨五入するメソッド
+// --------------------------------------
 func (receiver *PrimitiveInt32) RoundToDigit(
 	digit int32,
 ) {
@@ -144,6 +181,7 @@ func (receiver *PrimitiveInt32) RoundToDigit(
 	receiver.value = rounded
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) Validation() {
 	if receiver.isNil {
 		return
@@ -161,6 +199,7 @@ func (receiver *PrimitiveInt32) Validation() {
 
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) ValidationMax() {
 	if receiver.MaxValue < 0 {
 		// receiver.SetErrorString("max length no defined")
@@ -178,6 +217,7 @@ func (receiver *PrimitiveInt32) ValidationMax() {
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt32) ValidationMin() {
 	if receiver.MinValue < 0 {
 		// receiver.SetError("min length no defined")
@@ -193,17 +233,4 @@ func (receiver *PrimitiveInt32) ValidationMin() {
 		receiver.SetErrorString("min limitation")
 		return
 	}
-}
-
-func (receiver *PrimitiveInt32) CheckNil(
-	value *int32,
-) (
-	isNil bool,
-) {
-	isNil = true
-	if value != nil {
-		isNil = false
-	}
-
-	return
 }

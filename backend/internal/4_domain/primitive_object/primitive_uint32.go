@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// --------------------------------------
 type PrimitiveUint32 struct {
 	err      error
 	value    uint32
@@ -12,8 +13,10 @@ type PrimitiveUint32 struct {
 	MinValue uint32
 }
 
+// --------------------------------------
 type PrimitiveUint32Option func(*PrimitiveUint32)
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) WithError(
 	err error,
 ) PrimitiveUint32Option {
@@ -22,14 +25,22 @@ func (receiver *PrimitiveUint32) WithError(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) WithValue(
-	value uint32,
+	value *uint32,
 ) PrimitiveUint32Option {
+	receiver.SetIsNil(true)
+	var resValue uint32
+	if value != nil {
+		receiver.SetIsNil(false)
+		resValue = *value
+	}
 	return func(s *PrimitiveUint32) {
-		s.value = value
+		s.value = resValue
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) WithIsNil(
 	isNil bool,
 ) PrimitiveUint32Option {
@@ -38,6 +49,7 @@ func (receiver *PrimitiveUint32) WithIsNil(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) WithMaxValue(
 	value uint32,
 ) PrimitiveUint32Option {
@@ -46,6 +58,7 @@ func (receiver *PrimitiveUint32) WithMaxValue(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) WithMinValue(
 	value uint32,
 ) PrimitiveUint32Option {
@@ -54,6 +67,7 @@ func (receiver *PrimitiveUint32) WithMinValue(
 	}
 }
 
+// --------------------------------------
 func NewPrimitiveUint32(
 	options ...PrimitiveUint32Option,
 ) (
@@ -91,12 +105,14 @@ func (receiver *PrimitiveUint32) GetError() error {
 	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) SetErrorString(
 	errString string,
 ) {
@@ -117,6 +133,7 @@ func (receiver *PrimitiveUint32) GetValue() uint32 {
 	return receiver.value
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) SetValue(
 	value *uint32,
 ) {
@@ -147,6 +164,7 @@ func (receiver *PrimitiveUint32) Validation() error {
 	return nil
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) ValidationMax() {
 	if receiver.MaxValue == 0 {
 		// receiver.SetError("max length no defined")
@@ -164,6 +182,7 @@ func (receiver *PrimitiveUint32) ValidationMax() {
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) ValidationMin() {
 	if receiver.MinValue == 0 {
 		// receiver.SetError("min length no defined")
@@ -181,6 +200,7 @@ func (receiver *PrimitiveUint32) ValidationMin() {
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveUint32) CheckNil(
 	value *uint32,
 ) (

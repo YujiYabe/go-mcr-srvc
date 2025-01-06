@@ -20,26 +20,26 @@ func NewID(
 	id ID,
 ) {
 	id = ID{}
+	id.SetValue(value)
+
+	return
+}
+
+func (receiver *ID) SetValue(
+	value *int,
+) {
 	primitiveInt := &primitiveObject.PrimitiveInt{}
 
-	isNil := primitiveInt.CheckNil(value)
-	valueInt := 0
-	if !isNil {
-		valueInt = *value
-	}
-	id.content = primitiveObject.NewPrimitiveInt(
-		primitiveInt.WithValue(valueInt),
-		primitiveInt.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveInt(
+		primitiveInt.WithValue(value),
 		primitiveInt.WithMaxValue(idLengthMax),
 		primitiveInt.WithMinValue(idLengthMin),
 	)
 
-	id.content.Validation()
-	if id.content.GetError() != nil {
-		id.SetError(id.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
-
-	return
 }
 
 func (receiver *ID) GetError() error {

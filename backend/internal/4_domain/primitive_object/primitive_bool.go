@@ -4,12 +4,14 @@ import (
 	"fmt"
 )
 
+// --------------------------------------
 type PrimitiveBool struct {
 	err   error
 	value bool
 	isNil bool
 }
 
+// --------------------------------------
 type PrimitiveBoolOption func(*PrimitiveBool)
 
 // --------------------------------------
@@ -23,10 +25,16 @@ func (receiver *PrimitiveBool) WithError(
 
 // --------------------------------------
 func (receiver *PrimitiveBool) WithValue(
-	value bool,
+	value *bool,
 ) PrimitiveBoolOption {
+	receiver.SetIsNil(true)
+	var resValue bool
+	if value != nil {
+		receiver.SetIsNil(false)
+		resValue = *value
+	}
 	return func(s *PrimitiveBool) {
-		s.value = value
+		s.value = resValue
 	}
 }
 
@@ -97,7 +105,6 @@ func (receiver *PrimitiveBool) SetErrorString(
 // --------------------------------------
 func (receiver *PrimitiveBool) GetValue() bool {
 	if receiver.isNil {
-		receiver.SetErrorString("is nil")
 		return false
 	}
 	return receiver.value

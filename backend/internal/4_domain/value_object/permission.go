@@ -25,27 +25,28 @@ func NewPermission(
 	permission Permission,
 ) {
 	permission = Permission{}
+	permission.SetValue(value)
+	return
+}
+
+func (receiver *Permission) SetValue(
+	value *string,
+) {
+	// 値の格納前にバリデーション。
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	permission.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(permissionLengthMax),
 		primitiveString.WithMinLength(permissionLengthMin),
 	)
 
-	permission.content.Validation()
-	if permission.content.GetError() != nil {
-		permission.SetError(permission.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
-
-	return
 }
+
 func (receiver *Permission) GetError() error {
 	return receiver.err
 }

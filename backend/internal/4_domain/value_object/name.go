@@ -25,29 +25,29 @@ func NewName(
 	name Name,
 ) {
 	name = Name{}
+	name.SetValue(value)
+
+	return
+}
+
+func (receiver *Name) SetValue(
+	value *string,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-
-	name.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(nameLengthMax),
 		primitiveString.WithMinLength(nameLengthMin),
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 
-	name.content.Validation()
-	if name.content.GetError() != nil {
-		name.SetError(name.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
-
-	return
 }
+
 func (receiver *Name) GetError() error {
 	return receiver.err
 }

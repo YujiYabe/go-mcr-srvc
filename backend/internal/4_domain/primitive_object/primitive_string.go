@@ -8,6 +8,7 @@ import (
 
 type ContextKey string
 
+// --------------------------------------
 // PrimitiveString は文字列値に対してバリデーション機能を提供する構造体です。
 // nil チェック、長さ制限、禁止文字列のチェックなどの機能を備えています。
 type PrimitiveString struct {
@@ -19,6 +20,7 @@ type PrimitiveString struct {
 	SpellList []string // チェック対象の禁止文字列リスト
 }
 
+// --------------------------------------
 // NewPrimitiveString は指定されたオプションで新しいPrimitiveStringインスタンスを生成します
 type PrimitiveStringOption func(*PrimitiveString)
 
@@ -35,10 +37,16 @@ func (receiver *PrimitiveString) WithError(
 // --------------------------------------
 // WithValue は文字列値を設定するオプションを返します
 func (receiver *PrimitiveString) WithValue(
-	value string,
+	value *string,
 ) PrimitiveStringOption {
+	receiver.SetIsNil(true)
+	var resValue string
+	if value != nil {
+		receiver.SetIsNil(false)
+		resValue = *value
+	}
 	return func(s *PrimitiveString) {
-		s.value = value
+		s.value = resValue
 	}
 }
 

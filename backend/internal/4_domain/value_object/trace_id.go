@@ -25,29 +25,41 @@ func NewTraceID(
 	value *string,
 ) (
 	traceID TraceID,
-	err error,
 ) {
 	traceID = TraceID{}
+
+	return
+}
+func (receiver *TraceID) SetValue(
+	value *string,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	traceID.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(traceIDLengthMax),
 		primitiveString.WithMinLength(traceIDLengthMin),
 	)
 
-	traceID.content.Validation()
-	if traceID.content.GetError() != nil {
-		traceID.SetError(traceID.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
 
-	return
+}
+
+func (receiver *TraceID) GetValue() string {
+	return receiver.content.GetValue()
+}
+
+func (receiver *TraceID) GetError() error {
+	return receiver.err
+}
+
+func (receiver *TraceID) SetError(
+	err error,
+) {
+	receiver.err = err
 }
 
 func GetTraceID(
@@ -61,17 +73,4 @@ func GetTraceID(
 	}
 
 	return
-}
-func (receiver *TraceID) GetError() error {
-	return receiver.err
-}
-
-func (receiver *TraceID) SetError(
-	err error,
-) {
-	receiver.err = err
-}
-
-func (receiver *TraceID) GetValue() string {
-	return receiver.content.GetValue()
 }

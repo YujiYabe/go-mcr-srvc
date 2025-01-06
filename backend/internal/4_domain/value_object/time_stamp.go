@@ -25,27 +25,28 @@ func NewTimeStamp(
 	timeStamp TimeStamp,
 ) {
 	timeStamp = TimeStamp{}
-	primitiveString := &primitiveObject.PrimitiveString{}
+	timeStamp.SetValue(value)
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	timeStamp.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	return
+}
+
+func (receiver *TimeStamp) SetValue(
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(timeStampLengthMax),
 		primitiveString.WithMinLength(timeStampLengthMin),
 	)
 
-	timeStamp.content.Validation()
-	if timeStamp.content.GetError() != nil {
-		timeStamp.SetError(timeStamp.content.GetError())
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
 
-	return
 }
+
 func (receiver *TimeStamp) GetError() error {
 	return receiver.err
 }

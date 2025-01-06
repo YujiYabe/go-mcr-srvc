@@ -20,26 +20,26 @@ func NewClientID(
 	clientID ClientID,
 ) {
 	clientID = ClientID{}
+	clientID.SetValue(value)
+	return
+}
+
+func (receiver *ClientID) SetValue(
+	value *string,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	clientID.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(clientIDLengthMax),
 		primitiveString.WithMinLength(clientIDLengthMin),
 	)
 
-	if clientID.content.GetError() != nil {
-		clientID.SetError(clientID.content.GetError())
+	if receiver.content.GetError() != nil {
+		receiver.SetError(receiver.content.GetError())
 	}
-
-	return
 }
+
 func (receiver *ClientID) GetError() error {
 	return receiver.err
 }
