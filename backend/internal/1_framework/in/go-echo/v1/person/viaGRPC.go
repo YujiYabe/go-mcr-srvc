@@ -1,7 +1,6 @@
 package person
 
 import (
-	"context"
 	"log"
 	"net/http"
 
@@ -50,8 +49,10 @@ func viaGRPC(
 	// 	ctx,
 	// 	*reqPerson,
 	// )
+
+	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, GetTraceID(ctx))
+	pkg.Logging(ctx, traceID)
 	log.Println("== == == == == == == == == == ")
 
 	err = toController.ViaGRPC(
@@ -86,24 +87,4 @@ func viaGRPC(
 		nil,
 	)
 
-}
-
-// GetTraceID はコンテキストからリクエストIDを取得します
-//
-// パラメータ:
-//   - ctx: リクエストIDを含むコンテキスト
-//
-// 戻り値:
-//   - traceIDString: 取得したリクエストID。取得できない場合は空文字列
-func GetTraceID(
-	ctx context.Context,
-) (
-	traceIDString string,
-) {
-	traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string)
-	if ok {
-		traceIDString = traceID
-	}
-
-	return
 }

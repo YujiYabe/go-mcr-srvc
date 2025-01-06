@@ -9,7 +9,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 
-	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	valueObject "backend/internal/4_domain/value_object"
 
@@ -38,6 +37,9 @@ func (receiver *GRPCClient) ViaGRPC(
 	client := grpcParameter.NewPersonClient(conn)
 
 	name := "a"
+
+	traceID := valueObject.GetTraceID(ctx)
+
 	// リクエストの作成
 	v1GetPersonByConditionRequest := &grpcParameter.V1GetPersonByConditionRequest{
 		V1PersonParameter: &grpcParameter.V1PersonParameter{
@@ -45,7 +47,7 @@ func (receiver *GRPCClient) ViaGRPC(
 		},
 		V1CommonParameter: &grpcParameter.V1CommonParameter{
 			Immutable: &grpcParameter.V1ImmutableParameter{
-				TraceID: grpcMiddleware.GetTraceID(ctx),
+				TraceID: traceID,
 			},
 		},
 	}
@@ -53,10 +55,10 @@ func (receiver *GRPCClient) ViaGRPC(
 	ctx = metadata.AppendToOutgoingContext(
 		ctx,
 		string(valueObject.TraceIDMetaName),
-		grpcMiddleware.GetTraceID(ctx),
+		traceID,
 	)
 	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, grpcMiddleware.GetTraceID(ctx))
+	pkg.Logging(ctx, traceID)
 	log.Println("== == == == == == == == == == ")
 
 	// gRPCリクエストの実行

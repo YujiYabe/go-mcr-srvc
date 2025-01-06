@@ -1,6 +1,8 @@
 package value_object
 
 import (
+	"context"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
@@ -40,6 +42,19 @@ func NewTraceID(
 	)
 
 	err = traceID.Content.Validation()
+
+	return
+}
+
+func GetTraceID(
+	ctx context.Context,
+) (
+	traceIDString string,
+) {
+	traceID, ok := ctx.Value(TraceIDContextName).(string)
+	if ok {
+		traceIDString = traceID
+	}
 
 	return
 }

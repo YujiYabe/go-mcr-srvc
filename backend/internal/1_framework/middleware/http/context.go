@@ -16,7 +16,7 @@ func ContextMiddleware() echo.MiddlewareFunc {
 
 			// traceID設定
 			traceID := generateTraceID(
-				GetTraceID(c.Request().Context()),
+				valueObject.GetTraceID(c.Request().Context()),
 			)
 			setTraceIDContext(c, traceID)
 			setTraceIDHeader(c, traceID)
@@ -56,26 +56,6 @@ func setTraceIDHeader(
 		string(valueObject.TraceIDContextName),
 		traceID,
 	)
-}
-
-// GetTraceID はコンテキストからリクエストIDを取得します
-//
-// パラメータ:
-//   - ctx: リクエストIDを含むコンテキスト
-//
-// 戻り値:
-//   - traceIDString: 取得したリクエストID。取得できない場合は空文字列
-func GetTraceID(
-	ctx context.Context,
-) (
-	traceIDString string,
-) {
-	traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string)
-	if ok {
-		traceIDString = traceID
-	}
-
-	return
 }
 
 // gRPCメタデータとの変換を行うレイヤーで適切に変換処理を実装
