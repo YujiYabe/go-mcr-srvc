@@ -3,7 +3,7 @@ package gateway
 import (
 	"context"
 
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -42,16 +42,15 @@ type (
 		GetPersonList(
 			ctx context.Context,
 		) (
-			personList structObject.PersonList,
+			personList groupObject.PersonList,
 			err error,
 		)
 
 		GetPersonByCondition(
 			ctx context.Context,
-			reqPerson structObject.Person,
+			reqPerson groupObject.Person,
 		) (
-			resPersonList structObject.PersonList,
-			err error,
+			resPersonList groupObject.PersonList,
 		)
 	}
 
@@ -59,7 +58,7 @@ type (
 	ToAuth0 interface {
 		FetchAccessToken(
 			ctx context.Context,
-			credential structObject.Credential,
+			credential groupObject.Credential,
 		) (
 			accessToken valueObject.AccessToken,
 		)

@@ -3,7 +3,7 @@ package controller
 import (
 	"context"
 
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -12,7 +12,7 @@ func (receiver *controller) Start() {}
 func (receiver *controller) GetPersonList(
 	ctx context.Context,
 ) (
-	personList structObject.PersonList,
+	personList groupObject.PersonList,
 	err error,
 ) {
 	personList, err = receiver.UseCase.GetPersonList(ctx)
@@ -21,12 +21,11 @@ func (receiver *controller) GetPersonList(
 
 func (receiver *controller) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson structObject.Person,
+	reqPerson groupObject.Person,
 ) (
-	resPersonList structObject.PersonList,
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	resPersonList, err = receiver.UseCase.GetPersonByCondition(
+	resPersonList = receiver.UseCase.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -35,7 +34,7 @@ func (receiver *controller) GetPersonByCondition(
 
 func (receiver *controller) FetchAccessToken(
 	ctx context.Context,
-	credential structObject.Credential,
+	credential groupObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
 ) {

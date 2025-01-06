@@ -1,4 +1,4 @@
-package struct_object
+package group_object
 
 import valueObject "backend/internal/4_domain/value_object"
 
@@ -19,12 +19,10 @@ func (receiver *Credential) GetError() error {
 
 func (receiver *Credential) SetError(
 	err error,
-) *Credential {
+) {
 	if receiver.Err == nil {
 		receiver.Err = err
 	}
-
-	return receiver
 }
 
 func NewCredential(

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -14,7 +14,7 @@ import (
 // FetchAccessToken ...
 func (receiver *Auth0Client) FetchAccessToken(
 	ctx context.Context,
-	credential structObject.Credential,
+	credential groupObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
 ) {

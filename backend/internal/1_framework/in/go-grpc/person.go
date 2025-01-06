@@ -6,7 +6,7 @@ import (
 	"time"
 
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 
 	"backend/pkg"
@@ -51,8 +51,8 @@ func (receiver *Server) GetPersonByCondition(
 		mailAddress = req.V1PersonParameter.MailAddress
 	}
 
-	reqPerson := structObject.NewPerson(
-		&structObject.NewPersonArgs{
+	reqPerson := groupObject.NewPerson(
+		&groupObject.NewPersonArgs{
 			ID:          id,
 			Name:        name,
 			MailAddress: mailAddress,
@@ -64,16 +64,16 @@ func (receiver *Server) GetPersonByCondition(
 		return
 	}
 
-	responseList, err := receiver.Controller.GetPersonByCondition(
+	responseList := receiver.Controller.GetPersonByCondition(
 		ctx,
 		*reqPerson,
 	)
-	if err != nil {
-		pkg.Logging(ctx, err)
+	if responseList.GetError() != nil {
+		pkg.Logging(ctx, responseList.GetError())
 		return
 	}
 
-	for _, response := range responseList {
+	for _, response := range responseList.Content {
 		id32 := uint32(response.ID.Content.GetValue())
 		name := response.Name.Content.GetValue()
 		mailAddress := response.MailAddress.Content.GetValue()

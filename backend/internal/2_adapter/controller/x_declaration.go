@@ -7,7 +7,7 @@ import (
 	usecase "backend/internal/3_usecase"
 
 	domain "backend/internal/4_domain"
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -54,21 +54,20 @@ type (
 		GetPersonList(
 			ctx context.Context,
 		) (
-			personList structObject.PersonList,
+			personList groupObject.PersonList,
 			err error,
 		)
 
 		GetPersonByCondition(
 			ctx context.Context,
-			reqPerson structObject.Person,
+			reqPerson groupObject.Person,
 		) (
-			resPersonList structObject.PersonList,
-			err error,
+			resPersonList groupObject.PersonList,
 		)
 
 		FetchAccessToken(
 			ctx context.Context,
-			credential structObject.Credential,
+			credential groupObject.Credential,
 		) (
 			accessToken valueObject.AccessToken,
 		)

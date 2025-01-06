@@ -7,7 +7,7 @@ import (
 
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	"backend/pkg"
 )
 
@@ -29,14 +29,13 @@ func get(
 		)
 	}
 
-	reqPerson := structObject.NewPerson(
-		&structObject.NewPersonArgs{
+	reqPerson := groupObject.NewPerson(
+		&groupObject.NewPersonArgs{
 			ID:          person.ID,
 			Name:        person.Name,
 			MailAddress: person.MailAddress,
 		},
 	)
-
 	if reqPerson.Err != nil {
 		pkg.Logging(ctx, reqPerson.Err)
 		return c.JSON(
@@ -45,21 +44,21 @@ func get(
 		)
 	}
 
-	personList, err := toController.GetPersonByCondition(
+	personList := toController.GetPersonByCondition(
 		ctx,
 		*reqPerson,
 	)
 
-	if err != nil {
+	if personList.GetError() != nil {
 		pkg.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
-			err,
+			personList.GetError(),
 		)
 	}
 
 	responseList := []httpParameter.V1Person{}
-	for _, person := range personList {
+	for _, person := range personList.Content {
 		id := person.ID.Content.GetValue()
 		name := person.Name.Content.GetValue()
 		mailAddress := person.MailAddress.Content.GetValue()

@@ -23,7 +23,6 @@ func NewPermissionList(
 	valueList []*string,
 ) (
 	permissionList PermissionList,
-	err error,
 ) {
 
 	permissionList = PermissionList{
@@ -49,10 +48,8 @@ func (receiver *PermissionList) GetError() error {
 
 func (receiver *PermissionList) SetError(
 	err error,
-) *PermissionList {
+) {
 	if receiver.Err == nil {
 		receiver.Err = err
 	}
-
-	return receiver
 }

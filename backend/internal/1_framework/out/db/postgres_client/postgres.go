@@ -10,7 +10,7 @@ import (
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	"backend/internal/2_adapter/gateway"
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	"backend/pkg"
 )
 
@@ -57,11 +57,11 @@ func open(count uint) (*gorm.DB, error) {
 func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
 ) (
-	personList structObject.PersonList,
+	personList groupObject.PersonList,
 	err error,
 ) {
-	personList = structObject.PersonList{} // ドメインロジック用
-	persons := []models.Person{}            // SQL結果保存用
+	personList = groupObject.PersonList{} // ドメインロジック用
+	persons := []models.Person{}          // SQL結果保存用
 
 	result := receiver.Conn.
 		Table("persons").
@@ -72,20 +72,20 @@ func (receiver *PostgresClient) GetPersonList(
 		return personList, result.Error
 	}
 	for _, person := range persons {
-		args := &structObject.NewPersonArgs{
+		args := &groupObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := structObject.NewPerson(args)
+		person := groupObject.NewPerson(args)
 
 		if person.Err != nil {
 			pkg.Logging(ctx, person.Err)
 			return personList, person.Err
 		}
 
-		personList = append(
-			personList,
+		personList.Content = append(
+			personList.Content,
 			*person,
 		)
 	}
@@ -96,13 +96,12 @@ func (receiver *PostgresClient) GetPersonList(
 // GetPersonByCondition ...
 func (receiver *PostgresClient) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson structObject.Person,
+	reqPerson groupObject.Person,
 ) (
-	resPersonList structObject.PersonList,
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	resPersonList = structObject.PersonList{} // ドメインロジック用
-	persons := []models.Person{}               // SQL結果保存用
+	resPersonList = groupObject.PersonList{} // ドメインロジック用
+	persons := []models.Person{}             // SQL結果保存用
 
 	conn := receiver.Conn.Table("persons")
 
@@ -117,23 +116,25 @@ func (receiver *PostgresClient) GetPersonByCondition(
 	result := conn.Find(&persons)
 	if result.Error != nil {
 		pkg.Logging(ctx, result.Error)
-		return resPersonList, result.Error
+		resPersonList.SetError(result.Error)
+		return
 	}
 	for _, person := range persons {
-		args := &structObject.NewPersonArgs{
+		args := &groupObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := structObject.NewPerson(args)
+		person := groupObject.NewPerson(args)
 
 		if person.Err != nil {
 			pkg.Logging(ctx, person.Err)
-			return resPersonList, person.Err
+			resPersonList.SetError(person.Err)
+			return
 		}
 
-		resPersonList = append(
-			resPersonList,
+		resPersonList.Content = append(
+			resPersonList.Content,
 			*person,
 		)
 	}

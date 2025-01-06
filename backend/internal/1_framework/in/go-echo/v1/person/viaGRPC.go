@@ -29,8 +29,8 @@ func viaGRPC(
 	// 	)
 	// }
 
-	// reqPerson := struct_object.NewPerson(
-	// 	&struct_object.NewPersonArgs{
+	// reqPerson := group_object.NewPerson(
+	// 	&group_object.NewPersonArgs{
 	// 		ID:          person.ID,
 	// 		Name:        person.Name,
 	// 		MailAddress: person.MailAddress,

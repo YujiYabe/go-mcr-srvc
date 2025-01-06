@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -14,7 +14,7 @@ func (receiver *useCase) Start() {
 func (receiver *useCase) GetPersonList(
 	ctx context.Context,
 ) (
-	personList structObject.PersonList,
+	personList groupObject.PersonList,
 	err error,
 ) {
 	personList, err = receiver.ToGateway.GetPersonList(ctx)
@@ -23,12 +23,11 @@ func (receiver *useCase) GetPersonList(
 
 func (receiver *useCase) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson structObject.Person,
+	reqPerson groupObject.Person,
 ) (
-	resPersonList structObject.PersonList,
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	resPersonList, err = receiver.ToGateway.GetPersonByCondition(
+	resPersonList = receiver.ToGateway.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -37,7 +36,7 @@ func (receiver *useCase) GetPersonByCondition(
 
 func (receiver *useCase) FetchAccessToken(
 	ctx context.Context,
-	credential structObject.Credential,
+	credential groupObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
 ) {

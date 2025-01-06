@@ -3,14 +3,14 @@ package gateway
 import (
 	"context"
 
-	structObject "backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
 // FetchAccessToken ...
 func (receiver *Gateway) FetchAccessToken(
 	ctx context.Context,
-	credential structObject.Credential,
+	credential groupObject.Credential,
 ) (
 	accessToken valueObject.AccessToken,
 ) {

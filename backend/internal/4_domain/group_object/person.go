@@ -1,8 +1,6 @@
-package struct_object
+package group_object
 
 import valueObject "backend/internal/4_domain/value_object"
-
-type PersonList []Person
 
 type Person struct {
 	Err         error
@@ -23,12 +21,10 @@ func (receiver *Person) GetError() error {
 
 func (receiver *Person) SetError(
 	err error,
-) *Person {
+) {
 	if receiver.Err == nil {
 		receiver.Err = err
 	}
-
-	return receiver
 }
 
 func NewPerson(
