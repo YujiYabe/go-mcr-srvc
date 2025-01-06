@@ -22,6 +22,7 @@ type PrimitiveString struct {
 // NewPrimitiveString は指定されたオプションで新しいPrimitiveStringインスタンスを生成します
 type PrimitiveStringOption func(*PrimitiveString)
 
+// --------------------------------------
 // WithError はエラーを設定するオプションを返します
 func (receiver *PrimitiveString) WithError(
 	err error,
@@ -31,6 +32,7 @@ func (receiver *PrimitiveString) WithError(
 	}
 }
 
+// --------------------------------------
 // WithValue は文字列値を設定するオプションを返します
 func (receiver *PrimitiveString) WithValue(
 	value string,
@@ -40,6 +42,7 @@ func (receiver *PrimitiveString) WithValue(
 	}
 }
 
+// --------------------------------------
 // WithIsNil はnil状態を設定するオプションを返します
 func (receiver *PrimitiveString) WithIsNil(
 	isNil bool,
@@ -49,8 +52,8 @@ func (receiver *PrimitiveString) WithIsNil(
 	}
 }
 
+// --------------------------------------
 // WithMaxLength は最大文字列長を設定するオプションを返します
-
 func (receiver *PrimitiveString) WithMaxLength(
 	length int,
 ) PrimitiveStringOption {
@@ -59,8 +62,8 @@ func (receiver *PrimitiveString) WithMaxLength(
 	}
 }
 
+// --------------------------------------
 // WithMinLength は最小文字列長を設定するオプションを返します
-
 func (receiver *PrimitiveString) WithMinLength(
 	length int,
 ) PrimitiveStringOption {
@@ -69,6 +72,7 @@ func (receiver *PrimitiveString) WithMinLength(
 	}
 }
 
+// --------------------------------------
 // WithCheckSpell は禁止文字列リストを設定するオプションを返します
 func (receiver *PrimitiveString) WithCheckSpell(
 	spellList []string,
@@ -78,6 +82,7 @@ func (receiver *PrimitiveString) WithCheckSpell(
 	}
 }
 
+// --------------------------------------
 func NewPrimitiveString(
 	options ...PrimitiveStringOption,
 ) (
@@ -116,6 +121,7 @@ func (receiver *PrimitiveString) GetError() error {
 	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveString) SetErrorString(
 	errString string,
 ) {
@@ -127,6 +133,7 @@ func (receiver *PrimitiveString) SetErrorString(
 	)
 }
 
+// --------------------------------------
 func (receiver *PrimitiveString) SetError(
 	err error,
 ) {
@@ -142,12 +149,14 @@ func (receiver *PrimitiveString) GetValue() string {
 	return receiver.value
 }
 
+// --------------------------------------
 func (receiver *PrimitiveString) SetValue(value string) {
 	receiver.isNil = false
 	receiver.value = value
 }
 
 // Validation は全てのバリデーションチェックを実行します
+// --------------------------------------
 func (receiver *PrimitiveString) Validation() {
 
 	if receiver.isNil {
@@ -172,6 +181,7 @@ func (receiver *PrimitiveString) Validation() {
 }
 
 // ValidationMax は最大文字列長のチェックを行います
+// --------------------------------------
 func (receiver *PrimitiveString) ValidationMax() {
 	if receiver.MaxLength < 0 {
 		// receiver.SetError("max length no defined")
@@ -190,6 +200,7 @@ func (receiver *PrimitiveString) ValidationMax() {
 }
 
 // ValidationMin は最小文字列長のチェックを行います
+// --------------------------------------
 func (receiver *PrimitiveString) ValidationMin() {
 	if receiver.MinLength < 0 {
 		// receiver.SetError("min length no defined")
@@ -208,6 +219,7 @@ func (receiver *PrimitiveString) ValidationMin() {
 }
 
 // ValidationSpell は禁止文字列のチェックを行います
+// --------------------------------------
 func (receiver *PrimitiveString) ValidationSpell() {
 	if len(receiver.SpellList) == 0 {
 		return
@@ -221,6 +233,7 @@ func (receiver *PrimitiveString) ValidationSpell() {
 }
 
 // CheckNil は文字列ポインタのnilチェックを行い、適切な値を返します
+// --------------------------------------
 func (receiver *PrimitiveString) CheckNil(
 	value *string,
 ) (

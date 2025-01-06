@@ -12,6 +12,7 @@ type PrimitiveInt struct {
 
 type PrimitiveIntOption func(*PrimitiveInt)
 
+// --------------------------------------
 func (receiver *PrimitiveInt) WithError(
 	err error,
 ) PrimitiveIntOption {
@@ -20,6 +21,7 @@ func (receiver *PrimitiveInt) WithError(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) WithValue(
 	value int,
 ) PrimitiveIntOption {
@@ -28,6 +30,7 @@ func (receiver *PrimitiveInt) WithValue(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) WithIsNil(
 	isNil bool,
 ) PrimitiveIntOption {
@@ -36,6 +39,7 @@ func (receiver *PrimitiveInt) WithIsNil(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) WithMaxValue(
 	value int,
 ) PrimitiveIntOption {
@@ -44,6 +48,7 @@ func (receiver *PrimitiveInt) WithMaxValue(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) WithMinValue(
 	value int,
 ) PrimitiveIntOption {
@@ -52,6 +57,7 @@ func (receiver *PrimitiveInt) WithMinValue(
 	}
 }
 
+// --------------------------------------
 func NewPrimitiveInt(
 	options ...PrimitiveIntOption,
 ) (
@@ -75,6 +81,11 @@ func NewPrimitiveInt(
 }
 
 // --------------------------------------
+func (receiver *PrimitiveInt) GetIsNil() bool {
+	return receiver.isNil
+}
+
+// --------------------------------------
 func (receiver *PrimitiveInt) SetIsNil(
 	isNil bool,
 ) {
@@ -86,12 +97,14 @@ func (receiver *PrimitiveInt) GetError() error {
 	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) SetErrorString(
 	errString string,
 ) {
@@ -112,14 +125,16 @@ func (receiver *PrimitiveInt) GetValue() int {
 	return receiver.value
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) SetValue(
-	value int,
+	value *int,
 ) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+	if value == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
 // --------------------------------------
@@ -141,6 +156,7 @@ func (receiver *PrimitiveInt) Validation() {
 
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) ValidationMax() {
 	if receiver.MaxValue < 0 {
 		// receiver.SetError("max length no defined")
@@ -158,6 +174,7 @@ func (receiver *PrimitiveInt) ValidationMax() {
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) ValidationMin() {
 	if receiver.MinValue < 0 {
 		// receiver.SetErrorString("min length no defined")
@@ -175,6 +192,7 @@ func (receiver *PrimitiveInt) ValidationMin() {
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt) CheckNil(
 	value *int,
 ) (

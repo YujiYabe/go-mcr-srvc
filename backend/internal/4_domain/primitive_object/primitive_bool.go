@@ -12,6 +12,7 @@ type PrimitiveBool struct {
 
 type PrimitiveBoolOption func(*PrimitiveBool)
 
+// --------------------------------------
 func (receiver *PrimitiveBool) WithError(
 	err error,
 ) PrimitiveBoolOption {
@@ -20,6 +21,7 @@ func (receiver *PrimitiveBool) WithError(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) WithValue(
 	value bool,
 ) PrimitiveBoolOption {
@@ -28,6 +30,7 @@ func (receiver *PrimitiveBool) WithValue(
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) WithIsNil(
 	isNil bool,
 ) PrimitiveBoolOption {
@@ -36,6 +39,7 @@ func (receiver *PrimitiveBool) WithIsNil(
 	}
 }
 
+// --------------------------------------
 func NewPrimitiveBool(
 	options ...PrimitiveBoolOption,
 ) (
@@ -54,22 +58,31 @@ func NewPrimitiveBool(
 	return
 }
 
+// --------------------------------------
+func (receiver *PrimitiveBool) GetIsNil() bool {
+	return receiver.isNil
+}
+
+// --------------------------------------
 func (receiver *PrimitiveBool) SetIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) GetError() error {
 	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) SetErrorString(
 	errString string,
 ) {
@@ -81,6 +94,7 @@ func (receiver *PrimitiveBool) SetErrorString(
 	)
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) GetValue() bool {
 	if receiver.isNil {
 		receiver.SetErrorString("is nil")
@@ -89,16 +103,19 @@ func (receiver *PrimitiveBool) GetValue() bool {
 	return receiver.value
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) SetValue(
-	value bool,
+	value *bool,
 ) {
-	if receiver.isNil {
-		receiver.SetErrorString("is nil")
+	if value == nil {
+		receiver.SetIsNil(true)
 		return
 	}
-	receiver.value = value
+	receiver.SetIsNil(false)
+	receiver.value = *value
 }
 
+// --------------------------------------
 func (receiver *PrimitiveBool) Validation() {
 	// TODO : バリデーションチェックを実装する
 }
