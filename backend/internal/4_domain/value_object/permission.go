@@ -9,33 +9,30 @@ import (
 )
 
 const (
-	AccessTokenMetaName    primitiveObject.ContextKey = "access-token"
-	AccessTokenContextName primitiveObject.ContextKey = "AccessToken"
+	permissionLengthMax = 30
+	permissionLengthMin = 1
 )
 
-const (
-	accessTokenLengthMax = 99999999999
-	accessTokenLengthMin = 0
-)
+var permissionCheckSpell = []string{}
 
-type AccessToken struct {
+type Permission struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewAccessToken(
+func NewPermission(
 	ctx context.Context,
 	value *string,
 ) (
-	accessToken AccessToken,
+	permission Permission,
 ) {
-	accessToken = AccessToken{}
-	accessToken.SetValue(ctx, value)
+	permission = Permission{}
+	permission.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *AccessToken) SetValue(
+func (receiver *Permission) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -43,21 +40,28 @@ func (receiver *AccessToken) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(accessTokenLengthMax),
-		primitiveString.WithMinLength(accessTokenLengthMin),
+		primitiveString.WithMaxLength(permissionLengthMax),
+		primitiveString.WithMinLength(permissionLengthMin),
+		primitiveString.WithCheckSpell(permissionCheckSpell),
 	)
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
 		receiver.SetError(ctx, receiver.content.GetError())
+		return
 	}
+
 }
 
-func (receiver *AccessToken) GetError() error {
+func (receiver *Permission) GetValue() string {
+	return receiver.content.GetValue()
+}
+
+func (receiver *Permission) GetError() error {
 	return receiver.err
 }
 
-func (receiver *AccessToken) SetError(
+func (receiver *Permission) SetError(
 	ctx context.Context,
 	err error,
 ) {
@@ -65,7 +69,7 @@ func (receiver *AccessToken) SetError(
 	pkg.Logging(ctx, receiver.GetError())
 }
 
-func (receiver *AccessToken) SetErrorString(
+func (receiver *Permission) SetErrorString(
 	ctx context.Context,
 	errString string,
 ) {
@@ -78,6 +82,6 @@ func (receiver *AccessToken) SetErrorString(
 	)
 }
 
-func (receiver *AccessToken) GetValue() string {
-	return receiver.content.GetValue()
+func (receiver *Permission) GetIsNil() bool {
+	return receiver.content.GetIsNil()
 }

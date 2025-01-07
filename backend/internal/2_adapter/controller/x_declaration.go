@@ -5,9 +5,10 @@ import (
 
 	"backend/internal/2_adapter/gateway"
 	usecase "backend/internal/3_usecase"
+
 	domain "backend/internal/4_domain"
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 // NewController ...
@@ -53,30 +54,28 @@ type (
 		GetPersonList(
 			ctx context.Context,
 		) (
-			personList struct_object.PersonList,
-			err error,
+			personList groupObject.PersonList,
 		)
 
 		GetPersonByCondition(
 			ctx context.Context,
-			reqPerson struct_object.Person,
+			reqPerson groupObject.Person,
 		) (
-			resPersonList struct_object.PersonList,
-			err error,
+			resPersonList groupObject.PersonList,
 		)
 
 		FetchAccessToken(
 			ctx context.Context,
-			credential struct_object.Credential,
+			credential groupObject.Credential,
 		) (
-			accessToken value_object.AccessToken,
-			err error,
+			accessToken valueObject.AccessToken,
 		)
 
 		ViaGRPC(
 			ctx context.Context,
+			reqPerson groupObject.Person,
 		) (
-			err error,
+			resPersonList groupObject.PersonList,
 		)
 	}
 )

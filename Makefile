@@ -8,13 +8,13 @@ gomod:
 # ----------------------------
 .PHONY: stop
 stop:
-	docker-compose stop
+	docker compose stop
 
 
 # ----------------------------
 .PHONY: removeAll
 removeAll:
-	docker-compose stop
+	docker compose stop
 	docker system prune -f
 	sudo rm -rf db/engine/postgres/data
 	sudo rm -rf db/engine/redis/data
@@ -23,20 +23,20 @@ removeAll:
 # ----------------------------
 .PHONY: build
 build:
-	docker-compose build
-	# docker-compose build --no-cache
+	docker compose build
+	# docker compose build --no-cache
 
 
 # ----------------------------
 .PHONY: debug
 debug:
-	DEBUG_MODE=true docker-compose up
+	DEBUG_MODE=true docker compose up
 
 
 # ----------------------------
 .PHONY: up
 up:
-	docker-compose up
+	docker compose up
 
 
 # ----------------------------
@@ -86,7 +86,7 @@ xo:
 # ----------------------------
 .PHONY: gen-grpc
 gen-grpc:
-	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/grpc_parameter -name "*.proto" -type f -exec \
+	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/parameter/grpc -name "*.proto" -type f -exec \
 		protoc \
 		--go_out=. \
 		--go_opt=paths=source_relative \

@@ -3,8 +3,8 @@ package controller
 import (
 	"context"
 
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 func (receiver *controller) Start() {}
@@ -12,21 +12,19 @@ func (receiver *controller) Start() {}
 func (receiver *controller) GetPersonList(
 	ctx context.Context,
 ) (
-	personList struct_object.PersonList,
-	err error,
+	personList groupObject.PersonList,
 ) {
-	personList, err = receiver.UseCase.GetPersonList(ctx)
+	personList = receiver.UseCase.GetPersonList(ctx)
 	return
 }
 
 func (receiver *controller) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson struct_object.Person,
+	reqPerson groupObject.Person,
 ) (
-	resPersonList struct_object.PersonList,
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	resPersonList, err = receiver.UseCase.GetPersonByCondition(
+	resPersonList = receiver.UseCase.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -35,12 +33,11 @@ func (receiver *controller) GetPersonByCondition(
 
 func (receiver *controller) FetchAccessToken(
 	ctx context.Context,
-	credential struct_object.Credential,
+	credential groupObject.Credential,
 ) (
-	accessToken value_object.AccessToken,
-	err error,
+	accessToken valueObject.AccessToken,
 ) {
-	accessToken, err = receiver.UseCase.FetchAccessToken(
+	accessToken = receiver.UseCase.FetchAccessToken(
 		ctx,
 		credential,
 	)
@@ -49,11 +46,13 @@ func (receiver *controller) FetchAccessToken(
 
 func (receiver *controller) ViaGRPC(
 	ctx context.Context,
+	reqPerson groupObject.Person,
 ) (
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	err = receiver.UseCase.ViaGRPC(
+	resPersonList = receiver.UseCase.ViaGRPC(
 		ctx,
+		reqPerson,
 	)
 	return
 }

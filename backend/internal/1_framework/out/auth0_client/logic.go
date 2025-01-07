@@ -6,29 +6,29 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 // ...
 // FetchAccessToken ...
 func (receiver *Auth0Client) FetchAccessToken(
 	ctx context.Context,
-	credential struct_object.Credential,
+	credential groupObject.Credential,
 ) (
-	accessToken value_object.AccessToken,
-	err error,
+	accessToken valueObject.AccessToken,
 ) {
 	payload := map[string]string{
-		"client_id":     credential.ClientID.Content.GetValue(),
-		"client_secret": credential.ClientSecret.Content.GetValue(),
+		"client_id":     credential.ClientID.GetValue(),
+		"client_secret": credential.ClientSecret.GetValue(),
 		"audience":      "https://auth0my-yayuji.com",
 		"grant_type":    "client_credentials",
 	}
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		return accessToken, err
+		accessToken.SetError(ctx, err)
+		return
 	}
 
 	req, err := http.NewRequestWithContext(
@@ -38,7 +38,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 		bytes.NewBuffer(jsonData),
 	)
 	if err != nil {
-		return accessToken, err
+		accessToken.SetError(ctx, err)
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -46,7 +47,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return accessToken, err
+		accessToken.SetError(ctx, err)
+		return
 	}
 	defer resp.Body.Close()
 
@@ -55,15 +57,14 @@ func (receiver *Auth0Client) FetchAccessToken(
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		return accessToken, err
+		accessToken.SetError(ctx, err)
+		return
 	}
 
-	accessToken, err = value_object.NewAccessToken(
+	accessToken = valueObject.NewAccessToken(
+		ctx,
 		&tokenResponse.AccessToken,
 	)
-	if err != nil {
-		return accessToken, err
-	}
 
 	return
 }

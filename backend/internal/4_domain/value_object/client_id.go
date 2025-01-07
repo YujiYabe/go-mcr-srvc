@@ -1,7 +1,10 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	"context"
+
+	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -10,31 +13,54 @@ const (
 )
 
 type ClientID struct {
-	Content *primitive_object.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewClientID(
+	ctx context.Context,
 	value *string,
 ) (
 	clientID ClientID,
-	err error,
 ) {
 	clientID = ClientID{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	clientID.SetValue(ctx, value)
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	clientID.Content = primitive_object.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	return
+}
+
+func (receiver *ClientID) SetValue(
+	ctx context.Context,
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
+
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(clientIDLengthMax),
 		primitiveString.WithMinLength(clientIDLengthMin),
 	)
 
-	err = clientID.Content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(
+			ctx,
+			receiver.content.GetError(),
+		)
+	}
+}
 
-	return
+func (receiver *ClientID) GetError() error {
+	return receiver.err
+}
+
+func (receiver *ClientID) SetError(
+	ctx context.Context,
+	err error,
+) {
+	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
+}
+
+func (receiver *ClientID) GetValue() string {
+	return receiver.content.GetValue()
 }

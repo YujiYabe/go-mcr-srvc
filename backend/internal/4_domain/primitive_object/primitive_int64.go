@@ -4,56 +4,71 @@ import (
 	"fmt"
 )
 
+// --------------------------------------
 type PrimitiveInt64 struct {
-	Err      error
-	Value    int64
-	IsNil    bool
-	MaxValue int64
-	MinValue int64
+	err      error
+	value    int64
+	isNil    bool
+	maxValue int64
+	minValue int64
 }
 
+// --------------------------------------
 type PrimitiveInt64Option func(*PrimitiveInt64)
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) WithError(
 	err error,
 ) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
-		s.Err = err
+		s.err = err
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) WithValue(
-	value int64,
+	value *int64,
 ) PrimitiveInt64Option {
+	isNil := receiver.CheckNil(value)
+	valueInt64 := int64(0)
+	if !isNil {
+		valueInt64 = *value
+	}
+
 	return func(s *PrimitiveInt64) {
-		s.Value = value
+		s.value = valueInt64
+		s.isNil = isNil
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) WithIsNil(
 	isNil bool,
 ) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
-		s.IsNil = isNil
+		s.isNil = isNil
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) WithMaxValue(
 	value int64,
 ) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
-		s.MaxValue = value
+		s.maxValue = value
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) WithMinValue(
 	value int64,
 ) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
-		s.MinValue = value
+		s.minValue = value
 	}
 }
 
+// --------------------------------------
 func NewPrimitiveInt64(
 	options ...PrimitiveInt64Option,
 ) (
@@ -61,11 +76,11 @@ func NewPrimitiveInt64(
 ) {
 	// デフォルト値を設定
 	primitiveInt64 = &PrimitiveInt64{
-		Err:      nil,
-		Value:    0,
-		IsNil:    false,
-		MaxValue: -1,
-		MinValue: -1,
+		err:      nil,
+		value:    0,
+		isNil:    false,
+		maxValue: -1,
+		minValue: -1,
 	}
 
 	// オプションを適用
@@ -80,95 +95,111 @@ func NewPrimitiveInt64(
 func (receiver *PrimitiveInt64) SetIsNil(
 	isNil bool,
 ) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
+}
+
+// --------------------------------------
+func (receiver *PrimitiveInt64) GetIsNil() bool {
+	return receiver.isNil
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt64) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) SetError(
+	err error,
+) {
+	receiver.err = err
+}
+
+// --------------------------------------
+func (receiver *PrimitiveInt64) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"PrimitiveInt64: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
 // --------------------------------------
 func (receiver *PrimitiveInt64) GetValue() int64 {
-	if receiver.IsNil {
-		receiver.SetError("is nil")
+	if receiver.GetIsNil() {
 		return 0
 	}
-	return receiver.Value
-}
-
-func (receiver *PrimitiveInt64) SetValue(
-	value int64,
-) {
-	if receiver.IsNil {
-		receiver.SetError("is nil")
-		return
-	}
-	receiver.Value = value
+	return receiver.value
 }
 
 // --------------------------------------
-func (receiver *PrimitiveInt64) Validation() error {
-	if receiver.IsNil {
-		return nil
+func (receiver *PrimitiveInt64) SetValue(
+	value *int64,
+) {
+	if value == nil {
+		receiver.SetIsNil(true)
+		return
+	}
+	receiver.SetIsNil(false)
+	receiver.value = *value
+}
+
+// --------------------------------------
+func (receiver *PrimitiveInt64) Validation() {
+	if receiver.GetIsNil() {
+		return
 	}
 
 	receiver.ValidationMax()
-	if receiver.Err != nil {
-		return receiver.Err
+	if receiver.err != nil {
+		return
 	}
 
 	receiver.ValidationMin()
-	if receiver.Err != nil {
-		return receiver.Err
+	if receiver.err != nil {
+		return
 	}
 
-	return nil
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) ValidationMax() {
-	if receiver.MaxValue < 0 {
-		// receiver.SetError("max length no defined")
+	if receiver.maxValue < 0 { //上限値なし
 		return
 	}
 
-	if receiver.IsNil {
-		receiver.SetError("is nil")
+	if receiver.GetIsNil() {
+		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value > receiver.MaxValue {
-		receiver.SetError("max limitation")
+	if receiver.value > receiver.maxValue {
+		receiver.SetErrorString("max limitation")
 		return
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) ValidationMin() {
-	if receiver.MinValue < 0 {
-		// receiver.SetError("min length no defined")
+	if receiver.minValue < 0 { //下限値なし
 		return
 	}
 
-	if receiver.IsNil {
-		receiver.SetError("is nil")
+	if receiver.GetIsNil() {
+		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.Value < receiver.MinValue {
-		receiver.SetError("min limitation")
+	if receiver.value < receiver.minValue {
+		receiver.SetErrorString("min limitation")
 		return
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveInt64) CheckNil(
 	value *int64,
 ) (

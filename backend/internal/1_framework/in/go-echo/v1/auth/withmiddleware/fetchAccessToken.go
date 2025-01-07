@@ -7,7 +7,7 @@ import (
 
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
-	"backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
 	"backend/pkg"
 )
 
@@ -29,27 +29,29 @@ func fetchAccessToken(
 		)
 	}
 
-	credential := struct_object.NewCredential(
-		&struct_object.NewCredentialArgs{
+	//-------------------------
+	credential := groupObject.NewCredential(
+		ctx,
+		&groupObject.NewCredentialArgs{
 			ClientID:     v1Credential.ClientID,
 			ClientSecret: v1Credential.ClientSecret,
 		},
 	)
-
-	if credential.Err != nil {
-		pkg.Logging(ctx, credential.Err)
+	if credential.GetError() != nil {
+		pkg.Logging(ctx, credential.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
-			credential.Err,
+			credential.GetError(),
 		)
 	}
 
-	accessToken, err := toController.FetchAccessToken(
+	//-------------------------
+	accessToken := toController.FetchAccessToken(
 		ctx,
 		*credential,
 	)
-	if err != nil {
-		pkg.Logging(ctx, err)
+	if accessToken.GetError() != nil {
+		pkg.Logging(ctx, accessToken.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
 			err,
@@ -58,6 +60,6 @@ func fetchAccessToken(
 
 	return c.JSON(
 		http.StatusOK,
-		accessToken.Content.GetValue(),
+		accessToken.GetValue(),
 	)
 }

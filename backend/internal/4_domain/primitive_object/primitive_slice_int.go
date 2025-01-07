@@ -2,121 +2,239 @@ package primitive_object
 
 import "fmt"
 
+// --------------------------------------
 type PrimitiveSliceInt struct {
-	Err       error          // バリデーションエラーを格納
-	Value     []PrimitiveInt // primitive_object.PrimitiveInt
-	IsNil     bool           // nil状態を示すフラグ
-	MaxLength int            // 最大配列 (-1は制限なし)
-	MinLength int            // 最小配列 (-1は制限なし)
+	err       error          // バリデーションエラーを格納
+	value     []PrimitiveInt // primitive_object.PrimitiveInt
+	isNil     bool           // nil状態を示すフラグ
+	maxLength int            // 最大配列 (-1は制限なし)
+	minLength int            // 最小配列 (-1は制限なし)
 }
 
-// NewPrimitiveSliceInt creates a new PrimitiveSliceInt instance
+// --------------------------------------
+type PrimitiveSliceIntOption func(*PrimitiveSliceInt)
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) WithError(
+	err error,
+) PrimitiveSliceIntOption {
+	return func(s *PrimitiveSliceInt) {
+		s.err = err
+	}
+}
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) WithValue(
+	value []PrimitiveInt,
+) PrimitiveSliceIntOption {
+	isNil := value == nil
+	var valueIntSlice []PrimitiveInt
+	if value != nil {
+		valueIntSlice = value
+	}
+	return func(s *PrimitiveSliceInt) {
+		s.value = valueIntSlice
+		s.isNil = isNil
+	}
+}
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) WithIsNil(
+	isNil bool,
+) PrimitiveSliceIntOption {
+	return func(s *PrimitiveSliceInt) {
+		s.isNil = isNil
+	}
+}
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) WithMaxLength(
+	value int,
+) PrimitiveSliceIntOption {
+	return func(s *PrimitiveSliceInt) {
+		s.maxLength = value
+	}
+}
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) WithMinLength(
+	value int,
+) PrimitiveSliceIntOption {
+	return func(s *PrimitiveSliceInt) {
+		s.minLength = value
+	}
+}
+
 func NewPrimitiveSliceInt(
-	valueList []int,
-) PrimitiveSliceInt {
-	if valueList == nil {
-		return PrimitiveSliceInt{
-			IsNil: true,
-		}
-	}
-	primitiveInt := PrimitiveInt{}
-
-	primitiveIntSlice := make([]PrimitiveInt, len(valueList))
-	for index, value := range valueList {
-		primitiveIntSlice[index] = *NewPrimitiveInt(
-			primitiveInt.WithValue(value),
-			primitiveInt.WithIsNil(false),
-			// primitiveInt.WithMaxValue(),
-			// primitiveInt.WithMinValue(),
-		)
+	options ...PrimitiveSliceIntOption,
+) (
+	primitiveSliceInt *PrimitiveSliceInt,
+) {
+	primitiveSliceInt = &PrimitiveSliceInt{
+		err:       nil,
+		value:     []PrimitiveInt{},
+		isNil:     false,
+		maxLength: -1,
+		minLength: -1,
 	}
 
-	return PrimitiveSliceInt{
-		Value: primitiveIntSlice,
-		IsNil: false,
+	for _, option := range options {
+		option(primitiveSliceInt)
 	}
+
+	return
 }
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) GetIsNil() bool {
+	return receiver.isNil
+}
+
+// --------------------------------------
 func (receiver *PrimitiveSliceInt) SetIsNil(
 	isNil bool,
 ) {
-	receiver.IsNil = isNil
+	receiver.isNil = isNil
+}
+
+func (receiver *PrimitiveSliceInt) CheckNil(
+	value *int,
+) (
+	isNil bool,
+) {
+	isNil = true
+	if value != nil {
+		isNil = false
+	}
+	return
 }
 
 // --------------------------------------
 func (receiver *PrimitiveSliceInt) GetError() error {
-	return receiver.Err
+	return receiver.err
 }
 
+// --------------------------------------
 func (receiver *PrimitiveSliceInt) SetError(
+	err error,
+) {
+	receiver.err = err
+}
+
+// --------------------------------------
+func (receiver *PrimitiveSliceInt) SetErrorString(
 	errString string,
 ) {
-	receiver.Err = fmt.Errorf(
-		"error: %s",
-		errString,
+	receiver.SetError(
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
 	)
 }
 
+// --------------------------------------
 // Validate validates the PrimitiveSliceInt
 func (receiver *PrimitiveSliceInt) Validation() error {
-	if receiver.IsNil {
+	if receiver.isNil {
 		return nil
 	}
 
 	receiver.ValidationMax()
-	if receiver.Err != nil {
-		return receiver.Err
+	if receiver.err != nil {
+		return receiver.err
 	}
 
 	receiver.ValidationMin()
-	if receiver.Err != nil {
-		return receiver.Err
+	if receiver.err != nil {
+		return receiver.err
 	}
 
-	for _, value := range receiver.Value {
-		if err := value.Validation(); err != nil {
-			return err
+	for _, value := range receiver.value {
+		value.Validation()
+		if value.GetError() != nil {
+			receiver.SetError(value.GetError())
+			break
 		}
 	}
 
 	return nil
 }
 
+// --------------------------------------
 // ValidationMax は最大文字列長のチェックを行います
 func (receiver *PrimitiveSliceInt) ValidationMax() {
-	if receiver.MaxLength != -1 && len(receiver.Value) > receiver.MaxLength {
-		receiver.SetError("max limitation")
+	if receiver.maxLength != -1 && len(receiver.value) > receiver.maxLength {
+		receiver.SetErrorString("max limitation")
 	}
 }
 
+// --------------------------------------
 func (receiver *PrimitiveSliceInt) ValidationMin() {
-	if receiver.MinLength != -1 && len(receiver.Value) < receiver.MinLength {
-		receiver.SetError("min limitation")
+	if receiver.minLength != -1 && len(receiver.value) < receiver.minLength {
+		receiver.SetErrorString("min limitation")
 	}
 }
 
+// --------------------------------------
 // GetValue returns the underlying int slice
 func (receiver *PrimitiveSliceInt) GetValue() []int {
-	if receiver.IsNil {
+	if receiver.isNil {
 		return nil
 	}
 
-	result := make([]int, len(receiver.Value))
-	for i, v := range receiver.Value {
+	result := make([]int, len(receiver.value))
+	for i, v := range receiver.value {
 		result[i] = v.GetValue()
 	}
 	return result
 }
 
+// --------------------------------------
 // SetMaxLength sets the maximum allowed length
 func (receiver *PrimitiveSliceInt) SetMaxLength(
 	maxLength int,
 ) {
-	receiver.MaxLength = maxLength
+	receiver.maxLength = maxLength
 }
 
+// --------------------------------------
 // SetMinLength sets the minimum allowed length
 func (receiver *PrimitiveSliceInt) SetMinLength(
 	minLength int,
 ) {
-	receiver.MinLength = minLength
+	receiver.minLength = minLength
+}
+
+// SortDesc sorts the slice in descending order
+func (receiver *PrimitiveSliceInt) SortDesc() {
+	if receiver.isNil || len(receiver.value) == 0 {
+		return
+	}
+
+	// Using bubble sort for demonstration
+	n := len(receiver.value)
+	for i := 0; i < n-1; i++ {
+		for j := 0; j < n-i-1; j++ {
+			if receiver.value[j].GetValue() < receiver.value[j+1].GetValue() {
+				receiver.value[j], receiver.value[j+1] = receiver.value[j+1], receiver.value[j]
+			}
+		}
+	}
+}
+
+// SortAsc sorts the slice in ascending order
+func (receiver *PrimitiveSliceInt) SortAsc() {
+	if receiver.isNil || len(receiver.value) == 0 {
+		return
+	}
+
+	n := len(receiver.value)
+	for i := 0; i < n-1; i++ {
+		for j := 0; j < n-i-1; j++ {
+			if receiver.value[j].GetValue() > receiver.value[j+1].GetValue() {
+				receiver.value[j], receiver.value[j+1] = receiver.value[j+1], receiver.value[j]
+			}
+		}
+	}
 }

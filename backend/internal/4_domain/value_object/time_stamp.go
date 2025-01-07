@@ -8,33 +8,33 @@ import (
 )
 
 const (
-	nameLengthMax = 30
-	nameLengthMin = 1
+	TimeStampMetaName    primitiveObject.ContextKey = "time-stamp"
+	TimeStampContextName primitiveObject.ContextKey = "timeStamp"
 )
 
-var nameCheckSpell = []string{
-	"盗む",
-	"暴力",
-}
+const (
+	timeStampLengthMax = 99999999999
+	timeStampLengthMin = 0
+)
 
-type Name struct {
+type TimeStamp struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewName(
+func NewTimeStamp(
 	ctx context.Context,
 	value *string,
 ) (
-	name Name,
+	timeStamp TimeStamp,
 ) {
-	name = Name{}
-	name.SetValue(ctx, value)
+	timeStamp = TimeStamp{}
+	timeStamp.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *Name) SetValue(
+func (receiver *TimeStamp) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -42,9 +42,8 @@ func (receiver *Name) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(nameLengthMax),
-		primitiveString.WithMinLength(nameLengthMin),
-		primitiveString.WithCheckSpell(nameCheckSpell),
+		primitiveString.WithMaxLength(timeStampLengthMax),
+		primitiveString.WithMinLength(timeStampLengthMin),
 	)
 
 	receiver.content.Validation()
@@ -53,22 +52,18 @@ func (receiver *Name) SetValue(
 	}
 }
 
-func (receiver *Name) GetError() error {
+func (receiver *TimeStamp) GetError() error {
 	return receiver.err
 }
 
-func (receiver *Name) SetError(
+func (receiver *TimeStamp) SetError(
 	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
+	pkg.Logging(ctx, receiver.err)
 }
 
-func (receiver *Name) GetValue() string {
+func (receiver *TimeStamp) GetValue() string {
 	return receiver.content.GetValue()
-}
-
-func (receiver *Name) GetIsNil() bool {
-	return receiver.content.GetIsNil()
 }

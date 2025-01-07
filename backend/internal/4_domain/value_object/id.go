@@ -1,7 +1,10 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	"context"
+
+	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -10,31 +13,54 @@ const (
 )
 
 type ID struct {
-	Content *primitive_object.PrimitiveInt
+	err     error
+	content *primitiveObject.PrimitiveInt
 }
 
 func NewID(
+	ctx context.Context,
 	value *int,
 ) (
 	id ID,
-	err error,
 ) {
 	id = ID{}
-	primitiveInt := &primitive_object.PrimitiveInt{}
+	id.SetValue(ctx, value)
 
-	isNil := primitiveInt.CheckNil(value)
-	valueInt := 0
-	if !isNil {
-		valueInt = *value
-	}
-	id.Content = primitive_object.NewPrimitiveInt(
-		primitiveInt.WithValue(valueInt),
-		primitiveInt.WithIsNil(isNil),
+	return
+}
+
+func (receiver *ID) SetValue(
+	ctx context.Context,
+	value *int,
+) {
+	primitiveInt := &primitiveObject.PrimitiveInt{}
+
+	receiver.content = primitiveObject.NewPrimitiveInt(
+		primitiveInt.WithValue(value),
 		primitiveInt.WithMaxValue(idLengthMax),
 		primitiveInt.WithMinValue(idLengthMin),
 	)
 
-	err = id.Content.Validation()
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(
+			ctx, receiver.content.GetError(),
+		)
+	}
+}
 
-	return
+func (receiver *ID) GetError() error {
+	return receiver.err
+}
+
+func (receiver *ID) SetError(
+	ctx context.Context,
+	err error,
+) {
+	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
+}
+
+func (receiver *ID) GetValue() int {
+	return receiver.content.GetValue()
 }

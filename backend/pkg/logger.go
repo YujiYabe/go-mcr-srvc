@@ -11,6 +11,10 @@ import (
 
 type RowData []string
 
+const (
+	traceIDContextName = "traceID"
+)
+
 func (receiver *RowData) append(
 	appendData string,
 ) {
@@ -25,7 +29,7 @@ func Logging(
 	data interface{},
 ) {
 	traceID := ""
-	if val, ok := ctx.Value(TraceIDKey).(string); ok {
+	if val, ok := ctx.Value(traceIDContextName).(string); ok {
 		traceID = val
 	}
 	_, fullPath, line, _ := runtime.Caller(1)

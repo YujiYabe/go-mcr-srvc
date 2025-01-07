@@ -3,6 +3,7 @@ package postgres_client
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -10,7 +11,8 @@ import (
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	"backend/internal/2_adapter/gateway"
-	"backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -57,35 +59,39 @@ func open(count uint) (*gorm.DB, error) {
 func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
 ) (
-	personList struct_object.PersonList,
-	err error,
+	personList groupObject.PersonList,
 ) {
-	personList = struct_object.PersonList{} // ドメインロジック用
-	persons := []models.Person{}            // SQL結果保存用
+	personList = groupObject.PersonList{} // ドメインロジック用
+	persons := []models.Person{}          // SQL結果保存用
 
 	result := receiver.Conn.
 		Table("persons").
 		Find(&persons)
 
 	if result.Error != nil {
-		pkg.Logging(ctx, result.Error)
-		return personList, result.Error
+		personList.SetError(ctx, result.Error)
+		return
 	}
+
+	if result.RowsAffected == 0 {
+		return
+	}
+
 	for _, person := range persons {
-		args := &struct_object.NewPersonArgs{
+		args := &groupObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := struct_object.NewPerson(args)
+		person := groupObject.NewPerson(ctx, args)
 
-		if person.Err != nil {
-			pkg.Logging(ctx, person.Err)
-			return personList, person.Err
+		if person.GetError() != nil {
+			personList.SetError(ctx, person.GetError())
+			return
 		}
 
-		personList = append(
-			personList,
+		personList.Content = append(
+			personList.Content,
 			*person,
 		)
 	}
@@ -96,47 +102,55 @@ func (receiver *PostgresClient) GetPersonList(
 // GetPersonByCondition ...
 func (receiver *PostgresClient) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson struct_object.Person,
+	reqPerson groupObject.Person,
 ) (
-	resPersonList struct_object.PersonList,
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	resPersonList = struct_object.PersonList{} // ドメインロジック用
-	persons := []models.Person{}               // SQL結果保存用
+	traceID := valueObject.GetTraceID(ctx)
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
+
+	resPersonList = groupObject.PersonList{} // ドメインロジック用
+	persons := []models.Person{}             // SQL結果保存用
 
 	conn := receiver.Conn.Table("persons")
 
-	if !reqPerson.MailAddress.Content.IsNil && reqPerson.MailAddress.Content.GetValue() != "" {
-		conn.Where("mail_address = ?", reqPerson.MailAddress.Content.GetValue())
+	if !reqPerson.MailAddress.GetIsNil() && reqPerson.MailAddress.GetValue() != "" {
+		conn.Where("mail_address = ?", reqPerson.MailAddress.GetValue())
 	}
 
-	if !reqPerson.Name.Content.IsNil && reqPerson.Name.Content.GetValue() != "" {
-		conn.Where("name LIKE ?", "%"+reqPerson.Name.Content.GetValue()+"%")
+	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {
+		conn.Where("name LIKE ?", "%"+reqPerson.Name.GetValue()+"%")
 	}
 
 	result := conn.Find(&persons)
 	if result.Error != nil {
-		pkg.Logging(ctx, result.Error)
-		return resPersonList, result.Error
+		resPersonList.SetError(ctx, result.Error)
+		return
 	}
+
 	for _, person := range persons {
-		args := &struct_object.NewPersonArgs{
+		args := &groupObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := struct_object.NewPerson(args)
+		person := groupObject.NewPerson(ctx, args)
 
-		if person.Err != nil {
-			pkg.Logging(ctx, person.Err)
-			return resPersonList, person.Err
+		if person.GetError() != nil {
+			pkg.Logging(ctx, person.GetError())
+			resPersonList.SetError(ctx, person.GetError())
+			return
 		}
 
-		resPersonList = append(
-			resPersonList,
+		resPersonList.Content = append(
+			resPersonList.Content,
 			*person,
 		)
 	}
+
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	return
 }

@@ -17,17 +17,17 @@ GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 	}
 }
 
-### --------------------------------
-proto < ../../parameter/grpc/person.proto
-GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
-{
-	"common": {
-		"traceID": "test-trace-id",
-		"timestamp": "2024-01-01T00:00:00Z"
-	},
-	"parameter": {
-		"id": 1,
-		"name": "test user",
-		"mail_address": "test@example.com"
-	}
-}
+# ### --------------------------------
+# proto < ../../parameter/grpc/person.proto
+# GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
+# {
+# 	"common": {
+# 		"traceID": "test-trace-id",
+# 		"timestamp": "2024-01-01T00:00:00Z"
+# 	},
+# 	"parameter": {
+# 		"id": 1,
+# 		"name": "test user",
+# 		"mail_address": "test@example.com"
+# 	}
+# }

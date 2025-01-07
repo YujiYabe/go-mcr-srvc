@@ -1,16 +1,22 @@
 #!/bin/bash
 
+# 現在のディレクトリを表示
 echo "Current directory: $(pwd)"
-# exit 0
+
+# ステージングを解除する関数
+unstage_changes() {
+	echo "UnStaging changes..."
+	git restore --staged .
+}
 
 # golangci-lint の実行
 echo ""
 echo "_____________________________________"
 echo "Running golangci-lint..."
-# ./backend/bin/golangci-lint run ./backend/...
 make golint
 if [ $? -ne 0 ]; then
 	echo "golangci-lint failed. Commit aborted."
+	unstage_changes
 	exit 1
 fi
 
@@ -21,6 +27,7 @@ echo "Running staticcheck..."
 make staticcheck
 if [ $? -ne 0 ]; then
 	echo "staticcheck failed. Commit aborted."
+	unstage_changes
 	exit 1
 fi
 
@@ -31,6 +38,7 @@ fi
 # make deadcode
 # if [ $? -ne 0 ]; then
 # 	echo "deadcode failed. Commit aborted."
+# 	unstage_changes
 # 	exit 1
 # fi
 
@@ -41,9 +49,11 @@ echo "Running gosec..."
 make gosec
 if [ $? -ne 0 ]; then
 	echo "gosec detected issues. Commit aborted."
+	unstage_changes
 	exit 1
 fi
 
+# すべてのチェックに合格
 echo ""
 echo "_____________________________________"
 echo "All checks passed. Proceeding with commit."

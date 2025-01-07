@@ -1,10 +1,12 @@
 package value_object
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 
-	"backend/internal/4_domain/primitive_object"
+	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -15,64 +17,109 @@ const (
 var mailAddressCheckSpell = []string{}
 
 type MailAddress struct {
-	Content *primitive_object.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewMailAddress(
+	ctx context.Context,
 	value *string,
 ) (
 	mailAddress MailAddress,
-	err error,
 ) {
 	mailAddress = MailAddress{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	mailAddress.SetValue(ctx, value)
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
+	return
+}
 
-	mailAddress.Content = primitive_object.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+func (receiver *MailAddress) SetValue(
+	ctx context.Context,
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
+
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(mailAddressLengthMax),
 		primitiveString.WithMinLength(mailAddressLengthMin),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
 
-	// 文字列そのもののバリデーション
-	err = mailAddress.Content.Validation()
-	if err != nil {
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(ctx, receiver.content.GetError())
 		return
 	}
 
 	// メールアドレスのバリデーション
-	err = mailAddress.Validation()
-	if err != nil {
+	receiver.Validation(ctx)
+}
+
+func (receiver *MailAddress) GetValue() string {
+	return receiver.content.GetValue()
+}
+
+func (receiver *MailAddress) GetError() error {
+	return receiver.err
+}
+
+func (receiver *MailAddress) SetError(
+	ctx context.Context,
+	err error,
+) {
+	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
+}
+
+func (receiver *MailAddress) SetErrorString(
+	ctx context.Context,
+	errString string,
+) {
+	receiver.SetError(
+		ctx,
+		fmt.Errorf(
+			"error: %s",
+			errString,
+		),
+	)
+}
+
+func (receiver *MailAddress) GetIsNil() bool {
+	return receiver.content.GetIsNil()
+}
+
+func (receiver MailAddress) Validation(
+	ctx context.Context,
+) {
+	if receiver.GetIsNil() {
 		return
 	}
 
-	return
-}
-
-func (receiver MailAddress) Validation() error {
-	if receiver.Content.IsNil {
-		return nil
-	}
-
 	// メールアドレスの正規表現パターン
-	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
-	matched, err := regexp.MatchString(emailPattern, receiver.Content.Value)
+	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}`
+
+	matched, err := regexp.MatchString(
+		emailPattern,
+		receiver.GetValue(),
+	)
 	if err != nil {
-		return fmt.Errorf(
-			"failed to validate email format: %w", err)
+		receiver.SetError(
+			ctx,
+			fmt.Errorf(
+				"failed to validate email format: %w", err,
+			),
+		)
+		return
 	}
 
 	if !matched {
-		return fmt.Errorf(
-			"invalid email format: %s", receiver.Content.Value)
+		receiver.SetError(
+			ctx,
+			fmt.Errorf(
+				"invalid email format: %s", receiver.GetValue(),
+			),
+		)
+		return
 	}
-
-	return nil
 }

@@ -1,15 +1,13 @@
 package grpc_middleware
 
 import (
-	"backend/pkg"
 	"context"
 
-	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
 
-func TraceIDInterceptor(
+func MetadataToContext(
 	ctx context.Context,
 	req interface{},
 	info *grpc.UnaryServerInfo,
@@ -17,28 +15,38 @@ func TraceIDInterceptor(
 ) (interface{}, error) {
 	// メタデータからリクエストIDを取得
 	md, ok := metadata.FromIncomingContext(ctx)
-	var traceID string
-	if ok {
-		values := md.Get(string(pkg.TraceIDKey))
-		if len(values) > 0 {
-			traceID = values[0]
-		}
+
+	if ok { // メタデータが存在する場合、以下各パラメータをコンテキストに追加
+		ctx = traceIDToContext(ctx, md)
+		ctx = requestStartTimeToContext(ctx, md)
+		ctx = timestampToContext(ctx, md)
 	}
-
-	// リクエストIDが無い場合は新規生成
-	if traceID == "" {
-		traceID = uuid.New().String()
-	}
-
-	// リクエストIDをコンテキストに追加
-	ctx = context.WithValue(
-		ctx,
-		pkg.TraceIDKey,
-		traceID,
-	)
-
-	// ログ出力
 
 	// 次のハンドラーを呼び出す
 	return handler(ctx, req)
 }
+
+// func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+// 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+// 		// コンテキストから値を取得してメタデータに変換
+// 		md := convertToMetadata(ctx)
+
+// 		// 新しいコンテキストにメタデータを設定
+// 		newCtx := metadata.NewOutgoingContext(ctx, md)
+
+// 		return handler(newCtx, req)
+// 	}
+// }
+
+// // クライアント側での使用例
+// func UnaryClientInterceptor() grpc.UnaryClientInterceptor {
+// 	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+// 		// コンテキストから値を取得してメタデータに変換
+// 		md := convertToMetadata(ctx)
+
+// 		// 新しいコンテキストにメタデータを設定
+// 		newCtx := metadata.NewOutgoingContext(ctx, md)
+
+// 		return invoker(newCtx, method, req, reply, cc, opts...)
+// 	}
+// }

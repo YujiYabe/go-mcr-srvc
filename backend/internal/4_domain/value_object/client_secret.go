@@ -1,7 +1,10 @@
 package value_object
 
 import (
-	"backend/internal/4_domain/primitive_object"
+	"context"
+
+	primitiveObject "backend/internal/4_domain/primitive_object"
+	"backend/pkg"
 )
 
 const (
@@ -10,32 +13,54 @@ const (
 )
 
 type ClientSecret struct {
-	Content *primitive_object.PrimitiveString
+	err     error
+	content *primitiveObject.PrimitiveString
 }
 
 func NewClientSecret(
+	ctx context.Context,
 	value *string,
 ) (
 	clientSecret ClientSecret,
-	err error,
 ) {
 	clientSecret = ClientSecret{}
-	primitiveString := &primitive_object.PrimitiveString{}
+	clientSecret.SetValue(ctx, value)
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
+	return
+}
 
-	clientSecret.Content = primitive_object.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+func (receiver *ClientSecret) SetValue(
+	ctx context.Context,
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
+
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(clientSecretLengthMax),
 		primitiveString.WithMinLength(clientSecretLengthMin),
 	)
 
-	err = clientSecret.Content.Validation()
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(ctx,
+			receiver.content.GetError(),
+		)
+	}
+}
 
-	return
+func (receiver *ClientSecret) GetError() error {
+	return receiver.err
+}
+
+func (receiver *ClientSecret) SetError(
+	ctx context.Context,
+	err error,
+) {
+	receiver.err = err
+	pkg.Logging(ctx, receiver.GetError())
+}
+
+func (receiver *ClientSecret) GetValue() string {
+	return receiver.content.GetValue()
 }

@@ -6,7 +6,10 @@ import (
 
 	"github.com/labstack/echo"
 
+	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -17,46 +20,13 @@ func viaGRPC(
 	err error,
 ) {
 	ctx := c.Request().Context()
-
-	// person := http_parameter.V1Person{}
-
-	// if err := c.Bind(&person); err != nil {
-	// 	pkg.Logging(ctx, err)
-	// 	return c.JSON(
-	// 		http.StatusBadRequest,
-	// 		err,
-	// 	)
-	// }
-
-	// reqPerson := struct_object.NewPerson(
-	// 	&struct_object.NewPersonArgs{
-	// 		ID:          person.ID,
-	// 		Name:        person.Name,
-	// 		MailAddress: person.MailAddress,
-	// 	},
-	// )
-
-	// if reqPerson.Err != nil {
-	// 	pkg.Logging(ctx, reqPerson.Err)
-	// 	return c.JSON(
-	// 		http.StatusBadRequest,
-	// 		reqPerson.Err,
-	// 	)
-	// }
-
-	// personList, err := toController.GetPersonByCondition(
-	// 	ctx,
-	// 	*reqPerson,
-	// )
+	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, pkg.GetTraceID(ctx))
-	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
-	err = toController.ViaGRPC(
-		ctx,
-	)
+	person := httpParameter.V1Person{}
 
-	if err != nil {
+	if err := c.Bind(&person); err != nil {
 		pkg.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
@@ -64,24 +34,62 @@ func viaGRPC(
 		)
 	}
 
-	// responseList := []http_parameter.V1Person{}
-	// for _, person := range personList {
-	// 	id := person.ID.Content.GetValue()
-	// 	name := person.Name.Content.GetValue()
-	// 	mailAddress := person.MailAddress.Content.GetValue()
-	// 	responseList = append(
-	// 		responseList,
-	// 		http_parameter.V1Person{
-	// 			ID:          &id,
-	// 			Name:        &name,
-	// 			MailAddress: &mailAddress,
-	// 		},
-	// 	)
-	// }
+	reqPerson := groupObject.NewPerson(
+		ctx,
+		&groupObject.NewPersonArgs{
+			ID:          person.ID,
+			Name:        person.Name,
+			MailAddress: person.MailAddress,
+		},
+	)
+
+	if reqPerson.GetError() != nil {
+		pkg.Logging(ctx, reqPerson.GetError())
+		return c.JSON(
+			http.StatusBadRequest,
+			reqPerson.GetError(),
+		)
+	}
+
+	// personList, err := toController.GetPersonByCondition(
+	// 	ctx,
+	// 	*reqPerson,
+	// )
+
+	resPersonList := toController.ViaGRPC(
+		ctx,
+		*reqPerson,
+	)
+
+	if resPersonList.GetError() != nil {
+		pkg.Logging(ctx, err)
+		return c.JSON(
+			http.StatusBadRequest,
+			err,
+		)
+	}
+
+	responseList := []httpParameter.V1Person{}
+	for _, person := range resPersonList.Content {
+		id := person.ID.GetValue()
+		name := person.Name.GetValue()
+		mailAddress := person.MailAddress.GetValue()
+		responseList = append(
+			responseList,
+			httpParameter.V1Person{
+				ID:          &id,
+				Name:        &name,
+				MailAddress: &mailAddress,
+			},
+		)
+	}
+
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	return c.JSON(
 		http.StatusOK,
-		nil,
+		responseList,
 	)
 
 }

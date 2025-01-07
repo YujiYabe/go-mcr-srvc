@@ -6,7 +6,9 @@ import (
 	"time"
 
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
-	"backend/internal/4_domain/struct_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
+
 	"backend/pkg"
 )
 
@@ -23,10 +25,9 @@ func (receiver *Server) GetPersonByCondition(
 	v1GetPersonByConditionResponse *grpcParameter.V1GetPersonByConditionResponse,
 	err error,
 ) {
-
+	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, pkg.GetTraceID(ctx))
-	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
@@ -48,32 +49,33 @@ func (receiver *Server) GetPersonByCondition(
 		mailAddress = req.V1PersonParameter.MailAddress
 	}
 
-	reqPerson := struct_object.NewPerson(
-		&struct_object.NewPersonArgs{
+	reqPerson := groupObject.NewPerson(
+		ctx,
+		&groupObject.NewPersonArgs{
 			ID:          id,
 			Name:        name,
 			MailAddress: mailAddress,
 		},
 	)
-	if reqPerson.Err != nil {
-		pkg.Logging(ctx, reqPerson.Err)
-		err = reqPerson.Err
+	if reqPerson.GetError() != nil {
+		pkg.Logging(ctx, reqPerson.GetError())
+		err = reqPerson.GetError()
 		return
 	}
 
-	responseList, err := receiver.Controller.GetPersonByCondition(
+	responseList := receiver.Controller.GetPersonByCondition(
 		ctx,
 		*reqPerson,
 	)
-	if err != nil {
-		pkg.Logging(ctx, err)
+	if responseList.GetError() != nil {
+		pkg.Logging(ctx, responseList.GetError())
 		return
 	}
 
-	for _, response := range responseList {
-		id32 := uint32(response.ID.Content.GetValue())
-		name := response.Name.Content.GetValue()
-		mailAddress := response.MailAddress.Content.GetValue()
+	for _, response := range responseList.Content {
+		id32 := uint32(response.ID.GetValue())
+		name := response.Name.GetValue()
+		mailAddress := response.MailAddress.GetValue()
 		v1PersonParameter := &grpcParameter.V1PersonParameter{
 			Id:          &id32,
 			Name:        &name,
@@ -89,12 +91,15 @@ func (receiver *Server) GetPersonByCondition(
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
 		Immutable: &grpcParameter.V1ImmutableParameter{
-			TraceID: pkg.GetTraceID(ctx),
+			TraceID: traceID,
 		},
 		Mutable: &grpcParameter.V1MutableParameter{
-			Timestamp: time.Now().Format(timeFormat),
+			TimeStamp: time.Now().Format(timeFormat),
 		},
 	}
+
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	return
 }

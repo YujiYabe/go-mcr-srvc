@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.2
-// source: backend/internal/1_framework/grpc_parameter/person.proto
+// source: backend/internal/1_framework/parameter/grpc/person.proto
 
-package grpc_parameter
+package grpc
 
 import (
 	context "context"
@@ -117,5 +117,5 @@ var Person_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "backend/internal/1_framework/grpc_parameter/person.proto",
+	Metadata: "backend/internal/1_framework/parameter/grpc/person.proto",
 }

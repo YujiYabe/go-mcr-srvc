@@ -3,19 +3,18 @@ package gateway
 import (
 	"context"
 
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 // FetchAccessToken ...
 func (receiver *Gateway) FetchAccessToken(
 	ctx context.Context,
-	credential struct_object.Credential,
+	credential groupObject.Credential,
 ) (
-	accessToken value_object.AccessToken,
-	err error,
+	accessToken valueObject.AccessToken,
 ) {
-	accessToken, err = receiver.ToAuth0.FetchAccessToken(
+	accessToken = receiver.ToAuth0.FetchAccessToken(
 		ctx,
 		credential,
 	)

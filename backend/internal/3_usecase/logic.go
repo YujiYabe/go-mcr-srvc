@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"backend/internal/4_domain/struct_object"
-	"backend/internal/4_domain/value_object"
+	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
 // Start ...
@@ -14,21 +14,19 @@ func (receiver *useCase) Start() {
 func (receiver *useCase) GetPersonList(
 	ctx context.Context,
 ) (
-	personList struct_object.PersonList,
-	err error,
+	personList groupObject.PersonList,
 ) {
-	personList, err = receiver.ToGateway.GetPersonList(ctx)
+	personList = receiver.ToGateway.GetPersonList(ctx)
 	return
 }
 
 func (receiver *useCase) GetPersonByCondition(
 	ctx context.Context,
-	reqPerson struct_object.Person,
+	reqPerson groupObject.Person,
 ) (
-	resPersonList struct_object.PersonList,
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	resPersonList, err = receiver.ToGateway.GetPersonByCondition(
+	resPersonList = receiver.ToGateway.GetPersonByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -37,12 +35,11 @@ func (receiver *useCase) GetPersonByCondition(
 
 func (receiver *useCase) FetchAccessToken(
 	ctx context.Context,
-	credential struct_object.Credential,
+	credential groupObject.Credential,
 ) (
-	accessToken value_object.AccessToken,
-	err error,
+	accessToken valueObject.AccessToken,
 ) {
-	accessToken, err = receiver.ToGateway.FetchAccessToken(
+	accessToken = receiver.ToGateway.FetchAccessToken(
 		ctx,
 		credential,
 	)
@@ -51,11 +48,13 @@ func (receiver *useCase) FetchAccessToken(
 
 func (receiver *useCase) ViaGRPC(
 	ctx context.Context,
+	reqPerson groupObject.Person,
 ) (
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	err = receiver.ToGateway.ViaGRPC(
+	resPersonList = receiver.ToGateway.ViaGRPC(
 		ctx,
+		reqPerson,
 	)
 	return
 }
