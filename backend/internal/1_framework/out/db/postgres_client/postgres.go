@@ -3,6 +3,7 @@ package postgres_client
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -11,6 +12,7 @@ import (
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	"backend/internal/2_adapter/gateway"
 	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -104,6 +106,10 @@ func (receiver *PostgresClient) GetPersonByCondition(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
+	traceID := valueObject.GetTraceID(ctx)
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
+
 	resPersonList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}             // SQL結果保存用
 
@@ -142,6 +148,9 @@ func (receiver *PostgresClient) GetPersonByCondition(
 			*person,
 		)
 	}
+
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	return
 }

@@ -23,6 +23,10 @@ func (receiver *GRPCClient) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
+	traceID := valueObject.GetTraceID(ctx)
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
+
 	var err error
 	resPersonList = groupObject.PersonList{}
 	// gRPCコネクションの作成
@@ -38,7 +42,6 @@ func (receiver *GRPCClient) ViaGRPC(
 
 	// クライアントの作成
 	client := grpcParameter.NewPersonClient(conn)
-	traceID := valueObject.GetTraceID(ctx)
 
 	// リクエストの作成
 	v1GetPersonByConditionRequest := &grpcParameter.V1GetPersonByConditionRequest{
@@ -65,9 +68,6 @@ func (receiver *GRPCClient) ViaGRPC(
 		string(valueObject.TraceIDMetaName),
 		traceID,
 	)
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
-	log.Println("== == == == == == == == == == ")
 
 	// gRPCリクエストの実行
 	grpcPersonList, err := client.GetPersonByCondition(
@@ -101,6 +101,9 @@ func (receiver *GRPCClient) ViaGRPC(
 
 		resPersonList.Content = append(resPersonList.Content, *person)
 	}
+
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	return
 
