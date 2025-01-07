@@ -9,10 +9,18 @@
     },
     {
         "type": "File",
-        "name": "/home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/in/go-echo/v1/person/rest.rest",
+        "name": "/home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/in/go-echo/v1/person/person-rest.rest",
         "parent_id": null,
         "workspaceRoot": "/home/yuji/Workspace/private_dev/go-docker-template",
-        "workspacePath": "backend/internal/1_framework/in/go-echo/v1/person/rest.rest",
-        "id": "ki57WOMnULc2QSe9"
+        "workspacePath": "backend/internal/1_framework/in/go-echo/v1/person/person-rest.rest",
+        "id": "hw7Yl9FireAQoNtc"
+    },
+    {
+        "type": "File",
+        "name": "/home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/in/go-echo/v1/auth/withmiddleware/middleware-rest.rest",
+        "parent_id": null,
+        "workspaceRoot": "/home/yuji/Workspace/private_dev/go-docker-template",
+        "workspacePath": "backend/internal/1_framework/in/go-echo/v1/auth/withmiddleware/middleware-rest.rest",
+        "id": "6OyMQpYCdtsJeGXr"
     }
 ]

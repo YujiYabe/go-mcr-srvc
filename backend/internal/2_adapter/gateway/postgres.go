@@ -1,8 +1,9 @@
 package gateway
 
 import (
-	groupObject "backend/internal/4_domain/group_object"
 	"context"
+
+	groupObject "backend/internal/4_domain/group_object"
 )
 
 // GetPersonList ...
