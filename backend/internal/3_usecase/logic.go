@@ -48,11 +48,13 @@ func (receiver *useCase) FetchAccessToken(
 
 func (receiver *useCase) ViaGRPC(
 	ctx context.Context,
+	reqPerson groupObject.Person,
 ) (
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	err = receiver.ToGateway.ViaGRPC(
+	resPersonList = receiver.ToGateway.ViaGRPC(
 		ctx,
+		reqPerson,
 	)
 	return
 }

@@ -73,8 +73,9 @@ type (
 
 		ViaGRPC(
 			ctx context.Context,
+			reqPerson groupObject.Person,
 		) (
-			err error,
+			resPersonList groupObject.PersonList,
 		)
 	}
 )

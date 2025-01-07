@@ -46,11 +46,13 @@ func (receiver *controller) FetchAccessToken(
 
 func (receiver *controller) ViaGRPC(
 	ctx context.Context,
+	reqPerson groupObject.Person,
 ) (
-	err error,
+	resPersonList groupObject.PersonList,
 ) {
-	err = receiver.UseCase.ViaGRPC(
+	resPersonList = receiver.UseCase.ViaGRPC(
 		ctx,
+		reqPerson,
 	)
 	return
 }
