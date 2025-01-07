@@ -39,20 +39,17 @@ func (receiver *TimeStamp) SetValue(
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
+
 	receiver.content = primitiveObject.NewPrimitiveString(
-		// primitiveString.WithValue(value),
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(timeStampLengthMax),
 		primitiveString.WithMinLength(timeStampLengthMin),
 	)
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		receiver.SetError(ctx, receiver.content.GetError())
 	}
-
 }
 
 func (receiver *TimeStamp) GetError() error {

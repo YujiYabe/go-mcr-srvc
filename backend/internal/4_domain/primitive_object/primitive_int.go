@@ -25,10 +25,17 @@ func (receiver *PrimitiveInt) WithError(
 
 // --------------------------------------
 func (receiver *PrimitiveInt) WithValue(
-	value int,
+	value *int,
 ) PrimitiveIntOption {
+	isNil := receiver.CheckNil(value)
+	valueInt := 0
+	if !isNil {
+		valueInt = *value
+	}
+
 	return func(s *PrimitiveInt) {
-		s.value = value
+		s.value = valueInt
+		s.isNil = isNil
 	}
 }
 

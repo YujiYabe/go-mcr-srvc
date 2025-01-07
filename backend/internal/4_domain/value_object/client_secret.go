@@ -24,53 +24,30 @@ func NewClientSecret(
 	clientSecret ClientSecret,
 ) {
 	clientSecret = ClientSecret{}
-	// clientSecret.SetValue(ctx, value)
-	// return
-
-	primitiveString := &primitiveObject.PrimitiveString{}
-
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-
-	clientSecret.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
-		primitiveString.WithMaxLength(clientSecretLengthMax),
-		primitiveString.WithMinLength(clientSecretLengthMin),
-	)
-
-	clientSecret.content.Validation()
-	if clientSecret.content.GetError() != nil {
-		clientSecret.SetError(ctx,
-			clientSecret.content.GetError(),
-		)
-	}
+	clientSecret.SetValue(ctx, value)
 
 	return
 }
 
-// func (receiver *ClientSecret) SetValue(
-// 	ctx context.Context,
-// 	value *string,
-// ) {
-// 	primitiveString := &primitiveObject.PrimitiveString{}
+func (receiver *ClientSecret) SetValue(
+	ctx context.Context,
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
 
-// 	receiver.content = primitiveObject.NewPrimitiveString(
-// 		primitiveString.WithValue(value),
-// 		primitiveString.WithMaxLength(clientSecretLengthMax),
-// 		primitiveString.WithMinLength(clientSecretLengthMin),
-// 	)
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
+		primitiveString.WithMaxLength(clientSecretLengthMax),
+		primitiveString.WithMinLength(clientSecretLengthMin),
+	)
 
-// 	receiver.content.Validation()
-// 	if receiver.content.GetError() != nil {
-// 		receiver.SetError(ctx,
-// 			receiver.content.GetError(),
-// 		)
-// 	}
-// }
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(ctx,
+			receiver.content.GetError(),
+		)
+	}
+}
 
 func (receiver *ClientSecret) GetError() error {
 	return receiver.err

@@ -39,15 +39,9 @@ func (receiver *Name) SetValue(
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(nameLengthMax),
 		primitiveString.WithMinLength(nameLengthMin),
 		primitiveString.WithCheckSpell(nameCheckSpell),

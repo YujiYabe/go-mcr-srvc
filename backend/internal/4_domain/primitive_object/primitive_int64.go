@@ -29,8 +29,15 @@ func (receiver *PrimitiveInt64) WithError(
 func (receiver *PrimitiveInt64) WithValue(
 	value *int64,
 ) PrimitiveInt64Option {
+	isNil := receiver.CheckNil(value)
+	valueInt64 := int64(0)
+	if !isNil {
+		valueInt64 = *value
+	}
+
 	return func(s *PrimitiveInt64) {
-		s.value = *value
+		s.value = valueInt64
+		s.isNil = isNil
 	}
 }
 

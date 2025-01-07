@@ -29,6 +29,7 @@ func NewTraceID(
 	traceID TraceID,
 ) {
 	traceID = TraceID{}
+	traceID.SetValue(ctx, value)
 
 	return
 }
@@ -39,7 +40,7 @@ func (receiver *TraceID) SetValue(
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
-		// primitiveString.WithValue(value),
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(traceIDLengthMax),
 		primitiveString.WithMinLength(traceIDLengthMin),
 	)
@@ -48,7 +49,6 @@ func (receiver *TraceID) SetValue(
 	if receiver.content.GetError() != nil {
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
-
 }
 
 func (receiver *TraceID) GetValue() string {

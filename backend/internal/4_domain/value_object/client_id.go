@@ -24,52 +24,30 @@ func NewClientID(
 	clientID ClientID,
 ) {
 	clientID = ClientID{}
-	// clientID.SetValue(ctx, value)
-	// return
+	clientID.SetValue(ctx, value)
+
+	return
+}
+
+func (receiver *ClientID) SetValue(
+	ctx context.Context,
+	value *string,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	clientID.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(clientIDLengthMax),
 		primitiveString.WithMinLength(clientIDLengthMin),
 	)
 
-	clientID.content.Validation()
-	if clientID.content.GetError() != nil {
-		clientID.SetError(
+	if receiver.content.GetError() != nil {
+		receiver.SetError(
 			ctx,
-			clientID.content.GetError(),
+			receiver.content.GetError(),
 		)
 	}
-	return
-
 }
-
-// func (receiver *ClientID) SetValue(
-// 	ctx context.Context,
-// 	value *string,
-// ) {
-// 	primitiveString := &primitiveObject.PrimitiveString{}
-
-// 	receiver.content = primitiveObject.NewPrimitiveString(
-// 		primitiveString.WithValue(value),
-// 		primitiveString.WithMaxLength(clientIDLengthMax),
-// 		primitiveString.WithMinLength(clientIDLengthMin),
-// 	)
-
-// 	if receiver.content.GetError() != nil {
-// 		receiver.SetError(
-// 			ctx,
-// 			receiver.content.GetError(),
-// 		)
-// 	}
-// }
 
 func (receiver *ClientID) GetError() error {
 	return receiver.err

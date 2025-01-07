@@ -37,10 +37,17 @@ func (receiver *PrimitiveString) WithError(
 // --------------------------------------
 // WithValue は文字列値を設定するオプションを返します
 func (receiver *PrimitiveString) WithValue(
-	value string,
+	value *string,
 ) PrimitiveStringOption {
+	isNil := receiver.CheckNil(value)
+	valueString := ""
+	if !isNil {
+		valueString = *value
+	}
+
 	return func(s *PrimitiveString) {
-		s.value = value
+		s.value = valueString
+		s.isNil = isNil
 	}
 }
 

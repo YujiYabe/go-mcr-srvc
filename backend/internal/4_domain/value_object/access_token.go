@@ -30,46 +30,28 @@ func NewAccessToken(
 	accessToken AccessToken,
 ) {
 	accessToken = AccessToken{}
-	// accessToken.SetValue(ctx, value)
-	primitiveString := &primitiveObject.PrimitiveString{}
-
-	isNil := primitiveString.CheckNil(value)
-	valueString := ""
-	if !isNil {
-		valueString = *value
-	}
-	accessToken.content = primitiveObject.NewPrimitiveString(
-		primitiveString.WithValue(valueString),
-		primitiveString.WithIsNil(isNil),
-		primitiveString.WithMaxLength(accessTokenLengthMax),
-		primitiveString.WithMinLength(accessTokenLengthMin),
-	)
-
-	accessToken.content.Validation()
-	if accessToken.content.GetError() != nil {
-		accessToken.SetError(ctx, accessToken.content.GetError())
-	}
+	accessToken.SetValue(ctx, value)
 
 	return
 }
 
-// func (receiver *AccessToken) SetValue(
-// 	ctx context.Context,
-// 	value *string,
-// ) {
-// 	primitiveString := &primitiveObject.PrimitiveString{}
+func (receiver *AccessToken) SetValue(
+	ctx context.Context,
+	value *string,
+) {
+	primitiveString := &primitiveObject.PrimitiveString{}
 
-// 	receiver.content = primitiveObject.NewPrimitiveString(
-// 		primitiveString.WithValue(value),
-// 		primitiveString.WithMaxLength(accessTokenLengthMax),
-// 		primitiveString.WithMinLength(accessTokenLengthMin),
-// 	)
+	receiver.content = primitiveObject.NewPrimitiveString(
+		primitiveString.WithValue(value),
+		primitiveString.WithMaxLength(accessTokenLengthMax),
+		primitiveString.WithMinLength(accessTokenLengthMin),
+	)
 
-// 	receiver.content.Validation()
-// 	if receiver.content.GetError() != nil {
-// 		receiver.SetError(ctx, receiver.content.GetError())
-// 	}
-// }
+	receiver.content.Validation()
+	if receiver.content.GetError() != nil {
+		receiver.SetError(ctx, receiver.content.GetError())
+	}
+}
 
 func (receiver *AccessToken) GetError() error {
 	return receiver.err
