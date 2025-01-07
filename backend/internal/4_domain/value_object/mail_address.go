@@ -61,7 +61,7 @@ func (receiver *MailAddress) GetValue() string {
 }
 
 func (receiver *MailAddress) GetError() error {
-	return receiver.content.GetError()
+	return receiver.err
 }
 
 func (receiver *MailAddress) SetError(
