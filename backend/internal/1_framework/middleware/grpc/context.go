@@ -33,7 +33,9 @@ func CommonToContext(
 
 	//  可変データの更新または追加
 	ctx = timeStampToContext(ctx, req.GetMutable())
-	// ctx = TimeoutSecondToContext(ctx, req.GetImmutable())
+
+	ctx = timeoutSecondToContext(
+		ctx, req.GetMutable())
 
 	log.Println("== == == == == == == == == == ")
 	pkg.Logging(ctx, req.GetMutable())
@@ -58,6 +60,31 @@ func timeStampToContext(
 	)
 
 	return
+}
+
+// リクエスト処理の残り時間（秒）を計算
+func timeoutSecondToContext(
+	ctx context.Context,
+	v1IMutableParameter *grpcParameter.V1MutableParameter,
+) (
+	newCtx context.Context,
+) {
+	// requestStartTime := valueObject.GetRequestStartTime(ctx)
+	// timeoutSecond := v1IMutableParameter.GetTimeoutSecond()
+
+	// // Calculate elapsed time
+	// elapsedTime := time.Now().Unix() - requestStartTime
+
+	// // Calculate remaining time in seconds
+	// // remainingTime := timeoutSecond - elapsedTime
+
+	// // Create context with timeout
+	// newCtx, _ = context.WithTimeout(ctx, time.Duration(remainingTime)*time.Second)
+
+	// // Add timestamp to context
+	// newCtx = context.WithValue(newCtx, valueObject.TimeStampContextName, remainingTime)
+
+	return ctx
 }
 
 func requestStartTimeToContext(

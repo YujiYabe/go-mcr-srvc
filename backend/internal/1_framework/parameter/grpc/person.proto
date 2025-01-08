@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package grpc_parameter.v1;
+
 option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_framework/parameter/grpc";
 
 service PersonService {
@@ -14,35 +15,35 @@ message V1CommonParameter {
 }
 
 message V1Error {
-  string code = 1;             // エラーコード (例: INVALID_PARAMETER, NOT_FOUND)
-  string message = 2;          // エラーメッセージ
-  string detail = 3;           // 詳細なエラー情報
-  string field = 4;            // エラーが発生したフィールド名
-  repeated V1Error errors = 5; // ネストされたエラー情報
+  string code = 1; //               エラーコード (例: INVALID_PARAMETER, NOT_FOUND)
+  string message = 2; //            エラーメッセージ
+  string detail = 3; //             詳細なエラー情報
+  string field = 4; //              エラーが発生したフィールド名
+  repeated V1Error errors = 5; //   ネストされたエラー情報
 }
 
-message V1ImmutableParameter { // 不変な情報
-  string trace_id = 1; // リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
-  int64 request_start_time = 2; // リクエスト情報: リクエストの開始時刻（Unix timestamp）
-  string client_ip = 3; // リクエスト情報: クライアントのIPアドレス
-  string user_agent = 4; // リクエスト情報: クライアントのユーザーエージェント情報
-  string user_id = 5; // ユーザー認証情報: ユーザーを一意に識別するID
+message V1ImmutableParameter { //     不変な情報
+  string trace_id = 1; //             リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
+  int64 request_start_time = 2; //    リクエスト情報: リクエストの開始時刻（Unix timestamp）
+  string client_ip = 3; //            リクエスト情報: クライアントのIPアドレス
+  string user_agent = 4; //           リクエスト情報: クライアントのユーザーエージェント情報
+  string user_id = 5; //              ユーザー認証情報: ユーザーを一意に識別するID
   repeated string permissions = 6; // ユーザー認証情報: ユーザーに付与された権限リスト
-  string access_token = 7; // ユーザー認証情報: ユーザー認証用のJWTトークン
-  string tenant_id = 8; // ビジネスコンテキスト: マルチテナント環境での所属テナントID
-  string locale = 9; // ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）
-  string timezone = 10; // ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
+  string access_token = 7; //         ユーザー認証情報: ユーザー認証用のJWTトークン
+  string tenant_id = 8; //            ビジネスコンテキスト: マルチテナント環境での所属テナントID
+  string locale = 9; //               ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）
+  string timezone = 10; //            ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
 }
 
-message V1MutableParameter { // リクエスト処理中に変更される可能性のある情報
-  string time_stamp = 1; // 分散システム制御情報: 処理の各段階での時刻記録
-  int32 retry_count = 2; // 分散システム制御情報: リトライ試行回数の現在値
-  bool circuit_breaker_enabled = 3; // 分散システム制御情報: サーキットブレーカーの現在の有効状態
-  int32 rate_limit = 4; // 分散システム制御情報: 現在の速度制限値（リクエスト/秒）
-  int32 timeout_second = 5; // リクエスト情報: リクエスト処理の残り時間（秒）
-  int32 resource_quota = 6; // デバッグ/モニタリング情報: 割り当てられたリソース使用量の制限値
-  bool sampling_enabled = 7; // デバッグ/モニタリング情報: パフォーマンスサンプリングの有効状態
-  bool debug_mode = 8; // デバッグ/モニタリング情報: デバッグモードの有効状態
+message V1MutableParameter { //          リクエスト処理中に変更される可能性のある情報
+  string time_stamp = 1; //              分散システム制御情報: 処理の各段階での時刻記録
+  int32 retry_count = 2; //              分散システム制御情報: リトライ試行回数の現在値 in-memoryでカウントする(redisを使うほどではない揮発性メモリ)
+  bool circuit_breaker_enabled = 3; //   分散システム制御情報: サーキットブレーカーの現在の有効状態 再デプロイなしでフラグを確認できる仕組みが必要
+  int32 rate_limit = 4; //               分散システム制御情報: 現在の速度制限値（リクエスト/秒）
+  // int32 timeout_second = 5; //        リクエスト情報: リクエスト処理の残り時間（秒） request_start_time - time.now() をgolangのcontext.WithTimeoutでタイムアウト設定するので不要
+  int32 resource_quota = 6; //           デバッグ/モニタリング情報: 割り当てられたリソース使用量の制限値
+  bool sampling_enabled = 7; //          デバッグ/モニタリング情報: パフォーマンスサンプリングの有効状態
+  bool debug_mode = 8; //                デバッグ/モニタリング情報: デバッグモードの有効状態
 }
 
 message GetPersonByConditionRequest {
@@ -57,9 +58,9 @@ message GetPersonByConditionResponse {
 }
 
 message V1PersonParameter {
-  optional uint32 id = 2; // ID
-  optional string name = 3; // Name
-  optional string mail_address = 4; // Mail Address
+  optional uint32 id = 2; //             ID
+  optional string name = 3; //           Name
+  optional string mail_address = 4; //   Mail Address
 }
 
 message V1PersonParameterArray {

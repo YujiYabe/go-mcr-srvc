@@ -70,11 +70,11 @@ func (receiver *TraceID) SetError(
 func GetTraceID(
 	ctx context.Context,
 ) (
-	traceIDString string,
+	value string,
 ) {
 	traceID, ok := ctx.Value(TraceIDContextName).(string)
 	if ok {
-		traceIDString = traceID
+		value = traceID
 	}
 
 	return

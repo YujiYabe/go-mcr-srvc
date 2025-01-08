@@ -36,8 +36,6 @@ func (receiver *Server) GetPersonByCondition(
 	}
 
 	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
 
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
 	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
@@ -111,5 +109,4 @@ func (receiver *Server) GetPersonByCondition(
 	pkg.Logging(ctx, traceID)
 
 	return
-
 }
