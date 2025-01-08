@@ -34,7 +34,7 @@ func Logging(
 	}
 	_, fullPath, line, _ := runtime.Caller(1)
 
-	fullPath = strings.TrimPrefix(fullPath, "/go/src")
+	fullPath = strings.TrimPrefix(fullPath, "/go/src/")
 	var rowData RowData
 	rowData.append(traceID)                         // key
 	rowData.append(time.Now().Format("15:04:05"))   // dateTime

@@ -1,6 +1,7 @@
 package person
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -8,6 +9,7 @@ import (
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -18,6 +20,9 @@ func get(
 	err error,
 ) {
 	ctx := c.Request().Context()
+	traceID := valueObject.GetTraceID(ctx)
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	person := httpParameter.V1Person{}
 
@@ -73,6 +78,9 @@ func get(
 			},
 		)
 	}
+
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, traceID)
 
 	return c.JSON(
 		http.StatusOK,
