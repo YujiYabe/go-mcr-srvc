@@ -63,5 +63,4 @@ func (receiver *GoGRPC) Start() {
 		pkg.Logging(ctx, err)
 		log.Fatalf("failed to serve: %v", err)
 	}
-
 }

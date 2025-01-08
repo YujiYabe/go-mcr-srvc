@@ -14,11 +14,11 @@ message V1CommonParameter {
 }
 
 message V1Error {
-  string code = 1; // エラーコード (例: INVALID_PARAMETER, NOT_FOUND)
-  string message = 2; // エラーメッセージ
-  string detail = 3; // 詳細なエラー情報
-  string field = 4; // エラーが発生したフィールド名
-  repeated V1Error nested = 5; // ネストされたエラー情報
+  string code = 1;             // エラーコード (例: INVALID_PARAMETER, NOT_FOUND)
+  string message = 2;          // エラーメッセージ
+  string detail = 3;           // 詳細なエラー情報
+  string field = 4;            // エラーが発生したフィールド名
+  repeated V1Error errors = 5; // ネストされたエラー情報
 }
 
 message V1ImmutableParameter { // 不変な情報
@@ -27,7 +27,7 @@ message V1ImmutableParameter { // 不変な情報
   string client_ip = 3; // リクエスト情報: クライアントのIPアドレス
   string user_agent = 4; // リクエスト情報: クライアントのユーザーエージェント情報
   string user_id = 5; // ユーザー認証情報: ユーザーを一意に識別するID
-  repeated string permission_list = 6; // ユーザー認証情報: ユーザーに付与された権限リスト
+  repeated string permissions = 6; // ユーザー認証情報: ユーザーに付与された権限リスト
   string access_token = 7; // ユーザー認証情報: ユーザー認証用のJWTトークン
   string tenant_id = 8; // ビジネスコンテキスト: マルチテナント環境での所属テナントID
   string locale = 9; // ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）

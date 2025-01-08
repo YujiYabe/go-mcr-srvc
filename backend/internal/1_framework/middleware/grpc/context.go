@@ -14,9 +14,19 @@ func CommonToContext(
 	v1CommonParameter *grpcParameter.V1CommonParameter,
 ) context.Context {
 
-	ctx = traceIDToContext(ctx, v1CommonParameter)
-	// ctx = requestStartTimeToContext(ctx)
-	// ctx = timestampToContext(ctx)
+	if v1CommonParameter == nil {
+		return ctx
+	}
+
+	if v1CommonParameter.Immutable != nil {
+		ctx = traceIDToContext(ctx, v1CommonParameter)
+		// ctx = requestStartTimeToContext(ctx)
+		// ctx = timestampToContext(ctx)
+	}
+
+	if v1CommonParameter.Mutable != nil {
+		// ctx = timestampToContext(ctx)
+	}
 
 	return ctx
 }
