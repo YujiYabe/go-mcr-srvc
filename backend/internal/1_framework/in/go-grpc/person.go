@@ -26,15 +26,17 @@ func (receiver *Server) GetPersonByCondition(
 	v1GetPersonByConditionResponse *grpcParameter.GetPersonByConditionResponse,
 	err error,
 ) {
+	v1GetPersonByConditionResponse = &grpcParameter.GetPersonByConditionResponse{}
+
 	ctx = grpcMiddleware.CommonToContext(
 		ctx,
-		req.V1CommonParameter,
+		req,
 	)
+
 	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
 	pkg.Logging(ctx, traceID)
 
-	v1GetPersonByConditionResponse = &grpcParameter.GetPersonByConditionResponse{}
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
 	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
 
