@@ -19,101 +19,101 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Person_GetPersonByCondition_FullMethodName = "/grpc_parameter.Person/GetPersonByCondition"
+	PersonService_GetPersonByCondition_FullMethodName = "/grpc_parameter.v1.PersonService/GetPersonByCondition"
 )
 
-// PersonClient is the client API for Person service.
+// PersonServiceClient is the client API for PersonService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type PersonClient interface {
-	GetPersonByCondition(ctx context.Context, in *V1GetPersonByConditionRequest, opts ...grpc.CallOption) (*V1GetPersonByConditionResponse, error)
+type PersonServiceClient interface {
+	GetPersonByCondition(ctx context.Context, in *GetPersonByConditionRequest, opts ...grpc.CallOption) (*GetPersonByConditionResponse, error)
 }
 
-type personClient struct {
+type personServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewPersonClient(cc grpc.ClientConnInterface) PersonClient {
-	return &personClient{cc}
+func NewPersonServiceClient(cc grpc.ClientConnInterface) PersonServiceClient {
+	return &personServiceClient{cc}
 }
 
-func (c *personClient) GetPersonByCondition(ctx context.Context, in *V1GetPersonByConditionRequest, opts ...grpc.CallOption) (*V1GetPersonByConditionResponse, error) {
+func (c *personServiceClient) GetPersonByCondition(ctx context.Context, in *GetPersonByConditionRequest, opts ...grpc.CallOption) (*GetPersonByConditionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(V1GetPersonByConditionResponse)
-	err := c.cc.Invoke(ctx, Person_GetPersonByCondition_FullMethodName, in, out, cOpts...)
+	out := new(GetPersonByConditionResponse)
+	err := c.cc.Invoke(ctx, PersonService_GetPersonByCondition_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// PersonServer is the server API for Person service.
-// All implementations must embed UnimplementedPersonServer
+// PersonServiceServer is the server API for PersonService service.
+// All implementations must embed UnimplementedPersonServiceServer
 // for forward compatibility.
-type PersonServer interface {
-	GetPersonByCondition(context.Context, *V1GetPersonByConditionRequest) (*V1GetPersonByConditionResponse, error)
-	mustEmbedUnimplementedPersonServer()
+type PersonServiceServer interface {
+	GetPersonByCondition(context.Context, *GetPersonByConditionRequest) (*GetPersonByConditionResponse, error)
+	mustEmbedUnimplementedPersonServiceServer()
 }
 
-// UnimplementedPersonServer must be embedded to have
+// UnimplementedPersonServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedPersonServer struct{}
+type UnimplementedPersonServiceServer struct{}
 
-func (UnimplementedPersonServer) GetPersonByCondition(context.Context, *V1GetPersonByConditionRequest) (*V1GetPersonByConditionResponse, error) {
+func (UnimplementedPersonServiceServer) GetPersonByCondition(context.Context, *GetPersonByConditionRequest) (*GetPersonByConditionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPersonByCondition not implemented")
 }
-func (UnimplementedPersonServer) mustEmbedUnimplementedPersonServer() {}
-func (UnimplementedPersonServer) testEmbeddedByValue()                {}
+func (UnimplementedPersonServiceServer) mustEmbedUnimplementedPersonServiceServer() {}
+func (UnimplementedPersonServiceServer) testEmbeddedByValue()                       {}
 
-// UnsafePersonServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PersonServer will
+// UnsafePersonServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to PersonServiceServer will
 // result in compilation errors.
-type UnsafePersonServer interface {
-	mustEmbedUnimplementedPersonServer()
+type UnsafePersonServiceServer interface {
+	mustEmbedUnimplementedPersonServiceServer()
 }
 
-func RegisterPersonServer(s grpc.ServiceRegistrar, srv PersonServer) {
-	// If the following call pancis, it indicates UnimplementedPersonServer was
+func RegisterPersonServiceServer(s grpc.ServiceRegistrar, srv PersonServiceServer) {
+	// If the following call pancis, it indicates UnimplementedPersonServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Person_ServiceDesc, srv)
+	s.RegisterService(&PersonService_ServiceDesc, srv)
 }
 
-func _Person_GetPersonByCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(V1GetPersonByConditionRequest)
+func _PersonService_GetPersonByCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPersonByConditionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PersonServer).GetPersonByCondition(ctx, in)
+		return srv.(PersonServiceServer).GetPersonByCondition(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Person_GetPersonByCondition_FullMethodName,
+		FullMethod: PersonService_GetPersonByCondition_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PersonServer).GetPersonByCondition(ctx, req.(*V1GetPersonByConditionRequest))
+		return srv.(PersonServiceServer).GetPersonByCondition(ctx, req.(*GetPersonByConditionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Person_ServiceDesc is the grpc.ServiceDesc for Person service.
+// PersonService_ServiceDesc is the grpc.ServiceDesc for PersonService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Person_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc_parameter.Person",
-	HandlerType: (*PersonServer)(nil),
+var PersonService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "grpc_parameter.v1.PersonService",
+	HandlerType: (*PersonServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetPersonByCondition",
-			Handler:    _Person_GetPersonByCondition_Handler,
+			Handler:    _PersonService_GetPersonByCondition_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

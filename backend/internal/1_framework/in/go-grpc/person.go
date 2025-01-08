@@ -20,16 +20,16 @@ type GoGRPC struct {
 // Implementation of the GetPersonByCondition method
 func (receiver *Server) GetPersonByCondition(
 	ctx context.Context,
-	req *grpcParameter.V1GetPersonByConditionRequest,
+	req *grpcParameter.GetPersonByConditionRequest,
 ) (
-	v1GetPersonByConditionResponse *grpcParameter.V1GetPersonByConditionResponse,
+	v1GetPersonByConditionResponse *grpcParameter.GetPersonByConditionResponse,
 	err error,
 ) {
 	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
 	pkg.Logging(ctx, traceID)
 
-	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
+	v1GetPersonByConditionResponse = &grpcParameter.GetPersonByConditionResponse{}
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
 	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
 
@@ -91,10 +91,10 @@ func (receiver *Server) GetPersonByCondition(
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
 		Immutable: &grpcParameter.V1ImmutableParameter{
-			TraceID: traceID,
+			TraceId: traceID,
 		},
 		Mutable: &grpcParameter.V1MutableParameter{
-			TimeStamp: time.Now().Format(timeFormat),
+			TimeStamp: time.Now().Format(time.RFC3339),
 		},
 	}
 

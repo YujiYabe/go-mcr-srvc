@@ -16,12 +16,12 @@ import (
 )
 
 const (
-	timeFormat = "06-01-02-15:04:05.000000000"
+// timeFormat = "06-01-02-15:04:05.000000000"
 )
 
 // Server ...
 type Server struct {
-	grpcParameter.UnimplementedPersonServer
+	grpcParameter.UnimplementedPersonServiceServer
 	Controller controller.ToController
 }
 
@@ -57,7 +57,7 @@ func (receiver *GoGRPC) Start() {
 		),
 	)
 
-	grpcParameter.RegisterPersonServer(server, &receiver.Server)
+	grpcParameter.RegisterPersonServiceServer(server, &receiver.Server)
 	reflection.Register(server)
 
 	if err := server.Serve(listen); err != nil {

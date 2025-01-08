@@ -41,14 +41,14 @@ func (receiver *GRPCClient) ViaGRPC(
 	defer conn.Close()
 
 	// クライアントの作成
-	client := grpcParameter.NewPersonClient(conn)
+	client := grpcParameter.NewPersonServiceClient(conn)
 
 	// リクエストの作成
-	v1GetPersonByConditionRequest := &grpcParameter.V1GetPersonByConditionRequest{
+	v1GetPersonByConditionRequest := &grpcParameter.GetPersonByConditionRequest{
 		V1PersonParameter: &grpcParameter.V1PersonParameter{},
 		V1CommonParameter: &grpcParameter.V1CommonParameter{
 			Immutable: &grpcParameter.V1ImmutableParameter{
-				TraceID: traceID,
+				TraceId: traceID,
 			},
 		},
 	}
