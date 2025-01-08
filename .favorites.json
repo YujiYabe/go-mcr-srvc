@@ -22,5 +22,13 @@
         "workspaceRoot": "/home/yuji/Workspace/private_dev/go-docker-template",
         "workspacePath": "backend/internal/1_framework/in/go-echo/v1/auth/withmiddleware/middleware-rest.rest",
         "id": "6OyMQpYCdtsJeGXr"
+    },
+    {
+        "type": "File",
+        "name": "/home/yuji/Workspace/private_dev/go-docker-template/backend/internal/1_framework/parameter/grpc/person.proto",
+        "parent_id": null,
+        "workspaceRoot": "/home/yuji/Workspace/private_dev/go-docker-template",
+        "workspacePath": "backend/internal/1_framework/parameter/grpc/person.proto",
+        "id": "T9qnDC25luAvXjos"
     }
 ]

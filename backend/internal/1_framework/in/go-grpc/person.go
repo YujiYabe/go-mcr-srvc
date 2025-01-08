@@ -21,17 +21,19 @@ type GoGRPC struct {
 // Implementation of the GetPersonByCondition method
 func (receiver *Server) GetPersonByCondition(
 	ctx context.Context,
-	req *grpcParameter.GetPersonByConditionRequest,
+	request *grpcParameter.GetPersonByConditionRequest,
 ) (
 	v1GetPersonByConditionResponse *grpcParameter.GetPersonByConditionResponse,
 	err error,
 ) {
 	v1GetPersonByConditionResponse = &grpcParameter.GetPersonByConditionResponse{}
 
-	ctx = grpcMiddleware.CommonToContext(
-		ctx,
-		req,
-	)
+	if request.GetV1CommonParameter() != nil {
+		ctx = grpcMiddleware.CommonToContext(
+			ctx,
+			request.GetV1CommonParameter(),
+		)
+	}
 
 	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
@@ -41,19 +43,19 @@ func (receiver *Server) GetPersonByCondition(
 	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
 
 	var id *int
-	if req.V1PersonParameter.GetId() != 0 {
+	if request.V1PersonParameter.GetId() != 0 {
 		id = new(int)
-		*id = int(req.V1PersonParameter.GetId())
+		*id = int(request.V1PersonParameter.GetId())
 	}
 
 	var name *string
-	if req.V1PersonParameter.Name != nil {
-		name = req.V1PersonParameter.Name
+	if request.V1PersonParameter.Name != nil {
+		name = request.V1PersonParameter.Name
 	}
 
 	var mailAddress *string
-	if req.V1PersonParameter.MailAddress != nil {
-		mailAddress = req.V1PersonParameter.MailAddress
+	if request.V1PersonParameter.MailAddress != nil {
+		mailAddress = request.V1PersonParameter.MailAddress
 	}
 
 	reqPerson := groupObject.NewPerson(
@@ -109,4 +111,5 @@ func (receiver *Server) GetPersonByCondition(
 	pkg.Logging(ctx, traceID)
 
 	return
+
 }

@@ -3,6 +3,7 @@ package grpc_middleware
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -13,36 +14,73 @@ import (
 
 func CommonToContext(
 	ctx context.Context,
-	req *grpcParameter.GetPersonByConditionRequest,
+	req *grpcParameter.V1CommonParameter,
 ) context.Context {
 
 	// エラーがあれば都度処理
-	if req.V1CommonParameter.GetError() != nil {
+	if req.GetError() != nil {
 		log.Println("== == == == == == == == == == ")
-		pkg.Logging(ctx, req.V1CommonParameter.GetError())
+		pkg.Logging(ctx, req.GetError())
 		log.Println("== == == == == == == == == == ")
 	}
 
 	// 不変データがなければ追加
-	if req.V1CommonParameter.GetImmutable() != nil {
-		ctx = traceIDToContext(ctx, req.V1CommonParameter.GetImmutable())
+	if req.GetImmutable() != nil {
+		ctx = traceIDToContext(ctx, req.GetImmutable())
+		ctx = requestStartTimeToContext(ctx, req.GetImmutable())
 
-		log.Println("== == == == == == == == == == ")
-		pkg.Logging(ctx, req.V1CommonParameter.GetImmutable())
-		log.Println("== == == == == == == == == == ")
 	}
 
 	//  可変データの更新または追加
-	if req.V1CommonParameter.GetMutable() != nil {
-		ctx = traceIDToContext(ctx, req.V1CommonParameter.GetImmutable())
+	ctx = timeStampToContext(ctx, req.GetMutable())
+	// ctx = TimeoutSecondToContext(ctx, req.GetImmutable())
 
-		log.Println("== == == == == == == == == == ")
-		pkg.Logging(ctx, req.V1CommonParameter.GetMutable())
-		log.Println("== == == == == == == == == == ")
-
-	}
+	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, req.GetMutable())
+	log.Println("== == == == == == == == == == ")
 
 	return ctx
+}
+
+func timeStampToContext(
+	ctx context.Context,
+	v1IMutableParameter *grpcParameter.V1MutableParameter,
+) (
+	newCtx context.Context,
+) {
+	timesStamp := v1IMutableParameter.GetTimeStamp()
+
+	// traceID をコンテキストに追加
+	newCtx = context.WithValue(
+		ctx,
+		valueObject.TimeStampContextName,
+		timesStamp,
+	)
+
+	return
+}
+
+func requestStartTimeToContext(
+	ctx context.Context,
+	v1ImmutableParameter *grpcParameter.V1ImmutableParameter,
+) (
+	newCtx context.Context,
+) {
+	requestStartTime := v1ImmutableParameter.GetRequestStartTime()
+
+	// requestStartTime が無い場合は新規生成
+	if requestStartTime == 0 {
+		requestStartTime = time.Now().Unix()
+	}
+
+	// requestStartTime をコンテキストに追加
+	newCtx = context.WithValue(
+		ctx,
+		valueObject.RequestStartTimeContextName,
+		requestStartTime,
+	)
+
+	return
 }
 
 func traceIDToContext(
@@ -53,12 +91,12 @@ func traceIDToContext(
 ) {
 	traceID := v1ImmutableParameter.GetTraceId()
 
-	// リクエストIDが無い場合は新規生成
+	// traceID が無い場合は新規生成
 	if traceID == "" {
 		traceID = uuid.New().String()
 	}
 
-	// リクエストIDをコンテキストに追加
+	// traceID をコンテキストに追加
 	newCtx = context.WithValue(
 		ctx,
 		valueObject.TraceIDContextName,
