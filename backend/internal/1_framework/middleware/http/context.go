@@ -5,7 +5,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
-	"google.golang.org/grpc/metadata"
 
 	valueObject "backend/internal/4_domain/value_object"
 )
@@ -55,16 +54,5 @@ func setTraceIDHeader(
 	c.Response().Header().Set(
 		string(valueObject.TraceIDContextName),
 		traceID,
-	)
-}
-
-// gRPCメタデータとの変換を行うレイヤーで適切に変換処理を実装
-func ConvertToMetadata(
-	ctx context.Context,
-) metadata.MD {
-	return metadata.New(
-		map[string]string{
-			string(valueObject.TraceIDMetaName): ctx.Value(valueObject.TraceIDContextName).(string), // メタデータ用にハイフン区切りに変換
-		},
 	)
 }

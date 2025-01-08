@@ -3,50 +3,43 @@ package grpc_middleware
 import (
 	"context"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
+	"github.com/google/uuid"
+
+	grpcParameter "backend/internal/1_framework/parameter/grpc"
+	valueObject "backend/internal/4_domain/value_object"
 )
 
-func MetadataToContext(
+func CommonToContext(
 	ctx context.Context,
-	req interface{},
-	info *grpc.UnaryServerInfo,
-	handler grpc.UnaryHandler,
-) (interface{}, error) {
-	// メタデータからリクエストIDを取得
-	md, ok := metadata.FromIncomingContext(ctx)
+	v1CommonParameter *grpcParameter.V1CommonParameter,
+) context.Context {
 
-	if ok { // メタデータが存在する場合、以下各パラメータをコンテキストに追加
-		ctx = traceIDToContext(ctx, md)
-		ctx = requestStartTimeToContext(ctx, md)
-		ctx = timestampToContext(ctx, md)
-	}
+	ctx = traceIDToContext(ctx, v1CommonParameter)
+	// ctx = requestStartTimeToContext(ctx)
+	// ctx = timestampToContext(ctx)
 
-	// 次のハンドラーを呼び出す
-	return handler(ctx, req)
+	return ctx
 }
 
-// func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
-// 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-// 		// コンテキストから値を取得してメタデータに変換
-// 		md := convertToMetadata(ctx)
+func traceIDToContext(
+	ctx context.Context,
+	v1CommonParameter *grpcParameter.V1CommonParameter,
+) (
+	newCtx context.Context,
+) {
+	traceID := v1CommonParameter.Immutable.GetTraceId()
 
-// 		// 新しいコンテキストにメタデータを設定
-// 		newCtx := metadata.NewOutgoingContext(ctx, md)
+	// リクエストIDが無い場合は新規生成
+	if traceID == "" {
+		traceID = uuid.New().String()
+	}
 
-// 		return handler(newCtx, req)
-// 	}
-// }
+	// リクエストIDをコンテキストに追加
+	newCtx = context.WithValue(
+		ctx,
+		valueObject.TraceIDContextName,
+		traceID,
+	)
 
-// // クライアント側での使用例
-// func UnaryClientInterceptor() grpc.UnaryClientInterceptor {
-// 	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-// 		// コンテキストから値を取得してメタデータに変換
-// 		md := convertToMetadata(ctx)
-
-// 		// 新しいコンテキストにメタデータを設定
-// 		newCtx := metadata.NewOutgoingContext(ctx, md)
-
-// 		return invoker(newCtx, method, req, reply, cc, opts...)
-// 	}
-// }
+	return
+}

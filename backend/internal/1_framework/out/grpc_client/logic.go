@@ -6,12 +6,10 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/metadata"
 
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
-
 	"backend/pkg"
 )
 
@@ -62,12 +60,6 @@ func (receiver *GRPCClient) ViaGRPC(
 		value := reqPerson.MailAddress.GetValue()
 		v1GetPersonByConditionRequest.V1PersonParameter.MailAddress = &value
 	}
-
-	ctx = metadata.AppendToOutgoingContext(
-		ctx,
-		string(valueObject.TraceIDMetaName),
-		traceID,
-	)
 
 	// gRPCリクエストの実行
 	grpcPersonList, err := client.GetPersonByCondition(

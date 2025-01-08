@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
@@ -25,6 +26,10 @@ func (receiver *Server) GetPersonByCondition(
 	v1GetPersonByConditionResponse *grpcParameter.GetPersonByConditionResponse,
 	err error,
 ) {
+	ctx = grpcMiddleware.CommonToContext(
+		ctx,
+		req.V1CommonParameter,
+	)
 	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
 	pkg.Logging(ctx, traceID)
