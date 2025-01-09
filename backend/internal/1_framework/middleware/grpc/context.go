@@ -25,21 +25,12 @@ func CommonToContext(
 	}
 
 	// 不変データがなければ追加
-	if req.GetImmutable() != nil {
-		ctx = traceIDToContext(ctx, req.GetImmutable())
-		ctx = requestStartTimeToContext(ctx, req.GetImmutable())
-
-	}
+	ctx = traceIDToContext(ctx, req.GetImmutable())
+	ctx = requestStartTimeToContext(ctx, req.GetImmutable())
 
 	//  可変データの更新または追加
 	ctx = timeStampToContext(ctx, req.GetMutable())
-
-	ctx = timeoutSecondToContext(
-		ctx, req.GetMutable())
-
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, req.GetMutable())
-	log.Println("== == == == == == == == == == ")
+	ctx = timeoutSecondToContext(ctx)
 
 	return ctx
 }
@@ -52,7 +43,7 @@ func timeStampToContext(
 ) {
 	timesStamp := v1IMutableParameter.GetTimeStamp()
 
-	// traceID をコンテキストに追加
+	// timesStamp をコンテキストに追加
 	newCtx = context.WithValue(
 		ctx,
 		valueObject.TimeStampContextName,
@@ -65,28 +56,39 @@ func timeStampToContext(
 // リクエスト処理の残り時間（秒）を計算
 func timeoutSecondToContext(
 	ctx context.Context,
-	v1IMutableParameter *grpcParameter.V1MutableParameter,
 ) (
 	newCtx context.Context,
 ) {
-	// requestStartTime := valueObject.GetRequestStartTime(ctx)
-	// timeoutSecond := v1IMutableParameter.GetTimeoutSecond()
 
-	// // Calculate elapsed time
-	// elapsedTime := time.Now().Unix() - requestStartTime
+	requestStartTime := valueObject.GetRequestStartTime(ctx)
+	currentTimestamp := time.Now().UnixMilli()
+	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
+	timeoutSecond := requestEndTime - currentTimestamp
 
-	// // Calculate remaining time in seconds
-	// // remainingTime := timeoutSecond - elapsedTime
+	// requestStartFormatted := time.UnixMilli(requestStartTime).Format("20060102-150405.000")
+	// currentFormatted := time.UnixMilli(currentTimestamp).Format("20060102-150405.000")
+	// endTimeFormatted := time.UnixMilli(requestEndTime).Format("20060102-150405.000")
 
-	// // Create context with timeout
-	// newCtx, _ = context.WithTimeout(ctx, time.Duration(remainingTime)*time.Second)
+	// log.Println("== == == == == == == == == == ")
+	// log.Printf("Request Start Time: %s\n", requestStartFormatted)
+	// log.Println("== == == == == == == == == == ")
+	// log.Printf("Current Time: %s\n", currentFormatted)
+	// log.Println("== == == == == == == == == == ")
+	// log.Printf("Request End Time: %s\n", endTimeFormatted)
+	// log.Println("== == == == == == == == == == ")
 
-	// // Add timestamp to context
-	// newCtx = context.WithValue(newCtx, valueObject.TimeStampContextName, remainingTime)
+	// requestStartTime をコンテキストに追加
+	newCtx = context.WithValue(
+		ctx,
+		valueObject.TimeOutSecondContextName,
+		timeoutSecond,
+	)
 
-	return ctx
+	return
+
 }
 
+// ------------
 func requestStartTimeToContext(
 	ctx context.Context,
 	v1ImmutableParameter *grpcParameter.V1ImmutableParameter,
@@ -97,7 +99,7 @@ func requestStartTimeToContext(
 
 	// requestStartTime が無い場合は新規生成
 	if requestStartTime == 0 {
-		requestStartTime = time.Now().Unix()
+		requestStartTime = time.Now().UnixMilli()
 	}
 
 	// requestStartTime をコンテキストに追加

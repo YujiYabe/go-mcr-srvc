@@ -136,6 +136,14 @@ func (receiver *PrimitiveInt64) GetValue() int64 {
 }
 
 // --------------------------------------
+func (receiver *PrimitiveInt64) GetString() string {
+	if receiver.GetIsNil() {
+		return ""
+	}
+	return fmt.Sprintf("%d", receiver.value)
+}
+
+// --------------------------------------
 func (receiver *PrimitiveInt64) SetValue(
 	value *int64,
 ) {
