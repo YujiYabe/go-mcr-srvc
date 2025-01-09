@@ -2,6 +2,7 @@ package http_middleware
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
@@ -13,25 +14,82 @@ func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 
-			// traceID設定
+			// traceID 設定 ---------
 			traceID := generateTraceID(
 				valueObject.GetTraceID(c.Request().Context()),
 			)
 			setTraceIDContext(c, traceID)
 			setTraceIDHeader(c, traceID)
 
+			// requestStartTime 設定 ---------
+			requestStartTime := generateRequestStartTime(
+				valueObject.GetRequestStartTime(c.Request().Context()),
+			)
+			setRequestStartTimeContext(c, requestStartTime)
+
+			// timeoutSecond 設定 ---------
+			timeoutSecond := generateTimeoutSecond(
+				valueObject.GetRequestStartTime(c.Request().Context()),
+			)
+			setTimeoutSecondContext(c, timeoutSecond)
+
 			return next(c)
 		}
 	}
 }
 
+func setTimeoutSecondContext(
+	c echo.Context,
+	timeoutSecond int64,
+) {
+	ctx := context.WithValue(
+		c.Request().Context(),
+		valueObject.TimeOutSecondContextName,
+		timeoutSecond,
+	)
+
+	c.SetRequest(c.Request().WithContext(ctx))
+}
+
+func generateTimeoutSecond(
+	requestStartTime int64,
+) int64 {
+	currentTimestamp := time.Now().UnixMilli()
+	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
+	timeoutSecond := requestEndTime - currentTimestamp
+
+	return timeoutSecond
+}
+
+func generateRequestStartTime(
+	existingValue int64,
+) int64 {
+	if existingValue == 0 {
+		return time.Now().UnixMilli()
+	}
+	return existingValue
+}
+
+func setRequestStartTimeContext(
+	c echo.Context,
+	requestStartTime int64,
+) {
+	ctx := context.WithValue(
+		c.Request().Context(),
+		valueObject.RequestStartTimeContextName,
+		requestStartTime,
+	)
+
+	c.SetRequest(c.Request().WithContext(ctx))
+}
+
 func generateTraceID(
-	existingID string,
+	existingValue string,
 ) string {
-	if existingID == "" {
+	if existingValue == "" {
 		return uuid.New().String()
 	}
-	return existingID
+	return existingValue
 }
 
 func setTraceIDContext(

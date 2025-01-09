@@ -26,6 +26,8 @@ func (receiver *useCase) GetPersonByCondition(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
+	// time.Sleep(6 * time.Second)
+
 	resPersonList = receiver.ToGateway.GetPersonByCondition(
 		ctx,
 		reqPerson,
