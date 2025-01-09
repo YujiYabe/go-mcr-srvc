@@ -62,7 +62,11 @@ func get(
 			}
 			return
 		}
+
+		traceID := valueObject.GetTraceID(ctx)
+		log.Println("== == == == == == == == == == ")
 		pkg.Logging(ctx, traceID)
+
 		close(done)
 	}()
 

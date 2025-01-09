@@ -1,10 +1,8 @@
 package goGRPC
 
 import (
-	"context"
 	"log"
 	"net"
-	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -38,16 +36,10 @@ func NewGoGRPC(
 
 // Start ....
 func (receiver *GoGRPC) Start() {
-	ctx, cancel := context.WithTimeout(
-		context.Background(),
-		30*time.Second,
-	)
-	defer cancel()
 	log.Println("------------------------- start GRPC ------------------------- ")
 
 	listen, err := net.Listen("tcp", pkg.GRPCAddress)
 	if err != nil {
-		pkg.Logging(ctx, err)
 		log.Fatalf("failed to listen: %v", err)
 	}
 	server := grpc.NewServer(
@@ -60,7 +52,6 @@ func (receiver *GoGRPC) Start() {
 	reflection.Register(server)
 
 	if err := server.Serve(listen); err != nil {
-		pkg.Logging(ctx, err)
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
