@@ -12,6 +12,7 @@ import (
 	"backend/pkg"
 )
 
+// ------------
 func CommonToContext(
 	ctx context.Context,
 	req *grpcParameter.V1CommonParameter,
@@ -35,6 +36,7 @@ func CommonToContext(
 	return ctx
 }
 
+// ------------
 func timeStampToContext(
 	ctx context.Context,
 	v1IMutableParameter *grpcParameter.V1MutableParameter,
@@ -59,7 +61,6 @@ func timeoutSecondToContext(
 ) (
 	newCtx context.Context,
 ) {
-
 	requestStartTime := valueObject.GetRequestStartTime(ctx)
 	currentTimestamp := time.Now().UnixMilli()
 	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
@@ -85,7 +86,6 @@ func timeoutSecondToContext(
 	)
 
 	return
-
 }
 
 // ------------
@@ -112,6 +112,7 @@ func requestStartTimeToContext(
 	return
 }
 
+// ------------
 func traceIDToContext(
 	ctx context.Context,
 	v1ImmutableParameter *grpcParameter.V1ImmutableParameter,
