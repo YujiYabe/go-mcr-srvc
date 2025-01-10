@@ -54,7 +54,7 @@ func fetchAccessToken(
 		pkg.Logging(ctx, accessToken.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
-			err,
+			accessToken.GetError(),
 		)
 	}
 

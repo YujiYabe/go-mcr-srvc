@@ -25,7 +25,7 @@ func (receiver *PersonList) SetError(
 ) {
 	if receiver.err == nil {
 		receiver.err = err
-		pkg.Logging(ctx, err)
+		pkg.Logging(ctx, receiver.err)
 	}
 }
 

@@ -62,10 +62,10 @@ func viaGRPC(
 	)
 
 	if resPersonList.GetError() != nil {
-		pkg.Logging(ctx, err)
+		pkg.Logging(ctx, resPersonList.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
-			err,
+			resPersonList.GetError(),
 		)
 	}
 
