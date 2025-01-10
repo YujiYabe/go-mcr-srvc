@@ -9,9 +9,8 @@ service PersonService {
 }
 
 message V1CommonParameter {
-  optional V1Error error = 1;
-  V1ImmutableParameter immutable = 2;
-  V1MutableParameter mutable = 3;
+  optional V1Error v1_error = 1;
+  V1RequestContext v1_request_context = 2;
 }
 
 message V1Error {
@@ -22,7 +21,7 @@ message V1Error {
   repeated V1Error errors = 5; //   ネストされたエラー情報
 }
 
-message V1ImmutableParameter { //     不変な情報
+message V1RequestContext { //     不変な情報
   string trace_id = 1; //             リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
   int64 request_start_time = 2; //    リクエスト情報: リクエストの開始時刻（Unix timestamp）
   string client_ip = 3; //            リクエスト情報: クライアントのIPアドレス
@@ -35,16 +34,6 @@ message V1ImmutableParameter { //     不変な情報
   string timezone = 10; //            ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
 }
 
-message V1MutableParameter { //          リクエスト処理中に変更される可能性のある情報
-  string time_stamp = 1; //              分散システム制御情報: 処理の各段階での時刻記録
-  int32 retry_count = 2; //              分散システム制御情報: リトライ試行回数の現在値 in-memoryでカウントする(redisを使うほどではない揮発性メモリ)
-  bool circuit_breaker_enabled = 3; //   分散システム制御情報: サーキットブレーカーの現在の有効状態 再デプロイなしでフラグを確認できる仕組みが必要
-  int32 rate_limit = 4; //               分散システム制御情報: 現在の速度制限値（リクエスト/秒）
-  // int32 timeout_second = 5; //        リクエスト情報: リクエスト処理の残り時間（秒） request_start_time - time.now() をgolangのcontext.WithTimeoutでタイムアウト設定するので不要
-  int32 resource_quota = 6; //           デバッグ/モニタリング情報: 割り当てられたリソース使用量の制限値
-  bool sampling_enabled = 7; //          デバッグ/モニタリング情報: パフォーマンスサンプリングの有効状態
-  bool debug_mode = 8; //                デバッグ/モニタリング情報: デバッグモードの有効状態
-}
 
 message GetPersonByConditionRequest {
   optional V1CommonParameter v1_common_parameter = 1;

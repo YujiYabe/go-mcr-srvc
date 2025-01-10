@@ -25,11 +25,10 @@ func get(
 	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
 	pkg.Logging(ctx, traceID)
-	timeoutSecond := valueObject.GetTimeoutSecond(ctx)
 
 	ctx, cancel := context.WithTimeout(
 		ctx,
-		time.Duration(timeoutSecond)*time.Millisecond,
+		time.Duration(valueObject.GetTimeoutSecond(ctx))*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 	done := make(chan struct{})
@@ -80,6 +79,7 @@ func get(
 		)
 
 	case <-ctx.Done():
+		pkg.Logging(ctx, ctx.Err())
 		// タイムアウトした場合
 		return c.JSON(
 			http.StatusRequestTimeout,

@@ -45,7 +45,7 @@ func (receiver *GRPCClient) ViaGRPC(
 	v1GetPersonByConditionRequest := &grpcParameter.GetPersonByConditionRequest{
 		V1PersonParameter: &grpcParameter.V1PersonParameter{},
 		V1CommonParameter: &grpcParameter.V1CommonParameter{
-			Immutable: &grpcParameter.V1ImmutableParameter{
+			V1RequestContext: &grpcParameter.V1RequestContext{
 				TraceId: traceID,
 			},
 		},

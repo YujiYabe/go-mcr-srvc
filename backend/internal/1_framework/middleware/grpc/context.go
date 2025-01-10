@@ -19,40 +19,22 @@ func CommonToContext(
 ) context.Context {
 
 	// エラーがあれば都度処理
-	if req.GetError() != nil {
+	if req.GetV1Error() != nil {
 		log.Println("== == == == == == == == == == ")
-		pkg.Logging(ctx, req.GetError())
+		pkg.Logging(ctx, req.GetV1Error())
 		log.Println("== == == == == == == == == == ")
 	}
 
 	// 不変データがなければ追加
-	ctx = traceIDToContext(ctx, req.GetImmutable())
-	ctx = requestStartTimeToContext(ctx, req.GetImmutable())
+	// ctx = traceIDToContext(ctx, req.GetImmutable())
+	// ctx = requestStartTimeToContext(ctx, req.GetImmutable())
+	ctx = traceIDToContext(ctx, req.GetV1RequestContext())
+	ctx = requestStartTimeToContext(ctx, req.GetV1RequestContext())
 
 	//  可変データの更新または追加
-	ctx = timeStampToContext(ctx, req.GetMutable())
 	ctx = timeoutSecondToContext(ctx)
 
 	return ctx
-}
-
-// ------------
-func timeStampToContext(
-	ctx context.Context,
-	v1IMutableParameter *grpcParameter.V1MutableParameter,
-) (
-	newCtx context.Context,
-) {
-	timesStamp := v1IMutableParameter.GetTimeStamp()
-
-	// timesStamp をコンテキストに追加
-	newCtx = context.WithValue(
-		ctx,
-		valueObject.TimeStampContextName,
-		timesStamp,
-	)
-
-	return
 }
 
 // リクエスト処理の残り時間（秒）を計算
@@ -91,11 +73,11 @@ func timeoutSecondToContext(
 // ------------
 func requestStartTimeToContext(
 	ctx context.Context,
-	v1ImmutableParameter *grpcParameter.V1ImmutableParameter,
+	v1RequestContext *grpcParameter.V1RequestContext,
 ) (
 	newCtx context.Context,
 ) {
-	requestStartTime := v1ImmutableParameter.GetRequestStartTime()
+	requestStartTime := v1RequestContext.GetRequestStartTime()
 
 	// requestStartTime が無い場合は新規生成
 	if requestStartTime == 0 {
@@ -115,11 +97,11 @@ func requestStartTimeToContext(
 // ------------
 func traceIDToContext(
 	ctx context.Context,
-	v1ImmutableParameter *grpcParameter.V1ImmutableParameter,
+	v1RequestContext *grpcParameter.V1RequestContext,
 ) (
 	newCtx context.Context,
 ) {
-	traceID := v1ImmutableParameter.GetTraceId()
+	traceID := v1RequestContext.GetTraceId()
 
 	// traceID が無い場合は新規生成
 	if traceID == "" {

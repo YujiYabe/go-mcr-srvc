@@ -2,7 +2,6 @@ package goGRPC
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
@@ -30,10 +29,9 @@ func (receiver *Server) GetPersonByCondition(
 		getPersonByConditionRequest.GetV1CommonParameter(),
 	)
 
-	timeoutSecond := valueObject.GetTimeoutSecond(ctx)
 	ctx, cancel := context.WithTimeout(
 		ctx,
-		time.Duration(timeoutSecond)*time.Millisecond,
+		time.Duration(valueObject.GetTimeoutSecond(ctx))*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 
@@ -52,12 +50,11 @@ func (receiver *Server) GetPersonByCondition(
 	select {
 	case <-done:
 		// 処理が完了した場合
-		fmt.Println("正常に終了しました")
 		return v1GetPersonByConditionResponse, err
 
 	case <-ctx.Done():
 		// タイムアウトした場合
-		fmt.Println("タイムアウトしました")
+		pkg.Logging(ctx, ctx.Err())
 		return nil, ctx.Err()
 	}
 }
@@ -100,11 +97,8 @@ func (receiver *Server) processPersonRequest(
 
 	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
-		Immutable: &grpcParameter.V1ImmutableParameter{
+		V1RequestContext: &grpcParameter.V1RequestContext{
 			TraceId: traceID,
-		},
-		Mutable: &grpcParameter.V1MutableParameter{
-			TimeStamp: time.Now().Format(time.RFC3339),
 		},
 	}
 
