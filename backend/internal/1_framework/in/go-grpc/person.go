@@ -32,7 +32,7 @@ func (receiver *Server) GetPersonByCondition(
 
 	timeoutSecond := valueObject.GetTimeoutSecond(ctx)
 	ctx, cancel := context.WithTimeout(
-		context.Background(),
+		ctx,
 		time.Duration(timeoutSecond)*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
