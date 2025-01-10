@@ -38,3 +38,4 @@ backend/bin/*
 
 __debug_*
 air.log
+.favorites.json
