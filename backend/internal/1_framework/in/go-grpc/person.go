@@ -17,16 +17,16 @@ type GoGRPC struct {
 }
 
 // ------------
-func (receiver *Server) GetPersonByCondition(
+func (receiver *Server) GetPersonListByCondition(
 	ctx context.Context,
-	getPersonByConditionRequest *grpcParameter.GetPersonByConditionRequest,
+	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
 ) (
-	v1GetPersonByConditionResponse *grpcParameter.GetPersonByConditionResponse,
+	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
 	ctx = grpcMiddleware.CommonToContext(
 		ctx,
-		getPersonByConditionRequest.GetV1CommonParameter(),
+		getPersonListByConditionRequest.GetV1CommonParameter(),
 	)
 
 	ctx, cancel := context.WithTimeout(
@@ -39,9 +39,9 @@ func (receiver *Server) GetPersonByCondition(
 
 	// ゴルーチンで処理を実行
 	go func() {
-		v1GetPersonByConditionResponse, err = receiver.processPersonRequest(
+		v1GetPersonListByConditionResponse, err = receiver.processPersonRequest(
 			ctx,
-			getPersonByConditionRequest,
+			getPersonListByConditionRequest,
 		)
 		close(done) // 処理完了を通知
 	}()
@@ -50,7 +50,7 @@ func (receiver *Server) GetPersonByCondition(
 	select {
 	case <-done:
 		// 処理が完了した場合
-		return v1GetPersonByConditionResponse, err
+		return v1GetPersonListByConditionResponse, err
 
 	case <-ctx.Done():
 		// タイムアウトした場合
@@ -61,26 +61,26 @@ func (receiver *Server) GetPersonByCondition(
 
 func (receiver *Server) processPersonRequest(
 	ctx context.Context,
-	getPersonByConditionRequest *grpcParameter.GetPersonByConditionRequest,
+	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
 ) (
-	v1GetPersonByConditionResponse *grpcParameter.GetPersonByConditionResponse,
+	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
-	v1GetPersonByConditionResponse = &grpcParameter.GetPersonByConditionResponse{}
+	v1GetPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
 
 	traceID := valueObject.GetTraceID(ctx)
 	pkg.Logging(ctx, traceID)
 
 	reqPerson := grpcMiddleware.RefillPersonGRPCToDomain(
 		ctx,
-		getPersonByConditionRequest.GetV1PersonParameter(),
+		getPersonListByConditionRequest.GetV1PersonParameter(),
 	)
 	if reqPerson.GetError() != nil {
 		pkg.Logging(ctx, reqPerson.GetError())
 		return nil, reqPerson.GetError()
 	}
 
-	responseList := receiver.Controller.GetPersonByCondition(
+	responseList := receiver.Controller.GetPersonListByCondition(
 		ctx,
 		*reqPerson,
 	)
@@ -95,8 +95,8 @@ func (receiver *Server) processPersonRequest(
 		responseList,
 	)
 
-	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
-	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
+	v1GetPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
+	v1GetPersonListByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
 		V1RequestContext: &grpcParameter.V1RequestContext{
 			TraceId: traceID,
 		},
@@ -104,5 +104,5 @@ func (receiver *Server) processPersonRequest(
 
 	pkg.Logging(ctx, traceID)
 
-	return v1GetPersonByConditionResponse, nil
+	return v1GetPersonListByConditionResponse, nil
 }

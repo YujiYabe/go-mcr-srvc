@@ -42,7 +42,7 @@ func (receiver *GRPCClient) ViaGRPC(
 	client := grpcParameter.NewPersonServiceClient(conn)
 
 	// リクエストの作成
-	v1GetPersonByConditionRequest := &grpcParameter.GetPersonByConditionRequest{
+	v1GetPersonByConditionRequest := &grpcParameter.GetPersonListByConditionRequest{
 		V1PersonParameter: &grpcParameter.V1PersonParameter{},
 		V1CommonParameter: &grpcParameter.V1CommonParameter{
 			V1RequestContext: &grpcParameter.V1RequestContext{
@@ -62,7 +62,7 @@ func (receiver *GRPCClient) ViaGRPC(
 	}
 
 	// gRPCリクエストの実行
-	grpcPersonList, err := client.GetPersonByCondition(
+	grpcPersonList, err := client.GetPersonListByCondition(
 		ctx,
 		v1GetPersonByConditionRequest,
 	)

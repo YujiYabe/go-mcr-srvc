@@ -113,7 +113,7 @@ func handlePersonRequest(
 		return nil, reqPerson.GetError()
 	}
 
-	personList := toController.GetPersonByCondition(
+	personList := toController.GetPersonListByCondition(
 		ctx,
 		*reqPerson,
 	)

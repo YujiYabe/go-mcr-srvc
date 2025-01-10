@@ -51,7 +51,7 @@ func viaGRPC(
 		)
 	}
 
-	// personList, err := toController.GetPersonByCondition(
+	// personList, err := toController.GetPersonListByCondition(
 	// 	ctx,
 	// 	*reqPerson,
 	// )

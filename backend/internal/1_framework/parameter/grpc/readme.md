@@ -8,3 +8,5 @@ protoc \
  ./person.proto
 
 person.proto と生成されるファイルは別なリポジトリに置く
+
+buf lint .

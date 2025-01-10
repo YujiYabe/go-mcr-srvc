@@ -18,13 +18,13 @@ func (receiver *controller) GetPersonList(
 	return
 }
 
-func (receiver *controller) GetPersonByCondition(
+func (receiver *controller) GetPersonListByCondition(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	resPersonList = receiver.UseCase.GetPersonByCondition(
+	resPersonList = receiver.UseCase.GetPersonListByCondition(
 		ctx,
 		reqPerson,
 	)

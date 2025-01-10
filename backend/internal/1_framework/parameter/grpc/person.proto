@@ -5,7 +5,7 @@ package grpc_parameter.v1;
 option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_framework/parameter/grpc";
 
 service PersonService {
-  rpc GetPersonByCondition(GetPersonByConditionRequest) returns (GetPersonByConditionResponse);
+  rpc GetPersonListByCondition(GetPersonListByConditionRequest) returns (GetPersonListByConditionResponse);
 }
 
 message V1CommonParameter {
@@ -35,13 +35,13 @@ message V1RequestContext { //     不変な情報
 }
 
 
-message GetPersonByConditionRequest {
+message GetPersonListByConditionRequest {
   optional V1CommonParameter v1_common_parameter = 1;
   V1PersonParameter v1_person_parameter = 2;
 }
 
 // PersonサービスのResponse定義を更新
-message GetPersonByConditionResponse {
+message GetPersonListByConditionResponse {
   V1CommonParameter v1_common_parameter = 1;
   V1PersonParameterArray v1_person_parameter_array = 2;
 }

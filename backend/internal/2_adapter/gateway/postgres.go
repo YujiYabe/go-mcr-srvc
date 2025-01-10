@@ -16,14 +16,14 @@ func (receiver *Gateway) GetPersonList(
 	return receiver.ToPostgres.GetPersonList(ctx)
 }
 
-// GetPersonByCondition ...
-func (receiver *Gateway) GetPersonByCondition(
+// GetPersonListByCondition ...
+func (receiver *Gateway) GetPersonListByCondition(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	resPersonList = receiver.ToPostgres.GetPersonByCondition(
+	resPersonList = receiver.ToPostgres.GetPersonListByCondition(
 		ctx,
 		reqPerson,
 	)

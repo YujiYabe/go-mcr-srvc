@@ -99,8 +99,8 @@ func (receiver *PostgresClient) GetPersonList(
 	return
 }
 
-// GetPersonByCondition ...
-func (receiver *PostgresClient) GetPersonByCondition(
+// GetPersonListByCondition ...
+func (receiver *PostgresClient) GetPersonListByCondition(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (

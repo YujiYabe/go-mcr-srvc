@@ -45,7 +45,7 @@ type (
 			personList groupObject.PersonList,
 		)
 
-		GetPersonByCondition(
+		GetPersonListByCondition(
 			ctx context.Context,
 			reqPerson groupObject.Person,
 		) (
