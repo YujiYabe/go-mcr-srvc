@@ -14,12 +14,13 @@ func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 
+			// setV1RequestContext
 			// traceID 設定 ---------
 			traceID := generateTraceID(
 				valueObject.GetTraceID(c.Request().Context()),
 			)
-			setTraceIDContext(c, traceID)
 			setTraceIDHeader(c, traceID)
+			setTraceIDContext(c, traceID)
 
 			// requestStartTime 設定 ---------
 			requestStartTime := generateRequestStartTime(
@@ -40,8 +41,19 @@ func ContextMiddleware() echo.MiddlewareFunc {
 
 func setTimeoutSecondContext(
 	c echo.Context,
-	timeoutSecond int64,
+	value int64,
 ) {
+	timeoutSecond := valueObject.NewTimeOutSecond(
+		c.Request().Context(),
+		&value,
+	)
+
+	if timeoutSecond.GetError() != nil {
+		// Log the error instead of returning it
+		c.Logger().Error(timeoutSecond.GetError())
+		return
+	}
+
 	ctx := context.WithValue(
 		c.Request().Context(),
 		valueObject.TimeOutSecondContextName,
@@ -54,6 +66,7 @@ func setTimeoutSecondContext(
 func generateTimeoutSecond(
 	requestStartTime int64,
 ) int64 {
+	// デフォルトタイムアウト値の設定
 	currentTimestamp := time.Now().UnixMilli()
 	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
 	timeoutSecond := requestEndTime - currentTimestamp
