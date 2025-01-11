@@ -83,16 +83,27 @@ xo:
 	cd backend/internal/1_framework/db/postgres && xo schema postgres://user:user@localhost:15432/app?sslmode=disable
 
 
-# ----------------------------
+# 指定ディレクトリ配下を再帰的に探してコンパイル ----------------------------
+# .PHONY: gen-grpc
+# gen-grpc:
+# 	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/parameter/grpc -name "*.proto" -type f -exec \
+# 		protoc \
+# 		--go_out=. \
+# 		--go_opt=paths=source_relative \
+# 		--go-grpc_out=. \
+# 		--go-grpc_opt=paths=source_relative \
+# 		{} \;
+
+# 指定ディレクトリに移動してからコンパイル ----------------------------
 .PHONY: gen-grpc
 gen-grpc:
-	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/parameter/grpc -name "*.proto" -type f -exec \
-		protoc \
+	cd backend/internal/1_framework/parameter/grpc && \
+	PATH=$(PWD)/backend/bin:$$PATH protoc \
 		--go_out=. \
 		--go_opt=paths=source_relative \
 		--go-grpc_out=. \
 		--go-grpc_opt=paths=source_relative \
-		{} \;
+		*.proto
 
 
 # ----------------------------

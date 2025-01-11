@@ -2,56 +2,30 @@ syntax = "proto3";
 
 package grpc_parameter.v1;
 
+import "common.proto";
+
 option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_framework/parameter/grpc";
 
 service PersonService {
   rpc GetPersonListByCondition(GetPersonListByConditionRequest) returns (GetPersonListByConditionResponse);
 }
 
-message V1CommonParameter {
-  optional V1Error v1_error = 1;
-  V1RequestContext v1_request_context = 2;
-}
-
-message V1Error {
-  string code = 1; //               エラーコード (例: INVALID_PARAMETER, NOT_FOUND)
-  string message = 2; //            エラーメッセージ
-  string detail = 3; //             詳細なエラー情報
-  string field = 4; //              エラーが発生したフィールド名
-  repeated V1Error errors = 5; //   ネストされたエラー情報
-}
-
-message V1RequestContext { //     不変な情報
-  string trace_id = 1; //             リクエスト情報: システム全体で一意な追跡ID。ログ追跡やデバッグに使用
-  int64 request_start_time = 2; //    リクエスト情報: リクエストの開始時刻（Unix timestamp）
-  string client_ip = 3; //            リクエスト情報: クライアントのIPアドレス
-  string user_agent = 4; //           リクエスト情報: クライアントのユーザーエージェント情報
-  string user_id = 5; //              ユーザー認証情報: ユーザーを一意に識別するID
-  repeated string permissions = 6; // ユーザー認証情報: ユーザーに付与された権限リスト
-  string access_token = 7; //         ユーザー認証情報: ユーザー認証用のJWTトークン
-  string tenant_id = 8; //            ビジネスコンテキスト: マルチテナント環境での所属テナントID
-  string locale = 9; //               ビジネスコンテキスト: ユーザーの言語設定（例：ja-JP）
-  string timezone = 10; //            ビジネスコンテキスト: ユーザーのタイムゾーン（例：Asia/Tokyo）
-}
-
-
 message GetPersonListByConditionRequest {
   optional V1CommonParameter v1_common_parameter = 1;
   V1PersonParameter v1_person_parameter = 2;
 }
 
-// PersonサービスのResponse定義を更新
 message GetPersonListByConditionResponse {
   V1CommonParameter v1_common_parameter = 1;
   V1PersonParameterArray v1_person_parameter_array = 2;
 }
 
 message V1PersonParameter {
-  optional uint32 id = 2; //             ID
-  optional string name = 3; //           Name
-  optional string mail_address = 4; //   Mail Address
+  optional uint32 id = 2;
+  optional string name = 3;
+  optional string mail_address = 4;
 }
 
 message V1PersonParameterArray {
-  repeated V1PersonParameter persons = 2; // Array of V1PersonParameter
+  repeated V1PersonParameter persons = 2;
 }
