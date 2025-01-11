@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package grpc_parameter.v1;
 
-import "common.proto";
+import "backend/internal/1_framework/parameter/grpc/common.proto";
 
-option go_package = "github.com/YujiYabe/go-docker-template/backend/internal/1_framework/parameter/grpc";
+option go_package = "internal/grpc";
 
 service PersonService {
   rpc GetPersonListByCondition(GetPersonListByConditionRequest) returns (GetPersonListByConditionResponse);

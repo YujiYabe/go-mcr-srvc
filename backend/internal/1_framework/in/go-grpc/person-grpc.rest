@@ -1,6 +1,7 @@
 
 ### --------------------------------
-proto < ../../parameter/grpc/person.proto
+proto < ../../parameter/grpc/*.proto
+
 GRPC localhost:3456/grpc_parameter.v1.PersonService/GetPersonListByCondition
 {
 	"v1PersonParameter": {
