@@ -25,10 +25,11 @@ func get(
 	traceID := valueObject.GetTraceID(ctx)
 	log.Println("== == == == == == == == == == ")
 	pkg.Logging(ctx, traceID)
-
+	// timeoutSecond := valueObject.GetTimeoutSecond(ctx)
+	timeoutSecond := 30
 	ctx, cancel := context.WithTimeout(
 		ctx,
-		time.Duration(valueObject.GetTimeoutSecond(ctx))*time.Millisecond,
+		time.Duration(timeoutSecond)*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 	done := make(chan struct{})

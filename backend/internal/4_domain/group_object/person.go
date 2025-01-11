@@ -20,20 +20,6 @@ type NewPersonArgs struct {
 	MailAddress *string
 }
 
-func (receiver *Person) GetError() error {
-	return receiver.err
-}
-
-func (receiver *Person) SetError(
-	ctx context.Context,
-	err error,
-) {
-	if receiver.err == nil {
-		receiver.err = err
-		pkg.Logging(ctx, receiver.GetError())
-	}
-}
-
 func NewPerson(
 	ctx context.Context,
 	args *NewPersonArgs,
@@ -61,4 +47,18 @@ func NewPerson(
 	}
 
 	return
+}
+
+func (receiver *Person) GetError() error {
+	return receiver.err
+}
+
+func (receiver *Person) SetError(
+	ctx context.Context,
+	err error,
+) {
+	if receiver.err == nil {
+		receiver.err = err
+		pkg.Logging(ctx, receiver.GetError())
+	}
 }

@@ -2,6 +2,7 @@ package value_object
 
 import (
 	"context"
+	"time"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	"backend/pkg"
@@ -28,6 +29,7 @@ func NewRequestStartTime(
 ) (
 	requestStartTime RequestStartTime,
 ) {
+
 	requestStartTime = RequestStartTime{}
 	requestStartTime.SetValue(ctx, value)
 
@@ -39,6 +41,12 @@ func (receiver *RequestStartTime) SetValue(
 	value *int64,
 ) {
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
+
+	if value == nil || *value == 0 {
+		// デフォルト値を設定
+		now := time.Now().UnixMilli()
+		value = &now
+	}
 
 	receiver.content = primitiveObject.NewPrimitiveInt64(
 		primitiveInt64.WithValue(value),

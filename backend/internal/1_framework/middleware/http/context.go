@@ -2,11 +2,13 @@ package http_middleware
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
 
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -14,7 +16,8 @@ func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 
-			// setV1RequestContext
+			generateRequestContext(c)
+
 			// traceID 設定 ---------
 			traceID := generateTraceID(
 				valueObject.GetTraceID(c.Request().Context()),
@@ -39,6 +42,29 @@ func ContextMiddleware() echo.MiddlewareFunc {
 	}
 }
 
+func generateRequestContext(
+	c echo.Context,
+) {
+	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
+
+	requestContext := groupObject.NewRequestContext(
+		c.Request().Context(),
+		newRequestContextArgs,
+	)
+
+	if requestContext.GetError() != nil {
+		log.Println(requestContext.GetError())
+		return
+	}
+	ctx := context.WithValue(
+		c.Request().Context(),
+		groupObject.RequestContextContextName,
+		requestContext,
+	)
+
+	c.SetRequest(c.Request().WithContext(ctx))
+}
+
 func setTimeoutSecondContext(
 	c echo.Context,
 	value int64,
@@ -49,7 +75,6 @@ func setTimeoutSecondContext(
 	)
 
 	if timeoutSecond.GetError() != nil {
-		// Log the error instead of returning it
 		c.Logger().Error(timeoutSecond.GetError())
 		return
 	}
