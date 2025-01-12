@@ -2,7 +2,6 @@ package person
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"time"
 
@@ -38,11 +37,10 @@ func get(
 	responseList := []httpParameter.V1Person{}
 	var requestErr error
 
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	time.Sleep(1 * time.Second)
 	now := time.Now().UnixMilli()
 	formattedTime := time.UnixMilli(now).Format("2006-01-02 15:04:05.000")
-	log.Println("== == == == == == == == == == ")
+	pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, formattedTime)
 
 	// ゴルーチンで処理を実行

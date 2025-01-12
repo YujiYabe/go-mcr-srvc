@@ -2,7 +2,6 @@ package goGRPC
 
 import (
 	"context"
-	"log"
 	"time"
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
@@ -40,11 +39,11 @@ func (receiver *Server) GetPersonListByCondition(
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	time.Sleep(1 * time.Second)
 	now := time.Now().UnixMilli()
 	formattedTime := time.UnixMilli(now).Format("2006-01-02 15:04:05.000")
-	log.Println("== == == == == == == == == == ")
+
+	pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, formattedTime)
 
 	done := make(chan struct{})
