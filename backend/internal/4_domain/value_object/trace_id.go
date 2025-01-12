@@ -3,6 +3,8 @@ package value_object
 import (
 	"context"
 
+	"github.com/google/uuid"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	"backend/pkg"
 )
@@ -14,7 +16,7 @@ const (
 
 const (
 	traceIDLengthMax = 99999999999
-	traceIDLengthMin = 0
+	traceIDLengthMin = -1
 )
 
 type TraceID struct {
@@ -38,6 +40,11 @@ func (receiver *TraceID) SetValue(
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
+	if value == nil || *value == "" {
+		// デフォルト値を設定
+		newUUID := uuid.New().String()
+		value = &newUUID
+	}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),

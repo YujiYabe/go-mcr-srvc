@@ -14,8 +14,8 @@ const (
 )
 
 const (
-	requestStartTimeLengthMax = 99999999999
-	requestStartTimeLengthMin = 0
+	requestStartTimeLengthMax = -1
+	requestStartTimeLengthMin = -1
 )
 
 type RequestStartTime struct {

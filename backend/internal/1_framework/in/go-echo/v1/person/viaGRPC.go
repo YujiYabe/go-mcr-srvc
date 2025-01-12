@@ -9,7 +9,6 @@ import (
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -20,9 +19,8 @@ func viaGRPC(
 	err error,
 ) {
 	ctx := c.Request().Context()
-	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	log.Println("-- -- -- -- -- -- -- -- -- -- ")
+	pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
 
 	person := httpParameter.V1Person{}
 
@@ -84,8 +82,8 @@ func viaGRPC(
 		)
 	}
 
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	log.Println("-- -- -- -- -- -- -- -- -- -- ")
+	pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
 
 	return c.JSON(
 		http.StatusOK,

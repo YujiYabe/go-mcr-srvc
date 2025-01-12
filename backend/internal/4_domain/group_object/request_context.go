@@ -125,3 +125,16 @@ func (receiver *RequestContext) SetError(
 		pkg.Logging(ctx, receiver.GetError())
 	}
 }
+
+func GetRequestContext(
+	ctx context.Context,
+) (
+	value *RequestContext,
+) {
+	requestContext, ok := ctx.Value(RequestContextContextName).(RequestContext)
+	if ok {
+		value = &requestContext
+	}
+
+	return
+}

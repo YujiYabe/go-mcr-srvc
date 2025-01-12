@@ -21,8 +21,8 @@ func (receiver *GRPCClient) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
+	traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, traceID)
 
 	var err error

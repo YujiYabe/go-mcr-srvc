@@ -11,7 +11,6 @@ import (
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -22,11 +21,17 @@ func get(
 	err error,
 ) {
 	ctx := c.Request().Context()
-	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
+	requestContext := groupObject.GetRequestContext(ctx)
+
+	traceID := requestContext.TraceID.GetValue()
+	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, traceID)
-	// timeoutSecond := valueObject.GetTimeoutSecond(ctx)
-	timeoutSecond := 30
+
+	requestStartTime := requestContext.RequestStartTime.GetValue()
+	currentTimestamp := time.Now().UnixMilli()
+	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
+	timeoutSecond := requestEndTime - currentTimestamp
+
 	ctx, cancel := context.WithTimeout(
 		ctx,
 		time.Duration(timeoutSecond)*time.Millisecond,
@@ -63,9 +68,8 @@ func get(
 			return
 		}
 
-		traceID := valueObject.GetTraceID(ctx)
-		log.Println("== == == == == == == == == == ")
-		pkg.Logging(ctx, traceID)
+		log.Println("-- -- -- -- -- -- -- -- -- -- ")
+		pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
 
 		close(done)
 	}()
