@@ -20,7 +20,10 @@ func viaGRPC(
 ) {
 	ctx := c.Request().Context()
 	log.Println("-- -- -- -- -- -- -- -- -- -- ")
-	pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
+	pkg.Logging(
+		ctx,
+		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	)
 
 	person := httpParameter.V1Person{}
 
@@ -83,7 +86,10 @@ func viaGRPC(
 	}
 
 	log.Println("-- -- -- -- -- -- -- -- -- -- ")
-	pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
+	pkg.Logging(
+		ctx,
+		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	)
 
 	return c.JSON(
 		http.StatusOK,

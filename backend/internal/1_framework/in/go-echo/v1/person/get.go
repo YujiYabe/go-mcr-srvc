@@ -69,7 +69,10 @@ func get(
 		}
 
 		log.Println("-- -- -- -- -- -- -- -- -- -- ")
-		pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
+		pkg.Logging(
+			ctx,
+			groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+		)
 
 		close(done)
 	}()

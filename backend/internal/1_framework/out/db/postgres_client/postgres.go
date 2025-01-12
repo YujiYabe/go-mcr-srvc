@@ -106,7 +106,10 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	resPersonList groupObject.PersonList,
 ) {
 	log.Println("-- -- -- -- -- -- -- -- -- -- ")
-	pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
+	pkg.Logging(
+		ctx,
+		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	)
 
 	resPersonList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}             // SQL結果保存用
@@ -148,7 +151,10 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	}
 
 	log.Println("-- -- -- -- -- -- -- -- -- -- ")
-	pkg.Logging(ctx, groupObject.GetRequestContext(ctx).TraceID.GetValue())
+	pkg.Logging(
+		ctx,
+		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	)
 
 	return
 }
