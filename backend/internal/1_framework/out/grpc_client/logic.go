@@ -2,7 +2,6 @@ package grpc_client
 
 import (
 	"context"
-	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -22,7 +21,6 @@ func (receiver *GRPCClient) ViaGRPC(
 	resPersonList groupObject.PersonList,
 ) {
 	traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, traceID)
 
 	var err error
@@ -94,7 +92,7 @@ func (receiver *GRPCClient) ViaGRPC(
 		resPersonList.Content = append(resPersonList.Content, *person)
 	}
 
-	log.Println("== == == == == == == == == == ")
+	traceID = groupObject.GetRequestContext(ctx).TraceID.GetValue()
 	pkg.Logging(ctx, traceID)
 
 	return

@@ -1,7 +1,6 @@
 package person
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -19,7 +18,6 @@ func viaGRPC(
 	err error,
 ) {
 	ctx := c.Request().Context()
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(
 		ctx,
 		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
@@ -85,7 +83,6 @@ func viaGRPC(
 		)
 	}
 
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(
 		ctx,
 		groupObject.GetRequestContext(ctx).TraceID.GetValue(),

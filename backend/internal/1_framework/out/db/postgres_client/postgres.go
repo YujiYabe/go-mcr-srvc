@@ -3,7 +3,6 @@ package postgres_client
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -105,7 +104,6 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(
 		ctx,
 		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
@@ -150,7 +148,6 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 		)
 	}
 
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(
 		ctx,
 		groupObject.GetRequestContext(ctx).TraceID.GetValue(),

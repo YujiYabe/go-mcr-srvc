@@ -13,8 +13,8 @@ const (
 )
 
 const (
-	timeOutSecondValueMax = 99999999999
-	timeOutSecondValueMin = 0
+	timeOutSecondValueMax = -1
+	timeOutSecondValueMin = -1
 )
 
 type TimeOutSecond struct {
@@ -77,10 +77,10 @@ func GetTimeoutSecond(
 ) (
 	value int64,
 ) {
-	timeoutSecond, ok := ctx.Value(TimeOutSecondContextName).(int64)
+	timeOutSecond, ok := ctx.Value(TimeOutSecondContextName).(int64)
 
 	if ok {
-		value = timeoutSecond
+		value = timeOutSecond
 	}
 
 	return

@@ -2,7 +2,6 @@ package goGRPC
 
 import (
 	"context"
-	"log"
 	"time"
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
@@ -32,10 +31,7 @@ func (receiver *Server) GetPersonListByCondition(
 
 	requestContext := groupObject.GetRequestContext(ctx)
 
-	requestStartTime := requestContext.RequestStartTime.GetValue()
-	currentTimestamp := time.Now().UnixMilli()
-	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
-	timeoutSecond := requestEndTime - currentTimestamp
+	timeoutSecond := requestContext.TimeOutSecond.GetValue()
 
 	ctx, cancel := context.WithTimeout(
 		ctx,
@@ -77,7 +73,6 @@ func (receiver *Server) processPersonRequest(
 	v1GetPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
 
 	traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, traceID)
 
 	reqPerson := grpcMiddleware.RefillPersonGRPCToDomain(

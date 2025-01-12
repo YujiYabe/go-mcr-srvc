@@ -2,7 +2,6 @@ package person
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"time"
 
@@ -24,13 +23,9 @@ func get(
 	requestContext := groupObject.GetRequestContext(ctx)
 
 	traceID := requestContext.TraceID.GetValue()
-	log.Println("-- -- -- -- -- -- -- -- -- -- ")
 	pkg.Logging(ctx, traceID)
 
-	requestStartTime := requestContext.RequestStartTime.GetValue()
-	currentTimestamp := time.Now().UnixMilli()
-	requestEndTime := time.UnixMilli(requestStartTime).Add(5 * time.Second).UnixMilli()
-	timeoutSecond := requestEndTime - currentTimestamp
+	timeoutSecond := requestContext.TimeOutSecond.GetValue()
 
 	ctx, cancel := context.WithTimeout(
 		ctx,
@@ -68,7 +63,6 @@ func get(
 			return
 		}
 
-		log.Println("-- -- -- -- -- -- -- -- -- -- ")
 		pkg.Logging(
 			ctx,
 			groupObject.GetRequestContext(ctx).TraceID.GetValue(),

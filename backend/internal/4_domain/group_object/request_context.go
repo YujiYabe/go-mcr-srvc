@@ -2,6 +2,7 @@ package group_object
 
 import (
 	"context"
+	"time"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	valueObject "backend/internal/4_domain/value_object"
@@ -24,6 +25,7 @@ type RequestContext struct {
 	TenantID         valueObject.TenantID
 	Locale           valueObject.Locale
 	Timezone         valueObject.Timezone
+	TimeOutSecond    valueObject.TimeOutSecond
 }
 
 type NewRequestContextArgs struct {
@@ -106,6 +108,18 @@ func NewRequestContext(
 	if requestContext.TenantID.GetError() != nil {
 		pkg.Logging(ctx, requestContext.TenantID.GetError())
 		requestContext.SetError(ctx, requestContext.TenantID.GetError())
+		return
+	}
+
+	requestStartTime := requestContext.RequestStartTime
+	currentTimestamp := time.Now().UnixMilli()
+	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(5 * time.Second).UnixMilli()
+	timeoutSecond := requestEndTime - currentTimestamp
+
+	requestContext.TimeOutSecond = valueObject.NewTimeOutSecond(ctx, &timeoutSecond)
+	if requestContext.TimeOutSecond.GetError() != nil {
+		pkg.Logging(ctx, requestContext.TimeOutSecond.GetError())
+		requestContext.SetError(ctx, requestContext.TimeOutSecond.GetError())
 		return
 	}
 
