@@ -29,12 +29,6 @@ func ContextMiddleware() echo.MiddlewareFunc {
 				newRequestContextArgs,
 			)
 
-			// debug := requestContext.RequestStartTime.GetValue()
-			// jsonPrint, _ := json.MarshalIndent(debug, "", "    ")
-			// fmt.Println(" ----------------------------------- ")
-			// fmt.Println(string(jsonPrint))
-			// fmt.Println(" ----------------------------------- ")
-
 			if requestContext.GetError() != nil {
 				log.Println(requestContext.GetError())
 				return requestContext.GetError()

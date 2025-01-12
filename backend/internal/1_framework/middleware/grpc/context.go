@@ -10,6 +10,31 @@ import (
 	"backend/pkg"
 )
 
+// func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+// 	return func(
+// 		ctx context.Context,
+// 		req interface{},
+// 		info *grpc.UnaryServerInfo,
+// 		handler grpc.UnaryHandler,
+// 	) (
+// 		interface{},
+// 		error,
+// 	) {
+// 		if commonReq, ok := req.(*grpcParameter.V1CommonParameter); ok {
+// 			ctx = CommonToContext(ctx, commonReq)
+// 			log.Println("== == == == == == == == == == ")
+// 			pkg.Logging(ctx, "ok")
+// 			log.Println("== == == == == == == == == == ")
+// 		} else {
+// 			log.Println("== == == == == == == == == == ")
+// 			pkg.Logging(ctx, "ng")
+// 			log.Println("== == == == == == == == == == ")
+// 		}
+
+// 		return handler(ctx, req)
+// 	}
+// }
+
 // ------------
 func CommonToContext(
 	ctx context.Context,

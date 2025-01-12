@@ -44,7 +44,7 @@ func (receiver *GoGRPC) Start() {
 	}
 	server := grpc.NewServer(
 	// grpc.UnaryInterceptor(
-	// 	grpcMiddleware.MetadataToContext,
+	// 	grpcMiddleware.UnaryServerInterceptor(),
 	// ),
 	)
 
