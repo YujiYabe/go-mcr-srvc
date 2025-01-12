@@ -2,7 +2,7 @@ package primitive_object
 
 import "fmt"
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveSliceInt struct {
 	err       error          // バリデーションエラーを格納
 	value     []PrimitiveInt // primitive_object.PrimitiveInt
@@ -11,10 +11,10 @@ type PrimitiveSliceInt struct {
 	minLength int            // 最小配列 (-1は制限なし)
 }
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveSliceIntOption func(*PrimitiveSliceInt)
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) WithError(
 	err error,
 ) PrimitiveSliceIntOption {
@@ -23,7 +23,7 @@ func (receiver *PrimitiveSliceInt) WithError(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) WithValue(
 	value []PrimitiveInt,
 ) PrimitiveSliceIntOption {
@@ -38,7 +38,7 @@ func (receiver *PrimitiveSliceInt) WithValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) WithIsNil(
 	isNil bool,
 ) PrimitiveSliceIntOption {
@@ -47,7 +47,7 @@ func (receiver *PrimitiveSliceInt) WithIsNil(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) WithMaxLength(
 	value int,
 ) PrimitiveSliceIntOption {
@@ -56,7 +56,7 @@ func (receiver *PrimitiveSliceInt) WithMaxLength(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) WithMinLength(
 	value int,
 ) PrimitiveSliceIntOption {
@@ -85,12 +85,12 @@ func NewPrimitiveSliceInt(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) GetIsNil() bool {
 	return receiver.isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) SetIsNil(
 	isNil bool,
 ) {
@@ -109,19 +109,19 @@ func (receiver *PrimitiveSliceInt) CheckNil(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) GetError() error {
 	return receiver.err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) SetErrorString(
 	errString string,
 ) {
@@ -133,7 +133,7 @@ func (receiver *PrimitiveSliceInt) SetErrorString(
 	)
 }
 
-// --------------------------------------
+// ______________________________________
 // Validate validates the PrimitiveSliceInt
 func (receiver *PrimitiveSliceInt) Validation() error {
 	if receiver.isNil {
@@ -161,7 +161,7 @@ func (receiver *PrimitiveSliceInt) Validation() error {
 	return nil
 }
 
-// --------------------------------------
+// ______________________________________
 // ValidationMax は最大文字列長のチェックを行います
 func (receiver *PrimitiveSliceInt) ValidationMax() {
 	if receiver.maxLength != -1 && len(receiver.value) > receiver.maxLength {
@@ -169,14 +169,14 @@ func (receiver *PrimitiveSliceInt) ValidationMax() {
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceInt) ValidationMin() {
 	if receiver.minLength != -1 && len(receiver.value) < receiver.minLength {
 		receiver.SetErrorString("min limitation")
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 // GetValue returns the underlying int slice
 func (receiver *PrimitiveSliceInt) GetValue() []int {
 	if receiver.isNil {
@@ -190,7 +190,7 @@ func (receiver *PrimitiveSliceInt) GetValue() []int {
 	return result
 }
 
-// --------------------------------------
+// ______________________________________
 // SetMaxLength sets the maximum allowed length
 func (receiver *PrimitiveSliceInt) SetMaxLength(
 	maxLength int,
@@ -198,7 +198,7 @@ func (receiver *PrimitiveSliceInt) SetMaxLength(
 	receiver.maxLength = maxLength
 }
 
-// --------------------------------------
+// ______________________________________
 // SetMinLength sets the minimum allowed length
 func (receiver *PrimitiveSliceInt) SetMinLength(
 	minLength int,

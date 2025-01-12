@@ -2,7 +2,6 @@ package grpc_middleware
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
@@ -62,10 +61,6 @@ func CommonToContext(
 		ctx,
 		newRequestContextArgs,
 	)
-	debug := requestContext
-	fmt.Println(" ----------------------------------- ")
-	fmt.Printf("%+v\n", debug.TraceID.GetValue())
-	fmt.Println(" ----------------------------------- ")
 
 	if requestContext.GetError() != nil {
 		log.Println(requestContext.GetError())

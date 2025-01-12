@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveSliceString struct {
 	err       error // バリデーションエラーを格納
 	value     []PrimitiveString
@@ -14,10 +14,10 @@ type PrimitiveSliceString struct {
 	MinLength int  // 最小列長 (-1は制限なし)
 }
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveSliceStringOption func(*PrimitiveSliceString)
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithError(
 	err error,
 ) PrimitiveSliceStringOption {
@@ -26,7 +26,7 @@ func (receiver *PrimitiveSliceString) WithError(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithValue(
 	value []PrimitiveString,
 ) PrimitiveSliceStringOption {
@@ -41,7 +41,7 @@ func (receiver *PrimitiveSliceString) WithValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithIsNil(
 	isNil bool,
 ) PrimitiveSliceStringOption {
@@ -50,7 +50,7 @@ func (receiver *PrimitiveSliceString) WithIsNil(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithMaxLength(
 	value int,
 ) PrimitiveSliceStringOption {
@@ -59,7 +59,7 @@ func (receiver *PrimitiveSliceString) WithMaxLength(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithMinLength(
 	value int,
 ) PrimitiveSliceStringOption {
@@ -68,7 +68,7 @@ func (receiver *PrimitiveSliceString) WithMinLength(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func NewPrimitiveSliceString(
 	options ...PrimitiveSliceStringOption,
 ) (
@@ -89,26 +89,26 @@ func NewPrimitiveSliceString(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) GetError() error {
 	return receiver.err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetErrorString(
 	errString string,
 ) {
@@ -120,7 +120,7 @@ func (receiver *PrimitiveSliceString) SetErrorString(
 	)
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 	if receiver.isNil {
 		receiver.SetErrorString("is nil")
@@ -129,7 +129,7 @@ func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 	return receiver.value
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetValue(
 	valueList []PrimitiveString,
 ) {
@@ -141,21 +141,21 @@ func (receiver *PrimitiveSliceString) SetValue(
 	receiver.value = valueList
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SortAsc() {
 	sort.Slice(receiver.value, func(i, j int) bool {
 		return receiver.value[i].value < receiver.value[j].value
 	})
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SortDesc() {
 	sort.Slice(receiver.value, func(i, j int) bool {
 		return receiver.value[i].value > receiver.value[j].value
 	})
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) Validation() error {
 	if receiver.isNil {
 		return nil

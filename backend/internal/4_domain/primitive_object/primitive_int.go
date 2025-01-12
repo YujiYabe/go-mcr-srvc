@@ -2,7 +2,7 @@ package primitive_object
 
 import "fmt"
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveInt struct {
 	err      error
 	value    int
@@ -11,10 +11,10 @@ type PrimitiveInt struct {
 	minValue int
 }
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveIntOption func(*PrimitiveInt)
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithError(
 	err error,
 ) PrimitiveIntOption {
@@ -23,7 +23,7 @@ func (receiver *PrimitiveInt) WithError(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithValue(
 	value *int,
 ) PrimitiveIntOption {
@@ -39,7 +39,7 @@ func (receiver *PrimitiveInt) WithValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithIsNil(
 	isNil bool,
 ) PrimitiveIntOption {
@@ -48,7 +48,7 @@ func (receiver *PrimitiveInt) WithIsNil(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithMaxValue(
 	value int,
 ) PrimitiveIntOption {
@@ -57,7 +57,7 @@ func (receiver *PrimitiveInt) WithMaxValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithMinValue(
 	value int,
 ) PrimitiveIntOption {
@@ -66,7 +66,7 @@ func (receiver *PrimitiveInt) WithMinValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func NewPrimitiveInt(
 	options ...PrimitiveIntOption,
 ) (
@@ -89,19 +89,19 @@ func NewPrimitiveInt(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) GetIsNil() bool {
 	return receiver.isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) CheckNil(
 	value *int,
 ) (
@@ -114,19 +114,19 @@ func (receiver *PrimitiveInt) CheckNil(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) GetError() error {
 	return receiver.err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetErrorString(
 	errString string,
 ) {
@@ -138,7 +138,7 @@ func (receiver *PrimitiveInt) SetErrorString(
 	)
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) GetValue() int {
 	if receiver.GetIsNil() {
 		return 0
@@ -147,7 +147,7 @@ func (receiver *PrimitiveInt) GetValue() int {
 	return receiver.value
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetValue(
 	value *int,
 ) {
@@ -159,7 +159,7 @@ func (receiver *PrimitiveInt) SetValue(
 	receiver.value = *value
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) Validation() {
 
 	if receiver.GetIsNil() {
@@ -178,7 +178,7 @@ func (receiver *PrimitiveInt) Validation() {
 
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) ValidationMax() {
 	if receiver.maxValue < 0 { //上限値なし
 		return
@@ -195,7 +195,7 @@ func (receiver *PrimitiveInt) ValidationMax() {
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) ValidationMin() {
 	if receiver.minValue < 0 { //下限値なし
 		return
