@@ -15,8 +15,8 @@ const (
 )
 
 const (
-	traceIDLengthMax = 99999999999
-	traceIDLengthMin = -1
+	traceIDLengthMax = 36 // length of uuid
+	traceIDLengthMin = 36 // length of uuid
 )
 
 type TraceID struct {

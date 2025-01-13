@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	permissionLengthMax = 30
+	permissionLengthMax = 50
 	permissionLengthMin = 1
 )
 

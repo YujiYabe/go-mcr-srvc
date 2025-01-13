@@ -79,15 +79,6 @@ func (receiver *RequestStartTime) GetValue() int64 {
 	return receiver.content.GetValue()
 }
 
-func GetRequestStartTime(
-	ctx context.Context,
-) (
-	value int64,
-) {
-	requestStartTime, ok := ctx.Value(RequestStartTimeContextName).(int64)
-	if ok {
-		value = requestStartTime
-	}
-
-	return
+func (receiver *RequestStartTime) GetString() string {
+	return receiver.content.GetString()
 }

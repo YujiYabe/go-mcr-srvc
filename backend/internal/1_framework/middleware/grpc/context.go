@@ -85,14 +85,26 @@ func ContextToMetadata(
 
 	metaDataMap := map[string]string{}
 
-	metaDataMap[string(valueObject.TraceIDMetaName)] = groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	metaDataMap[string(valueObject.ClientIPMetaName)] = groupObject.GetRequestContext(ctx).ClientIP.GetValue()
-	metaDataMap[string(valueObject.UserAgentMetaName)] = groupObject.GetRequestContext(ctx).UserAgent.GetValue()
-	metaDataMap[string(valueObject.UserIDMetaName)] = groupObject.GetRequestContext(ctx).UserID.GetValue()
-	metaDataMap[string(valueObject.AccessTokenMetaName)] = groupObject.GetRequestContext(ctx).AccessToken.GetValue()
-	metaDataMap[string(valueObject.TenantIDMetaName)] = groupObject.GetRequestContext(ctx).TenantID.GetValue()
-	metaDataMap[string(valueObject.LocaleMetaName)] = groupObject.GetRequestContext(ctx).Locale.GetValue()
-	metaDataMap[string(valueObject.TimeZoneMetaName)] = groupObject.GetRequestContext(ctx).TimeZone.GetValue()
+	requestContext := groupObject.GetRequestContext(ctx)
+
+	// string value
+	metaDataMap[string(valueObject.TraceIDMetaName)] = requestContext.TraceID.GetValue()
+	metaDataMap[string(valueObject.ClientIPMetaName)] = requestContext.ClientIP.GetValue()
+	metaDataMap[string(valueObject.UserAgentMetaName)] = requestContext.UserAgent.GetValue()
+	metaDataMap[string(valueObject.UserIDMetaName)] = requestContext.UserID.GetValue()
+	metaDataMap[string(valueObject.AccessTokenMetaName)] = requestContext.AccessToken.GetValue()
+	metaDataMap[string(valueObject.TenantIDMetaName)] = requestContext.TenantID.GetValue()
+	metaDataMap[string(valueObject.LocaleMetaName)] = requestContext.Locale.GetValue()
+	metaDataMap[string(valueObject.TimeZoneMetaName)] = requestContext.TimeZone.GetValue()
+
+	// int64 value
+	metaDataMap[string(valueObject.RequestStartTimeMetaName)] = requestContext.RequestStartTime.GetString()
+
+	// string slice
+	permissionList := requestContext.PermissionList.GetSliceValue()
+	for _, permission := range permissionList {
+		metaDataMap[string(valueObject.PermissionListMetaName)] = permission
+	}
 
 	md := metadata.New(
 		metaDataMap,

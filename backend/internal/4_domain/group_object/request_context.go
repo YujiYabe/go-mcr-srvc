@@ -26,18 +26,20 @@ type RequestContext struct {
 	Locale           valueObject.Locale
 	TimeZone         valueObject.TimeZone
 	TimeOutSecond    valueObject.TimeOutSecond
+	PermissionList   valueObject.PermissionList
 }
 
 type NewRequestContextArgs struct {
-	RequestStartTime *int64
-	TraceID          *string
-	ClientIP         *string
-	UserAgent        *string
-	UserID           *string
-	AccessToken      *string
-	TenantID         *string
-	Locale           *string
-	TimeZone         *string
+	RequestStartTime     *int64
+	TraceID              *string
+	ClientIP             *string
+	UserAgent            *string
+	UserID               *string
+	AccessToken          *string
+	TenantID             *string
+	Locale               *string
+	TimeZone             *string
+	TimeZoPermissionList []string
 }
 
 func NewRequestContext(
