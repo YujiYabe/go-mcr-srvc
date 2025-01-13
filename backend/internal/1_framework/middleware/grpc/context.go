@@ -3,6 +3,7 @@ package grpc_middleware
 import (
 	"context"
 	"log"
+	"strings"
 
 	"google.golang.org/grpc/metadata"
 
@@ -100,11 +101,9 @@ func ContextToMetadata(
 	// int64 value
 	metaDataMap[string(valueObject.RequestStartTimeMetaName)] = requestContext.RequestStartTime.GetString()
 
-	// string slice
+	// permissionListを文字列のスライスとして格納
 	permissionList := requestContext.PermissionList.GetSliceValue()
-	for _, permission := range permissionList {
-		metaDataMap[string(valueObject.PermissionListMetaName)] = permission
-	}
+	metaDataMap[string(valueObject.PermissionListMetaName)] = strings.Join(permissionList, ",")
 
 	md := metadata.New(
 		metaDataMap,
