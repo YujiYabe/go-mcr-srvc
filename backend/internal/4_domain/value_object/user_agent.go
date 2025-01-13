@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	UserAgentMetaName    primitiveObject.ContextKey = "user-agent"
+	UserAgentContextName primitiveObject.ContextKey = "UserAgent"
+)
+
+const (
 	userAgentLengthMax = 99999999999
 	userAgentLengthMin = 0
 )

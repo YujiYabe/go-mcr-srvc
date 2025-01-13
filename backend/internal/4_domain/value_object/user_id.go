@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	UserIDMetaName    primitiveObject.ContextKey = "user-id"
+	UserIDContextName primitiveObject.ContextKey = "UserID"
+)
+
+const (
 	userIDLengthMax = 99999999999
 	userIDLengthMin = 0
 )

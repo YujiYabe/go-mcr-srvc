@@ -7,6 +7,7 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
+
 )
 
 // ...
@@ -26,14 +27,17 @@ func (receiver *GRPCClient) ViaGRPC(
 	// クライアントの作成
 	client := grpcParameter.NewPersonServiceClient(receiver.Conn)
 
+
+	v1CommonParameter := &grpcParameter.V1CommonParameter{
+		V1RequestContext: &grpcParameter.V1RequestContext{
+			TraceId: traceID,
+		},
+	}
+
 	// リクエストの作成
 	v1GetPersonByConditionRequest := &grpcParameter.GetPersonListByConditionRequest{
 		V1PersonParameter: &grpcParameter.V1PersonParameter{},
-		V1CommonParameter: &grpcParameter.V1CommonParameter{
-			V1RequestContext: &grpcParameter.V1RequestContext{
-				TraceId: traceID,
-			},
-		},
+		V1CommonParameter: v1CommonParameter,
 	}
 
 	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {

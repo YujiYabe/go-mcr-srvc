@@ -24,7 +24,7 @@ type RequestContext struct {
 	AccessToken      valueObject.AccessToken
 	TenantID         valueObject.TenantID
 	Locale           valueObject.Locale
-	Timezone         valueObject.Timezone
+	TimeZone         valueObject.TimeZone
 	TimeOutSecond    valueObject.TimeOutSecond
 }
 
@@ -37,7 +37,7 @@ type NewRequestContextArgs struct {
 	AccessToken      *string
 	TenantID         *string
 	Locale           *string
-	Timezone         *string
+	TimeZone         *string
 }
 
 func NewRequestContext(
@@ -83,10 +83,10 @@ func NewRequestContext(
 		return
 	}
 
-	requestContext.Timezone = valueObject.NewTimezone(ctx, args.Timezone)
-	if requestContext.Timezone.GetError() != nil {
-		pkg.Logging(ctx, requestContext.Timezone.GetError())
-		requestContext.SetError(ctx, requestContext.Timezone.GetError())
+	requestContext.TimeZone = valueObject.NewTimeZone(ctx, args.TimeZone)
+	if requestContext.TimeZone.GetError() != nil {
+		pkg.Logging(ctx, requestContext.TimeZone.GetError())
+		requestContext.SetError(ctx, requestContext.TimeZone.GetError())
 		return
 	}
 

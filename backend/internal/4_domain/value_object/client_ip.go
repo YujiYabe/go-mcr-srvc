@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	ClientIPMetaName    primitiveObject.ContextKey = "client-ip"
+	ClientIPContextName primitiveObject.ContextKey = "clientIP"
+)
+
+const (
 	clientIPLengthMax = 99999999999
 	clientIPLengthMin = 0
 )

@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	TenantIDMetaName    primitiveObject.ContextKey = "tenant-id"
+	TenantIDContextName primitiveObject.ContextKey = "tenantID"
+)
+
+const (
 	tenantIDLengthMax = 99999999999
 	tenantIDLengthMin = 0
 )

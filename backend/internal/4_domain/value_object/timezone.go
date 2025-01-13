@@ -8,28 +8,33 @@ import (
 )
 
 const (
-	timezoneLengthMax = 99999999999
-	timezoneLengthMin = 0
+	TimeZoneMetaName    primitiveObject.ContextKey = "time-zone"
+	TimeZoneContextName primitiveObject.ContextKey = "TimeZone"
 )
 
-type Timezone struct {
+const (
+	timeZoneLengthMax = 99999999999
+	timeZoneLengthMin = 0
+)
+
+type TimeZone struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewTimezone(
+func NewTimeZone(
 	ctx context.Context,
 	value *string,
 ) (
-	timezone Timezone,
+	timeZone TimeZone,
 ) {
-	timezone = Timezone{}
-	timezone.SetValue(ctx, value)
+	timeZone = TimeZone{}
+	timeZone.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *Timezone) SetValue(
+func (receiver *TimeZone) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -37,8 +42,8 @@ func (receiver *Timezone) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(timezoneLengthMax),
-		primitiveString.WithMinLength(timezoneLengthMin),
+		primitiveString.WithMaxLength(timeZoneLengthMax),
+		primitiveString.WithMinLength(timeZoneLengthMin),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -49,11 +54,11 @@ func (receiver *Timezone) SetValue(
 	}
 }
 
-func (receiver *Timezone) GetError() error {
+func (receiver *TimeZone) GetError() error {
 	return receiver.err
 }
 
-func (receiver *Timezone) SetError(
+func (receiver *TimeZone) SetError(
 	ctx context.Context,
 	err error,
 ) {
@@ -61,6 +66,6 @@ func (receiver *Timezone) SetError(
 	pkg.Logging(ctx, receiver.GetError())
 }
 
-func (receiver *Timezone) GetValue() string {
+func (receiver *TimeZone) GetValue() string {
 	return receiver.content.GetValue()
 }

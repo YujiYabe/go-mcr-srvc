@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	LocaleMetaName    primitiveObject.ContextKey = "locale"
+	LocaleContextName primitiveObject.ContextKey = "Locale"
+)
+
+const (
 	localeLengthMax = 99999999999
 	localeLengthMin = 0
 )

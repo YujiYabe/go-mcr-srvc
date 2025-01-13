@@ -4,8 +4,11 @@ import (
 	"context"
 	"log"
 
+	"google.golang.org/grpc/metadata"
+
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
+	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
@@ -54,7 +57,7 @@ func CommonToContext(
 		AccessToken:      &req.V1RequestContext.AccessToken,
 		TenantID:         &req.V1RequestContext.TenantId,
 		Locale:           &req.V1RequestContext.Locale,
-		Timezone:         &req.V1RequestContext.Timezone,
+		TimeZone:         &req.V1RequestContext.TimeZone,
 	}
 
 	requestContext := groupObject.NewRequestContext(
@@ -71,6 +74,31 @@ func CommonToContext(
 		groupObject.RequestContextContextName,
 		*requestContext,
 	)
+
+	return ctx
+}
+
+// ------------
+func ContextToMetadata(
+	ctx context.Context,
+) context.Context {
+
+	metaDataMap := map[string]string{}
+
+	metaDataMap[string(valueObject.TraceIDMetaName)] = groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	metaDataMap[string(valueObject.ClientIPMetaName)] = groupObject.GetRequestContext(ctx).ClientIP.GetValue()
+	metaDataMap[string(valueObject.UserAgentMetaName)] = groupObject.GetRequestContext(ctx).UserAgent.GetValue()
+	metaDataMap[string(valueObject.UserIDMetaName)] = groupObject.GetRequestContext(ctx).UserID.GetValue()
+	metaDataMap[string(valueObject.AccessTokenMetaName)] = groupObject.GetRequestContext(ctx).AccessToken.GetValue()
+	metaDataMap[string(valueObject.TenantIDMetaName)] = groupObject.GetRequestContext(ctx).TenantID.GetValue()
+	metaDataMap[string(valueObject.LocaleMetaName)] = groupObject.GetRequestContext(ctx).Locale.GetValue()
+	metaDataMap[string(valueObject.TimeZoneMetaName)] = groupObject.GetRequestContext(ctx).TimeZone.GetValue()
+
+	md := metadata.New(
+		metaDataMap,
+	)
+
+	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	return ctx
 }

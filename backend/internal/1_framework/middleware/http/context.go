@@ -15,13 +15,13 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			clientIP := c.RealIP()
 			userAgent := c.Request().UserAgent()
 			locale := c.Request().Header.Get("Accept-Language")
-			timezone := c.Request().Header.Get("Time-Zone")
+			timeZone := c.Request().Header.Get("Time-Zone")
 
 			newRequestContextArgs := &groupObject.NewRequestContextArgs{
 				ClientIP:  &clientIP,
 				UserAgent: &userAgent,
 				Locale:    &locale,
-				Timezone:  &timezone,
+				TimeZone:  &timeZone,
 			}
 
 			requestContext := groupObject.NewRequestContext(

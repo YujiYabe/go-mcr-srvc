@@ -27,5 +27,5 @@ message V1RequestContext {
   string access_token = 7;
   string tenant_id = 8;
   string locale = 9;
-  string timezone = 10;
+  string time_zone = 10;
 }
