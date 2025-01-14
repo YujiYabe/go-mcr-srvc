@@ -185,3 +185,14 @@ func (receiver *PrimitiveSliceString) Validation() error {
 
 	return nil
 }
+
+// ______________________________________
+func ExtractFirstIndexFromSliceString(
+	value []string,
+) *string {
+	firstString := ""
+	if len(value) != 0 {
+		firstString = value[0]
+	}
+	return &firstString
+}
