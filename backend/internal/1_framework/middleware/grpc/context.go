@@ -10,7 +10,6 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	groupObject "backend/internal/4_domain/group_object"
-	primitiveObject "backend/internal/4_domain/primitive_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
@@ -61,64 +60,72 @@ func MetadataToContext(
 	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
 
 	// ________________________________
-
-	requestStartTime := int64(0)
 	if len(md.Get(string(valueObject.RequestStartTimeMetaName))) != 0 {
-		requestStartTime, _ = strconv.ParseInt(
+		requestStartTime, _ := strconv.ParseInt(
 			md.Get(string(valueObject.RequestStartTimeMetaName))[0], 10, 64,
 		)
+		newRequestContextArgs.RequestStartTime = &requestStartTime
 	}
-	newRequestContextArgs.RequestStartTime = &requestStartTime
 
 	// ________________________________
-	permissionList := []string{}
-	permissionList = append(
-		permissionList,
-		md.Get(string(valueObject.PermissionListMetaName))...,
-	)
-	newRequestContextArgs.PermissionList = permissionList
+	if len(md.Get(string(valueObject.PermissionListMetaName))) != 0 {
+		permissionList := []string{}
+		permissionList = append(
+			permissionList,
+			md.Get(string(valueObject.PermissionListMetaName))...,
+		)
+		newRequestContextArgs.PermissionList = permissionList
+
+	}
 
 	// ________________________________
-	newRequestContextArgs.TraceID = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.TraceIDMetaName)),
-	)
+	if len(md.Get(string(valueObject.TraceIDMetaName))) != 0 {
+		value := md.Get(string(valueObject.TraceIDMetaName))[0]
+		newRequestContextArgs.TraceID = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.ClientIP = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.ClientIPMetaName)),
-	)
+	if len(md.Get(string(valueObject.ClientIPMetaName))) != 0 {
+		value := md.Get(string(valueObject.ClientIPMetaName))[0]
+		newRequestContextArgs.ClientIP = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.UserAgent = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.UserAgentMetaName)),
-	)
+	if len(md.Get(string(valueObject.UserAgentMetaName))) != 0 {
+		value := md.Get(string(valueObject.UserAgentMetaName))[0]
+		newRequestContextArgs.UserAgent = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.UserID = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.UserIDMetaName)),
-	)
+	if len(md.Get(string(valueObject.UserIDMetaName))) != 0 {
+		value := md.Get(string(valueObject.UserIDMetaName))[0]
+		newRequestContextArgs.UserID = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.AccessToken = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.AccessTokenMetaName)),
-	)
+	if len(md.Get(string(valueObject.AccessTokenMetaName))) != 0 {
+		value := md.Get(string(valueObject.AccessTokenMetaName))[0]
+		newRequestContextArgs.AccessToken = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.TenantID = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.TenantIDMetaName)),
-	)
+	if len(md.Get(string(valueObject.TenantIDMetaName))) != 0 {
+		value := md.Get(string(valueObject.TenantIDMetaName))[0]
+		newRequestContextArgs.TenantID = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.Locale = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.LocaleMetaName)),
-	)
+	if len(md.Get(string(valueObject.LocaleMetaName))) != 0 {
+		value := md.Get(string(valueObject.LocaleMetaName))[0]
+		newRequestContextArgs.Locale = &value
+	}
 
 	// ________________________________
-	newRequestContextArgs.TimeZone = primitiveObject.ExtractFirstIndexFromSliceString(
-		md.Get(string(valueObject.TimeZoneMetaName)),
-	)
+	if len(md.Get(string(valueObject.TimeZoneMetaName))) != 0 {
+		value := md.Get(string(valueObject.TimeZoneMetaName))[0]
+		newRequestContextArgs.TimeZone = &value
+	}
 
-	// ________________________________
 	requestContext := groupObject.NewRequestContext(
 		ctx,
 		newRequestContextArgs,

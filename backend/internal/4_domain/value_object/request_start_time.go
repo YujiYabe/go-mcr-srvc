@@ -42,8 +42,7 @@ func (receiver *RequestStartTime) SetValue(
 ) {
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
 
-	if value == nil || *value == 0 {
-		// if value == nil {
+	if value == nil {
 		// デフォルト値を設定
 		now := time.Now().UnixMilli()
 		value = &now

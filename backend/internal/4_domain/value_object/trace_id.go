@@ -40,8 +40,7 @@ func (receiver *TraceID) SetValue(
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
-	if value == nil || *value == "" {
-		// if value == nil {
+	if value == nil {
 		// デフォルト値を設定
 		newUUID := uuid.New().String()
 		value = &newUUID
