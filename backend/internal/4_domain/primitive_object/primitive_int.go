@@ -1,14 +1,17 @@
 package primitive_object
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 // ______________________________________
 type PrimitiveInt struct {
 	err      error
 	value    int
 	isNil    bool
-	maxValue int
-	minValue int
+	maxDigit *uint
+	minDigit *uint
 }
 
 // ______________________________________
@@ -49,20 +52,20 @@ func (receiver *PrimitiveInt) WithIsNil(
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt) WithMaxValue(
-	value int,
+func (receiver *PrimitiveInt) WithMaxDigit(
+	value *uint,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.maxValue = value
+		s.maxDigit = value
 	}
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt) WithMinValue(
-	value int,
+func (receiver *PrimitiveInt) WithMinDigit(
+	value *uint,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.minValue = value
+		s.minDigit = value
 	}
 }
 
@@ -77,8 +80,8 @@ func NewPrimitiveInt(
 		err:      nil,
 		value:    0,
 		isNil:    false,
-		maxValue: -1,
-		minValue: -1,
+		maxDigit: nil,
+		minDigit: nil,
 	}
 
 	// オプションを適用
@@ -166,48 +169,42 @@ func (receiver *PrimitiveInt) Validation() {
 		return
 	}
 
-	receiver.ValidationMax()
+	receiver.ValidationDigit()
 	if receiver.err != nil {
 		return
 	}
-
-	receiver.ValidationMin()
-	if receiver.err != nil {
-		return
-	}
-
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt) ValidationMax() {
-	if receiver.maxValue < 0 { //上限値なし
+func (receiver *PrimitiveInt) ValidationDigit() {
+	if receiver.maxDigit == nil { //上限値なし
 		return
 	}
 
+	// 上限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
 		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value > receiver.maxValue {
+	strValue := strconv.Itoa(receiver.value)
+
+	// 桁数を取得
+	digitCount := uint(len(strValue))
+
+	// 負の値の場合、マイナス記号を除いた桁数を計算
+	if receiver.value < 0 {
+		digitCount-- // マイナス符号を引く
+	}
+
+	if digitCount > *receiver.maxDigit {
 		receiver.SetErrorString("max limitation")
 		return
 	}
-}
 
-// ______________________________________
-func (receiver *PrimitiveInt) ValidationMin() {
-	if receiver.minValue < 0 { //下限値なし
-		return
-	}
-
-	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
-		return
-	}
-
-	if receiver.value < receiver.minValue {
+	if digitCount < *receiver.minDigit {
 		receiver.SetErrorString("min limitation")
 		return
 	}
+
 }

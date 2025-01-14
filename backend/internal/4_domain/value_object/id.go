@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	idLengthMax = 99999999999
-	idLengthMin = 0
+	idDigitMax uint = 99999999999
+	idDigitMin uint = 0
 )
 
 type ID struct {
@@ -35,10 +35,13 @@ func (receiver *ID) SetValue(
 ) {
 	primitiveInt := &primitiveObject.PrimitiveInt{}
 
+	maxLength := uint(idDigitMax)
+	minLength := uint(idDigitMin)
+
 	receiver.content = primitiveObject.NewPrimitiveInt(
 		primitiveInt.WithValue(value),
-		primitiveInt.WithMaxValue(idLengthMax),
-		primitiveInt.WithMinValue(idLengthMin),
+		primitiveInt.WithMaxDigit(&maxLength),
+		primitiveInt.WithMinDigit(&minLength),
 	)
 
 	receiver.content.Validation()
@@ -47,8 +50,8 @@ func (receiver *ID) SetValue(
 			ctx, receiver.content.GetError(),
 		)
 	}
-}
 
+}
 func (receiver *ID) GetError() error {
 	return receiver.err
 }
