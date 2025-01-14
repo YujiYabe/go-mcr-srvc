@@ -30,16 +30,16 @@ type RequestContext struct {
 }
 
 type NewRequestContextArgs struct {
-	RequestStartTime     *int64
-	TraceID              *string
-	ClientIP             *string
-	UserAgent            *string
-	UserID               *string
-	AccessToken          *string
-	TenantID             *string
-	Locale               *string
-	TimeZone             *string
-	TimeZoPermissionList []string
+	RequestStartTime *int64
+	TraceID          *string
+	ClientIP         *string
+	UserAgent        *string
+	UserID           *string
+	AccessToken      *string
+	TenantID         *string
+	Locale           *string
+	TimeZone         *string
+	PermissionList   []string
 }
 
 func NewRequestContext(

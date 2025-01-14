@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/2_adapter/controller"
 	"backend/pkg"
@@ -43,9 +44,9 @@ func (receiver *GoGRPC) Start() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	server := grpc.NewServer(
-	// grpc.UnaryInterceptor(
-	// 	grpcMiddleware.UnaryServerInterceptor(),
-	// ),
+		grpc.UnaryInterceptor(
+			grpcMiddleware.UnaryServerInterceptor(),
+		),
 	)
 
 	grpcParameter.RegisterPersonServiceServer(server, &receiver.Server)

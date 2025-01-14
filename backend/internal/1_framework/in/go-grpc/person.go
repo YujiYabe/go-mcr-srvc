@@ -24,12 +24,11 @@ func (receiver *Server) GetPersonListByCondition(
 	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
-	ctx = grpcMiddleware.CommonToContext(
-		ctx,
-		getPersonListByConditionRequest.GetV1CommonParameter(),
-	)
 
 	requestContext := groupObject.GetRequestContext(ctx)
+	if requestContext.GetError() != nil {
+		return nil, requestContext.GetError()
+	}
 
 	timeoutSecond := requestContext.TimeOutSecond.GetValue()
 
@@ -38,13 +37,6 @@ func (receiver *Server) GetPersonListByCondition(
 		time.Duration(timeoutSecond)*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
-
-	time.Sleep(1 * time.Second)
-	now := time.Now().UnixMilli()
-	formattedTime := time.UnixMilli(now).Format("2006-01-02 15:04:05.000")
-
-	pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
-	pkg.Logging(ctx, formattedTime)
 
 	done := make(chan struct{})
 
@@ -107,11 +99,6 @@ func (receiver *Server) processPersonRequest(
 	)
 
 	v1GetPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
-	v1GetPersonListByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
-		V1RequestContext: &grpcParameter.V1RequestContext{
-			TraceId: traceID,
-		},
-	}
 
 	pkg.Logging(ctx, traceID)
 

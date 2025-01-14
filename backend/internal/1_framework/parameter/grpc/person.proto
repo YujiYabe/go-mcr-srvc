@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package grpc_parameter.v1;
 
-import "backend/internal/1_framework/parameter/grpc/common.proto";
 
 option go_package = "internal/grpc";
 
@@ -11,12 +10,10 @@ service PersonService {
 }
 
 message GetPersonListByConditionRequest {
-  optional V1CommonParameter v1_common_parameter = 1;
   V1PersonParameter v1_person_parameter = 2;
 }
 
 message GetPersonListByConditionResponse {
-  V1CommonParameter v1_common_parameter = 1;
   V1PersonParameterArray v1_person_parameter_array = 2;
 }
 

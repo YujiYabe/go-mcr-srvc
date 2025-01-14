@@ -3,87 +3,21 @@ package grpc_middleware
 import (
 	"context"
 	"log"
+	"strconv"
 	"strings"
 
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 	"backend/pkg"
 )
 
-// func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
-// 	return func(
-// 		ctx context.Context,
-// 		req interface{},
-// 		info *grpc.UnaryServerInfo,
-// 		handler grpc.UnaryHandler,
-// 	) (
-// 		interface{},
-// 		error,
-// 	) {
-// 		if commonReq, ok := req.(*grpcParameter.V1CommonParameter); ok {
-// 			ctx = CommonToContext(ctx, commonReq)
-// 			log.Println("== == == == == == == == == == ")
-// 			pkg.Logging(ctx, "ok")
-// 			log.Println("== == == == == == == == == == ")
-// 		} else {
-// 			log.Println("== == == == == == == == == == ")
-// 			pkg.Logging(ctx, "ng")
-// 			log.Println("== == == == == == == == == == ")
-// 		}
-
-// 		return handler(ctx, req)
-// 	}
-// }
-
-// ------------
-func CommonToContext(
-	ctx context.Context,
-	req *grpcParameter.V1CommonParameter,
-) context.Context {
-
-	// エラーがあれば都度処理
-	if req.GetV1Error() != nil {
-		pkg.Logging(ctx, req.GetV1Error())
-	}
-
-	newRequestContextArgs := &groupObject.NewRequestContextArgs{
-		RequestStartTime: &req.V1RequestContext.RequestStartTime,
-		TraceID:          &req.V1RequestContext.TraceId,
-		ClientIP:         &req.V1RequestContext.ClientIp,
-		UserAgent:        &req.V1RequestContext.UserAgent,
-		UserID:           &req.V1RequestContext.UserId,
-		AccessToken:      &req.V1RequestContext.AccessToken,
-		TenantID:         &req.V1RequestContext.TenantId,
-		Locale:           &req.V1RequestContext.Locale,
-		TimeZone:         &req.V1RequestContext.TimeZone,
-	}
-
-	requestContext := groupObject.NewRequestContext(
-		ctx,
-		newRequestContextArgs,
-	)
-
-	if requestContext.GetError() != nil {
-		log.Println(requestContext.GetError())
-		return ctx
-	}
-	ctx = context.WithValue(
-		ctx,
-		groupObject.RequestContextContextName,
-		*requestContext,
-	)
-
-	return ctx
-}
-
 // ------------
 func ContextToMetadata(
 	ctx context.Context,
 ) context.Context {
-
 	metaDataMap := map[string]string{}
 
 	requestContext := groupObject.GetRequestContext(ctx)
@@ -102,8 +36,10 @@ func ContextToMetadata(
 	metaDataMap[string(valueObject.RequestStartTimeMetaName)] = requestContext.RequestStartTime.GetString()
 
 	// permissionListを文字列のスライスとして格納
-	permissionList := requestContext.PermissionList.GetSliceValue()
-	metaDataMap[string(valueObject.PermissionListMetaName)] = strings.Join(permissionList, ",")
+	metaDataMap[string(valueObject.PermissionListMetaName)] = strings.Join(
+		requestContext.PermissionList.GetSliceValue(),
+		",",
+	)
 
 	md := metadata.New(
 		metaDataMap,
@@ -112,4 +48,70 @@ func ContextToMetadata(
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	return ctx
+}
+
+func MetadataToContext(
+	ctx context.Context,
+) context.Context {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return ctx
+	}
+
+	requestStartTime, _ := strconv.ParseInt(
+		md.Get(string(valueObject.RequestStartTimeMetaName))[0], 10, 64,
+	)
+
+	permissionList := []string{}
+	permissionList = append(
+		permissionList,
+		md.Get(string(valueObject.PermissionListMetaName))...,
+	)
+
+	newRequestContextArgs := &groupObject.NewRequestContextArgs{
+		RequestStartTime: &requestStartTime,
+		TraceID:          &md.Get(string(valueObject.TraceIDMetaName))[0],
+		ClientIP:         &md.Get(string(valueObject.ClientIPMetaName))[0],
+		UserAgent:        &md.Get(string(valueObject.UserAgentMetaName))[0],
+		UserID:           &md.Get(string(valueObject.UserIDMetaName))[0],
+		AccessToken:      &md.Get(string(valueObject.AccessTokenMetaName))[0],
+		TenantID:         &md.Get(string(valueObject.TenantIDMetaName))[0],
+		Locale:           &md.Get(string(valueObject.LocaleMetaName))[0],
+		TimeZone:         &md.Get(string(valueObject.TimeZoneMetaName))[0],
+		PermissionList:   permissionList,
+	}
+
+	requestContext := groupObject.NewRequestContext(
+		ctx,
+		newRequestContextArgs,
+	)
+	if requestContext.GetError() != nil {
+		log.Println(requestContext.GetError())
+		return ctx
+	}
+
+	ctx = context.WithValue(
+		ctx,
+		groupObject.RequestContextContextName,
+		*requestContext,
+	)
+
+	return ctx
+}
+
+func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+	return func(
+		ctx context.Context,
+		req interface{},
+		info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler,
+	) (
+		interface{},
+		error,
+	) {
+		ctx = MetadataToContext(ctx)
+		pkg.Logging(ctx, "Metadata converted to context")
+
+		return handler(ctx, req)
+	}
 }
