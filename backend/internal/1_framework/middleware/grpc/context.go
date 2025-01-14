@@ -11,7 +11,6 @@ import (
 
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
-	"backend/pkg"
 )
 
 // ------------
@@ -162,7 +161,6 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		error,
 	) {
 		ctx = MetadataToContext(ctx)
-		pkg.Logging(ctx, "Metadata converted to context")
 
 		return handler(ctx, req)
 	}

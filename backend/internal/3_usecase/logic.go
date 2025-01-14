@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
@@ -26,7 +27,6 @@ func (receiver *useCase) GetPersonListByCondition(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	// time.Sleep(5 * time.Second)
 
 	resPersonList = receiver.ToGateway.GetPersonListByCondition(
 		ctx,
@@ -54,6 +54,7 @@ func (receiver *useCase) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
+	time.Sleep(3 * time.Second)
 	resPersonList = receiver.ToGateway.ViaGRPC(
 		ctx,
 		reqPerson,

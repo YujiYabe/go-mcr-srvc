@@ -8,6 +8,10 @@ import (
 )
 
 const (
+	TimeOutSecondValue = 10
+)
+
+const (
 	TimeOutSecondMetaName    primitiveObject.ContextKey = "time-out-second"
 	TimeOutSecondContextName primitiveObject.ContextKey = "timeOutSecond"
 )

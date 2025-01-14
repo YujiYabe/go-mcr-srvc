@@ -24,13 +24,23 @@ func (receiver *Server) GetPersonListByCondition(
 	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
-
 	requestContext := groupObject.GetRequestContext(ctx)
 	if requestContext.GetError() != nil {
 		return nil, requestContext.GetError()
 	}
 
 	timeoutSecond := requestContext.TimeOutSecond.GetValue()
+	requestStartTime := requestContext.RequestStartTime.GetValue()
+	// log.Println("== == == == == == == == == == ")
+	// pkg.Logging(ctx, timeoutSecond)
+	// pkg.Logging(ctx, requestStartTime)
+	// log.Println("== == == == == == == == == == ")
+	time.Sleep(1 * time.Second)
+	now := time.Now().UnixMilli()
+
+	pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
+	pkg.Logging(ctx, time.UnixMilli(requestStartTime).Format("2006-01-02 15:04:05.000"))
+	pkg.Logging(ctx, time.UnixMilli(now).Format("2006-01-02 15:04:05.000"))
 
 	ctx, cancel := context.WithTimeout(
 		ctx,

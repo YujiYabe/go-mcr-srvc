@@ -115,7 +115,7 @@ func NewRequestContext(
 
 	requestStartTime := requestContext.RequestStartTime
 	currentTimestamp := time.Now().UnixMilli()
-	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(5 * time.Second).UnixMilli()
+	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(valueObject.TimeOutSecondValue * time.Second).UnixMilli()
 	timeoutSecond := requestEndTime - currentTimestamp
 
 	requestContext.TimeOutSecond = valueObject.NewTimeOutSecond(ctx, &timeoutSecond)
