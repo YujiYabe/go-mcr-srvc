@@ -9,9 +9,9 @@ import (
 type PrimitiveSliceString struct {
 	err       error // バリデーションエラーを格納
 	value     []PrimitiveString
-	isNil     bool // nil状態を示すフラグ
-	MaxLength int  // 最大列長 (-1は制限なし)
-	MinLength int  // 最小列長 (-1は制限なし)
+	isNil     bool  // nil状態を示すフラグ
+	MaxLength *uint // 最大列長
+	MinLength *uint // 最小列長
 }
 
 // ______________________________________
@@ -52,7 +52,7 @@ func (receiver *PrimitiveSliceString) WithIsNil(
 
 // ______________________________________
 func (receiver *PrimitiveSliceString) WithMaxLength(
-	value int,
+	value *uint,
 ) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.MaxLength = value
@@ -61,7 +61,7 @@ func (receiver *PrimitiveSliceString) WithMaxLength(
 
 // ______________________________________
 func (receiver *PrimitiveSliceString) WithMinLength(
-	value int,
+	value *uint,
 ) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.MinLength = value
@@ -77,9 +77,9 @@ func NewPrimitiveSliceString(
 	primitiveSliceString = &PrimitiveSliceString{
 		err:       nil,
 		value:     []PrimitiveString{},
-		isNil:     false,
-		MaxLength: -1,
-		MinLength: -1,
+		isNil:     true,
+		MaxLength: nil,
+		MinLength: nil,
 	}
 
 	for _, option := range options {
@@ -156,23 +156,19 @@ func (receiver *PrimitiveSliceString) SortDesc() {
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceString) Validation() error {
+func (receiver *PrimitiveSliceString) Validation() {
 	if receiver.isNil {
-		return nil
+		return
 	}
 
-	if receiver.MaxLength != -1 && len(receiver.value) > receiver.MaxLength {
-		return fmt.Errorf(
-			"PrimitiveSliceString: length exceeds maximum allowed (%d)",
-			receiver.MaxLength,
-		)
+	receiver.ValidationMaxLength()
+	if receiver.err != nil {
+		return
 	}
 
-	if receiver.MinLength != -1 && len(receiver.value) < receiver.MinLength {
-		return fmt.Errorf(
-			"PrimitiveSliceString: length is less than minimum required (%d)",
-			receiver.MinLength,
-		)
+	receiver.ValidationMinLength()
+	if receiver.err != nil {
+		return
 	}
 
 	for _, value := range receiver.value {
@@ -183,7 +179,38 @@ func (receiver *PrimitiveSliceString) Validation() error {
 		}
 	}
 
-	return nil
+}
+
+// ______________________________________
+func (receiver *PrimitiveSliceString) ValidationMaxLength() {
+	if receiver.MaxLength == nil { // 上限値なし
+		return
+	}
+
+	if uint(len(receiver.value)) > *receiver.MaxLength {
+		receiver.SetError(
+			fmt.Errorf(
+				"PrimitiveSliceString: length exceeds maximum allowed (%d)",
+				*receiver.MaxLength,
+			),
+		)
+	}
+}
+
+// ______________________________________
+func (receiver *PrimitiveSliceString) ValidationMinLength() {
+	if receiver.MinLength == nil { // 下限値なし
+		return
+	}
+
+	if uint(len(receiver.value)) < *receiver.MinLength {
+		receiver.SetError(
+			fmt.Errorf(
+				"PrimitiveSliceString: length is less than minimum required (%d)",
+				*receiver.MinLength,
+			),
+		)
+	}
 }
 
 // ______________________________________

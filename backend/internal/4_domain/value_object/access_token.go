@@ -41,10 +41,13 @@ func (receiver *AccessToken) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(accessTokenLengthMin)
+	maxLength := uint(accessTokenLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(accessTokenLengthMax),
-		primitiveString.WithMinLength(accessTokenLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	receiver.content.Validation()
@@ -52,7 +55,6 @@ func (receiver *AccessToken) SetValue(
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
-
 func (receiver *AccessToken) GetError() error {
 	return receiver.err
 }

@@ -40,10 +40,13 @@ func (receiver *UserAgent) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	maxLength := uint(userAgentLengthMax)
+	minLength := uint(userAgentLengthMin)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(userAgentLengthMax),
-		primitiveString.WithMinLength(userAgentLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,7 +56,6 @@ func (receiver *UserAgent) SetValue(
 		)
 	}
 }
-
 func (receiver *UserAgent) GetError() error {
 	return receiver.err
 }

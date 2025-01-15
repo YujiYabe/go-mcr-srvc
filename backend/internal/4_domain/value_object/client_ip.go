@@ -40,10 +40,13 @@ func (receiver *ClientIP) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(clientIPLengthMin)
+	maxLength := uint(clientIPLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(clientIPLengthMax),
-		primitiveString.WithMinLength(clientIPLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,7 +56,6 @@ func (receiver *ClientIP) SetValue(
 		)
 	}
 }
-
 func (receiver *ClientIP) GetError() error {
 	return receiver.err
 }

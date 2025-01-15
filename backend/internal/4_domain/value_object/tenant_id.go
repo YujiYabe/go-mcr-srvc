@@ -13,8 +13,8 @@ const (
 )
 
 const (
-	tenantIDLengthMax = 99999999999
-	tenantIDLengthMin = 0
+	tenantIDLengthMax = 99
+	tenantIDLengthMin = 1
 )
 
 type TenantID struct {
@@ -40,10 +40,13 @@ func (receiver *TenantID) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(tenantIDLengthMin)
+	maxLength := uint(tenantIDLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(tenantIDLengthMax),
-		primitiveString.WithMinLength(tenantIDLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,7 +56,6 @@ func (receiver *TenantID) SetValue(
 		)
 	}
 }
-
 func (receiver *TenantID) GetError() error {
 	return receiver.err
 }

@@ -13,7 +13,7 @@ const (
 )
 
 const (
-	timeZoneLengthMax = 99999999999
+	timeZoneLengthMax = 9
 	timeZoneLengthMin = 0
 )
 
@@ -40,10 +40,14 @@ func (receiver *TimeZone) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(timeZoneLengthMin)
+	maxLength := uint(timeZoneLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(timeZoneLengthMax),
-		primitiveString.WithMinLength(timeZoneLengthMin),
+
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,7 +57,6 @@ func (receiver *TimeZone) SetValue(
 		)
 	}
 }
-
 func (receiver *TimeZone) GetError() error {
 	return receiver.err
 }

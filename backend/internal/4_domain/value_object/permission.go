@@ -38,10 +38,13 @@ func (receiver *Permission) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(permissionLengthMin)
+	maxLength := uint(permissionLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(permissionLengthMax),
-		primitiveString.WithMinLength(permissionLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 		primitiveString.WithCheckSpell(permissionCheckSpell),
 	)
 

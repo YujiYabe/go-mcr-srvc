@@ -46,10 +46,13 @@ func (receiver *TraceID) SetValue(
 		value = &newUUID
 	}
 
+	minLength := uint(traceIDLengthMin)
+	maxLength := uint(traceIDLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(traceIDLengthMax),
-		primitiveString.WithMinLength(traceIDLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	receiver.content.Validation()
@@ -57,7 +60,6 @@ func (receiver *TraceID) SetValue(
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
-
 func (receiver *TraceID) GetValue() string {
 	return receiver.content.GetValue()
 }

@@ -2,6 +2,7 @@ package primitive_object
 
 import (
 	"fmt"
+	"strconv"
 )
 
 // ______________________________________
@@ -9,8 +10,8 @@ type PrimitiveInt64 struct {
 	err      error
 	value    int64
 	isNil    bool
-	maxValue int64
-	minValue int64
+	maxDigit *uint
+	minDigit *uint
 }
 
 // ______________________________________
@@ -51,20 +52,20 @@ func (receiver *PrimitiveInt64) WithIsNil(
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) WithMaxValue(
-	value int64,
+func (receiver *PrimitiveInt64) WithMaxDigit(
+	value *uint,
 ) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
-		s.maxValue = value
+		s.maxDigit = value
 	}
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) WithMinValue(
-	value int64,
+func (receiver *PrimitiveInt64) WithMinDigit(
+	value *uint,
 ) PrimitiveInt64Option {
 	return func(s *PrimitiveInt64) {
-		s.minValue = value
+		s.minDigit = value
 	}
 }
 
@@ -78,9 +79,9 @@ func NewPrimitiveInt64(
 	primitiveInt64 = &PrimitiveInt64{
 		err:      nil,
 		value:    0,
-		isNil:    false,
-		maxValue: -1,
-		minValue: -1,
+		isNil:    true,
+		maxDigit: nil,
+		minDigit: nil,
 	}
 
 	// オプションを適用
@@ -161,47 +162,71 @@ func (receiver *PrimitiveInt64) Validation() {
 		return
 	}
 
-	receiver.ValidationMax()
+	receiver.ValidationMaxDigit()
 	if receiver.err != nil {
 		return
 	}
 
-	receiver.ValidationMin()
+	receiver.ValidationMinDigit()
 	if receiver.err != nil {
 		return
 	}
-
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) ValidationMax() {
-	if receiver.maxValue < 0 { //上限値なし
+func (receiver *PrimitiveInt64) ValidationMaxDigit() {
+	if receiver.maxDigit == nil { //上限値なし
 		return
 	}
 
+	// 上限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
+		// receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value > receiver.maxValue {
+	strValue := strconv.FormatInt(receiver.value, 10)
+
+	// 桁数を取得
+	digitCount := uint(len(strValue))
+	debug := digitCount
+	fmt.Println(" ----------------------------------- ")
+	fmt.Printf("%+v\n", debug)
+
+	// 負の値の場合、マイナス記号を除いた桁数を計算
+	if receiver.value < 0 {
+		digitCount-- // マイナス符号を引く
+	}
+
+	if digitCount > *receiver.maxDigit {
 		receiver.SetErrorString("max limitation")
 		return
 	}
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) ValidationMin() {
-	if receiver.minValue < 0 { //下限値なし
+func (receiver *PrimitiveInt64) ValidationMinDigit() {
+	if receiver.minDigit == nil { //上限値なし
 		return
 	}
 
+	// 下限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
+		// receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value < receiver.minValue {
+	strValue := strconv.FormatInt(receiver.value, 10)
+
+	// 桁数を取得
+	digitCount := uint(len(strValue))
+
+	// 負の値の場合、マイナス記号を除いた桁数を計算
+	if receiver.value < 0 {
+		digitCount-- // マイナス符号を引く
+	}
+
+	if digitCount < *receiver.minDigit {
 		receiver.SetErrorString("min limitation")
 		return
 	}

@@ -40,10 +40,13 @@ func (receiver *Name) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(nameLengthMin)
+	maxLength := uint(nameLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(nameLengthMax),
-		primitiveString.WithMinLength(nameLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 
@@ -52,7 +55,6 @@ func (receiver *Name) SetValue(
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
-
 func (receiver *Name) GetError() error {
 	return receiver.err
 }

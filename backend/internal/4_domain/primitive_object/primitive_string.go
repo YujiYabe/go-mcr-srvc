@@ -15,8 +15,8 @@ type PrimitiveString struct {
 	err       error    // バリデーションエラーを格納
 	value     string   // 実際の文字列値
 	isNil     bool     // nil状態を示すフラグ
-	maxLength int      // 最大文字列長 (-1は制限なし)
-	minLength int      // 最小文字列長 (-1は制限なし)
+	maxLength *uint    // 最大文字列長
+	minLength *uint    // 最小文字列長
 	spellList []string // チェック対象の禁止文字列リスト
 }
 
@@ -64,7 +64,7 @@ func (receiver *PrimitiveString) WithIsNil(
 // ______________________________________
 // WithMaxLength は最大文字列長を設定するオプションを返します
 func (receiver *PrimitiveString) WithMaxLength(
-	length int,
+	length *uint,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.maxLength = length
@@ -74,7 +74,7 @@ func (receiver *PrimitiveString) WithMaxLength(
 // ______________________________________
 // WithMinLength は最小文字列長を設定するオプションを返します
 func (receiver *PrimitiveString) WithMinLength(
-	length int,
+	length *uint,
 ) PrimitiveStringOption {
 	return func(s *PrimitiveString) {
 		s.minLength = length
@@ -102,9 +102,9 @@ func NewPrimitiveString(
 	primitiveString = &PrimitiveString{
 		err:       nil,
 		value:     "",
-		isNil:     false,
-		maxLength: -1,
-		minLength: -1,
+		isNil:     true,
+		maxLength: nil,
+		minLength: nil,
 		spellList: []string{},
 	}
 
@@ -198,17 +198,15 @@ func (receiver *PrimitiveString) Validation() {
 // ValidationMax は最大文字列長のチェックを行います
 // ______________________________________
 func (receiver *PrimitiveString) ValidationMax() {
-	if receiver.maxLength < 0 {
-		// receiver.SetError("max length no defined")
-		return
-	}
-
 	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
 		return
 	}
 
-	if utf8.RuneCountInString(receiver.value) > receiver.maxLength {
+	if receiver.maxLength == nil {
+		return
+	}
+
+	if utf8.RuneCountInString(receiver.value) > int(*receiver.maxLength) {
 		receiver.SetErrorString("max limitation")
 		return
 	}
@@ -221,11 +219,11 @@ func (receiver *PrimitiveString) ValidationMin() {
 		return
 	}
 
-	if receiver.minLength < 0 {
+	if receiver.minLength == nil {
 		return
 	}
 
-	if utf8.RuneCountInString(receiver.value) < receiver.minLength {
+	if utf8.RuneCountInString(receiver.value) < int(*receiver.minLength) {
 		receiver.SetErrorString("min limitation")
 		return
 	}

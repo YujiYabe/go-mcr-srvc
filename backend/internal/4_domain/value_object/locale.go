@@ -13,7 +13,7 @@ const (
 )
 
 const (
-	localeLengthMax = 99999999999
+	localeLengthMax = 100
 	localeLengthMin = 0
 )
 
@@ -40,10 +40,13 @@ func (receiver *Locale) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	maxLength := uint(localeLengthMax)
+	minLength := uint(localeLengthMin)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(localeLengthMax),
-		primitiveString.WithMinLength(localeLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,7 +56,6 @@ func (receiver *Locale) SetValue(
 		)
 	}
 }
-
 func (receiver *Locale) GetError() error {
 	return receiver.err
 }

@@ -40,10 +40,13 @@ func (receiver *UserID) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(userIDLengthMin)
+	maxLength := uint(userIDLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(userIDLengthMax),
-		primitiveString.WithMinLength(userIDLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,7 +56,6 @@ func (receiver *UserID) SetValue(
 		)
 	}
 }
-
 func (receiver *UserID) GetError() error {
 	return receiver.err
 }

@@ -79,7 +79,7 @@ func NewPrimitiveInt(
 	primitiveInt = &PrimitiveInt{
 		err:      nil,
 		value:    0,
-		isNil:    false,
+		isNil:    true,
 		maxDigit: nil,
 		minDigit: nil,
 	}
@@ -169,21 +169,26 @@ func (receiver *PrimitiveInt) Validation() {
 		return
 	}
 
-	receiver.ValidationDigit()
+	receiver.ValidationMaxDigit()
+	if receiver.err != nil {
+		return
+	}
+
+	receiver.ValidationMinDigit()
 	if receiver.err != nil {
 		return
 	}
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt) ValidationDigit() {
+func (receiver *PrimitiveInt) ValidationMaxDigit() {
 	if receiver.maxDigit == nil { //上限値なし
 		return
 	}
 
 	// 上限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
+		// receiver.SetErrorString("is nil")
 		return
 	}
 
@@ -201,10 +206,32 @@ func (receiver *PrimitiveInt) ValidationDigit() {
 		receiver.SetErrorString("max limitation")
 		return
 	}
+}
+
+// ______________________________________
+func (receiver *PrimitiveInt) ValidationMinDigit() {
+	if receiver.minDigit == nil { // 下限値なし
+		return
+	}
+
+	// 下限値ありでかつnilの場合エラーとする
+	if receiver.GetIsNil() {
+		// receiver.SetErrorString("is nil")
+		return
+	}
+
+	strValue := strconv.Itoa(receiver.value)
+
+	// 桁数を取得
+	digitCount := uint(len(strValue))
+
+	// 負の値の場合、マイナス記号を除いた桁数を計算
+	if receiver.value < 0 {
+		digitCount-- // マイナス符号を引く
+	}
 
 	if digitCount < *receiver.minDigit {
 		receiver.SetErrorString("min limitation")
 		return
 	}
-
 }

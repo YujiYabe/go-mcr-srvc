@@ -39,10 +39,13 @@ func (receiver *MailAddress) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(mailAddressLengthMin)
+	maxLength := uint(mailAddressLengthMax)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(mailAddressLengthMax),
-		primitiveString.WithMinLength(mailAddressLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
 
@@ -55,7 +58,6 @@ func (receiver *MailAddress) SetValue(
 	// メールアドレスのバリデーション
 	receiver.Validation(ctx)
 }
-
 func (receiver *MailAddress) GetValue() string {
 	return receiver.content.GetValue()
 }
