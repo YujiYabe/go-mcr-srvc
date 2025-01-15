@@ -9,9 +9,9 @@ import (
 	"backend/pkg"
 )
 
-const (
-	mailAddressLengthMax = 30
-	mailAddressLengthMin = 1
+var (
+	mailAddressMaxLength uint = 30
+	mailAddressMinLength uint = 1
 )
 
 var mailAddressCheckSpell = []string{}
@@ -39,13 +39,10 @@ func (receiver *MailAddress) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(mailAddressLengthMin)
-	maxLength := uint(mailAddressLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&mailAddressMaxLength),
+		primitiveString.WithMinLength(&mailAddressMinLength),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
 

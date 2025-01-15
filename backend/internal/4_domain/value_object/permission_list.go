@@ -8,9 +8,9 @@ import (
 	"backend/pkg"
 )
 
-const (
-// permissionListLengthMax = 50
-// permissionListLengthMin = 1
+var (
+// permissionListMaxLength = 50
+// permissionListMinLength = 1
 )
 const (
 	PermissionListMetaName    primitiveObject.ContextKey = "permissions"

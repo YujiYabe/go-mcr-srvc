@@ -12,9 +12,9 @@ const (
 	UserIDContextName primitiveObject.ContextKey = "UserID"
 )
 
-const (
-	userIDLengthMax = 99999999999
-	userIDLengthMin = 0
+var (
+	userIDMaxLength uint = 9
+	userIDMinLength uint = 0
 )
 
 type UserID struct {
@@ -40,13 +40,10 @@ func (receiver *UserID) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(userIDLengthMin)
-	maxLength := uint(userIDLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&userIDMaxLength),
+		primitiveString.WithMinLength(&userIDMinLength),
 	)
 
 	if receiver.content.GetError() != nil {

@@ -12,9 +12,9 @@ const (
 	LocaleContextName primitiveObject.ContextKey = "Locale"
 )
 
-const (
-	localeLengthMax = 100
-	localeLengthMin = 0
+var (
+	localeMaxLength uint = 20
+	localeMinLength uint = 0
 )
 
 type Locale struct {
@@ -40,13 +40,10 @@ func (receiver *Locale) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	maxLength := uint(localeLengthMax)
-	minLength := uint(localeLengthMin)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&localeMaxLength),
+		primitiveString.WithMinLength(&localeMinLength),
 	)
 
 	if receiver.content.GetError() != nil {

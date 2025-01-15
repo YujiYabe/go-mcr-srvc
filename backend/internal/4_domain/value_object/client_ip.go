@@ -12,9 +12,9 @@ const (
 	ClientIPContextName primitiveObject.ContextKey = "clientIP"
 )
 
-const (
-	clientIPLengthMax = 99999999999
-	clientIPLengthMin = 0
+var (
+	clientIPMaxLength uint = 30
+	clientIPMinLength uint = 0
 )
 
 type ClientIP struct {
@@ -40,13 +40,10 @@ func (receiver *ClientIP) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(clientIPLengthMin)
-	maxLength := uint(clientIPLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&clientIPMaxLength),
+		primitiveString.WithMinLength(&clientIPMinLength),
 	)
 
 	if receiver.content.GetError() != nil {

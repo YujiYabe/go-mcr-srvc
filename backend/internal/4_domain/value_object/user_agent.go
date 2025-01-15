@@ -12,9 +12,9 @@ const (
 	UserAgentContextName primitiveObject.ContextKey = "UserAgent"
 )
 
-const (
-	userAgentLengthMax = 99999999999
-	userAgentLengthMin = 0
+var (
+	userAgentMaxLength uint = 50
+	userAgentMinLength uint = 0
 )
 
 type UserAgent struct {
@@ -40,13 +40,10 @@ func (receiver *UserAgent) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	maxLength := uint(userAgentLengthMax)
-	minLength := uint(userAgentLengthMin)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&userAgentMaxLength),
+		primitiveString.WithMinLength(&userAgentMinLength),
 	)
 
 	if receiver.content.GetError() != nil {

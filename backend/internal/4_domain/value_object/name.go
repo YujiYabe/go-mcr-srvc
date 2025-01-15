@@ -7,9 +7,9 @@ import (
 	"backend/pkg"
 )
 
-const (
-	nameLengthMax = 30
-	nameLengthMin = 1
+var (
+	nameMaxLength uint = 30
+	nameMinLength uint = 1
 )
 
 var nameCheckSpell = []string{
@@ -40,13 +40,10 @@ func (receiver *Name) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(nameLengthMin)
-	maxLength := uint(nameLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&nameMaxLength),
+		primitiveString.WithMinLength(&nameMinLength),
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 

@@ -8,9 +8,9 @@ import (
 	"backend/pkg"
 )
 
-const (
-	permissionLengthMax = 50
-	permissionLengthMin = 1
+var (
+	permissionMaxLength uint = 50
+	permissionMinLength uint = 1
 )
 
 var permissionCheckSpell = []string{}
@@ -38,13 +38,10 @@ func (receiver *Permission) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(permissionLengthMin)
-	maxLength := uint(permissionLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&permissionMaxLength),
+		primitiveString.WithMinLength(&permissionMinLength),
 		primitiveString.WithCheckSpell(permissionCheckSpell),
 	)
 

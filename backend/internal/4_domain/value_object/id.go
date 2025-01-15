@@ -7,8 +7,8 @@ import (
 	"backend/pkg"
 )
 
-const (
-	idMaxDigit uint = 99
+var (
+	idMaxDigit uint = 9 // 9桁 = 9999999999まで可
 	idMinDigit uint = 0
 )
 
@@ -35,13 +35,10 @@ func (receiver *ID) SetValue(
 ) {
 	primitiveInt := &primitiveObject.PrimitiveInt{}
 
-	maxLength := uint(idMaxDigit)
-	minLength := uint(idMinDigit)
-
 	receiver.content = primitiveObject.NewPrimitiveInt(
 		primitiveInt.WithValue(value),
-		primitiveInt.WithMaxDigit(&maxLength),
-		primitiveInt.WithMinDigit(&minLength),
+		primitiveInt.WithMaxDigit(&idMaxDigit),
+		primitiveInt.WithMinDigit(&idMinDigit),
 	)
 
 	receiver.content.Validation()

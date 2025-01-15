@@ -7,9 +7,9 @@ import (
 	"backend/pkg"
 )
 
-const (
-	clientIDLengthMax = 99999999999
-	clientIDLengthMin = 0
+var (
+	clientIDMaxLength uint = 99
+	clientIDMinLength uint = 0
 )
 
 type ClientID struct {
@@ -35,13 +35,10 @@ func (receiver *ClientID) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(clientIDLengthMin)
-	maxLength := uint(clientIDLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&clientIDMaxLength),
+		primitiveString.WithMinLength(&clientIDMinLength),
 	)
 
 	if receiver.content.GetError() != nil {

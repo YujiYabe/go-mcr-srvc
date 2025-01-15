@@ -7,9 +7,9 @@ import (
 	"backend/pkg"
 )
 
-const (
-	clientSecretLengthMax = 99999999999
-	clientSecretLengthMin = 0
+var (
+	clientSecretMaxLength uint = 999
+	clientSecretMinLength uint = 0
 )
 
 type ClientSecret struct {
@@ -35,8 +35,8 @@ func (receiver *ClientSecret) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(clientSecretLengthMin)
-	maxLength := uint(clientSecretLengthMax)
+	minLength := uint(clientSecretMinLength)
+	maxLength := uint(clientSecretMaxLength)
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),

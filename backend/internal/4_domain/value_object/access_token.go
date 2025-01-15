@@ -13,9 +13,9 @@ const (
 	AccessTokenContextName primitiveObject.ContextKey = "AccessToken"
 )
 
-const (
-	accessTokenLengthMax = 99999999999
-	accessTokenLengthMin = 0
+var (
+	accessTokenMaxLength uint = 9999
+	accessTokenMinLength uint = 0
 )
 
 type AccessToken struct {
@@ -41,13 +41,10 @@ func (receiver *AccessToken) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(accessTokenLengthMin)
-	maxLength := uint(accessTokenLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&accessTokenMaxLength),
+		primitiveString.WithMinLength(&accessTokenMinLength),
 	)
 
 	receiver.content.Validation()

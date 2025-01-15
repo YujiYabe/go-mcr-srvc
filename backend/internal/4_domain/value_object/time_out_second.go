@@ -16,9 +16,9 @@ const (
 	TimeOutSecondContextName primitiveObject.ContextKey = "timeOutSecond"
 )
 
-const (
-	timeOutSecondMaxDigit = 10
-	timeOutSecondMinDigit = 0
+var (
+	timeOutSecondMaxDigit uint = 10
+	timeOutSecondMinDigit uint = 0
 )
 
 type TimeOutSecond struct {
@@ -44,14 +44,11 @@ func (receiver *TimeOutSecond) SetValue(
 ) {
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
 
-	maxDigit := uint(timeOutSecondMaxDigit)
-	minDigit := uint(timeOutSecondMinDigit)
-
 	receiver.content = primitiveObject.NewPrimitiveInt64(
 		primitiveInt64.WithValue(value),
 
-		primitiveInt64.WithMaxDigit(&maxDigit),
-		primitiveInt64.WithMinDigit(&minDigit),
+		primitiveInt64.WithMaxDigit(&timeOutSecondMaxDigit),
+		primitiveInt64.WithMinDigit(&timeOutSecondMinDigit),
 	)
 
 	receiver.content.Validation()

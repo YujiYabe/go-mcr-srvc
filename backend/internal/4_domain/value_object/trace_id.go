@@ -14,9 +14,9 @@ const (
 	TraceIDContextName primitiveObject.ContextKey = "traceID"
 )
 
-const (
-	traceIDLengthMax = 36 // length of uuid
-	traceIDLengthMin = 36 // length of uuid
+var (
+	traceIDMaxLength uint = 36 // length of uuid
+	traceIDMinLength uint = 36 // length of uuid
 )
 
 type TraceID struct {
@@ -46,13 +46,10 @@ func (receiver *TraceID) SetValue(
 		value = &newUUID
 	}
 
-	minLength := uint(traceIDLengthMin)
-	maxLength := uint(traceIDLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&traceIDMaxLength),
+		primitiveString.WithMinLength(&traceIDMinLength),
 	)
 
 	receiver.content.Validation()

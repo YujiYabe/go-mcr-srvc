@@ -12,9 +12,9 @@ const (
 	TimeZoneContextName primitiveObject.ContextKey = "TimeZone"
 )
 
-const (
-	timeZoneLengthMax = 9
-	timeZoneLengthMin = 0
+var (
+	timeZoneMaxLength uint = 9
+	timeZoneMinLength uint = 0
 )
 
 type TimeZone struct {
@@ -40,14 +40,11 @@ func (receiver *TimeZone) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(timeZoneLengthMin)
-	maxLength := uint(timeZoneLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
 
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&timeZoneMaxLength),
+		primitiveString.WithMinLength(&timeZoneMinLength),
 	)
 
 	if receiver.content.GetError() != nil {

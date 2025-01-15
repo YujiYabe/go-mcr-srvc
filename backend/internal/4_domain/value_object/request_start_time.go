@@ -13,9 +13,9 @@ const (
 	RequestStartTimeContextName primitiveObject.ContextKey = "requestStartTime"
 )
 
-const (
-	requestStartTimeMaxDigit = 20
-	requestStartTimeMinDigit = 0
+var (
+	requestStartTimeMaxDigit uint = 20
+	requestStartTimeMinDigit uint = 0
 )
 
 type RequestStartTime struct {
@@ -48,13 +48,10 @@ func (receiver *RequestStartTime) SetValue(
 		value = &now
 	}
 
-	maxDigit := uint(requestStartTimeMaxDigit)
-	minDigit := uint(requestStartTimeMinDigit)
-
 	receiver.content = primitiveObject.NewPrimitiveInt64(
 		primitiveInt64.WithValue(value),
-		primitiveInt64.WithMaxDigit(&maxDigit),
-		primitiveInt64.WithMinDigit(&minDigit),
+		primitiveInt64.WithMaxDigit(&requestStartTimeMaxDigit),
+		primitiveInt64.WithMinDigit(&requestStartTimeMinDigit),
 	)
 
 	receiver.content.Validation()

@@ -12,9 +12,9 @@ const (
 	TenantIDContextName primitiveObject.ContextKey = "tenantID"
 )
 
-const (
-	tenantIDLengthMax = 99
-	tenantIDLengthMin = 1
+var (
+	tenantIDMaxLength uint = 99
+	tenantIDMinLength uint = 1
 )
 
 type TenantID struct {
@@ -40,13 +40,10 @@ func (receiver *TenantID) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(tenantIDLengthMin)
-	maxLength := uint(tenantIDLengthMax)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&tenantIDMaxLength),
+		primitiveString.WithMinLength(&tenantIDMinLength),
 	)
 
 	if receiver.content.GetError() != nil {
