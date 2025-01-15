@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -21,17 +20,16 @@ var (
 	TZ string
 
 	PostgresDSN string
-
-	AssembleNumber int
 )
 
 func init() {
-	err := godotenv.Load(filepath.Join(currentPath, ".env"))
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	err := godotenv.Load(
+		filepath.Join(
+			currentPath,
+			".localenv",
+		),
+	)
 
-	AssembleNumber, err = strconv.Atoi(os.Getenv("ASSEMBLE_NUMBER"))
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
