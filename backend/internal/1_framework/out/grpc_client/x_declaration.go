@@ -1,14 +1,15 @@
 package grpc_client
 
 import (
-	"backend/internal/2_adapter/gateway"
-	"backend/pkg"
 	"context"
 	"fmt"
 	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
+	"backend/internal/2_adapter/gateway"
+	"backend/pkg"
 )
 
 // GRPCClient ...

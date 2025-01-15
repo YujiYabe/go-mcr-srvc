@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"time"
 
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
@@ -58,6 +57,7 @@ func (receiver *useCase) ViaGRPC(
 		ctx,
 		reqPerson,
 	)
-	time.Sleep(20 * time.Second)
+
+	// time.Sleep(20 * time.Second)
 	return
 }
