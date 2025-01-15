@@ -1,7 +1,9 @@
 package person
 
 import (
+	"context"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo"
 
@@ -18,74 +20,95 @@ func viaGRPC(
 	err error,
 ) {
 	ctx := c.Request().Context()
-	pkg.Logging(
+	requestContext := groupObject.GetRequestContext(ctx)
+	timeoutSecond := requestContext.TimeOutSecond.GetValue()
+	ctx, cancel := context.WithTimeout(
 		ctx,
-		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+		time.Duration(timeoutSecond)*time.Millisecond,
 	)
-
-	person := httpParameter.V1Person{}
-
-	if err := c.Bind(&person); err != nil {
-		pkg.Logging(ctx, err)
-		return c.JSON(
-			http.StatusBadRequest,
-			err,
-		)
-	}
-
-	reqPerson := groupObject.NewPerson(
-		ctx,
-		&groupObject.NewPersonArgs{
-			ID:          person.ID,
-			Name:        person.Name,
-			MailAddress: person.MailAddress,
-		},
-	)
-
-	if reqPerson.GetError() != nil {
-		pkg.Logging(ctx, reqPerson.GetError())
-		return c.JSON(
-			http.StatusBadRequest,
-			reqPerson.GetError(),
-		)
-	}
-
-	resPersonList := toController.ViaGRPC(
-		ctx,
-		*reqPerson,
-	)
-
-	if resPersonList.GetError() != nil {
-		pkg.Logging(ctx, resPersonList.GetError())
-		return c.JSON(
-			http.StatusBadRequest,
-			resPersonList.GetError(),
-		)
-	}
+	defer cancel() // コンテキストのキャンセルを必ず呼び出す
+	done := make(chan struct{})
 
 	responseList := []httpParameter.V1Person{}
-	for _, person := range resPersonList.Content {
-		id := person.ID.GetValue()
-		name := person.Name.GetValue()
-		mailAddress := person.MailAddress.GetValue()
-		responseList = append(
-			responseList,
-			httpParameter.V1Person{
-				ID:          &id,
-				Name:        &name,
-				MailAddress: &mailAddress,
+	var requestErr error
+
+	// ゴルーチンで処理を実行
+	go func() {
+		person := httpParameter.V1Person{}
+		if err := c.Bind(&person); err != nil {
+			pkg.Logging(ctx, err)
+			err := c.JSON(http.StatusBadRequest, err)
+			if err != nil { // httpレスポンス返却失敗
+				pkg.Logging(ctx, err)
+			}
+			return
+		}
+
+		reqPerson := groupObject.NewPerson(
+			ctx,
+			&groupObject.NewPersonArgs{
+				ID:          person.ID,
+				Name:        person.Name,
+				MailAddress: person.MailAddress,
 			},
 		)
+
+		if reqPerson.GetError() != nil {
+			pkg.Logging(ctx, err)
+			err := c.JSON(http.StatusBadRequest, requestErr)
+			if err != nil {
+				pkg.Logging(ctx, err)
+			}
+			return
+		}
+
+		resPersonList := toController.ViaGRPC(
+			ctx,
+			*reqPerson,
+		)
+
+		if resPersonList.GetError() != nil {
+			pkg.Logging(ctx, resPersonList.GetError())
+			err := c.JSON(http.StatusBadRequest, requestErr)
+			if err != nil {
+				pkg.Logging(ctx, err)
+			}
+			return
+
+		}
+
+		for _, person := range resPersonList.Content {
+			id := person.ID.GetValue()
+			name := person.Name.GetValue()
+			mailAddress := person.MailAddress.GetValue()
+			responseList = append(
+				responseList,
+				httpParameter.V1Person{
+					ID:          &id,
+					Name:        &name,
+					MailAddress: &mailAddress,
+				},
+			)
+		}
+		close(done)
+	}()
+
+	// タイムアウトまたは処理完了を待つ
+	select {
+	case <-done:
+		// 処理が完了した場合
+		return c.JSON(
+			http.StatusOK,
+			responseList,
+		)
+
+	case <-ctx.Done():
+		pkg.Logging(ctx, ctx.Err())
+		// タイムアウトした場合
+		return c.JSON(
+			http.StatusRequestTimeout,
+			responseList,
+		)
 	}
-
-	pkg.Logging(
-		ctx,
-		groupObject.GetRequestContext(ctx).TraceID.GetValue(),
-	)
-
-	return c.JSON(
-		http.StatusOK,
-		responseList,
-	)
 
 }

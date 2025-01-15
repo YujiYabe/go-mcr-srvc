@@ -42,7 +42,7 @@ func NewEcho() *echo.Echo {
 		middleware.LoggerWithConfig(
 			middleware.LoggerConfig{
 				Format:           "${time_custom}__${status}__${method}__${uri}\n",
-				CustomTimeFormat: "06/01/02-15:04:05",
+				CustomTimeFormat: "15:04:05",
 			},
 		),
 	)

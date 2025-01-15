@@ -54,10 +54,10 @@ func (receiver *useCase) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	time.Sleep(3 * time.Second)
 	resPersonList = receiver.ToGateway.ViaGRPC(
 		ctx,
 		reqPerson,
 	)
+	time.Sleep(20 * time.Second)
 	return
 }

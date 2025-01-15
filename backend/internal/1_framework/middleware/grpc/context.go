@@ -141,6 +141,14 @@ func MetadataToContext(
 		*requestContext,
 	)
 
+	// ________________________________
+	// logで追跡するために、contextにTraceIDを設定する
+	ctx = context.WithValue(
+		ctx,
+		valueObject.TraceIDContextName,
+		requestContext.TraceID.GetValue(),
+	)
+
 	return ctx
 }
 

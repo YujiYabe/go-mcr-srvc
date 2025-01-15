@@ -47,7 +47,7 @@ services:
     environment:
       - GOPATH=${GOPATH}
       - DEBUG_MODE=${DEBUG_MODE:-false}
-    tty: true
+    # tty: true
     stdin_open: true
     links:
       - redis

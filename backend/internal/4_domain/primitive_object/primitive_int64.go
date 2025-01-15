@@ -189,9 +189,6 @@ func (receiver *PrimitiveInt64) ValidationMaxDigit() {
 
 	// 桁数を取得
 	digitCount := uint(len(strValue))
-	debug := digitCount
-	fmt.Println(" ----------------------------------- ")
-	fmt.Printf("%+v\n", debug)
 
 	// 負の値の場合、マイナス記号を除いた桁数を計算
 	if receiver.value < 0 {

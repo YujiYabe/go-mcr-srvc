@@ -7,7 +7,6 @@ import (
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
-	"backend/pkg"
 )
 
 // ...
@@ -18,8 +17,8 @@ func (receiver *GRPCClient) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	pkg.Logging(ctx, traceID)
+	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// pkg.Logging(ctx, traceID)
 
 	var err error
 	resPersonList = groupObject.PersonList{}
@@ -77,8 +76,8 @@ func (receiver *GRPCClient) ViaGRPC(
 		resPersonList.Content = append(resPersonList.Content, *person)
 	}
 
-	traceID = groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	pkg.Logging(ctx, traceID)
+	// traceID = groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// pkg.Logging(ctx, traceID)
 
 	return
 

@@ -21,10 +21,6 @@ func get(
 ) {
 	ctx := c.Request().Context()
 	requestContext := groupObject.GetRequestContext(ctx)
-
-	traceID := requestContext.TraceID.GetValue()
-	pkg.Logging(ctx, traceID)
-
 	timeoutSecond := requestContext.TimeOutSecond.GetValue()
 
 	ctx, cancel := context.WithTimeout(
@@ -42,8 +38,8 @@ func get(
 		person := httpParameter.V1Person{}
 		if err = c.Bind(&person); err != nil {
 			pkg.Logging(ctx, err)
-			err := c.JSON(http.StatusBadRequest, requestErr)
-			if err != nil {
+			err := c.JSON(http.StatusBadRequest, err)
+			if err != nil { // httpレスポンス返却失敗
 				pkg.Logging(ctx, err)
 			}
 			return
@@ -62,11 +58,6 @@ func get(
 			}
 			return
 		}
-
-		pkg.Logging(
-			ctx,
-			groupObject.GetRequestContext(ctx).TraceID.GetValue(),
-		)
 
 		close(done)
 	}()

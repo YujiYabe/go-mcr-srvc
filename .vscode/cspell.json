@@ -64,6 +64,7 @@
 		"localedef",
 		"localtime",
 		"logr",
+		"logrus",
 		"lqez",
 		"ltrah",
 		"mattn",

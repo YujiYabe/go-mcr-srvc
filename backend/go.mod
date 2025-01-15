@@ -9,6 +9,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/redis/go-redis/v9 v9.7.0
+	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/grpc v1.69.2
 	google.golang.org/protobuf v1.36.0
 	gorm.io/driver/postgres v1.5.11

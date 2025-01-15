@@ -30,17 +30,16 @@ func (receiver *Server) GetPersonListByCondition(
 	}
 
 	timeoutSecond := requestContext.TimeOutSecond.GetValue()
-	requestStartTime := requestContext.RequestStartTime.GetValue()
+	// requestStartTime := requestContext.RequestStartTime.GetValue()
 	// log.Println("== == == == == == == == == == ")
 	// pkg.Logging(ctx, timeoutSecond)
 	// pkg.Logging(ctx, requestStartTime)
 	// log.Println("== == == == == == == == == == ")
-	time.Sleep(1 * time.Second)
-	now := time.Now().UnixMilli()
+	// now := time.Now().UnixMilli()
 
-	pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
-	pkg.Logging(ctx, time.UnixMilli(requestStartTime).Format("2006-01-02 15:04:05.000"))
-	pkg.Logging(ctx, time.UnixMilli(now).Format("2006-01-02 15:04:05.000"))
+	// pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
+	// pkg.Logging(ctx, time.UnixMilli(requestStartTime).Format("2006-01-02 15:04:05.000"))
+	// pkg.Logging(ctx, time.UnixMilli(now).Format("2006-01-02 15:04:05.000"))
 
 	ctx, cancel := context.WithTimeout(
 		ctx,
@@ -81,8 +80,8 @@ func (receiver *Server) processPersonRequest(
 ) {
 	v1GetPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
 
-	traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	pkg.Logging(ctx, traceID)
+	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// pkg.Logging(ctx, traceID)
 
 	reqPerson := grpcMiddleware.RefillPersonGRPCToDomain(
 		ctx,
@@ -110,7 +109,7 @@ func (receiver *Server) processPersonRequest(
 
 	v1GetPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 
-	pkg.Logging(ctx, traceID)
+	// pkg.Logging(ctx, traceID)
 
 	return v1GetPersonListByConditionResponse, nil
 }
