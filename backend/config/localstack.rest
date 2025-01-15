@@ -1,0 +1,8 @@
+###  ==============================
+POST http://localhost:8080/secretsmanager
+Content-Type: application/json
+
+{
+	"Name": "my-local-secret",
+	"SecretString": "{\"username\":\"localuser\",\"password\":\"localpass\"}"
+}

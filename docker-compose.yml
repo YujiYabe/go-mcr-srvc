@@ -28,6 +28,21 @@ services:
     volumes:
       - ./db/engine/redis/data:/data
 
+  localstack:
+    restart: always
+    container_name: localstack
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=secretsmanager
+      - DEBUG=1
+      # - LOCALSTACK_API_KEY=<your_localstack_api_key> # Free または Pro アカウントの API キー
+      - LOCALSTACK_API_KEY=aaa
+    ports:
+      - '4566:4566' # LocalStack API Gateway
+      - '4510-4559:4510-4559' # AWS サービス用ポート
+    volumes:
+      - ./secrets.json:/etc/localstack/init/ready.d/secrets.json
+
   backend:
     restart: always
     build:
@@ -52,6 +67,8 @@ services:
     links:
       - redis
       - postgres
+      - localstack
     depends_on:
       - redis
       - postgres
+      - localstack

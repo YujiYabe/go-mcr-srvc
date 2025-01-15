@@ -23,9 +23,12 @@ var (
 )
 
 func init() {
+	// env はAWS Secrets Manager で取得
+
 	err := godotenv.Load(
 		filepath.Join(
 			currentPath,
+			"config",
 			".localenv",
 		),
 	)
