@@ -1,4 +1,4 @@
-include ./backend/config/.localenv
+include ./backend/internal/env/.localenv
 
 # ----------------------------
 .PHONY: gomod
@@ -10,13 +10,13 @@ gomod:
 # ----------------------------
 .PHONY: stop
 stop:
-	docker compose --env-file ./backend/config/.localenv stop
+	docker compose --env-file ./backend/internal/env/.localenv stop
 
 
 # ----------------------------
 .PHONY: removeAll
-removeAll:
-	docker compose --env-file ./backend/config/.localenv stop
+removeAll: stop
+	docker compose --env-file ./backend/internal/env/.localenv stop
 	docker system prune -f
 	sudo rm -rf db/engine/postgres/data
 	sudo rm -rf db/engine/redis/data
@@ -25,8 +25,8 @@ removeAll:
 # ----------------------------
 .PHONY: build
 build:
-	docker compose --env-file ./backend/config/.localenv build
-	# docker compose --env-file ./backend/config/.localenv build --no-cache
+	docker compose --env-file ./backend/internal/env/.localenv build
+	# docker compose --env-file ./backend/internal/env/.localenv build --no-cache
 
 # ----------------------------
 .PHONY: debug
@@ -37,7 +37,7 @@ debug:
 # ----------------------------
 .PHONY: up
 up:
-	docker compose --env-file ./backend/config/.localenv up
+	docker compose --env-file ./backend/internal/env/.localenv up
 
 # ----------------------------
 .PHONY: reup

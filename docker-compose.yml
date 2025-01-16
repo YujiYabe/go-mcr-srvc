@@ -45,7 +45,6 @@ services:
     ports:
       - '4566:4566' # LocalStack API Gateway
       - '4510-4559:4510-4559' # AWS サービス用ポート
-      - '8080:8080' # Web UI ポート
     volumes:
       - '${PWD}/backend/config/localstack_secrets.json:/etc/localstack/init/ready.d/secrets.json'
       - '${PWD}/backend/config/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh' # 起動時にリソース作成のスクリプトを実行する

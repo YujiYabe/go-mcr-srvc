@@ -69,6 +69,7 @@
 		"logrus",
 		"lqez",
 		"ltrah",
+		"mapstructure",
 		"mattn",
 		"montanaflynn",
 		"Mqfs",

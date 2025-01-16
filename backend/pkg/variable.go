@@ -24,11 +24,15 @@ var (
 
 func init() {
 	// env はAWS Secrets Manager で取得
+	log.Println("== == == == == == == == == == ")
+	log.Printf("%#v\n", currentPath)
+	log.Println("== == == == == == == == == == ")
 
 	err := godotenv.Load(
 		filepath.Join(
 			currentPath,
-			"config",
+			"internal",
+			"env",
 			".localenv",
 		),
 	)
