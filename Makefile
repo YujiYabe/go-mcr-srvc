@@ -41,7 +41,7 @@ up:
 
 # ----------------------------
 .PHONY: reup
-reup: build up
+reup: stop build up
 
 # ----------------------------
 .PHONY: restart
