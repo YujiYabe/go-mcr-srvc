@@ -18,7 +18,7 @@ func (receiver *GRPCClient) ViaGRPC(
 	resPersonList groupObject.PersonList,
 ) {
 	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	// pkg.Logging(ctx, traceID)
+	// logger.Logging(ctx, traceID)
 
 	var err error
 	resPersonList = groupObject.PersonList{}
@@ -77,7 +77,7 @@ func (receiver *GRPCClient) ViaGRPC(
 	}
 
 	// traceID = groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	// pkg.Logging(ctx, traceID)
+	// logger.Logging(ctx, traceID)
 
 	return
 

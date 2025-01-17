@@ -5,7 +5,7 @@ import (
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	groupObject "backend/internal/4_domain/group_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 // GetPersonList ...
@@ -59,7 +59,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	// pkg.Logging(
+	// logger.Logging(
 	// 	ctx,
 	// 	groupObject.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
@@ -92,7 +92,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 		person := groupObject.NewPerson(ctx, args)
 
 		if person.GetError() != nil {
-			pkg.Logging(ctx, person.GetError())
+			logger.Logging(ctx, person.GetError())
 			resPersonList.SetError(ctx, person.GetError())
 			return
 		}
@@ -103,7 +103,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 		)
 	}
 
-	// pkg.Logging(
+	// logger.Logging(
 	// 	ctx,
 	// 	groupObject.GetRequestContext(ctx).TraceID.GetValue(),
 	// )

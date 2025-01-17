@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm"
 
 	"backend/internal/2_adapter/gateway"
+	logger "backend/internal/logger"
 )
 
 type (
@@ -24,7 +25,7 @@ func NewToPostgres() gateway.ToPostgres {
 	ctx := context.Background()
 	conn, err := open(ctx, 30)
 	if err != nil {
-		pkg.Logging(ctx, err)
+		logger.Logging(ctx, err)
 		panic(err)
 	}
 
@@ -41,7 +42,7 @@ func open(
 
 	if err != nil {
 		if count == 0 {
-			pkg.Logging(ctx, err)
+			logger.Logging(ctx, err)
 			return nil, fmt.Errorf(
 				"retry count over")
 		}

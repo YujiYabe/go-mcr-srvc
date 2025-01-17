@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 var (
 // permissionListMaxLength = 50
 // permissionListMinLength = 1
 )
+
 const (
 	PermissionListMetaName    primitiveObject.ContextKey = "permissions"
 	PermissionListContextName primitiveObject.ContextKey = "permissionList"
@@ -58,7 +58,6 @@ func (receiver *PermissionList) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *PermissionList) GetError() error {

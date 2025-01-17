@@ -8,7 +8,7 @@ import (
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 func fetchAccessToken(
@@ -22,7 +22,7 @@ func fetchAccessToken(
 	v1Credential := httpParameter.V1Credential{}
 
 	if err := c.Bind(&v1Credential); err != nil {
-		pkg.Logging(ctx, err)
+		logger.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
 			err,
@@ -38,7 +38,7 @@ func fetchAccessToken(
 		},
 	)
 	if credential.GetError() != nil {
-		pkg.Logging(ctx, credential.GetError())
+		logger.Logging(ctx, credential.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
 			credential.GetError(),
@@ -51,7 +51,7 @@ func fetchAccessToken(
 		*credential,
 	)
 	if accessToken.GetError() != nil {
-		pkg.Logging(ctx, accessToken.GetError())
+		logger.Logging(ctx, accessToken.GetError())
 		return c.JSON(
 			http.StatusBadRequest,
 			accessToken.GetError(),

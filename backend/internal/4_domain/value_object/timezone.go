@@ -4,7 +4,6 @@ import (
 	"context"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 const (
@@ -63,7 +62,6 @@ func (receiver *TimeZone) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *TimeZone) GetValue() string {

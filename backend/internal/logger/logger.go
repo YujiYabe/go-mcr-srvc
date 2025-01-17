@@ -3,6 +3,7 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"log"
 	"runtime"
 	"strings"
 
@@ -55,7 +56,10 @@ func init() {
 	})
 }
 
-func Logging(ctx context.Context, data interface{}) {
+func Logging(
+	ctx context.Context,
+	data interface{},
+) {
 	_, fullPath, line, _ := runtime.Caller(1)
 	fullPath = strings.TrimPrefix(fullPath, "/go/src/backend/")
 
@@ -63,8 +67,14 @@ func Logging(ctx context.Context, data interface{}) {
 		"file": fmt.Sprintf("%s:%d", fullPath, line),
 	})
 
-	if ctx.Value(traceIDContextName) != nil {
-		logger = logger.WithField("traceID", ctx.Value(traceIDContextName))
+	traceID, ok := ctx.Value(traceIDContextName).(string)
+	if ok {
+		logger = logger.WithField("traceID", traceID)
+	} else {
+		log.Println("== == == == == == == == == == ")
+		log.Printf("%#v\n", traceID)
+		log.Println("== == == == == == == == == == ")
+
 	}
 
 	switch v := data.(type) {

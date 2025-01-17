@@ -10,7 +10,7 @@ import (
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 func get(
@@ -37,10 +37,10 @@ func get(
 	go func() {
 		person := httpParameter.V1Person{}
 		if err = c.Bind(&person); err != nil {
-			pkg.Logging(ctx, err)
+			logger.Logging(ctx, err)
 			err := c.JSON(http.StatusBadRequest, err)
 			if err != nil { // httpレスポンス返却失敗
-				pkg.Logging(ctx, err)
+				logger.Logging(ctx, err)
 			}
 			return
 		}
@@ -51,10 +51,10 @@ func get(
 			toController,
 		)
 		if requestErr != nil {
-			pkg.Logging(ctx, err)
+			logger.Logging(ctx, err)
 			err := c.JSON(http.StatusBadRequest, requestErr)
 			if err != nil {
-				pkg.Logging(ctx, err)
+				logger.Logging(ctx, err)
 			}
 			return
 		}
@@ -72,7 +72,7 @@ func get(
 		)
 
 	case <-ctx.Done():
-		pkg.Logging(ctx, ctx.Err())
+		logger.Logging(ctx, ctx.Err())
 		// タイムアウトした場合
 		return c.JSON(
 			http.StatusRequestTimeout,
@@ -102,7 +102,7 @@ func handlePersonRequest(
 	)
 
 	if reqPerson.GetError() != nil {
-		pkg.Logging(ctx, reqPerson.GetError())
+		logger.Logging(ctx, reqPerson.GetError())
 		return nil, reqPerson.GetError()
 	}
 
@@ -112,7 +112,7 @@ func handlePersonRequest(
 	)
 
 	if personList.GetError() != nil {
-		pkg.Logging(ctx, personList.GetError())
+		logger.Logging(ctx, personList.GetError())
 		return nil, personList.GetError()
 	}
 

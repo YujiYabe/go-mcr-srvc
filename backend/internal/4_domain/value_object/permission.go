@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 var (
@@ -66,7 +65,6 @@ func (receiver *Permission) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *Permission) SetErrorString(

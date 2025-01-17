@@ -6,7 +6,6 @@ import (
 	"github.com/google/uuid"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 const (
@@ -70,7 +69,6 @@ func (receiver *TraceID) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.err)
 }
 
 func GetTraceID(

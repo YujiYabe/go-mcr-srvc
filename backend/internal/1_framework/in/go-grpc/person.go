@@ -7,8 +7,7 @@ import (
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
-
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 // GoGRPC ...
@@ -30,16 +29,6 @@ func (receiver *Server) GetPersonListByCondition(
 	}
 
 	timeoutSecond := requestContext.TimeOutSecond.GetValue()
-	// requestStartTime := requestContext.RequestStartTime.GetValue()
-	// log.Println("== == == == == == == == == == ")
-	// pkg.Logging(ctx, timeoutSecond)
-	// pkg.Logging(ctx, requestStartTime)
-	// log.Println("== == == == == == == == == == ")
-	// now := time.Now().UnixMilli()
-
-	// pkg.Logging(ctx, "-- -- -- -- -- -- -- -- -- -- ")
-	// pkg.Logging(ctx, time.UnixMilli(requestStartTime).Format("2006-01-02 15:04:05.000"))
-	// pkg.Logging(ctx, time.UnixMilli(now).Format("2006-01-02 15:04:05.000"))
 
 	ctx, cancel := context.WithTimeout(
 		ctx,
@@ -66,7 +55,7 @@ func (receiver *Server) GetPersonListByCondition(
 
 	case <-ctx.Done():
 		// タイムアウトした場合
-		pkg.Logging(ctx, ctx.Err())
+		logger.Logging(ctx, ctx.Err())
 		return nil, ctx.Err()
 	}
 }
@@ -81,14 +70,14 @@ func (receiver *Server) processPersonRequest(
 	v1GetPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
 
 	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
-	// pkg.Logging(ctx, traceID)
+	// logger.Logging(ctx, traceID)
 
 	reqPerson := grpcMiddleware.RefillPersonGRPCToDomain(
 		ctx,
 		getPersonListByConditionRequest.GetV1PersonParameter(),
 	)
 	if reqPerson.GetError() != nil {
-		pkg.Logging(ctx, reqPerson.GetError())
+		logger.Logging(ctx, reqPerson.GetError())
 		return nil, reqPerson.GetError()
 	}
 
@@ -97,7 +86,7 @@ func (receiver *Server) processPersonRequest(
 		*reqPerson,
 	)
 	if responseList.GetError() != nil {
-		pkg.Logging(ctx, responseList.GetError())
+		logger.Logging(ctx, responseList.GetError())
 		return nil, responseList.GetError()
 	}
 
@@ -109,7 +98,7 @@ func (receiver *Server) processPersonRequest(
 
 	v1GetPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 
-	// pkg.Logging(ctx, traceID)
+	// logger.Logging(ctx, traceID)
 
 	return v1GetPersonListByConditionResponse, nil
 }

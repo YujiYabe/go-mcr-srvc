@@ -1,10 +1,9 @@
 package redis_client
 
 import (
-	"backend/pkg"
 	"context"
-	// "backend/internal/env"
-	// "backend/internal/pkg"
+
+	logger "backend/internal/logger"
 )
 
 // ResetPlaceListInRedis ...
@@ -18,7 +17,7 @@ func (receiver *RedisClient) ResetPlaceListInRedis(
 		"placeList",
 	).Result()
 	if err != nil {
-		pkg.Logging(ctx, err)
+		logger.Logging(ctx, err)
 	}
 
 	return

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	valueObject "backend/internal/4_domain/value_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 type Person struct {
@@ -59,6 +59,6 @@ func (receiver *Person) SetError(
 ) {
 	if receiver.err == nil {
 		receiver.err = err
-		pkg.Logging(ctx, receiver.GetError())
+		logger.Logging(ctx, receiver.GetError())
 	}
 }

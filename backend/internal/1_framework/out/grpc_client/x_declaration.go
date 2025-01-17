@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	"backend/internal/2_adapter/gateway"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 // GRPCClient ...
@@ -26,7 +26,7 @@ func NewToGRPC() (
 	ctx := context.Background()
 	conn, err := open(ctx, 30)
 	if err != nil {
-		pkg.Logging(ctx, err)
+		logger.Logging(ctx, err)
 		panic(err)
 	}
 
@@ -48,7 +48,7 @@ func open(
 
 	if err != nil {
 		if count == 0 {
-			pkg.Logging(ctx, err)
+			logger.Logging(ctx, err)
 			return nil, fmt.Errorf("retry count over")
 		}
 		time.Sleep(time.Second)
