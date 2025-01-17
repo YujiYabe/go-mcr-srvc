@@ -2,6 +2,7 @@ package env
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -52,8 +53,6 @@ func init() {
 		log.Println("== == == == == == == == == == ")
 		log.Printf("%#v\n", err)
 		log.Println("== == == == == == == == == == ")
-
-		// Continue even if file doesn't exist
 	}
 
 	TZ = v.GetString("TZ")
@@ -110,10 +109,41 @@ func localstack(viper.Viper) {
 		log.Fatal(err.Error())
 	}
 
-	var secretString string = aws.ToString(result.SecretString)
+	var secretString = aws.ToString(result.SecretString)
+	var secrets LocalstackSecrets
+	if err := json.Unmarshal([]byte(secretString), &secrets); err != nil {
+		log.Printf("Failed to unmarshal secret string: %v", err)
+	}
 	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", secretString)
+	log.Printf("%#v\n", secrets.MyLocalSecret.SecretString)
 	log.Println("== == == == == == == == == == ")
+
+	var secretString2 SecretString
+	if err := json.Unmarshal([]byte(secrets.MyLocalSecret.SecretString), &secretString2); err != nil {
+		log.Printf("Failed to unmarshal secret string: %v", err)
+	}
+	log.Println("== == == == == == == == == == ")
+	log.Printf("%#v\n", secretString2.Username)
+	log.Printf("%#v\n", secretString2.Password)
+	log.Println("== == == == == == == == == == ")
+
+	// var secrets LocalstackSecrets
+	// if err := json.Unmarshal([]byte(secretString), &secrets); err != nil {
+	// 	log.Println("== == == == == == == == == == ")
+	// 	log.Printf("%#v\n", err)
+	// 	log.Println("== == == == == == == == == == ")
+	// }
+
+	// var secretValues SecretString
+	// if err := json.Unmarshal([]byte(secrets.MyLocalSecret.SecretString), &secretValues); err != nil {
+	// 	log.Println("== == == == == == == == == == ")
+	// 	log.Printf("%#v\n", err)
+	// 	log.Println("== == == == == == == == == == ")
+	// }
+	// log.Println("== == == == == == == == == == ")
+	// log.Printf("%#v\n", secrets)
+	// log.Printf("%#v\n", aws.ToString(result.SecretString))
+	// log.Println("== == == == == == == == == == ")
 
 }
 
@@ -128,5 +158,16 @@ func localstack(viper.Viper) {
 // 		return "", err
 // 	}
 
-// 	return aws.ToString(result.SecretString), nil
-// }
+//		return aws.ToString(result.SecretString), nil
+//	}
+
+type LocalstackSecrets struct {
+	MyLocalSecret struct {
+		SecretString string `json:"SecretString"`
+	} `json:"my-local-secret"`
+}
+
+type SecretString struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
