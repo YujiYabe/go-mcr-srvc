@@ -28,27 +28,27 @@ services:
     volumes:
       - ./db/engine/redis/data:/data
 
-  # localstack:
-  #   restart: always
-  #   container_name: localstack
-  #   image: localstack/localstack:latest
-  #   environment:
-  #     - AWS_ACCESS_KEY_ID=test
-  #     - AWS_SECRET_ACCESS_KEY=test
-  #     - AWS_DEFAULT_REGION=ap-northeast-1
-  #     - SERVICES=secretsmanager
-  #     - DEBUG=1
-  #     - DEFAULT_REGION=ap-northeast-1
-  #     - DOCKER_HOST=unix:///var/run/docker.sock
-  #     - LOCALSTACK_API_KEY=ls-VAMIViHe-zEKo-5850-6884-CiYOzatE1c9b
-  #     - PERSISTENCE=1
-  #   ports:
-  #     - '4566:4566' # LocalStack API Gateway
-  #     - '4510-4559:4510-4559' # AWS サービス用ポート
-  #   volumes:
-  #     - '${PWD}/backend/config/localstack_secrets.json:/etc/localstack/init/ready.d/secrets.json'
-  #     - '${PWD}/backend/config/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh' # 起動時にリソース作成のスクリプトを実行する
-  #     - '${PWD}/db/engine/localstack-data:/var/lib/localstack'
+  localstack:
+    restart: always
+    container_name: localstack
+    image: localstack/localstack:latest
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - DEFAULT_REGION=ap-northeast-1
+      - SERVICES=secretsmanager
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCALSTACK_API_KEY=ls-VAMIViHe-zEKo-5850-6884-CiYOzatE1c9b
+      - PERSISTENCE=1
+    ports:
+      - '4566:4566' # LocalStack API Gateway
+      - '4510-4559:4510-4559' # AWS サービス用ポート
+    volumes:
+      - '${PWD}/backend/config/localstack_secrets.json:/etc/localstack/init/ready.d/secrets.json'
+      - '${PWD}/backend/config/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh' # 起動時にリソース作成のスクリプトを実行する
+      - '${PWD}/db/engine/localstack-data:/var/lib/localstack'
 
   backend:
     restart: always
@@ -69,15 +69,18 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - DEFAULT_REGION=ap-northeast-1
       - GOPATH=${GOPATH}
       - DEBUG_MODE=${DEBUG_MODE:-false}
+      - ENV=local
     # tty: true
     stdin_open: true
     links:
       - redis
       - postgres
-      # - localstack
+      - localstack
     depends_on:
       - redis
       - postgres
-      # - localstack
+      - localstack

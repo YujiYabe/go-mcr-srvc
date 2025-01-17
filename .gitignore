@@ -27,6 +27,7 @@
 /db/engine/mysql/data/*
 /db/engine/mariadb/data/*
 /db/engine/redis/data/*
+/db/engine/localstack-data
 .envrc
 /direnv/*
 direnv

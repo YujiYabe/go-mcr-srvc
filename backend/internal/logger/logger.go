@@ -3,14 +3,13 @@ package pkg
 import (
 	"context"
 	"fmt"
-	"log"
 	"runtime"
 	"strings"
 
 	"github.com/sirupsen/logrus"
-)
 
-const traceIDContextName = "traceID"
+	valueObject "backend/internal/4_domain/value_object"
+)
 
 type CustomJSONFormatter struct {
 	logrus.JSONFormatter
@@ -61,20 +60,15 @@ func Logging(
 	data interface{},
 ) {
 	_, fullPath, line, _ := runtime.Caller(1)
-	fullPath = strings.TrimPrefix(fullPath, "/go/src/backend/")
+	trimPath := strings.TrimPrefix(fullPath, "/go/src/backend/")
 
 	logger := logrus.WithFields(logrus.Fields{
-		"file": fmt.Sprintf("%s:%d", fullPath, line),
+		"file": fmt.Sprintf("%s:%d", trimPath, line),
 	})
 
-	traceID, ok := ctx.Value(traceIDContextName).(string)
+	traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string)
 	if ok {
 		logger = logger.WithField("traceID", traceID)
-	} else {
-		log.Println("== == == == == == == == == == ")
-		log.Printf("%#v\n", traceID)
-		log.Println("== == == == == == == == == == ")
-
 	}
 
 	switch v := data.(type) {
