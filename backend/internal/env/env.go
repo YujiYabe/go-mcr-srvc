@@ -1,6 +1,8 @@
 package env
 
 import (
+	"log"
+
 	"github.com/spf13/viper"
 )
 
@@ -10,40 +12,44 @@ const (
 	PROD  = "prod"
 )
 
+var (
+	backendHost = "backend"
+	GoEchoPort  string
+	GRPCPort    string
+	GRPCAddress string
+
+	TZ string
+
+	PostgresDSN string
+)
+
 var AlcoholIndex = 99
 
-type env struct {
-	EnvDB
-}
-
-type EnvDB struct {
-	Host     string `mapstructure:"DB_HOST"`
-	Port     string `mapstructure:"DB_PORT"`
-	User     string `mapstructure:"DB_USER"`
-	Password string `mapstructure:"DB_PASSWORD"`
-	Name     string `mapstructure:"DB_NAME"`
-}
-
-var Env env
-
 func init() {
-	Env = env{
-		EnvDB: EnvDB{},
-	}
-
-	initEnvDB()
-}
-
-// initEnvDBの追加
-func initEnvDB() {
 	v := viper.New()
 	v.AutomaticEnv()
+	v.AddConfigPath("internal/env")
+	v.SetConfigName(".localenv")
+	v.SetConfigType("env")
+	if err := v.ReadInConfig(); err != nil {
+		log.Println("== == == == == == == == == == ")
+		log.Printf("%#v\n", err)
+		log.Println("== == == == == == == == == == ")
 
-	Env.EnvDB = EnvDB{
-		Host:     v.GetString("DB_HOST"),
-		Port:     v.GetString("DB_PORT"),
-		User:     v.GetString("DB_USER"),
-		Password: v.GetString("DB_PASSWORD"),
-		Name:     v.GetString("DB_NAME"),
+		// Continue even if file doesn't exist
 	}
+
+	TZ = v.GetString("TZ")
+	GoEchoPort = v.GetString("GO_ECHO_PORT")
+	GRPCPort = v.GetString("GRPC_PORT")
+	GRPCAddress = backendHost + ":" + GRPCPort
+
+	PostgresDSN = "host=postgres" +
+		" user=" + v.GetString("POSTGRES_USER") +
+		" password=" + v.GetString("POSTGRES_PASSWORD") +
+		" port=" + v.GetString("POSTGRES_BACK_PORT") +
+		" dbname=app" +
+		" TimeZone=" + v.GetString("TZ") +
+		" sslmode=disable"
+
 }

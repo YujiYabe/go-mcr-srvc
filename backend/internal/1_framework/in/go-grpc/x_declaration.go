@@ -10,7 +10,7 @@ import (
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/2_adapter/controller"
-	"backend/pkg"
+	"backend/internal/env"
 )
 
 const (
@@ -39,7 +39,7 @@ func NewGoGRPC(
 func (receiver *GoGRPC) Start() {
 	log.Println("------------------------- start GRPC ------------------------- ")
 
-	listen, err := net.Listen("tcp", pkg.GRPCAddress)
+	listen, err := net.Listen("tcp", env.GRPCAddress)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

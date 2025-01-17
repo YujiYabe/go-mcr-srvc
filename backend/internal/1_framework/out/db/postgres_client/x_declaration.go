@@ -1,7 +1,6 @@
 package postgres_client
 
 import (
-	"backend/pkg"
 	"context"
 	"fmt"
 	"time"
@@ -10,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"backend/internal/2_adapter/gateway"
+	"backend/internal/env"
 	logger "backend/internal/logger"
 )
 
@@ -38,7 +38,7 @@ func open(
 	ctx context.Context,
 	count uint,
 ) (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.Open(pkg.PostgresDSN), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(env.PostgresDSN), &gorm.Config{})
 
 	if err != nil {
 		if count == 0 {

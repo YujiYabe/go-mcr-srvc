@@ -8,7 +8,7 @@ import (
 
 	v1 "backend/internal/1_framework/in/go-echo/v1"
 	"backend/internal/2_adapter/controller"
-	"backend/pkg"
+	"backend/internal/env"
 )
 
 type (
@@ -71,6 +71,6 @@ func (receiver *GoEcho) Start() {
 	}
 
 	receiver.EchoEcho.Logger.Fatal(
-		receiver.EchoEcho.Start(":" + pkg.GoEchoPort),
+		receiver.EchoEcho.Start(":" + env.GoEchoPort),
 	)
 }
