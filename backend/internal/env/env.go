@@ -14,10 +14,10 @@ import (
 )
 
 const (
-	LOCAL = "local"
-	DEV   = "dev"
-	STG   = "STG"
-	PRD   = "prd"
+	LCL = "lcl"
+	DEV = "dev"
+	STG = "STG"
+	PRD = "prd"
 )
 
 var (
@@ -30,38 +30,29 @@ var (
 )
 
 func init() {
+	// OS環境変数で環境を切り替える
+	// 機密情報以外はXXX.envに記載。secret managerのキーはgithub secretsに保存?
+	// 機密情報はsecret managerに保存
+
 	viperViper := viper.New()
 	viperViper.AutomaticEnv()
 	viperViper.AddConfigPath("internal/env")
 	viperViper.SetConfigType("env")
 
-	switch os.Getenv("ENV") { // 環境情報のみ OS環境変数からを取得
-	case LOCAL:
-		viperViper.SetConfigName("lcl.env")
-		//local環境ではlocalstackを使う
+	mapEnv := map[string]string{
+		LCL: "lcl.env",
+		DEV: "dev.env",
+		STG: "stg.env",
+		PRD: "prd.env",
+	}
 
-	case DEV:
-		viperViper.SetConfigName("dev.env")
-
-	case STG:
-		viperViper.SetConfigName("stg.env")
-
-	case PRD:
-		viperViper.SetConfigName("prd.env")
-
-	default:
+	viperViper.SetConfigName(mapEnv[os.Getenv("ENV")])
+	if err := viperViper.ReadInConfig(); err != nil {
 		log.Fatalf("failed to serve: invalid environment")
 	}
 
-	if err := viperViper.ReadInConfig(); err != nil {
-		log.Println("== == == == == == == == == == ")
-		log.Printf("%#v\n", err)
-		log.Println("== == == == == == == == == == ")
-	}
-
 	switch os.Getenv("ENV") { // 環境情報のみ OS環境変数からを取得
-
-	case LOCAL:
+	case LCL:
 		//local環境ではlocalstackを使う
 		localstack(viperViper)
 
@@ -78,11 +69,22 @@ func init() {
 		log.Fatalf("failed to serve: invalid environment")
 	}
 
-	TZ = viperViper.GetString("TZ")
+	server(viperViper)
+	postgres(viperViper)
+}
+
+func server(
+	viperViper *viper.Viper,
+) {
 	GoEchoPort = viperViper.GetString("GO_ECHO_PORT")
 	GRPCPort = viperViper.GetString("GRPC_PORT")
 	GRPCAddress = backendHost + ":" + GRPCPort
 
+}
+
+func postgres(
+	viperViper *viper.Viper,
+) {
 	PostgresDSN = "host=postgres" +
 		" user=" + viperViper.GetString("POSTGRES_USER") +
 		" password=" + viperViper.GetString("POSTGRES_PASSWORD") +
@@ -90,7 +92,6 @@ func init() {
 		" dbname=app" +
 		" TimeZone=" + viperViper.GetString("TZ") +
 		" sslmode=disable"
-
 }
 
 func localstack(
