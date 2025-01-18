@@ -39,7 +39,10 @@ func NewGoGRPC(
 func (receiver *GoGRPC) Start() {
 	log.Println("------------------------- start GRPC ------------------------- ")
 
-	listen, err := net.Listen("tcp", env.GRPCAddress)
+	listen, err := net.Listen(
+		"tcp",
+		env.ServerConfig.GRPCAddress,
+	)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

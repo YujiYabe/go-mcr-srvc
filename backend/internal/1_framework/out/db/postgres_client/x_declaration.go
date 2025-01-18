@@ -38,7 +38,10 @@ func open(
 	ctx context.Context,
 	count uint,
 ) (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.Open(env.PostgresDSN), &gorm.Config{})
+	db, err := gorm.Open(
+		postgres.Open(env.DatabaseConfig.DSN),
+		&gorm.Config{},
+	)
 
 	if err != nil {
 		if count == 0 {
