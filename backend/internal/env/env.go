@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -29,66 +30,84 @@ var (
 )
 
 func init() {
-	v := viper.New()
-	v.AutomaticEnv()
-	v.AddConfigPath("internal/env")
-	v.SetConfigType("env")
+	viperViper := viper.New()
+	viperViper.AutomaticEnv()
+	viperViper.AddConfigPath("internal/env")
+	viperViper.SetConfigType("env")
 
-	switch v.GetString("ENV") {
+	switch os.Getenv("ENV") { // 環境情報のみ OS環境変数からを取得
 	case LOCAL:
-		v.SetConfigName("local.env")
+		viperViper.SetConfigName("lcl.env")
 		//local環境ではlocalstackを使う
-		localstack(*v)
 
 	case DEV:
-		v.SetConfigName("dev.env")
+		viperViper.SetConfigName("dev.env")
+
+	case STG:
+		viperViper.SetConfigName("stg.env")
+
+	case PRD:
+		viperViper.SetConfigName("prd.env")
+
+	default:
+		log.Fatalf("failed to serve: invalid environment")
+	}
+
+	if err := viperViper.ReadInConfig(); err != nil {
+		log.Println("== == == == == == == == == == ")
+		log.Printf("%#v\n", err)
+		log.Println("== == == == == == == == == == ")
+	}
+
+	switch os.Getenv("ENV") { // 環境情報のみ OS環境変数からを取得
+
+	case LOCAL:
+		//local環境ではlocalstackを使う
+		localstack(viperViper)
+
+	case DEV:
 		//dev環境ではaws環境
 
 	case STG:
-		v.SetConfigName("stg.env")
 		//stg環境ではaws環境
 
 	case PRD:
-		v.SetConfigName("prd.env")
 		//prd環境ではaws環境
 
 	default:
 		log.Fatalf("failed to serve: invalid environment")
 	}
 
-	if err := v.ReadInConfig(); err != nil {
-		log.Println("== == == == == == == == == == ")
-		log.Printf("%#v\n", err)
-		log.Println("== == == == == == == == == == ")
-	}
-
-	TZ = v.GetString("TZ")
-	GoEchoPort = v.GetString("GO_ECHO_PORT")
-	GRPCPort = v.GetString("GRPC_PORT")
+	TZ = viperViper.GetString("TZ")
+	GoEchoPort = viperViper.GetString("GO_ECHO_PORT")
+	GRPCPort = viperViper.GetString("GRPC_PORT")
 	GRPCAddress = backendHost + ":" + GRPCPort
 
 	PostgresDSN = "host=postgres" +
-		" user=" + v.GetString("POSTGRES_USER") +
-		" password=" + v.GetString("POSTGRES_PASSWORD") +
-		" port=" + v.GetString("POSTGRES_BACK_PORT") +
+		" user=" + viperViper.GetString("POSTGRES_USER") +
+		" password=" + viperViper.GetString("POSTGRES_PASSWORD") +
+		" port=" + viperViper.GetString("POSTGRES_BACK_PORT") +
 		" dbname=app" +
-		" TimeZone=" + v.GetString("TZ") +
+		" TimeZone=" + viperViper.GetString("TZ") +
 		" sslmode=disable"
 
 }
 
-func localstack(viper viper.Viper) {
+func localstack(
+	viperViper *viper.Viper,
+) {
 
-	creds := credentials.NewStaticCredentialsProvider("test", "test", "")
-
-	secretName := "my-local-secret"
-	region := "ap-northeast-1"
+	creds := credentials.NewStaticCredentialsProvider(
+		viperViper.GetString("AWS_STATIC_CREDENTIAL_KEY"),
+		viperViper.GetString("AWS_STATIC_CREDENTIAL_SECRET"),
+		"",
+	)
 
 	config, err := config.LoadDefaultConfig(
 		context.TODO(),
 		config.WithCredentialsProvider(creds),
-		config.WithRegion(region),
-		config.WithBaseEndpoint("http://localstack:4566"),
+		config.WithRegion(viperViper.GetString("AWS_REGION")),
+		config.WithBaseEndpoint(viperViper.GetString("AWS_ENDPOINT")),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -98,7 +117,7 @@ func localstack(viper viper.Viper) {
 	svc := secretsmanager.NewFromConfig(config)
 
 	input := &secretsmanager.GetSecretValueInput{
-		SecretId: aws.String(secretName),
+		SecretId: aws.String(viperViper.GetString("AWS_SECRET_NAME")),
 	}
 
 	result, err := svc.GetSecretValue(context.TODO(), input)
@@ -112,19 +131,14 @@ func localstack(viper viper.Viper) {
 	if err := json.Unmarshal([]byte(secretString), &secrets); err != nil {
 		log.Printf("Failed to unmarshal secret string: %v", err)
 	}
-	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", secrets.MyLocalSecret.SecretString)
-	log.Println("== == == == == == == == == == ")
 
 	var secretString2 SecretString
 	if err := json.Unmarshal([]byte(secrets.MyLocalSecret.SecretString), &secretString2); err != nil {
 		log.Printf("Failed to unmarshal secret string: %v", err)
 	}
-	log.Println("== == == == == == == == == == ")
-	log.Printf("%#v\n", secretString2.Username)
-	log.Printf("%#v\n", secretString2.Password)
-	log.Println("== == == == == == == == == == ")
 
+	viper.Set("db_user", secretString2.Username)
+	viper.Set("db_password", secretString2.Password)
 }
 
 type LocalstackSecrets struct {
