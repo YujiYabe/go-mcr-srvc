@@ -7,7 +7,7 @@ import (
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 // GoGRPC ...

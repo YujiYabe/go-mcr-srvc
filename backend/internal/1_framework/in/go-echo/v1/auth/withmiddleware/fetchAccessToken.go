@@ -8,7 +8,7 @@ import (
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 func fetchAccessToken(

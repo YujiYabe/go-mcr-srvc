@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	"backend/internal/2_adapter/gateway"
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 // GRPCClient ...

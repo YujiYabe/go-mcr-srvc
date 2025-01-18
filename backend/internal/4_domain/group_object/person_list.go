@@ -3,7 +3,7 @@ package group_object
 import (
 	"context"
 
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 type PersonList struct {
