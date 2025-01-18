@@ -40,18 +40,17 @@ func init() {
 
 	viperViper.SetConfigName(env + ".env")
 	if err := viperViper.ReadInConfig(); err != nil {
-		log.Fatalf("failed to load environment file: %w", err)
+		log.Fatalf("failed to load environment file: %v", err)
 	}
 
 	if env == "lcl" {
 		if err := setupLocalstack(viperViper); err != nil {
-			log.Fatalf("failed to setup localstack: %w", err)
+			log.Fatalf("failed to setup localstack: %v", err)
 		}
 	}
 
 	newServerConfig(viperViper)
 	newDatabaseConfig(viperViper)
-
 }
 
 func initViper() *viper.Viper {
@@ -94,19 +93,25 @@ func setupLocalstack(
 		return err
 	}
 
-	var secretString = aws.ToString(result.SecretString)
-	var secrets LocalstackSecrets
-	if err := json.Unmarshal([]byte(secretString), &secrets); err != nil {
+	resultSecretString := aws.ToString(result.SecretString)
+	localstackSecrets := &LocalstackSecrets{}
+	if err := json.Unmarshal(
+		[]byte(resultSecretString),
+		localstackSecrets,
+	); err != nil {
 		return err
 	}
 
-	var secretString2 SecretString
-	if err := json.Unmarshal([]byte(secrets.MyLocalSecret.SecretString), &secretString2); err != nil {
+	var secretString SecretString
+	if err := json.Unmarshal(
+		[]byte(localstackSecrets.MyLocalSecret.SecretString),
+		&secretString,
+	); err != nil {
 		return err
 	}
 
-	viper.Set("db_user", secretString2.Username)
-	viper.Set("db_password", secretString2.Password)
+	viper.Set("db_user", secretString.Username)
+	viper.Set("db_password", secretString.Password)
 
 	return nil
 }
