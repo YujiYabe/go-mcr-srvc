@@ -15,7 +15,8 @@ import (
 const (
 	LOCAL = "local"
 	DEV   = "dev"
-	PROD  = "prod"
+	STG   = "STG"
+	PRD   = "prd"
 )
 
 var (
@@ -35,15 +36,21 @@ func init() {
 
 	switch v.GetString("ENV") {
 	case LOCAL:
-		v.SetConfigName(".localenv")
+		v.SetConfigName("local.env")
 		//local環境ではlocalstackを使う
 		localstack(*v)
 
 	case DEV:
-		v.SetConfigName(".devenv")
+		v.SetConfigName("dev.env")
+		//dev環境ではaws環境
 
-	case PROD:
-		v.SetConfigName(".prodenv")
+	case STG:
+		v.SetConfigName("stg.env")
+		//stg環境ではaws環境
+
+	case PRD:
+		v.SetConfigName("prd.env")
+		//prd環境ではaws環境
 
 	default:
 		log.Fatalf("failed to serve: invalid environment")
@@ -70,16 +77,7 @@ func init() {
 
 }
 
-func localstack(viper.Viper) {
-	// customResolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-	// 	if service == secretsmanager.ServiceID {
-	// 		return aws.Endpoint{
-	// 			// URL: "http://localhost:4566/", // LocalStack のエンドポイント
-	// 			URL: "http://localstack:4566", // LocalStack のエンドポイント
-	// 		}, nil
-	// 	}
-	// 	return aws.Endpoint{}, &aws.EndpointNotFoundError{}
-	// })
+func localstack(viper viper.Viper) {
 
 	creds := credentials.NewStaticCredentialsProvider("test", "test", "")
 
@@ -127,39 +125,7 @@ func localstack(viper.Viper) {
 	log.Printf("%#v\n", secretString2.Password)
 	log.Println("== == == == == == == == == == ")
 
-	// var secrets LocalstackSecrets
-	// if err := json.Unmarshal([]byte(secretString), &secrets); err != nil {
-	// 	log.Println("== == == == == == == == == == ")
-	// 	log.Printf("%#v\n", err)
-	// 	log.Println("== == == == == == == == == == ")
-	// }
-
-	// var secretValues SecretString
-	// if err := json.Unmarshal([]byte(secrets.MyLocalSecret.SecretString), &secretValues); err != nil {
-	// 	log.Println("== == == == == == == == == == ")
-	// 	log.Printf("%#v\n", err)
-	// 	log.Println("== == == == == == == == == == ")
-	// }
-	// log.Println("== == == == == == == == == == ")
-	// log.Printf("%#v\n", secrets)
-	// log.Printf("%#v\n", aws.ToString(result.SecretString))
-	// log.Println("== == == == == == == == == == ")
-
 }
-
-// Secrets Managerからシークレットを取得する関数
-// func getSecretValue(client *secretsmanager.Client, secretName string) (string, error) {
-// 	input := &secretsmanager.GetSecretValueInput{
-// 		SecretId: aws.String(secretName),
-// 	}
-
-// 	result, err := client.GetSecretValue(context.TODO(), input)
-// 	if err != nil {
-// 		return "", err
-// 	}
-
-//		return aws.ToString(result.SecretString), nil
-//	}
 
 type LocalstackSecrets struct {
 	MyLocalSecret struct {
