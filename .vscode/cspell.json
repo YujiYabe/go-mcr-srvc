@@ -45,6 +45,7 @@
 		"gopkg",
 		"gorm",
 		"gosec",
+		"healthcheck",
 		"honnef",
 		"iasm",
 		"Idxs",
