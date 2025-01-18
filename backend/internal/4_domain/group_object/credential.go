@@ -4,7 +4,7 @@ import (
 	"context"
 
 	valueObject "backend/internal/4_domain/value_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 type Credential struct {
@@ -43,14 +43,14 @@ func NewCredential(
 		args.ClientID,
 	)
 	if accessToken.ClientID.GetError() != nil {
-		pkg.Logging(ctx, accessToken.ClientID.GetError())
+		logger.Logging(ctx, accessToken.ClientID.GetError())
 		accessToken.SetError(ctx, accessToken.ClientID.GetError())
 		return
 	}
 
 	accessToken.ClientSecret = valueObject.NewClientSecret(ctx, args.ClientSecret)
 	if accessToken.ClientSecret.GetError() != nil {
-		pkg.Logging(ctx, accessToken.ClientSecret.GetError())
+		logger.Logging(ctx, accessToken.ClientSecret.GetError())
 		accessToken.SetError(ctx, accessToken.ClientSecret.GetError())
 		return
 	}

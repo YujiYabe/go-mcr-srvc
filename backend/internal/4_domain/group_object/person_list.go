@@ -3,7 +3,7 @@ package group_object
 import (
 	"context"
 
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 type PersonList struct {
@@ -25,7 +25,7 @@ func (receiver *PersonList) SetError(
 ) {
 	if receiver.err == nil {
 		receiver.err = err
-		pkg.Logging(ctx, err)
+		logger.Logging(ctx, receiver.err)
 	}
 }
 

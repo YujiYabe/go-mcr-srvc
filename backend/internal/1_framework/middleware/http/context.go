@@ -2,69 +2,55 @@ package http_middleware
 
 import (
 	"context"
+	"log"
 
-	"github.com/google/uuid"
 	"github.com/labstack/echo"
-	"google.golang.org/grpc/metadata"
 
+	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
 )
 
 func ContextMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
+			clientIP := c.RealIP()
+			userAgent := c.Request().UserAgent()
+			locale := c.Request().Header.Get("Accept-Language")
+			timeZone := c.Request().Header.Get("Time-Zone")
 
-			// traceID設定
-			traceID := generateTraceID(
-				valueObject.GetTraceID(c.Request().Context()),
+			newRequestContextArgs := &groupObject.NewRequestContextArgs{
+				ClientIP:  &clientIP,
+				UserAgent: &userAgent,
+				Locale:    &locale,
+				TimeZone:  &timeZone,
+			}
+
+			requestContext := groupObject.NewRequestContext(
+				c.Request().Context(),
+				newRequestContextArgs,
 			)
-			setTraceIDContext(c, traceID)
-			setTraceIDHeader(c, traceID)
+
+			if requestContext.GetError() != nil {
+				log.Println(requestContext.GetError())
+				return requestContext.GetError()
+			}
+			ctx := context.WithValue(
+				c.Request().Context(),
+				groupObject.RequestContextContextName,
+				*requestContext,
+			)
+
+			// ________________________________
+			// logで追跡するために、contextにTraceIDを設定する
+			ctx = context.WithValue(
+				ctx,
+				valueObject.TraceIDContextName,
+				requestContext.TraceID.GetValue(),
+			)
+
+			c.SetRequest(c.Request().WithContext(ctx))
 
 			return next(c)
 		}
 	}
-}
-
-func generateTraceID(
-	existingID string,
-) string {
-	if existingID == "" {
-		return uuid.New().String()
-	}
-	return existingID
-}
-
-func setTraceIDContext(
-	c echo.Context,
-	traceID string,
-) {
-	ctx := context.WithValue(
-		c.Request().Context(),
-		valueObject.TraceIDContextName,
-		traceID,
-	)
-
-	c.SetRequest(c.Request().WithContext(ctx))
-}
-
-func setTraceIDHeader(
-	c echo.Context,
-	traceID string,
-) {
-	c.Response().Header().Set(
-		string(valueObject.TraceIDContextName),
-		traceID,
-	)
-}
-
-// gRPCメタデータとの変換を行うレイヤーで適切に変換処理を実装
-func ConvertToMetadata(
-	ctx context.Context,
-) metadata.MD {
-	return metadata.New(
-		map[string]string{
-			string(valueObject.TraceIDMetaName): ctx.Value(valueObject.TraceIDContextName).(string), // メタデータ用にハイフン区切りに変換
-		},
-	)
 }

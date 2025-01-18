@@ -2,58 +2,11 @@ package postgres_client
 
 import (
 	"context"
-	"fmt"
-	"log"
-	"time"
-
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
-	"backend/internal/2_adapter/gateway"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
-
-type (
-	// PostgresClient ...
-	PostgresClient struct {
-		Conn *gorm.DB
-	}
-)
-
-// NewToPostgres ...
-func NewToPostgres() gateway.ToPostgres {
-	ctx := context.Background()
-	conn, err := open(30)
-	if err != nil {
-		pkg.Logging(ctx, err)
-		panic(err)
-	}
-
-	postgresClient := new(PostgresClient)
-	postgresClient.Conn = conn
-	return postgresClient
-}
-
-func open(count uint) (*gorm.DB, error) {
-	ctx := context.Background()
-	db, err := gorm.Open(postgres.Open(pkg.PostgresDSN), &gorm.Config{})
-
-	if err != nil {
-		if count == 0 {
-			pkg.Logging(ctx, err)
-			return nil, fmt.Errorf(
-				"retry count over")
-		}
-		time.Sleep(time.Second)
-		count--
-		return open(count)
-	}
-
-	return db, nil
-}
 
 // GetPersonList ...
 func (receiver *PostgresClient) GetPersonList(
@@ -99,16 +52,17 @@ func (receiver *PostgresClient) GetPersonList(
 	return
 }
 
-// GetPersonByCondition ...
-func (receiver *PostgresClient) GetPersonByCondition(
+// GetPersonListByCondition ...
+func (receiver *PostgresClient) GetPersonListByCondition(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	// logger.Logging(
+	// 	ctx,
+	// 	groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	// )
 
 	resPersonList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}             // SQL結果保存用
@@ -138,7 +92,7 @@ func (receiver *PostgresClient) GetPersonByCondition(
 		person := groupObject.NewPerson(ctx, args)
 
 		if person.GetError() != nil {
-			pkg.Logging(ctx, person.GetError())
+			logger.Logging(ctx, person.GetError())
 			resPersonList.SetError(ctx, person.GetError())
 			return
 		}
@@ -149,8 +103,10 @@ func (receiver *PostgresClient) GetPersonByCondition(
 		)
 	}
 
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	// logger.Logging(
+	// 	ctx,
+	// 	groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	// )
 
 	return
 }

@@ -43,8 +43,7 @@ func NewController(
 type (
 	// controller ...
 	controller struct {
-		UseCase     usecase.ToUseCase
-		OrderNumber int
+		UseCase usecase.ToUseCase
 	}
 
 	// ToController ...
@@ -57,7 +56,7 @@ type (
 			personList groupObject.PersonList,
 		)
 
-		GetPersonByCondition(
+		GetPersonListByCondition(
 			ctx context.Context,
 			reqPerson groupObject.Person,
 		) (

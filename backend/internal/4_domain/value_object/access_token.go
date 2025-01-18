@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 const (
@@ -13,9 +12,9 @@ const (
 	AccessTokenContextName primitiveObject.ContextKey = "AccessToken"
 )
 
-const (
-	accessTokenLengthMax = 99999999999
-	accessTokenLengthMin = 0
+var (
+	accessTokenMaxLength uint = 9999
+	accessTokenMinLength uint = 0
 )
 
 type AccessToken struct {
@@ -43,8 +42,8 @@ func (receiver *AccessToken) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(accessTokenLengthMax),
-		primitiveString.WithMinLength(accessTokenLengthMin),
+		primitiveString.WithMaxLength(&accessTokenMaxLength),
+		primitiveString.WithMinLength(&accessTokenMinLength),
 	)
 
 	receiver.content.Validation()
@@ -52,7 +51,6 @@ func (receiver *AccessToken) SetValue(
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
-
 func (receiver *AccessToken) GetError() error {
 	return receiver.err
 }
@@ -62,7 +60,6 @@ func (receiver *AccessToken) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *AccessToken) SetErrorString(

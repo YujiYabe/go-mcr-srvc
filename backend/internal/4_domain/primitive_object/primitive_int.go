@@ -1,20 +1,23 @@
 package primitive_object
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveInt struct {
 	err      error
 	value    int
 	isNil    bool
-	maxValue int
-	minValue int
+	maxDigit *uint
+	minDigit *uint
 }
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveIntOption func(*PrimitiveInt)
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithError(
 	err error,
 ) PrimitiveIntOption {
@@ -23,7 +26,7 @@ func (receiver *PrimitiveInt) WithError(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithValue(
 	value *int,
 ) PrimitiveIntOption {
@@ -39,7 +42,7 @@ func (receiver *PrimitiveInt) WithValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) WithIsNil(
 	isNil bool,
 ) PrimitiveIntOption {
@@ -48,25 +51,25 @@ func (receiver *PrimitiveInt) WithIsNil(
 	}
 }
 
-// --------------------------------------
-func (receiver *PrimitiveInt) WithMaxValue(
-	value int,
+// ______________________________________
+func (receiver *PrimitiveInt) WithMaxDigit(
+	value *uint,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.maxValue = value
+		s.maxDigit = value
 	}
 }
 
-// --------------------------------------
-func (receiver *PrimitiveInt) WithMinValue(
-	value int,
+// ______________________________________
+func (receiver *PrimitiveInt) WithMinDigit(
+	value *uint,
 ) PrimitiveIntOption {
 	return func(s *PrimitiveInt) {
-		s.minValue = value
+		s.minDigit = value
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func NewPrimitiveInt(
 	options ...PrimitiveIntOption,
 ) (
@@ -76,9 +79,9 @@ func NewPrimitiveInt(
 	primitiveInt = &PrimitiveInt{
 		err:      nil,
 		value:    0,
-		isNil:    false,
-		maxValue: -1,
-		minValue: -1,
+		isNil:    true,
+		maxDigit: nil,
+		minDigit: nil,
 	}
 
 	// オプションを適用
@@ -89,19 +92,19 @@ func NewPrimitiveInt(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) GetIsNil() bool {
 	return receiver.isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) CheckNil(
 	value *int,
 ) (
@@ -114,19 +117,19 @@ func (receiver *PrimitiveInt) CheckNil(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) GetError() error {
 	return receiver.err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetErrorString(
 	errString string,
 ) {
@@ -138,7 +141,7 @@ func (receiver *PrimitiveInt) SetErrorString(
 	)
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) GetValue() int {
 	if receiver.GetIsNil() {
 		return 0
@@ -147,7 +150,7 @@ func (receiver *PrimitiveInt) GetValue() int {
 	return receiver.value
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) SetValue(
 	value *int,
 ) {
@@ -159,54 +162,75 @@ func (receiver *PrimitiveInt) SetValue(
 	receiver.value = *value
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveInt) Validation() {
 
 	if receiver.GetIsNil() {
 		return
 	}
 
-	receiver.ValidationMax()
+	receiver.ValidationMaxDigit()
 	if receiver.err != nil {
 		return
 	}
 
-	receiver.ValidationMin()
+	receiver.ValidationMinDigit()
 	if receiver.err != nil {
 		return
 	}
-
 }
 
-// --------------------------------------
-func (receiver *PrimitiveInt) ValidationMax() {
-	if receiver.maxValue < 0 { //上限値なし
+// ______________________________________
+func (receiver *PrimitiveInt) ValidationMaxDigit() {
+	if receiver.maxDigit == nil { //上限値なし
 		return
 	}
 
+	// 上限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
+		// receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value > receiver.maxValue {
+	strValue := strconv.Itoa(receiver.value)
+
+	// 桁数を取得
+	digitCount := uint(len(strValue))
+
+	// 負の値の場合、マイナス記号を除いた桁数を計算
+	if receiver.value < 0 {
+		digitCount-- // マイナス符号を引く
+	}
+
+	if digitCount > *receiver.maxDigit {
 		receiver.SetErrorString("max limitation")
 		return
 	}
 }
 
-// --------------------------------------
-func (receiver *PrimitiveInt) ValidationMin() {
-	if receiver.minValue < 0 { //下限値なし
+// ______________________________________
+func (receiver *PrimitiveInt) ValidationMinDigit() {
+	if receiver.minDigit == nil { // 下限値なし
 		return
 	}
 
+	// 下限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		receiver.SetErrorString("is nil")
+		// receiver.SetErrorString("is nil")
 		return
 	}
 
-	if receiver.value < receiver.minValue {
+	strValue := strconv.Itoa(receiver.value)
+
+	// 桁数を取得
+	digitCount := uint(len(strValue))
+
+	// 負の値の場合、マイナス記号を除いた桁数を計算
+	if receiver.value < 0 {
+		digitCount-- // マイナス符号を引く
+	}
+
+	if digitCount < *receiver.minDigit {
 		receiver.SetErrorString("min limitation")
 		return
 	}

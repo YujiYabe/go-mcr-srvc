@@ -2,17 +2,11 @@ package grpc_client
 
 import (
 	"context"
-	"log"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/metadata"
-
+	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
-
-	"backend/pkg"
 )
 
 // ...
@@ -23,34 +17,18 @@ func (receiver *GRPCClient) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// logger.Logging(ctx, traceID)
 
 	var err error
 	resPersonList = groupObject.PersonList{}
-	// gRPCコネクションの作成
-	conn, err := grpc.NewClient(
-		"backend:3456",
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	)
-	if err != nil {
-		resPersonList.SetError(ctx, err)
-		return
-	}
-	defer conn.Close()
 
 	// クライアントの作成
-	client := grpcParameter.NewPersonClient(conn)
+	client := grpcParameter.NewPersonServiceClient(receiver.Conn)
 
 	// リクエストの作成
-	v1GetPersonByConditionRequest := &grpcParameter.V1GetPersonByConditionRequest{
+	v1GetPersonByConditionRequest := &grpcParameter.GetPersonListByConditionRequest{
 		V1PersonParameter: &grpcParameter.V1PersonParameter{},
-		V1CommonParameter: &grpcParameter.V1CommonParameter{
-			Immutable: &grpcParameter.V1ImmutableParameter{
-				TraceID: traceID,
-			},
-		},
 	}
 
 	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {
@@ -63,14 +41,10 @@ func (receiver *GRPCClient) ViaGRPC(
 		v1GetPersonByConditionRequest.V1PersonParameter.MailAddress = &value
 	}
 
-	ctx = metadata.AppendToOutgoingContext(
-		ctx,
-		string(valueObject.TraceIDMetaName),
-		traceID,
-	)
+	ctx = grpcMiddleware.ContextToMetadata(ctx)
 
 	// gRPCリクエストの実行
-	grpcPersonList, err := client.GetPersonByCondition(
+	grpcPersonList, err := client.GetPersonListByCondition(
 		ctx,
 		v1GetPersonByConditionRequest,
 	)
@@ -102,8 +76,8 @@ func (receiver *GRPCClient) ViaGRPC(
 		resPersonList.Content = append(resPersonList.Content, *person)
 	}
 
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	// traceID = groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// logger.Logging(ctx, traceID)
 
 	return
 

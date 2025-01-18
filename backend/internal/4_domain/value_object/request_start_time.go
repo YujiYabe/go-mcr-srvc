@@ -2,9 +2,9 @@ package value_object
 
 import (
 	"context"
+	"time"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 const (
@@ -12,9 +12,9 @@ const (
 	RequestStartTimeContextName primitiveObject.ContextKey = "requestStartTime"
 )
 
-const (
-	requestStartTimeLengthMax = 99999999999
-	requestStartTimeLengthMin = 0
+var (
+	requestStartTimeMaxDigit uint = 20
+	requestStartTimeMinDigit uint = 0
 )
 
 type RequestStartTime struct {
@@ -28,6 +28,7 @@ func NewRequestStartTime(
 ) (
 	requestStartTime RequestStartTime,
 ) {
+
 	requestStartTime = RequestStartTime{}
 	requestStartTime.SetValue(ctx, value)
 
@@ -40,10 +41,16 @@ func (receiver *RequestStartTime) SetValue(
 ) {
 	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
 
+	if value == nil {
+		// デフォルト値を設定
+		now := time.Now().UnixMilli()
+		value = &now
+	}
+
 	receiver.content = primitiveObject.NewPrimitiveInt64(
 		primitiveInt64.WithValue(value),
-		primitiveInt64.WithMaxValue(requestStartTimeLengthMax),
-		primitiveInt64.WithMinValue(requestStartTimeLengthMin),
+		primitiveInt64.WithMaxDigit(&requestStartTimeMaxDigit),
+		primitiveInt64.WithMinDigit(&requestStartTimeMinDigit),
 	)
 
 	receiver.content.Validation()
@@ -54,7 +61,6 @@ func (receiver *RequestStartTime) SetValue(
 		)
 	}
 }
-
 func (receiver *RequestStartTime) GetError() error {
 	return receiver.err
 }
@@ -64,9 +70,12 @@ func (receiver *RequestStartTime) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.err)
 }
 
 func (receiver *RequestStartTime) GetValue() int64 {
 	return receiver.content.GetValue()
+}
+
+func (receiver *RequestStartTime) GetString() string {
+	return receiver.content.GetString()
 }

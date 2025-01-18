@@ -4,12 +4,11 @@ import (
 	"context"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
-const (
-	clientIDLengthMax = 99999999999
-	clientIDLengthMin = 0
+var (
+	clientIDMaxLength uint = 99
+	clientIDMinLength uint = 0
 )
 
 type ClientID struct {
@@ -37,8 +36,8 @@ func (receiver *ClientID) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(clientIDLengthMax),
-		primitiveString.WithMinLength(clientIDLengthMin),
+		primitiveString.WithMaxLength(&clientIDMaxLength),
+		primitiveString.WithMinLength(&clientIDMinLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -48,7 +47,6 @@ func (receiver *ClientID) SetValue(
 		)
 	}
 }
-
 func (receiver *ClientID) GetError() error {
 	return receiver.err
 }
@@ -58,7 +56,6 @@ func (receiver *ClientID) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *ClientID) GetValue() string {

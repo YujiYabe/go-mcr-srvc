@@ -4,12 +4,11 @@ import (
 	"context"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
-const (
-	nameLengthMax = 30
-	nameLengthMin = 1
+var (
+	nameMaxLength uint = 30
+	nameMinLength uint = 1
 )
 
 var nameCheckSpell = []string{
@@ -42,8 +41,8 @@ func (receiver *Name) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(nameLengthMax),
-		primitiveString.WithMinLength(nameLengthMin),
+		primitiveString.WithMaxLength(&nameMaxLength),
+		primitiveString.WithMinLength(&nameMinLength),
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
 
@@ -52,7 +51,6 @@ func (receiver *Name) SetValue(
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
-
 func (receiver *Name) GetError() error {
 	return receiver.err
 }
@@ -62,7 +60,6 @@ func (receiver *Name) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *Name) GetValue() string {

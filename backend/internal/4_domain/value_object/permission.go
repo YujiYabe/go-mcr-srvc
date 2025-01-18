@@ -5,12 +5,11 @@ import (
 	"fmt"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
-const (
-	permissionLengthMax = 30
-	permissionLengthMin = 1
+var (
+	permissionMaxLength uint = 50
+	permissionMinLength uint = 1
 )
 
 var permissionCheckSpell = []string{}
@@ -40,8 +39,8 @@ func (receiver *Permission) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(permissionLengthMax),
-		primitiveString.WithMinLength(permissionLengthMin),
+		primitiveString.WithMaxLength(&permissionMaxLength),
+		primitiveString.WithMinLength(&permissionMinLength),
 		primitiveString.WithCheckSpell(permissionCheckSpell),
 	)
 
@@ -66,7 +65,6 @@ func (receiver *Permission) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *Permission) SetErrorString(

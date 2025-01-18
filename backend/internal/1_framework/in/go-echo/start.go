@@ -8,7 +8,7 @@ import (
 
 	v1 "backend/internal/1_framework/in/go-echo/v1"
 	"backend/internal/2_adapter/controller"
-	"backend/pkg"
+	"backend/internal/env"
 )
 
 type (
@@ -42,7 +42,7 @@ func NewEcho() *echo.Echo {
 		middleware.LoggerWithConfig(
 			middleware.LoggerConfig{
 				Format:           "${time_custom}__${status}__${method}__${uri}\n",
-				CustomTimeFormat: "06/01/02-15:04:05",
+				CustomTimeFormat: "15:04:05",
 			},
 		),
 	)
@@ -71,6 +71,6 @@ func (receiver *GoEcho) Start() {
 	}
 
 	receiver.EchoEcho.Logger.Fatal(
-		receiver.EchoEcho.Start(":" + pkg.GoEchoPort),
+		receiver.EchoEcho.Start(":" + env.ServerConfig.GoEchoPort),
 	)
 }

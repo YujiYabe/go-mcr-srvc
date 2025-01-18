@@ -2,14 +2,12 @@ package goGRPC
 
 import (
 	"context"
-	"log"
 	"time"
 
+	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
-
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 // GoGRPC ...
@@ -17,89 +15,90 @@ type GoGRPC struct {
 	Server
 }
 
-// Implementation of the GetPersonByCondition method
-func (receiver *Server) GetPersonByCondition(
+// ------------
+func (receiver *Server) GetPersonListByCondition(
 	ctx context.Context,
-	req *grpcParameter.V1GetPersonByConditionRequest,
+	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
 ) (
-	v1GetPersonByConditionResponse *grpcParameter.V1GetPersonByConditionResponse,
+	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
-	traceID := valueObject.GetTraceID(ctx)
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
-
-	v1GetPersonByConditionResponse = &grpcParameter.V1GetPersonByConditionResponse{}
-	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
-	v1PersonParameterList := []*grpcParameter.V1PersonParameter{}
-
-	var id *int
-	if req.V1PersonParameter.GetId() != 0 {
-		id = new(int)
-		*id = int(req.V1PersonParameter.GetId())
+	requestContext := groupObject.GetRequestContext(ctx)
+	if requestContext.GetError() != nil {
+		return nil, requestContext.GetError()
 	}
 
-	var name *string
-	if req.V1PersonParameter.Name != nil {
-		name = req.V1PersonParameter.Name
-	}
+	timeoutSecond := requestContext.TimeOutSecond.GetValue()
 
-	var mailAddress *string
-	if req.V1PersonParameter.MailAddress != nil {
-		mailAddress = req.V1PersonParameter.MailAddress
-	}
-
-	reqPerson := groupObject.NewPerson(
+	ctx, cancel := context.WithTimeout(
 		ctx,
-		&groupObject.NewPersonArgs{
-			ID:          id,
-			Name:        name,
-			MailAddress: mailAddress,
-		},
+		time.Duration(timeoutSecond)*time.Millisecond,
+	)
+	defer cancel() // コンテキストのキャンセルを必ず呼び出す
+
+	done := make(chan struct{})
+
+	// ゴルーチンで処理を実行
+	go func() {
+		v1GetPersonListByConditionResponse, err = receiver.processPersonRequest(
+			ctx,
+			getPersonListByConditionRequest,
+		)
+		close(done) // 処理完了を通知
+	}()
+
+	// タイムアウトまたは処理完了を待つ
+	select {
+	case <-done:
+		// 処理が完了した場合
+		return v1GetPersonListByConditionResponse, err
+
+	case <-ctx.Done():
+		// タイムアウトした場合
+		logger.Logging(ctx, ctx.Err())
+		return nil, ctx.Err()
+	}
+}
+
+func (receiver *Server) processPersonRequest(
+	ctx context.Context,
+	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
+) (
+	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
+	err error,
+) {
+	v1GetPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
+
+	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// logger.Logging(ctx, traceID)
+
+	reqPerson := grpcMiddleware.RefillPersonGRPCToDomain(
+		ctx,
+		getPersonListByConditionRequest.GetV1PersonParameter(),
 	)
 	if reqPerson.GetError() != nil {
-		pkg.Logging(ctx, reqPerson.GetError())
-		err = reqPerson.GetError()
-		return
+		logger.Logging(ctx, reqPerson.GetError())
+		return nil, reqPerson.GetError()
 	}
 
-	responseList := receiver.Controller.GetPersonByCondition(
+	responseList := receiver.Controller.GetPersonListByCondition(
 		ctx,
 		*reqPerson,
 	)
 	if responseList.GetError() != nil {
-		pkg.Logging(ctx, responseList.GetError())
-		return
+		logger.Logging(ctx, responseList.GetError())
+		return nil, responseList.GetError()
 	}
 
-	for _, response := range responseList.Content {
-		id32 := uint32(response.ID.GetValue())
-		name := response.Name.GetValue()
-		mailAddress := response.MailAddress.GetValue()
-		v1PersonParameter := &grpcParameter.V1PersonParameter{
-			Id:          &id32,
-			Name:        &name,
-			MailAddress: &mailAddress,
-		}
-		v1PersonParameterList = append(
-			v1PersonParameterList,
-			v1PersonParameter,
-		)
-	}
+	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
+	v1PersonParameterArray.Persons = grpcMiddleware.RefillPersonDomainToGRPC(
+		ctx,
+		responseList,
+	)
 
-	v1PersonParameterArray.Persons = v1PersonParameterList
-	v1GetPersonByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
-	v1GetPersonByConditionResponse.V1CommonParameter = &grpcParameter.V1CommonParameter{
-		Immutable: &grpcParameter.V1ImmutableParameter{
-			TraceID: traceID,
-		},
-		Mutable: &grpcParameter.V1MutableParameter{
-			TimeStamp: time.Now().Format(timeFormat),
-		},
-	}
+	v1GetPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 
-	log.Println("== == == == == == == == == == ")
-	pkg.Logging(ctx, traceID)
+	// logger.Logging(ctx, traceID)
 
-	return
+	return v1GetPersonListByConditionResponse, nil
 }

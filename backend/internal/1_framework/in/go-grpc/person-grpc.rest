@@ -1,7 +1,7 @@
 
 ### --------------------------------
 proto < ../../parameter/grpc/person.proto
-GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
+GRPC localhost:3456/grpc_parameter.v1.PersonService/GetPersonListByCondition
 {
 	"v1PersonParameter": {
 		"mailAddress": "aaaa@gmail.com"
@@ -10,7 +10,7 @@ GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 
 ### --------------------------------
 proto < ../../parameter/grpc/person.proto
-GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
+GRPC localhost:3456/grpc_parameter.v1.PersonService/GetPersonListByCondition
 {
 	"v1PersonParameter": {
 		"name": "b"
@@ -19,7 +19,7 @@ GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
 
 # ### --------------------------------
 # proto < ../../parameter/grpc/person.proto
-# GRPC localhost:3456/grpc_parameter.Person/GetPersonByCondition
+# GRPC localhost:3456/grpc_parameter.v1.PersonService/GetPersonListByCondition
 # {
 # 	"common": {
 # 		"traceID": "test-trace-id",

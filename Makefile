@@ -1,3 +1,5 @@
+include ./backend/internal/env/lcl.env
+
 # ----------------------------
 .PHONY: gomod
 
@@ -8,13 +10,13 @@ gomod:
 # ----------------------------
 .PHONY: stop
 stop:
-	docker compose stop
+	docker compose --env-file ./backend/internal/env/lcl.env stop
 
 
 # ----------------------------
 .PHONY: removeAll
-removeAll:
-	docker compose stop
+removeAll: stop
+	docker compose --env-file ./backend/internal/env/lcl.env stop
 	docker system prune -f
 	sudo rm -rf db/engine/postgres/data
 	sudo rm -rf db/engine/redis/data
@@ -23,9 +25,8 @@ removeAll:
 # ----------------------------
 .PHONY: build
 build:
-	docker compose build
-	# docker compose build --no-cache
-
+	docker compose --env-file ./backend/internal/env/lcl.env build
+	# docker compose --env-file ./backend/internal/env/lcl.env build --no-cache
 
 # ----------------------------
 .PHONY: debug
@@ -36,12 +37,11 @@ debug:
 # ----------------------------
 .PHONY: up
 up:
-	docker compose up
-
+	docker compose --env-file ./backend/internal/env/lcl.env up
 
 # ----------------------------
 .PHONY: reup
-reup: build up
+reup: stop build up
 
 # ----------------------------
 .PHONY: restart
@@ -55,7 +55,7 @@ resetAll: removeAll build up
 # ----------------------------
 .PHONY: gosec
 gosec:
-	cd backend && ./bin/gosec  -exclude=G115 -conf ./config/gosec.json ./...
+	cd backend && ./bin/gosec  -exclude=G115 -conf ./bin/gosec.json ./...
 
 # ----------------------------
 .PHONY: golint
@@ -83,7 +83,7 @@ xo:
 	cd backend/internal/1_framework/db/postgres && xo schema postgres://user:user@localhost:15432/app?sslmode=disable
 
 
-# ----------------------------
+# 指定ディレクトリ配下を再帰的に探してコンパイル ----------------------------
 .PHONY: gen-grpc
 gen-grpc:
 	PATH=$(PWD)/backend/bin:$$PATH find backend/internal/1_framework/parameter/grpc -name "*.proto" -type f -exec \
@@ -93,6 +93,17 @@ gen-grpc:
 		--go-grpc_out=. \
 		--go-grpc_opt=paths=source_relative \
 		{} \;
+
+# # 指定ディレクトリに移動してからコンパイル ----------------------------
+# .PHONY: gen-grpc
+# gen-grpc:
+# 	cd backend/internal/1_framework/parameter/grpc && \
+# 	PATH=$(PWD)/backend/bin:$$PATH protoc \
+# 		--go_out=. \
+# 		--go_opt=paths=source_relative \
+# 		--go-grpc_out=. \
+# 		--go-grpc_opt=paths=source_relative \
+# 		*.proto
 
 
 # ----------------------------

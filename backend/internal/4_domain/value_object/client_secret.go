@@ -4,12 +4,11 @@ import (
 	"context"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
-const (
-	clientSecretLengthMax = 99999999999
-	clientSecretLengthMin = 0
+var (
+	clientSecretMaxLength uint = 999
+	clientSecretMinLength uint = 0
 )
 
 type ClientSecret struct {
@@ -35,10 +34,13 @@ func (receiver *ClientSecret) SetValue(
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
+	minLength := uint(clientSecretMinLength)
+	maxLength := uint(clientSecretMaxLength)
+
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(clientSecretLengthMax),
-		primitiveString.WithMinLength(clientSecretLengthMin),
+		primitiveString.WithMaxLength(&maxLength),
+		primitiveString.WithMinLength(&minLength),
 	)
 
 	receiver.content.Validation()
@@ -48,7 +50,6 @@ func (receiver *ClientSecret) SetValue(
 		)
 	}
 }
-
 func (receiver *ClientSecret) GetError() error {
 	return receiver.err
 }
@@ -58,7 +59,6 @@ func (receiver *ClientSecret) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *ClientSecret) GetValue() string {

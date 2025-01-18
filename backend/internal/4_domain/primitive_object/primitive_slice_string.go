@@ -5,19 +5,19 @@ import (
 	"sort"
 )
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveSliceString struct {
 	err       error // バリデーションエラーを格納
 	value     []PrimitiveString
-	isNil     bool // nil状態を示すフラグ
-	MaxLength int  // 最大列長 (-1は制限なし)
-	MinLength int  // 最小列長 (-1は制限なし)
+	isNil     bool  // nil状態を示すフラグ
+	MaxLength *uint // 最大列長
+	MinLength *uint // 最小列長
 }
 
-// --------------------------------------
+// ______________________________________
 type PrimitiveSliceStringOption func(*PrimitiveSliceString)
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithError(
 	err error,
 ) PrimitiveSliceStringOption {
@@ -26,7 +26,7 @@ func (receiver *PrimitiveSliceString) WithError(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithValue(
 	value []PrimitiveString,
 ) PrimitiveSliceStringOption {
@@ -41,7 +41,7 @@ func (receiver *PrimitiveSliceString) WithValue(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithIsNil(
 	isNil bool,
 ) PrimitiveSliceStringOption {
@@ -50,25 +50,25 @@ func (receiver *PrimitiveSliceString) WithIsNil(
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithMaxLength(
-	value int,
+	value *uint,
 ) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.MaxLength = value
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) WithMinLength(
-	value int,
+	value *uint,
 ) PrimitiveSliceStringOption {
 	return func(s *PrimitiveSliceString) {
 		s.MinLength = value
 	}
 }
 
-// --------------------------------------
+// ______________________________________
 func NewPrimitiveSliceString(
 	options ...PrimitiveSliceStringOption,
 ) (
@@ -77,9 +77,9 @@ func NewPrimitiveSliceString(
 	primitiveSliceString = &PrimitiveSliceString{
 		err:       nil,
 		value:     []PrimitiveString{},
-		isNil:     false,
-		MaxLength: -1,
-		MinLength: -1,
+		isNil:     true,
+		MaxLength: nil,
+		MinLength: nil,
 	}
 
 	for _, option := range options {
@@ -89,26 +89,26 @@ func NewPrimitiveSliceString(
 	return
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) GetError() error {
 	return receiver.err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetError(
 	err error,
 ) {
 	receiver.err = err
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetErrorString(
 	errString string,
 ) {
@@ -120,7 +120,7 @@ func (receiver *PrimitiveSliceString) SetErrorString(
 	)
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 	if receiver.isNil {
 		receiver.SetErrorString("is nil")
@@ -129,7 +129,7 @@ func (receiver *PrimitiveSliceString) GetValue() []PrimitiveString {
 	return receiver.value
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SetValue(
 	valueList []PrimitiveString,
 ) {
@@ -141,38 +141,34 @@ func (receiver *PrimitiveSliceString) SetValue(
 	receiver.value = valueList
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SortAsc() {
 	sort.Slice(receiver.value, func(i, j int) bool {
 		return receiver.value[i].value < receiver.value[j].value
 	})
 }
 
-// --------------------------------------
+// ______________________________________
 func (receiver *PrimitiveSliceString) SortDesc() {
 	sort.Slice(receiver.value, func(i, j int) bool {
 		return receiver.value[i].value > receiver.value[j].value
 	})
 }
 
-// --------------------------------------
-func (receiver *PrimitiveSliceString) Validation() error {
+// ______________________________________
+func (receiver *PrimitiveSliceString) Validation() {
 	if receiver.isNil {
-		return nil
+		return
 	}
 
-	if receiver.MaxLength != -1 && len(receiver.value) > receiver.MaxLength {
-		return fmt.Errorf(
-			"PrimitiveSliceString: length exceeds maximum allowed (%d)",
-			receiver.MaxLength,
-		)
+	receiver.ValidationMaxLength()
+	if receiver.err != nil {
+		return
 	}
 
-	if receiver.MinLength != -1 && len(receiver.value) < receiver.MinLength {
-		return fmt.Errorf(
-			"PrimitiveSliceString: length is less than minimum required (%d)",
-			receiver.MinLength,
-		)
+	receiver.ValidationMinLength()
+	if receiver.err != nil {
+		return
 	}
 
 	for _, value := range receiver.value {
@@ -183,5 +179,47 @@ func (receiver *PrimitiveSliceString) Validation() error {
 		}
 	}
 
-	return nil
+}
+
+// ______________________________________
+func (receiver *PrimitiveSliceString) ValidationMaxLength() {
+	if receiver.MaxLength == nil { // 上限値なし
+		return
+	}
+
+	if uint(len(receiver.value)) > *receiver.MaxLength {
+		receiver.SetError(
+			fmt.Errorf(
+				"PrimitiveSliceString: length exceeds maximum allowed (%d)",
+				*receiver.MaxLength,
+			),
+		)
+	}
+}
+
+// ______________________________________
+func (receiver *PrimitiveSliceString) ValidationMinLength() {
+	if receiver.MinLength == nil { // 下限値なし
+		return
+	}
+
+	if uint(len(receiver.value)) < *receiver.MinLength {
+		receiver.SetError(
+			fmt.Errorf(
+				"PrimitiveSliceString: length is less than minimum required (%d)",
+				*receiver.MinLength,
+			),
+		)
+	}
+}
+
+// ______________________________________
+func ExtractFirstIndexFromSliceString(
+	value []string,
+) *string {
+	firstString := ""
+	if len(value) != 0 {
+		firstString = value[0]
+	}
+	return &firstString
 }

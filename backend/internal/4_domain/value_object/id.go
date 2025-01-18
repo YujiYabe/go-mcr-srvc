@@ -4,12 +4,11 @@ import (
 	"context"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
-const (
-	idLengthMax = 99999999999
-	idLengthMin = 0
+var (
+	idMaxDigit uint = 9 // 9桁 = 9999999999まで可
+	idMinDigit uint = 0
 )
 
 type ID struct {
@@ -37,8 +36,8 @@ func (receiver *ID) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveInt(
 		primitiveInt.WithValue(value),
-		primitiveInt.WithMaxValue(idLengthMax),
-		primitiveInt.WithMinValue(idLengthMin),
+		primitiveInt.WithMaxDigit(&idMaxDigit),
+		primitiveInt.WithMinDigit(&idMinDigit),
 	)
 
 	receiver.content.Validation()
@@ -47,8 +46,8 @@ func (receiver *ID) SetValue(
 			ctx, receiver.content.GetError(),
 		)
 	}
-}
 
+}
 func (receiver *ID) GetError() error {
 	return receiver.err
 }
@@ -58,7 +57,6 @@ func (receiver *ID) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *ID) GetValue() int {

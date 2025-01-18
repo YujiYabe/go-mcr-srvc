@@ -6,12 +6,11 @@ import (
 	"regexp"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
-const (
-	mailAddressLengthMax = 30
-	mailAddressLengthMin = 1
+var (
+	mailAddressMaxLength uint = 30
+	mailAddressMinLength uint = 1
 )
 
 var mailAddressCheckSpell = []string{}
@@ -41,8 +40,8 @@ func (receiver *MailAddress) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(mailAddressLengthMax),
-		primitiveString.WithMinLength(mailAddressLengthMin),
+		primitiveString.WithMaxLength(&mailAddressMaxLength),
+		primitiveString.WithMinLength(&mailAddressMinLength),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
 
@@ -55,7 +54,6 @@ func (receiver *MailAddress) SetValue(
 	// メールアドレスのバリデーション
 	receiver.Validation(ctx)
 }
-
 func (receiver *MailAddress) GetValue() string {
 	return receiver.content.GetValue()
 }
@@ -69,7 +67,6 @@ func (receiver *MailAddress) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *MailAddress) SetErrorString(

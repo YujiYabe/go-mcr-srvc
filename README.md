@@ -34,7 +34,7 @@ string や int の基本的なデータ型に対するロジックを定義。
 primitive_object を利用して個別のデータ型を定義。  
 メールアドレスフォーマットチェックなど
 
-## [struct_object](backend/internal/4_domain/struct_object)
+## [group_object](backend/internal/4_domain/group_object)
 
 value_object を複数組み合わせてドメインモデルを定義。
 

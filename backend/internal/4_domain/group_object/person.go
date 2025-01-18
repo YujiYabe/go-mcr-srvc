@@ -4,7 +4,7 @@ import (
 	"context"
 
 	valueObject "backend/internal/4_domain/value_object"
-	"backend/pkg"
+	logger "backend/internal/logger"
 )
 
 type Person struct {
@@ -18,20 +18,6 @@ type NewPersonArgs struct {
 	ID          *int
 	Name        *string
 	MailAddress *string
-}
-
-func (receiver *Person) GetError() error {
-	return receiver.err
-}
-
-func (receiver *Person) SetError(
-	ctx context.Context,
-	err error,
-) {
-	if receiver.err == nil {
-		receiver.err = err
-		pkg.Logging(ctx, receiver.GetError())
-	}
 }
 
 func NewPerson(
@@ -61,4 +47,18 @@ func NewPerson(
 	}
 
 	return
+}
+
+func (receiver *Person) GetError() error {
+	return receiver.err
+}
+
+func (receiver *Person) SetError(
+	ctx context.Context,
+	err error,
+) {
+	if receiver.err == nil {
+		receiver.err = err
+		logger.Logging(ctx, receiver.GetError())
+	}
 }

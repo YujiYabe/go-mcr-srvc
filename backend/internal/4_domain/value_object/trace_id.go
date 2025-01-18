@@ -3,8 +3,9 @@ package value_object
 import (
 	"context"
 
+	"github.com/google/uuid"
+
 	primitiveObject "backend/internal/4_domain/primitive_object"
-	"backend/pkg"
 )
 
 const (
@@ -12,9 +13,9 @@ const (
 	TraceIDContextName primitiveObject.ContextKey = "traceID"
 )
 
-const (
-	traceIDLengthMax = 99999999999
-	traceIDLengthMin = 0
+var (
+	traceIDMaxLength uint = 36 // length of uuid
+	traceIDMinLength uint = 36 // length of uuid
 )
 
 type TraceID struct {
@@ -38,11 +39,16 @@ func (receiver *TraceID) SetValue(
 	value *string,
 ) {
 	primitiveString := &primitiveObject.PrimitiveString{}
+	if value == nil {
+		// デフォルト値を設定
+		newUUID := uuid.New().String()
+		value = &newUUID
+	}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(traceIDLengthMax),
-		primitiveString.WithMinLength(traceIDLengthMin),
+		primitiveString.WithMaxLength(&traceIDMaxLength),
+		primitiveString.WithMinLength(&traceIDMinLength),
 	)
 
 	receiver.content.Validation()
@@ -50,7 +56,6 @@ func (receiver *TraceID) SetValue(
 		receiver.SetError(ctx, receiver.content.GetError())
 	}
 }
-
 func (receiver *TraceID) GetValue() string {
 	return receiver.content.GetValue()
 }
@@ -64,17 +69,16 @@ func (receiver *TraceID) SetError(
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.err)
 }
 
 func GetTraceID(
 	ctx context.Context,
 ) (
-	traceIDString string,
+	value string,
 ) {
 	traceID, ok := ctx.Value(TraceIDContextName).(string)
 	if ok {
-		traceIDString = traceID
+		value = traceID
 	}
 
 	return

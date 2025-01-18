@@ -4,12 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	"backend/pkg"
+	primitiveObject "backend/internal/4_domain/primitive_object"
+)
+
+var (
+// permissionListMaxLength = 50
+// permissionListMinLength = 1
 )
 
 const (
-// permissionListLengthMax = 50
-// permissionListLengthMin = 1
+	PermissionListMetaName    primitiveObject.ContextKey = "permissions"
+	PermissionListContextName primitiveObject.ContextKey = "permissionList"
 )
 
 type PermissionList struct {
@@ -48,16 +53,11 @@ func (receiver *PermissionList) SetValue(
 	}
 }
 
-// func (receiver *PermissionList) GetValue() string {
-// 	return receiver.content.GetValue()
-// }
-
 func (receiver *PermissionList) SetError(
 	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
-	pkg.Logging(ctx, receiver.GetError())
 }
 
 func (receiver *PermissionList) GetError() error {
@@ -77,6 +77,17 @@ func (receiver *PermissionList) SetErrorString(
 	)
 }
 
-// func (receiver *PermissionList) GetIsNil() bool {
-// 	return receiver.content.GetIsNil()
-// }
+func (receiver *PermissionList) GetSliceValue() (
+	sliceValue []string,
+) {
+	sliceValue = []string{}
+
+	for _, permission := range receiver.content {
+		sliceValue = append(
+			sliceValue,
+			permission.GetValue(),
+		)
+	}
+
+	return sliceValue
+}
