@@ -28,10 +28,9 @@
 /db/engine/mariadb/data/*
 /db/engine/redis/data/*
 /db/engine/localstack-data
-.envrc
-/direnv/*
-direnv
 db/tool/phpmyadmin/sessions/*
+.envrc
+direnv
 
 */tmp/main
 backend/main
