@@ -2,7 +2,9 @@ package logger
 
 import (
 	"context"
+	"flag"
 	"fmt"
+	"log"
 	"runtime"
 	"strings"
 
@@ -59,8 +61,17 @@ func Logging(
 	ctx context.Context,
 	data interface{},
 ) {
+	// テスト中であればロギングしない
+	if flag.Lookup("test.v") != nil {
+		log.Println("run under go test")
+		return
+	}
+
 	_, fullPath, line, _ := runtime.Caller(1)
-	trimPath := strings.TrimPrefix(fullPath, "/go/src/backend/")
+	trimPath := fullPath
+	if idx := strings.Index(fullPath, "internal/"); idx != -1 {
+		trimPath = fullPath[idx:]
+	}
 
 	logger := logrus.WithFields(logrus.Fields{
 		"file": fmt.Sprintf("%s:%d", trimPath, line),

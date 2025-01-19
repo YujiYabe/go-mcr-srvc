@@ -131,10 +131,14 @@ func newServerConfig(
 	viperViper *viper.Viper,
 ) {
 	ServerConfig = serverConfig{
-		BackendHost: "backend",
+		BackendHost: viperViper.GetString("BACKEND_HOST"),
 		GoEchoPort:  viperViper.GetString("GO_ECHO_PORT"),
 		GRPCPort:    viperViper.GetString("GRPC_PORT"),
-		GRPCAddress: fmt.Sprintf("backend:%s", viperViper.GetString("GRPC_PORT")),
+		GRPCAddress: fmt.Sprintf(
+			"%s:%s",
+			viperViper.GetString("BACKEND_HOST"),
+			viperViper.GetString("GRPC_PORT"),
+		),
 	}
 }
 
@@ -142,10 +146,11 @@ func newDatabaseConfig(
 	viperViper *viper.Viper,
 ) {
 	dsn := fmt.Sprintf(
-		"host=postgres user=%s password=%s port=%s TimeZone=%s dbname=app sslmode=disable",
+		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=app sslmode=disable",
+		viperViper.GetString("POSTGRES_HOST"),
 		viperViper.GetString("POSTGRES_USER"),
 		viperViper.GetString("POSTGRES_PASSWORD"),
-		viperViper.GetString("POSTGRES_BACK_PORT"),
+		viperViper.GetString("POSTGRES_FRONT_PORT"),
 		viperViper.GetString("TZ"),
 	)
 
