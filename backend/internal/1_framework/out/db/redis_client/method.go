@@ -3,7 +3,7 @@ package redis_client
 import (
 	"context"
 
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 // ResetPlaceListInRedis ...

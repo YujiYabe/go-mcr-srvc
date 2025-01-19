@@ -5,7 +5,7 @@ import (
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	groupObject "backend/internal/4_domain/group_object"
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 // GetPersonList ...

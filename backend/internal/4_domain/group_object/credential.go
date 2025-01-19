@@ -4,7 +4,7 @@ import (
 	"context"
 
 	valueObject "backend/internal/4_domain/value_object"
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 type Credential struct {

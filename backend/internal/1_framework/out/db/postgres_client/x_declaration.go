@@ -10,7 +10,7 @@ import (
 
 	"backend/internal/2_adapter/gateway"
 	"backend/internal/env"
-	logger "backend/internal/logger"
+	"backend/internal/logger"
 )
 
 type (
