@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 set -e
+echo $(pwd)
+source ./internal/env/lcl.env
 
-# Host and port hardcoded for LocalStack
-host_name="localstack"
-# host_name="localhost"
-port="4566"
-url="http://${host_name}:${port}"
+url=$AWS_ENDPOINT
 
 # Command to execute after LocalStack is ready
 cmd="$@"
