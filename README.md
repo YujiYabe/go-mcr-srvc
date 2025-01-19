@@ -8,6 +8,7 @@
 ### 立ち上げ
 
 ```
+make install-tools
 make build
 make up
 ```
