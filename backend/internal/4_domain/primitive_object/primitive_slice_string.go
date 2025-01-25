@@ -214,6 +214,16 @@ func (receiver *PrimitiveSliceString) ValidationMinLength() {
 }
 
 // ______________________________________
+// []PrimitiveString を []string に変換して出力する関数
+func (receiver *PrimitiveSliceString) ToSliceString() []string {
+	result := make([]string, len(receiver.value))
+	for i, v := range receiver.value {
+		result[i] = v.GetValue()
+	}
+	return result
+}
+
+// ______________________________________
 func ExtractFirstIndexFromSliceString(
 	value []string,
 ) *string {

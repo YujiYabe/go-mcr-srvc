@@ -194,16 +194,12 @@ func (receiver *PrimitiveSliceInt) ValidationMin() {
 
 // ______________________________________
 // GetValue returns the underlying int slice
-func (receiver *PrimitiveSliceInt) GetValue() []int {
+func (receiver *PrimitiveSliceInt) GetValue() []PrimitiveInt {
 	if receiver.isNil {
 		return nil
 	}
 
-	result := make([]int, len(receiver.value))
-	for i, v := range receiver.value {
-		result[i] = v.GetValue()
-	}
-	return result
+	return receiver.value
 }
 
 // ______________________________________
@@ -222,6 +218,7 @@ func (receiver *PrimitiveSliceInt) SetMinLength(
 	receiver.minLength = minLength
 }
 
+// ______________________________________
 // SortDesc sorts the slice in descending order
 func (receiver *PrimitiveSliceInt) SortDesc() {
 	if receiver.isNil || len(receiver.value) == 0 {
@@ -239,6 +236,7 @@ func (receiver *PrimitiveSliceInt) SortDesc() {
 	}
 }
 
+// ______________________________________
 // SortAsc sorts the slice in ascending order
 func (receiver *PrimitiveSliceInt) SortAsc() {
 	if receiver.isNil || len(receiver.value) == 0 {
@@ -253,4 +251,18 @@ func (receiver *PrimitiveSliceInt) SortAsc() {
 			}
 		}
 	}
+}
+
+// PrimitiveSliceInt を []int に変換して出力する関数
+func (receiver *PrimitiveSliceInt) ToSliceInt() []int {
+	if receiver.isNil {
+		return nil
+	}
+
+	result := make([]int, len(receiver.value))
+	for i, v := range receiver.value {
+		result[i] = v.GetValue()
+	}
+	return result
+
 }
