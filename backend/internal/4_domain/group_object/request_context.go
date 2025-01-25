@@ -15,31 +15,31 @@ const (
 )
 
 type RequestContext struct {
-	err              error
-	RequestStartTime valueObject.RequestStartTime
-	TraceID          valueObject.TraceID
-	ClientIP         valueObject.ClientIP
-	UserAgent        valueObject.UserAgent
-	UserID           valueObject.UserID
-	AccessToken      valueObject.AccessToken
-	TenantID         valueObject.TenantID
-	Locale           valueObject.Locale
-	TimeZone         valueObject.TimeZone
-	TimeOutSecond    valueObject.TimeOutSecond
-	PermissionList   valueObject.PermissionList
+	err               error                         // contextに含める構造体作成時に発生したエラーを格納
+	TimeOutMillSecond valueObject.TimeOutMillSecond // RequestStartTimeからの経過時間を格納
+	RequestStartTime  valueObject.RequestStartTime  // httpかgrpcのリクエスト開始時間を格納
+	TraceID           valueObject.TraceID           // uuidを格納
+	ClientIP          valueObject.ClientIP          // httpアクセス元のIPを格納
+	UserAgent         valueObject.UserAgent         // httpアクセス元のUserAgentを格納
+	UserID            valueObject.UserID            // 認証ユーザーIDを格納
+	AccessToken       valueObject.AccessToken       // 認証トークンを格納
+	TenantID          valueObject.TenantID          // 所属テナントIDを格納
+	Locale            valueObject.Locale            // ロケールを格納
+	TimeZone          valueObject.TimeZone          // タイムゾーンを格納
+	PermissionList    valueObject.PermissionList    // ユーザー権限を格納
 }
 
 type NewRequestContextArgs struct {
-	RequestStartTime *int64
-	TraceID          *string
-	ClientIP         *string
-	UserAgent        *string
-	UserID           *string
-	AccessToken      *string
-	TenantID         *string
-	Locale           *string
-	TimeZone         *string
-	PermissionList   []string
+	RequestStartTime *int64   //
+	TraceID          *string  //
+	ClientIP         *string  //
+	UserAgent        *string  //
+	UserID           *string  //
+	AccessToken      *string  //
+	TenantID         *string  //
+	Locale           *string  //
+	TimeZone         *string  //
+	PermissionList   []string //
 }
 
 func NewRequestContext(
@@ -50,6 +50,7 @@ func NewRequestContext(
 ) {
 	requestContext = &RequestContext{}
 
+	// ______________________________________
 	requestContext.RequestStartTime = valueObject.NewRequestStartTime(ctx, args.RequestStartTime)
 	if requestContext.RequestStartTime.GetError() != nil {
 		logger.Logging(ctx, requestContext.RequestStartTime.GetError())
@@ -57,6 +58,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.TraceID = valueObject.NewTraceID(ctx, args.TraceID)
 	if requestContext.TraceID.GetError() != nil {
 		logger.Logging(ctx, requestContext.TraceID.GetError())
@@ -64,6 +66,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.ClientIP = valueObject.NewClientIP(ctx, args.ClientIP)
 	if requestContext.ClientIP.GetError() != nil {
 		logger.Logging(ctx, requestContext.ClientIP.GetError())
@@ -71,6 +74,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.UserAgent = valueObject.NewUserAgent(ctx, args.UserAgent)
 	if requestContext.UserAgent.GetError() != nil {
 		logger.Logging(ctx, requestContext.UserAgent.GetError())
@@ -78,6 +82,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.Locale = valueObject.NewLocale(ctx, args.Locale)
 	if requestContext.Locale.GetError() != nil {
 		logger.Logging(ctx, requestContext.Locale.GetError())
@@ -85,6 +90,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.TimeZone = valueObject.NewTimeZone(ctx, args.TimeZone)
 	if requestContext.TimeZone.GetError() != nil {
 		logger.Logging(ctx, requestContext.TimeZone.GetError())
@@ -92,6 +98,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.UserID = valueObject.NewUserID(ctx, args.UserID)
 	if requestContext.UserID.GetError() != nil {
 		logger.Logging(ctx, requestContext.UserID.GetError())
@@ -99,6 +106,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.AccessToken = valueObject.NewAccessToken(ctx, args.AccessToken)
 	if requestContext.AccessToken.GetError() != nil {
 		logger.Logging(ctx, requestContext.AccessToken.GetError())
@@ -106,6 +114,7 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestContext.TenantID = valueObject.NewTenantID(ctx, args.TenantID)
 	if requestContext.TenantID.GetError() != nil {
 		logger.Logging(ctx, requestContext.TenantID.GetError())
@@ -113,15 +122,15 @@ func NewRequestContext(
 		return
 	}
 
+	// ______________________________________
 	requestStartTime := requestContext.RequestStartTime
-	currentTimestamp := time.Now().UnixMilli()
-	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(valueObject.TimeOutSecondValue * time.Second).UnixMilli()
-	timeoutSecond := requestEndTime - currentTimestamp
+	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(valueObject.TimeOutMillSecondValue * time.Second).UnixMilli()
+	timeoutMillSecond := requestEndTime - time.Now().UnixMilli()
 
-	requestContext.TimeOutSecond = valueObject.NewTimeOutSecond(ctx, &timeoutSecond)
-	if requestContext.TimeOutSecond.GetError() != nil {
-		logger.Logging(ctx, requestContext.TimeOutSecond.GetError())
-		requestContext.SetError(ctx, requestContext.TimeOutSecond.GetError())
+	requestContext.TimeOutMillSecond = valueObject.NewTimeOutMillSecond(ctx, &timeoutMillSecond)
+	if requestContext.TimeOutMillSecond.GetError() != nil {
+		logger.Logging(ctx, requestContext.TimeOutMillSecond.GetError())
+		requestContext.SetError(ctx, requestContext.TimeOutMillSecond.GetError())
 		return
 	}
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 echo $(pwd)
-source ./internal/env/lcl.env
+source ./internal/env/local.env
 
 url=$AWS_ENDPOINT
 

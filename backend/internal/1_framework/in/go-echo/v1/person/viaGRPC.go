@@ -21,10 +21,10 @@ func viaGRPC(
 ) {
 	ctx := c.Request().Context()
 	requestContext := groupObject.GetRequestContext(ctx)
-	timeoutSecond := requestContext.TimeOutSecond.GetValue()
+	timeoutMillSecond := requestContext.TimeOutMillSecond.GetValue()
 	ctx, cancel := context.WithTimeout(
 		ctx,
-		time.Duration(timeoutSecond)*time.Millisecond,
+		time.Duration(timeoutMillSecond)*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 	done := make(chan struct{})
