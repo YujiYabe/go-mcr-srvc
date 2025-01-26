@@ -7,7 +7,7 @@ import (
 )
 
 // GetPersonList ...
-func (receiver *DBGateway) GetPersonList(
+func (receiver *GatewayDB) GetPersonList(
 	ctx context.Context,
 
 ) (
@@ -17,7 +17,7 @@ func (receiver *DBGateway) GetPersonList(
 }
 
 // GetPersonListByCondition ...
-func (receiver *DBGateway) GetPersonListByCondition(
+func (receiver *GatewayDB) GetPersonListByCondition(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (

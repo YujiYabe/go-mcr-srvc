@@ -8,7 +8,7 @@ import (
 )
 
 // FetchAccessToken ...
-func (receiver *ExternalGateway) FetchAccessToken(
+func (receiver *GatewayExternal) FetchAccessToken(
 	ctx context.Context,
 	credential groupObject.Credential,
 ) (

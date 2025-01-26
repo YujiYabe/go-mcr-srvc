@@ -6,17 +6,17 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
-type DBGateway struct {
+type GatewayDB struct {
 	ToPostgres ToPostgres
 	ToRedis    ToRedis
 }
 
-// NewDBGateway ...
-func NewDBGateway(
+// NewGatewayDB ...
+func NewGatewayDB(
 	toPostgres ToPostgres,
 	toRedis ToRedis,
-) *DBGateway {
-	return &DBGateway{
+) *GatewayDB {
+	return &GatewayDB{
 		ToPostgres: toPostgres,
 		ToRedis:    toRedis,
 	}

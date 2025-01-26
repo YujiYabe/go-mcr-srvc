@@ -3,13 +3,13 @@ package usecase
 // NewUseCase ...
 func NewUseCase(
 	toDomain ToDomain,
-	toDBGateway ToDBGateway,
-	toExternalGateway ToExternalGateway,
+	toGatewayDB ToGatewayDB,
+	toGatewayExternal ToGatewayExternal,
 ) ToUseCase {
 	return &useCase{
 		ToDomain:          toDomain,
-		ToDBGateway:       toDBGateway,
-		ToExternalGateway: toExternalGateway,
+		ToGatewayDB:       toGatewayDB,
+		ToGatewayExternal: toGatewayExternal,
 	}
 }
 
@@ -17,7 +17,7 @@ type (
 	// useCase ...
 	useCase struct {
 		ToDomain          ToDomain
-		ToDBGateway       ToDBGateway
-		ToExternalGateway ToExternalGateway
+		ToGatewayDB       ToGatewayDB
+		ToGatewayExternal ToGatewayExternal
 	}
 )

@@ -8,8 +8,8 @@ import (
 
 type (
 
-	// ToDBGateway ...
-	ToDBGateway interface {
+	// ToGatewayDB ...
+	ToGatewayDB interface {
 		GetPersonList(
 			ctx context.Context,
 		) (

@@ -7,7 +7,7 @@ import (
 )
 
 // ViaGRPC ...
-func (receiver *ExternalGateway) ViaGRPC(
+func (receiver *GatewayExternal) ViaGRPC(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (

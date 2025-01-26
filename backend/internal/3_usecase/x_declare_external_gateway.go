@@ -9,8 +9,8 @@ import (
 
 type (
 
-	// ToExternalGateway ...
-	ToExternalGateway interface {
+	// ToGatewayExternal ...
+	ToGatewayExternal interface {
 		FetchAccessToken(
 			ctx context.Context,
 			credential groupObject.Credential,

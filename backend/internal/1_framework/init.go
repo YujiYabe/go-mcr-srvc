@@ -25,8 +25,8 @@ type (
 // NewApp ...
 func NewApp() *app {
 	ctrl := controller.NewController(
-		redisClient.NewToRedis(),
 		postgresClient.NewToPostgres(),
+		redisClient.NewToRedis(),
 		auth0Client.NewToAuth0(),
 		grpcClient.NewToGRPC(),
 	)

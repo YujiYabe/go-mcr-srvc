@@ -7,17 +7,17 @@ import (
 	valueObject "backend/internal/4_domain/value_object"
 )
 
-type ExternalGateway struct {
+type GatewayExternal struct {
 	ToAuth0 ToAuth0
 	ToGRPC  ToGRPC
 }
 
-// NewExternalGateway ...
-func NewExternalGateway(
+// NewGatewayExternal ...
+func NewGatewayExternal(
 	toAuth0 ToAuth0,
 	toGRPC ToGRPC,
-) *ExternalGateway {
-	return &ExternalGateway{
+) *GatewayExternal {
+	return &GatewayExternal{
 		ToAuth0: toAuth0,
 		ToGRPC:  toGRPC,
 	}

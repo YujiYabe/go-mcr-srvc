@@ -3,7 +3,7 @@ package redis_client
 import (
 	"github.com/redis/go-redis/v9"
 
-	dbGateway "backend/internal/2_adapter/gateway/db"
+	gatewayDB "backend/internal/2_adapter/gateway/db"
 )
 
 type (
@@ -15,7 +15,7 @@ type (
 
 // NewToRedis ...
 func NewToRedis() (
-	toRedis dbGateway.ToRedis,
+	toRedis gatewayDB.ToRedis,
 ) {
 	conn := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6739",
