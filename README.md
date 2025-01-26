@@ -19,7 +19,7 @@ brew install xo/xo/xo
 
 # clean architecture
 
-<img src="doc/ca.png">
+<img src="doc/ca.drawio.png">
 
 # ddd (value object)
 
@@ -27,12 +27,12 @@ brew install xo/xo/xo
 
 ## [primitive_object](backend/internal/4_domain/primitive_object)
 
-string や int の基本的なデータ型に対するロジックを定義。  
+string や int の基本的なデータ型に対するロジックを定義。
 文字列の長さチェックや nil 判定など
 
 ## [value_object](backend/internal/4_domain/value_object)
 
-primitive_object を利用して個別のデータ型を定義。  
+primitive_object を利用して個別のデータ型を定義。
 メールアドレスフォーマットチェックなど
 
 ## [group_object](backend/internal/4_domain/group_object)
@@ -62,21 +62,25 @@ http request を grpc に変換して grpc サーバーにリクエストを送�
 マイクロサービス間の共通データ項目を定義。
 
 ```
-	RequestStartTime  httpかgrpcのリクエスト開始時間を格納
-	TraceID           uuidを格納
-	ClientIP          httpアクセス元のIPを格納
-	UserAgent         httpアクセス元のUserAgentを格納
-	UserID            認証ユーザーIDを格納
-	AccessToken       認証トークンを格納
-	TenantID          所属テナントIDを格納
-	Locale            ロケールを格納
-	TimeZone          タイムゾーンを格納
-	PermissionList    ユーザー権限を格納
+RequestStartTime  httpかgrpcのリクエスト開始時間を格納
+TraceID           uuidを格納
+ClientIP          httpアクセス元のIPを格納
+UserAgent         httpアクセス元のUserAgentを格納
+UserID            認証ユーザーIDを格納
+AccessToken       認証トークンを格納
+TenantID          所属テナントIDを格納
+Locale            ロケールを格納
+TimeZone          タイムゾーンを格納
+PermissionList    ユーザー権限を格納
 ```
 
 RequestStartTime を利用して、マイクロサーバは timeout を設定する。
 
 # dev environment
 
-hot reload  
+hot reload
 debug mode
+
+```
+
+```
