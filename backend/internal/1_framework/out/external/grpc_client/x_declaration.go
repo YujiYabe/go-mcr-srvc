@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"backend/internal/2_adapter/gateway"
+	externalGateway "backend/internal/2_adapter/gateway/external"
 	"backend/internal/logger"
 )
 
@@ -21,7 +21,7 @@ type (
 
 // NewToGRPC ...
 func NewToGRPC() (
-	toGRPC gateway.ToGRPC,
+	toGRPC externalGateway.ToGRPC,
 ) {
 	ctx := context.Background()
 	conn, err := open(ctx, 30)

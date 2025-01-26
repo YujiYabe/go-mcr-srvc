@@ -10,19 +10,22 @@ import (
 // NewUseCase ...
 func NewUseCase(
 	toDomain ToDomain,
-	toGateway ToGateway,
+	toDBGateway ToDBGateway,
+	toExternalGateway ToExternalGateway,
 ) ToUseCase {
 	return &useCase{
-		ToDomain:  toDomain,
-		ToGateway: toGateway,
+		ToDomain:          toDomain,
+		ToDBGateway:       toDBGateway,
+		ToExternalGateway: toExternalGateway,
 	}
 }
 
 type (
 	// useCase ...
 	useCase struct {
-		ToDomain  ToDomain
-		ToGateway ToGateway
+		ToDomain          ToDomain
+		ToDBGateway       ToDBGateway
+		ToExternalGateway ToExternalGateway
 	}
 
 	// ToUseCase ...
@@ -61,8 +64,8 @@ type (
 	ToDomain interface {
 	}
 
-	// ToGateway ...
-	ToGateway interface {
+	// ToDBGateway ...
+	ToDBGateway interface {
 		GetPersonList(
 			ctx context.Context,
 		) (
@@ -75,7 +78,10 @@ type (
 		) (
 			resPersonList groupObject.PersonList,
 		)
+	}
 
+	// ToExternalGateway ...
+	ToExternalGateway interface {
 		FetchAccessToken(
 			ctx context.Context,
 			credential groupObject.Credential,

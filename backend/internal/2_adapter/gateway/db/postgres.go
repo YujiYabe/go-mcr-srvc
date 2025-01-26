@@ -1,4 +1,4 @@
-package gateway
+package db_gateway
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 )
 
 // GetPersonList ...
-func (receiver *Gateway) GetPersonList(
+func (receiver *DBGateway) GetPersonList(
 	ctx context.Context,
 
 ) (
@@ -17,7 +17,7 @@ func (receiver *Gateway) GetPersonList(
 }
 
 // GetPersonListByCondition ...
-func (receiver *Gateway) GetPersonListByCondition(
+func (receiver *DBGateway) GetPersonListByCondition(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (

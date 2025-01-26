@@ -1,4 +1,4 @@
-package gateway
+package external_gateway
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 )
 
 // ViaGRPC ...
-func (receiver *Gateway) ViaGRPC(
+func (receiver *ExternalGateway) ViaGRPC(
 	ctx context.Context,
 	reqPerson groupObject.Person,
 ) (

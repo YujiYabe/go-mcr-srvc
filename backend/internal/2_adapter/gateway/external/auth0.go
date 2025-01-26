@@ -1,4 +1,4 @@
-package gateway
+package external_gateway
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 )
 
 // FetchAccessToken ...
-func (receiver *Gateway) FetchAccessToken(
+func (receiver *ExternalGateway) FetchAccessToken(
 	ctx context.Context,
 	credential groupObject.Credential,
 ) (

@@ -6,10 +6,10 @@ import (
 	goGRPC "backend/internal/1_framework/in/go-grpc"
 
 	//
-	auth0Client "backend/internal/1_framework/out/auth0_client"
 	postgresClient "backend/internal/1_framework/out/db/postgres_client"
 	redisClient "backend/internal/1_framework/out/db/redis_client"
-	grpcClient "backend/internal/1_framework/out/grpc_client"
+	auth0Client "backend/internal/1_framework/out/external/auth0_client"
+	grpcClient "backend/internal/1_framework/out/external/grpc_client"
 
 	//
 	"backend/internal/2_adapter/controller"

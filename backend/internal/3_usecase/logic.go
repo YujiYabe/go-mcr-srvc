@@ -17,7 +17,7 @@ func (receiver *useCase) GetPersonList(
 ) (
 	personList groupObject.PersonList,
 ) {
-	personList = receiver.ToGateway.GetPersonList(ctx)
+	personList = receiver.ToDBGateway.GetPersonList(ctx)
 	return
 }
 
@@ -28,7 +28,7 @@ func (receiver *useCase) GetPersonListByCondition(
 	resPersonList groupObject.PersonList,
 ) {
 
-	resPersonList = receiver.ToGateway.GetPersonListByCondition(
+	resPersonList = receiver.ToDBGateway.GetPersonListByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -41,7 +41,7 @@ func (receiver *useCase) FetchAccessToken(
 ) (
 	accessToken valueObject.AccessToken,
 ) {
-	accessToken = receiver.ToGateway.FetchAccessToken(
+	accessToken = receiver.ToExternalGateway.FetchAccessToken(
 		ctx,
 		credential,
 	)
@@ -54,7 +54,7 @@ func (receiver *useCase) ViaGRPC(
 ) (
 	resPersonList groupObject.PersonList,
 ) {
-	resPersonList = receiver.ToGateway.ViaGRPC(
+	resPersonList = receiver.ToExternalGateway.ViaGRPC(
 		ctx,
 		reqPerson,
 	)

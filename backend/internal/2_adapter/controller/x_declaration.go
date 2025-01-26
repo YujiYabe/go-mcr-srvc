@@ -3,7 +3,9 @@ package controller
 import (
 	"context"
 
-	"backend/internal/2_adapter/gateway"
+	externalGateway "backend/internal/2_adapter/gateway/external"
+	// externalGateway "backend/internal/2_adapter/gateway/external"
+	dbGateway "backend/internal/2_adapter/gateway/db"
 	usecase "backend/internal/3_usecase"
 
 	domain "backend/internal/4_domain"
@@ -13,24 +15,29 @@ import (
 
 // NewController ...
 func NewController(
-	ToRedis gateway.ToRedis,
-	ToPostgres gateway.ToPostgres,
-	ToAuth0 gateway.ToAuth0,
-	ToGRPC gateway.ToGRPC,
+	ToRedis dbGateway.ToRedis,
+	ToPostgres dbGateway.ToPostgres,
+	ToAuth0 externalGateway.ToAuth0,
+	ToGRPC externalGateway.ToGRPC,
 ) (
 	toController ToController,
 ) {
 	toDomain := domain.NewDomain()
-	toGateway := gateway.NewGateway(
-		ToRedis,
+
+	toDBGateway := dbGateway.NewDBGateway(
 		ToPostgres,
+		ToRedis,
+	)
+
+	toExternalGateway := externalGateway.NewExternalGateway(
 		ToAuth0,
 		ToGRPC,
 	)
 
 	useCase := usecase.NewUseCase(
 		toDomain,
-		toGateway,
+		toDBGateway,
+		toExternalGateway,
 	)
 
 	toController = &controller{

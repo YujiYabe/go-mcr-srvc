@@ -8,7 +8,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"backend/internal/2_adapter/gateway"
+	dbGateway "backend/internal/2_adapter/gateway/db"
 	"backend/internal/env"
 	"backend/internal/logger"
 )
@@ -21,7 +21,7 @@ type (
 )
 
 // NewToPostgres ...
-func NewToPostgres() gateway.ToPostgres {
+func NewToPostgres() dbGateway.ToPostgres {
 	ctx := context.Background()
 	conn, err := open(ctx, 30)
 	if err != nil {
