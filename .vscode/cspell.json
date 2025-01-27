@@ -17,6 +17,7 @@
 		"vendor/**",
 		"*.pb.go",
 		"*.xo.go",
+		"*.gen.go",
 		"Makefile",
 		"go.mod",
 		"go.sum",

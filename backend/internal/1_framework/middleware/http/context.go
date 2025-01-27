@@ -18,6 +18,26 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			locale := c.Request().Header.Get("Accept-Language")
 			timeZone := c.Request().Header.Get("Time-Zone")
 
+			// 他に取れそうな情報
+			// 認証関連:
+			// 		Authorization - 現在も取得している認証トークン
+			// 		Cookie - セッション情報やその他のクッキー
+			// キャッシュ制御:
+			// 		If-Modified-Since
+			// 		If-None-Match
+			// 		Cache-Control
+			// コンテンツネゴシエーション:
+			// 		Accept - クライアントが受け入れ可能なコンテンツタイプ
+			// 		Accept-Encoding - 圧縮形式
+			// 		Accept-Charset - 文字エンコーディング
+			// プロキシ/転送情報:
+			// 		X-Forwarded-For - プロキシを経由した場合の元のIPアドレス
+			// 		X-Forwarded-Proto - 元のプロトコル
+			// 		X-Request-ID - リクエスト追跡用ID
+			// セキュリティ:
+			// 		Origin - CORSリクエストの送信元
+			// 		Referer - リクエスト元のURL
+
 			newRequestContextArgs := &groupObject.NewRequestContextArgs{
 				ClientIP:  &clientIP,
 				UserAgent: &userAgent,
