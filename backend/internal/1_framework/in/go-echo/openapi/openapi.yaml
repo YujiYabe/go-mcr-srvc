@@ -7,9 +7,9 @@ servers:
   - url: https://api.example.com/v1
 
 paths:
-  /users:
+  /v1/users:
     $ref: './paths/users.yaml'
-  /health:
+  /v1/health:
     $ref: './paths/health.yaml'
 
 components:

@@ -30,13 +30,13 @@ type CreateUserJSONRequestBody = User
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Check service health
-	// (GET /health)
+	// (GET /v1/health)
 	GetHealth(ctx echo.Context) error
 	// Get all users
-	// (GET /users)
+	// (GET /v1/users)
 	GetUsers(ctx echo.Context, params GetUsersParams) error
 	// Create a user
-	// (POST /users)
+	// (POST /v1/users)
 	CreateUser(ctx echo.Context) error
 }
 
@@ -116,8 +116,8 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 		Handler: si,
 	}
 
-	router.GET(baseURL+"/health", wrapper.GetHealth)
-	router.GET(baseURL+"/users", wrapper.GetUsers)
-	router.POST(baseURL+"/users", wrapper.CreateUser)
+	router.GET(baseURL+"/v1/health", wrapper.GetHealth)
+	router.GET(baseURL+"/v1/users", wrapper.GetUsers)
+	router.POST(baseURL+"/v1/users", wrapper.CreateUser)
 
 }
