@@ -1,0 +1,11 @@
+get:
+  summary: Check service health
+  operationId: getHealth
+  responses:
+    '200':
+      description: Service is healthy
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "OK"

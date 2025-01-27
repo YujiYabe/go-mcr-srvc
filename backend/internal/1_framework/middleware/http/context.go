@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"

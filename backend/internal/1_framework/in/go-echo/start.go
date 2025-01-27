@@ -3,8 +3,8 @@ package goEcho
 import (
 	"log"
 
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 
 	v1 "backend/internal/1_framework/in/go-echo/v1"
 	"backend/internal/2_adapter/controller"

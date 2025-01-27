@@ -1,0 +1,25 @@
+openapi: 3.1.0
+info:
+  title: Sample API
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /users:
+    $ref: './paths/users.yaml'
+  /health:
+    $ref: './paths/health.yaml'
+
+components:
+  schemas:
+    User:
+      $ref: './components/schemas/User.yaml'
+    Error:
+      $ref: './components/schemas/Error.yaml'
+
+
+  responses:
+    NotFound:
+      $ref: './components/responses/NotFound.yaml'

@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    $ref: './UserProperties/id.yaml'
+  name:
+    $ref: './UserProperties/name.yaml'
+  email:
+    $ref: './UserProperties/email.yaml'
+required:
+  - id
+  - name
+  - email

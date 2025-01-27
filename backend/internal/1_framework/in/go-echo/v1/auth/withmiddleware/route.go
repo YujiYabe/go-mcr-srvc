@@ -1,7 +1,7 @@
 package withmiddleware
 
 import (
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 
 	httpMiddleware "backend/internal/1_framework/middleware/http"
 	"backend/internal/2_adapter/controller"

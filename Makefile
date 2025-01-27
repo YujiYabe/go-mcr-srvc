@@ -94,6 +94,16 @@ gen-grpc:
 		--go-grpc_opt=paths=source_relative \
 		{} \;
 
+# ----------------------------
+.PHONY: gen-openapi
+gen-openapi:
+	oapi-codegen \
+	-generate types,server \
+	-o backend/internal/1_framework/in/go-echo/openapi/api.gen.go \
+	-package openapi \
+	backend/internal/1_framework/in/go-echo/openapi/openapi.yaml 
+
+
 # # 指定ディレクトリに移動してからコンパイル ----------------------------
 # .PHONY: gen-grpc
 # gen-grpc:

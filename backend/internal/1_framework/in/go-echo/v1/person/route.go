@@ -1,7 +1,7 @@
 package person
 
 import (
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 
 	"backend/internal/2_adapter/controller"
 )
