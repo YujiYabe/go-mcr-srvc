@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 # get access token
-POST http://localhost:1234/v1/auth/withmiddleware/fetchAccessToken
+POST http://localhost:53234/v1/auth/withmiddleware/fetchAccessToken
 Content-Type: application/json
 
 {

@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	gatewayExternal "backend/internal/2_adapter/gateway/external"
+	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -40,7 +41,7 @@ func open(
 	count uint,
 ) (*GRPCClient, error) {
 	conn, err := grpc.NewClient(
-		"backend:3456",
+		env.ServerConfig.GRPCAddress,
 		grpc.WithTransportCredentials(
 			insecure.NewCredentials(),
 		),
