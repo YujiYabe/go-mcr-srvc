@@ -31,8 +31,7 @@ build:
 # ----------------------------
 .PHONY: debug
 debug:
-	DEBUG_MODE=true docker compose up
-
+	DEBUG_MODE=true docker compose --env-file ./backend/internal/env/local.env up
 
 # ----------------------------
 .PHONY: up

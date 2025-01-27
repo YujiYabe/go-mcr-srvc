@@ -4,7 +4,11 @@
 package openapi
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
+	"github.com/oapi-codegen/runtime"
 )
 
 // User defines model for User.
@@ -12,6 +16,12 @@ type User struct {
 	Email string `json:"email"`
 	Id    int    `json:"id"`
 	Name  string `json:"name"`
+}
+
+// GetUsersParams defines parameters for GetUsers.
+type GetUsersParams struct {
+	Name        *string `form:"name,omitempty" json:"name,omitempty"`
+	MailAddress *string `form:"mailAddress,omitempty" json:"mailAddress,omitempty"`
 }
 
 // CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
@@ -24,7 +34,7 @@ type ServerInterface interface {
 	GetHealth(ctx echo.Context) error
 	// Get all users
 	// (GET /users)
-	GetUsers(ctx echo.Context) error
+	GetUsers(ctx echo.Context, params GetUsersParams) error
 	// Create a user
 	// (POST /users)
 	CreateUser(ctx echo.Context) error
@@ -48,8 +58,24 @@ func (w *ServerInterfaceWrapper) GetHealth(ctx echo.Context) error {
 func (w *ServerInterfaceWrapper) GetUsers(ctx echo.Context) error {
 	var err error
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetUsersParams
+	// ------------- Optional query parameter "name" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "name", ctx.QueryParams(), &params.Name)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter name: %s", err))
+	}
+
+	// ------------- Optional query parameter "mailAddress" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "mailAddress", ctx.QueryParams(), &params.MailAddress)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter mailAddress: %s", err))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetUsers(ctx)
+	err = w.Handler.GetUsers(ctx, params)
 	return err
 }
 

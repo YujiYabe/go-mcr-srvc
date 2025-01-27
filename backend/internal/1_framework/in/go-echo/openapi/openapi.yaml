@@ -19,7 +19,6 @@ components:
     Error:
       $ref: './components/schemas/Error.yaml'
 
-
   responses:
     NotFound:
       $ref: './components/responses/NotFound.yaml'
