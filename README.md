@@ -17,7 +17,13 @@ make up
 
 brew install xo/xo/xo
 
+# ディレクトリ構成
+
+[go standard project layout](https://github.com/golang-standards/project-layout/blob/master/README_ja.md)
+
 # clean architecture
+
+internal 以下に clean architecture の構成
 
 <img src="doc/ca.drawio.png">
 
@@ -45,9 +51,9 @@ value_object を複数組み合わせてドメインモデルを定義。
 
 ## [grpc client](backend/internal/1_framework/out/grpc_client/logic.go)
 
-# rest server
+# http server
 
-## [rest server](backend/internal/1_framework/in/go-echo/v1/person/viaGRPC.go)
+## [http server](backend/internal/1_framework/in/go-echo/v1/person/viaGRPC.go)
 
 http request を grpc に変換して grpc サーバーにリクエストを送信。
 
