@@ -150,7 +150,7 @@ func newDatabaseConfig(
 		viperViper.GetString("POSTGRES_HOST"),
 		viperViper.GetString("POSTGRES_USER"),
 		viperViper.GetString("POSTGRES_PASSWORD"),
-		viperViper.GetString("POSTGRES_FRONT_PORT"),
+		viperViper.GetString("POSTGRES_BACK_PORT"),
 		viperViper.GetString("TZ"),
 	)
 

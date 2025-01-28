@@ -79,7 +79,8 @@ deadcode:
 # ----------------------------
 .PHONY: xo
 xo:
-	cd backend/internal/1_framework/db/postgres && xo schema postgres://user:user@localhost:15432/app?sslmode=disable
+	cd backend/internal/1_framework/out/db/postgres_client && \
+	xo schema postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_FRONT_PORT}/${POSTGRES_DB}?sslmode=disable
 
 
 # 指定ディレクトリ配下を再帰的に探してコンパイル ----------------------------
