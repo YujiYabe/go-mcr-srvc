@@ -19,7 +19,7 @@ var (
 
 type RequestStartTime struct {
 	err     error
-	content *primitiveObject.PrimitiveInt64
+	content *primitiveObject.PrimitiveIntX[int64]
 }
 
 func NewRequestStartTime(
@@ -39,7 +39,7 @@ func (receiver *RequestStartTime) SetValue(
 	ctx context.Context,
 	value *int64,
 ) {
-	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
+	primitiveIntX := &primitiveObject.PrimitiveIntX[int64]{}
 
 	if value == nil {
 		// デフォルト値を設定
@@ -47,10 +47,10 @@ func (receiver *RequestStartTime) SetValue(
 		value = &now
 	}
 
-	receiver.content = primitiveObject.NewPrimitiveInt64(
-		primitiveInt64.WithValue(value),
-		primitiveInt64.WithMaxDigit(&requestStartTimeMaxDigit),
-		primitiveInt64.WithMinDigit(&requestStartTimeMinDigit),
+	receiver.content = primitiveObject.NewPrimitiveIntX(
+		primitiveIntX.WithValue(value),
+		primitiveIntX.WithMaxDigit(&requestStartTimeMaxDigit),
+		primitiveIntX.WithMinDigit(&requestStartTimeMinDigit),
 	)
 
 	receiver.content.Validation()

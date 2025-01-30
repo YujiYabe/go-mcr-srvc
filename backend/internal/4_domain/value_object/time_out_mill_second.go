@@ -22,7 +22,7 @@ var (
 
 type TimeOutMillSecond struct {
 	err     error
-	content *primitiveObject.PrimitiveInt64
+	content *primitiveObject.PrimitiveIntX[int64]
 }
 
 func NewTimeOutMillSecond(
@@ -41,13 +41,12 @@ func (receiver *TimeOutMillSecond) SetValue(
 	ctx context.Context,
 	value *int64,
 ) {
-	primitiveInt64 := &primitiveObject.PrimitiveInt64{}
+	primitiveIntX := &primitiveObject.PrimitiveIntX[int64]{}
 
-	receiver.content = primitiveObject.NewPrimitiveInt64(
-		primitiveInt64.WithValue(value),
-
-		primitiveInt64.WithMaxDigit(&timeOutMillSecondMaxDigit),
-		primitiveInt64.WithMinDigit(&timeOutMillSecondMinDigit),
+	receiver.content = primitiveObject.NewPrimitiveIntX(
+		primitiveIntX.WithValue(value),
+		primitiveIntX.WithMaxDigit(&timeOutMillSecondMaxDigit),
+		primitiveIntX.WithMinDigit(&timeOutMillSecondMinDigit),
 	)
 
 	receiver.content.Validation()

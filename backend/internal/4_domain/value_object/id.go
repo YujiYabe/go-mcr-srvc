@@ -13,7 +13,7 @@ var (
 
 type ID struct {
 	err     error
-	content *primitiveObject.PrimitiveInt
+	content *primitiveObject.PrimitiveIntX[int]
 }
 
 func NewID(
@@ -32,12 +32,12 @@ func (receiver *ID) SetValue(
 	ctx context.Context,
 	value *int,
 ) {
-	primitiveInt := &primitiveObject.PrimitiveInt{}
+	primitiveIntX := &primitiveObject.PrimitiveIntX[int]{}
 
-	receiver.content = primitiveObject.NewPrimitiveInt(
-		primitiveInt.WithValue(value),
-		primitiveInt.WithMaxDigit(&idMaxDigit),
-		primitiveInt.WithMinDigit(&idMinDigit),
+	receiver.content = primitiveObject.NewPrimitiveIntX(
+		primitiveIntX.WithValue(value),
+		primitiveIntX.WithMaxDigit(&idMaxDigit),
+		primitiveIntX.WithMinDigit(&idMinDigit),
 	)
 
 	receiver.content.Validation()
