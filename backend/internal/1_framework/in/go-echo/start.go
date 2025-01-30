@@ -19,8 +19,8 @@ import (
 type (
 	// GoEcho ...
 	GoEcho struct {
-		EchoEcho   *echo.Echo
 		Controller controller.ToController
+		EchoEcho   *echo.Echo
 	}
 
 	// ServerInterfaceImpl は生成された ServerInterface を実装する構造体
@@ -36,8 +36,8 @@ func NewGoEcho(
 	goEcho *GoEcho,
 ) {
 	goEcho = &GoEcho{
-		EchoEcho:   NewEcho(),
 		Controller: controller,
+		EchoEcho:   NewEcho(),
 	}
 
 	return goEcho

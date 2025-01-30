@@ -13,26 +13,22 @@ import (
 	"backend/internal/env"
 )
 
-const (
-// timeFormat = "06-01-02-15:04:05.000000000"
-)
-
 // Server ...
 type Server struct {
-	grpcParameter.UnimplementedPersonServiceServer
 	Controller controller.ToController
+	grpcParameter.UnimplementedPersonServiceServer
 }
 
 // NewGoGRPC ...
 func NewGoGRPC(
-	ctrl controller.ToController,
+	controller controller.ToController,
 ) *GoGRPC {
-	d := &GoGRPC{
+	goGRPC := &GoGRPC{
 		Server: Server{
-			Controller: ctrl,
+			Controller: controller,
 		},
 	}
-	return d
+	return goGRPC
 }
 
 // Start ....

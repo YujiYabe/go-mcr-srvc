@@ -25,6 +25,7 @@
 		"docker-compose.yml"
 	],
 	"words": [
+		"confluentinc",
 		"dbname",
 		"gorm",
 		"keyfunc",
