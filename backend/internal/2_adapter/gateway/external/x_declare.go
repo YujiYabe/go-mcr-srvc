@@ -8,18 +8,21 @@ import (
 )
 
 type GatewayExternal struct {
-	ToAuth0 ToAuth0
-	ToGRPC  ToGRPC
+	ToAuth0  ToAuth0
+	ToGRPC   ToGRPC
+	ToPubSub ToPubSub
 }
 
 // NewGatewayExternal ...
 func NewGatewayExternal(
 	toAuth0 ToAuth0,
 	toGRPC ToGRPC,
+	toPubSub ToPubSub,
 ) *GatewayExternal {
 	return &GatewayExternal{
-		ToAuth0: toAuth0,
-		ToGRPC:  toGRPC,
+		ToAuth0:  toAuth0,
+		ToGRPC:   toGRPC,
+		ToPubSub: toPubSub,
 	}
 }
 
@@ -42,6 +45,13 @@ type (
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
+		)
+	}
+
+	// ToPubSub ...
+	ToPubSub interface {
+		PublishTestTopic(
+			ctx context.Context,
 		)
 	}
 )

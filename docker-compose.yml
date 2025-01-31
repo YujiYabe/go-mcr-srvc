@@ -50,6 +50,35 @@ services:
   #     - '${PWD}/backend/config/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh' # 起動時にリソース作成のスクリプトを実行する
   #     - '${PWD}/db/engine/localstack-data:/var/lib/localstack'
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.3
+    container_name: kafka
+    ports:
+      - '9092:9092'
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:v0.7.1
+    ports:
+      - '8080:8080'
+    depends_on:
+      - kafka
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
   backend:
     restart: always
     build:
@@ -79,8 +108,10 @@ services:
     links:
       - redis
       - postgres
+      - kafka
       # - localstack
     depends_on:
       - redis
       - postgres
+      - kafka
       # - localstack

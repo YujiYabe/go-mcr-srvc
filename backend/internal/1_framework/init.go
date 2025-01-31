@@ -10,6 +10,7 @@ import (
 	redisClient "backend/internal/1_framework/out/db/redis_client"
 	auth0Client "backend/internal/1_framework/out/external/auth0_client"
 	grpcClient "backend/internal/1_framework/out/external/grpc_client"
+	pubsubPublisher "backend/internal/1_framework/out/external/pubsub_publisher"
 
 	//
 	"backend/internal/2_adapter/controller"
@@ -29,6 +30,7 @@ func NewApp() *app {
 		redisClient.NewToRedis(),
 		auth0Client.NewToAuth0(),
 		grpcClient.NewToGRPC(),
+		pubsubPublisher.NewToPubSub(),
 	)
 	ctrl.Start()
 

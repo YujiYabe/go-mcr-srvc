@@ -32,6 +32,9 @@ type ServerInterface interface {
 	// Check service health
 	// (GET /v1/health)
 	GetHealth(ctx echo.Context) error
+	// send to pubsub
+	// (GET /v1/to-pubsub)
+	ToPubsub(ctx echo.Context) error
 	// Get all users
 	// (GET /v1/users)
 	GetUsers(ctx echo.Context, params GetUsersParams) error
@@ -51,6 +54,15 @@ func (w *ServerInterfaceWrapper) GetHealth(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.GetHealth(ctx)
+	return err
+}
+
+// ToPubsub converts echo context to params.
+func (w *ServerInterfaceWrapper) ToPubsub(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.ToPubsub(ctx)
 	return err
 }
 
@@ -117,6 +129,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	}
 
 	router.GET(baseURL+"/v1/health", wrapper.GetHealth)
+	router.GET(baseURL+"/v1/to-pubsub", wrapper.ToPubsub)
 	router.GET(baseURL+"/v1/users", wrapper.GetUsers)
 	router.POST(baseURL+"/v1/users", wrapper.CreateUser)
 

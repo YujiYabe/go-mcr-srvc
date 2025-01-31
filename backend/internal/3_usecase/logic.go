@@ -62,3 +62,9 @@ func (receiver *useCase) ViaGRPC(
 	time.Sleep(20 * time.Second)
 	return
 }
+
+func (receiver *useCase) PublishTestTopic(
+	ctx context.Context,
+) {
+	receiver.ToGatewayExternal.PublishTestTopic(ctx)
+}

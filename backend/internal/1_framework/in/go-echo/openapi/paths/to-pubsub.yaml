@@ -1,0 +1,11 @@
+get:
+  summary: send to pubsub
+  operationId: toPubsub
+  responses:
+    '200':
+      description: test
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "OK"

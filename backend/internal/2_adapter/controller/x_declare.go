@@ -18,6 +18,7 @@ func NewController(
 	ToRedis gatewayDB.ToRedis,
 	ToAuth0 gatewayExternal.ToAuth0,
 	ToGRPC gatewayExternal.ToGRPC,
+	ToPubSub gatewayExternal.ToPubSub,
 ) (
 	toController ToController,
 ) {
@@ -31,6 +32,7 @@ func NewController(
 	toGatewayExternal := gatewayExternal.NewGatewayExternal(
 		ToAuth0,
 		ToGRPC,
+		ToPubSub,
 	)
 
 	useCase := usecase.NewUseCase(
@@ -81,6 +83,10 @@ type (
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
+		)
+
+		PublishTestTopic(
+			ctx context.Context,
 		)
 	}
 )

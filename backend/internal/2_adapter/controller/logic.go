@@ -56,3 +56,9 @@ func (receiver *controller) ViaGRPC(
 	)
 	return
 }
+
+func (receiver *controller) PublishTestTopic(
+	ctx context.Context,
+) {
+	receiver.UseCase.PublishTestTopic(ctx)
+}

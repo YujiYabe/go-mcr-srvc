@@ -11,6 +11,7 @@ import (
 
 	"backend/internal/1_framework/in/go-echo/openapi"
 	v1 "backend/internal/1_framework/in/go-echo/v1"
+	v1ToPubsub "backend/internal/1_framework/in/go-echo/v1/topubsub"
 	v1users "backend/internal/1_framework/in/go-echo/v1/users"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/env"
@@ -119,4 +120,15 @@ func (receiver *ServerInterfaceImpl) CreateUser(ctx echo.Context) error {
 // GetHealth は /health GET エンドポイントの実装
 func (receiver *ServerInterfaceImpl) GetHealth(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, "OK")
+}
+
+// GetUsers は /users GET エンドポイントの実装
+func (receiver *ServerInterfaceImpl) ToPubsub(
+	echoContext echo.Context,
+) error {
+
+	return v1ToPubsub.PublishTestTopic(
+		echoContext,
+		receiver.Controller,
+	)
 }

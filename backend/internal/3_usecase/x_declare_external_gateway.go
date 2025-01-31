@@ -24,5 +24,9 @@ type (
 		) (
 			resPersonList groupObject.PersonList,
 		)
+
+		PublishTestTopic(
+			ctx context.Context,
+		)
 	}
 )

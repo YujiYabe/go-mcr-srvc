@@ -11,6 +11,8 @@ paths:
     $ref: './paths/users.yaml'
   /v1/health:
     $ref: './paths/health.yaml'
+  /v1/to-pubsub:
+    $ref: './paths/to-pubsub.yaml'
 
 components:
   schemas:
