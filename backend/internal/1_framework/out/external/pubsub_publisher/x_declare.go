@@ -39,9 +39,10 @@ func open(
 ) (*kafka.Producer, error) {
 	conn, err := kafka.NewProducer(
 		&kafka.ConfigMap{
-			"bootstrap.servers": "localhost:9092",
+			"bootstrap.servers": "kafka:9092",
 		},
 	)
+
 	if err != nil {
 		if count == 0 {
 			logger.Logging(ctx, err)

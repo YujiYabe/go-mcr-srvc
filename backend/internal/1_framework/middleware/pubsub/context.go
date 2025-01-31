@@ -12,13 +12,17 @@ import (
 	valueObject "backend/internal/4_domain/value_object"
 )
 
-func MetadataToContext(msg *kafka.Message) context.Context {
-	ctx := context.Background()
+func HeaderToContext(
+	headers []kafka.Header,
+) (
+	ctx context.Context,
+) {
+	ctx = context.Background()
 	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
 
 	// ________________________________
 	// pubsubのheaderから、traceIDを取得する
-	for _, header := range msg.Headers {
+	for _, header := range headers {
 		keyString := primitiveObject.ContextKey(header.Key)
 		valueString := string(header.Value)
 
@@ -62,7 +66,7 @@ func MetadataToContext(msg *kafka.Message) context.Context {
 	)
 	if requestContext.GetError() != nil {
 		log.Println(requestContext.GetError())
-		return ctx
+		return
 	}
 
 	ctx = context.WithValue(
@@ -71,6 +75,101 @@ func MetadataToContext(msg *kafka.Message) context.Context {
 		*requestContext,
 	)
 
-	return ctx
+	return
+}
+
+// contextからpubsubのheaderを生成する。MetadataToContextと逆の関数
+func ContextToHeader(
+	ctx context.Context,
+) (
+	headers []kafka.Header,
+) {
+	requestContext := groupObject.GetRequestContext(ctx)
+	if requestContext == nil {
+		return headers
+	}
+	headers = []kafka.Header{}
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.AccessTokenMetaName),
+			Value: []byte(requestContext.AccessToken.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.ClientIPMetaName),
+			Value: []byte(requestContext.AccessToken.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.ClientIPMetaName),
+			Value: []byte(requestContext.ClientIP.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.LocaleContextName),
+			Value: []byte(requestContext.Locale.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.RequestStartTimeContextName),
+			Value: []byte(requestContext.RequestStartTime.GetString()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.TenantIDContextName),
+			Value: []byte(requestContext.TenantID.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.TimeZoneContextName),
+			Value: []byte(requestContext.TimeZone.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.TraceIDContextName),
+			Value: []byte(requestContext.TraceID.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.UserAgentContextName),
+			Value: []byte(requestContext.UserAgent.GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key:   string(valueObject.UserIDContextName),
+			Value: []byte(requestContext.UserID.GetValue()),
+		},
+	)
+
+	return
 
 }

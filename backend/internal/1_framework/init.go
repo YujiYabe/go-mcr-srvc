@@ -4,6 +4,7 @@ import (
 	//
 	goEcho "backend/internal/1_framework/in/go-echo"
 	goGRPC "backend/internal/1_framework/in/go-grpc"
+	goPubSub "backend/internal/1_framework/in/go-pubsub"
 
 	//
 	postgresClient "backend/internal/1_framework/out/db/postgres_client"
@@ -18,8 +19,9 @@ import (
 
 type (
 	app struct {
-		goEcho *goEcho.GoEcho
-		goGRPC *goGRPC.GoGRPC
+		goEcho   *goEcho.GoEcho
+		goGRPC   *goGRPC.GoGRPC
+		goPubSub *goPubSub.GoPubSub
 	}
 )
 
@@ -35,8 +37,9 @@ func NewApp() *app {
 	ctrl.Start()
 
 	a := &app{
-		goGRPC: goGRPC.NewGoGRPC(ctrl),
-		goEcho: goEcho.NewGoEcho(ctrl),
+		goGRPC:   goGRPC.NewGoGRPC(ctrl),
+		goEcho:   goEcho.NewGoEcho(ctrl),
+		goPubSub: goPubSub.NewGoPubSub(ctrl),
 	}
 
 	return a
@@ -45,5 +48,6 @@ func NewApp() *app {
 // Start ...
 func (receiver *app) Start() {
 	go receiver.goEcho.Start()
-	receiver.goGRPC.Start()
+	go receiver.goGRPC.Start()
+	receiver.goPubSub.Start()
 }

@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+
+	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 )
 
 type UserMessage struct {
@@ -22,27 +24,31 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 ) {
 	topic := "test-topic"
 
-	// 構造体のメッセージを作成
 	message := UserMessage{
 		ID:        1,
 		Name:      "Alice",
 		Timestamp: time.Now(),
 	}
 
-	// JSON にエンコード
 	jsonData, err := json.Marshal(message)
 	if err != nil {
 		log.Fatalf("Failed to marshal JSON: %s", err)
 	}
 
-	// Kafka にメッセージを送信
-	err = receiver.Conn.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{
-			Topic:     &topic,
-			Partition: kafka.PartitionAny,
+	// Add headers to the message
+	headers := pubsubMiddleware.ContextToHeader(ctx)
+
+	err = receiver.Conn.Produce(
+		&kafka.Message{
+			TopicPartition: kafka.TopicPartition{
+				Topic:     &topic,
+				Partition: kafka.PartitionAny,
+			},
+			Value:   jsonData,
+			Headers: headers, // Add headers here
 		},
-		Value: jsonData,
-	}, nil)
+		nil,
+	)
 
 	if err != nil {
 		log.Printf("Failed to produce message: %s", err)

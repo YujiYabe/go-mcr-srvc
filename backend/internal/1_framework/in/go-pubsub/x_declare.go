@@ -3,69 +3,77 @@ package goPubSub
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
-	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 	"backend/internal/2_adapter/controller"
+	// pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 )
 
 // GoPubSub ...
 type GoPubSub struct {
-	Controller    controller.ToController
-	KafkaConsumer *kafka.Consumer
+	Controller controller.ToController
 }
 
 // NewGoPubSub ...
-func NewGoPubSub(
-	controller controller.ToController,
-) *GoPubSub {
-	goPubSub := &GoPubSub{
-		Controller:    controller,
-		KafkaConsumer: NewKafkaConsumer(),
+func NewGoPubSub(controller controller.ToController) *GoPubSub {
+	return &GoPubSub{
+		Controller: controller,
 	}
-	return goPubSub
 }
 
 // NewKafkaConsumer ...
+// kafkaではtopic毎にシングルトンの為、Consumerインスタンスを共有できない
 func NewKafkaConsumer() *kafka.Consumer {
-	consumer, err := kafka.NewConsumer(
-		&kafka.ConfigMap{
-			"bootstrap.servers": "localhost:9092",
-			"group.id":          "my-group",
-			"auto.offset.reset": "earliest",
-		},
-	)
-	if err != nil {
-		log.Fatalf("Failed to create consumer: %s", err)
-	}
-	// defer consumer.Close()
+	var consumer *kafka.Consumer
+	var err error
+	maxRetries := 20
 
+	for i := 0; i < maxRetries; i++ {
+		consumer, err = kafka.NewConsumer(
+			&kafka.ConfigMap{
+				"bootstrap.servers": "kafka:9092",
+				// "bootstrap.servers": "localhost:9092",
+				// "bootstrap.servers": "0.0.0.0:9092",
+				"group.id":          "my-group",
+				"auto.offset.reset": "earliest",
+			},
+		)
+		if err == nil {
+			break
+		}
+		time.Sleep(5 * time.Second)
+	}
+	if err != nil {
+		log.Fatalf("Failed to create consumer after retries: %s", err)
+	}
 	return consumer
 }
 
 // Start ....
 func (receiver *GoPubSub) Start() {
-	go receiver.subscribeTestTopic()
-	receiver.subscribeOtherTopic()
-
+	go receiver.subscribeOtherTopic()
+	receiver.subscribeTestTopic()
 }
 
 // subscribeTestTopic ....
 func (receiver *GoPubSub) subscribeTestTopic() {
-	err := receiver.KafkaConsumer.Subscribe("test-topic", nil)
+	consumer := NewKafkaConsumer()
+	err := consumer.Subscribe("test-topic", nil)
 	if err != nil {
 		log.Fatalf("Failed to subscribe to topic: %s", err)
 	}
 
-	fmt.Println("Consumer started, waiting for messages...")
+	fmt.Println("subscribeTestTopic Consumer started, waiting for messages...")
 	for {
-		msg, err := receiver.KafkaConsumer.ReadMessage(-1)
-		msg.Value = []byte("test")
+		msg, err := consumer.ReadMessage(-1)
 		if err == nil {
+			fmt.Printf("subscribeTestTopic Received message: %s\n", string(msg.Value))
 			// RequestContextを生成してコントローラーに渡す
-			ctx := pubsubMiddleware.MetadataToContext(msg)
-			receiver.Controller.GetPersonList(ctx)
+			// ctx := pubsubMiddleware.HeaderToContext(msg.Headers)
+
+			// receiver.Controller.GetPersonList(ctx)
 		} else {
 			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
 		}
@@ -74,16 +82,17 @@ func (receiver *GoPubSub) subscribeTestTopic() {
 
 // subscribeOtherTopic ....
 func (receiver *GoPubSub) subscribeOtherTopic() {
-	err := receiver.KafkaConsumer.Subscribe("other-topic", nil)
+	consumer := NewKafkaConsumer()
+	err := consumer.Subscribe("other-topic", nil)
 	if err != nil {
 		log.Fatalf("Failed to subscribe to topic: %s", err)
 	}
 
-	fmt.Println("Consumer started, waiting for messages...")
+	fmt.Println("subscribeOtherTopic Consumer started, waiting for messages...")
 	for {
-		msg, err := receiver.KafkaConsumer.ReadMessage(-1)
+		msg, err := consumer.ReadMessage(-1)
 		if err == nil {
-			fmt.Printf("Received: %s\n", string(msg.Value))
+			fmt.Printf("subscribeOtherTopic Received: %s\n", string(msg.Value))
 
 		} else {
 			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
