@@ -14,6 +14,34 @@ const (
 	RequestContextContextName primitiveObject.ContextKey = "requestContext"
 )
 
+var MetaNameToContextNameMap = map[primitiveObject.ContextKey]primitiveObject.ContextKey{
+	valueObject.AccessTokenMetaName:       valueObject.AccessTokenContextName,
+	valueObject.ClientIPMetaName:          valueObject.ClientIPContextName,
+	valueObject.LocaleMetaName:            valueObject.LocaleContextName,
+	valueObject.PermissionListMetaName:    valueObject.PermissionListContextName,
+	valueObject.RequestStartTimeMetaName:  valueObject.RequestStartTimeContextName,
+	valueObject.TenantIDMetaName:          valueObject.TenantIDContextName,
+	valueObject.TimeOutMillSecondMetaName: valueObject.TimeOutMillSecondContextName,
+	valueObject.TimeZoneMetaName:          valueObject.TimeZoneContextName,
+	valueObject.TraceIDMetaName:           valueObject.TraceIDContextName,
+	valueObject.UserAgentMetaName:         valueObject.UserAgentContextName,
+	valueObject.UserIDMetaName:            valueObject.UserIDContextName,
+}
+
+var ContextNameToMetaNameMap = map[primitiveObject.ContextKey]primitiveObject.ContextKey{
+	valueObject.AccessTokenContextName:       valueObject.AccessTokenMetaName,
+	valueObject.ClientIPContextName:          valueObject.ClientIPMetaName,
+	valueObject.LocaleContextName:            valueObject.LocaleMetaName,
+	valueObject.PermissionListContextName:    valueObject.PermissionListMetaName,
+	valueObject.RequestStartTimeContextName:  valueObject.RequestStartTimeMetaName,
+	valueObject.TenantIDContextName:          valueObject.TenantIDMetaName,
+	valueObject.TimeOutMillSecondContextName: valueObject.TimeOutMillSecondMetaName,
+	valueObject.TimeZoneContextName:          valueObject.TimeZoneMetaName,
+	valueObject.TraceIDContextName:           valueObject.TraceIDMetaName,
+	valueObject.UserAgentContextName:         valueObject.UserAgentMetaName,
+	valueObject.UserIDContextName:            valueObject.UserIDMetaName,
+}
+
 type RequestContext struct {
 	err               error                         // contextに含める構造体作成時に発生したエラーを格納
 	TimeOutMillSecond valueObject.TimeOutMillSecond // RequestStartTimeからの経過時間を格納

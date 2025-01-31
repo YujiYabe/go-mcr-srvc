@@ -1,11 +1,13 @@
 package goPubSub
 
 import (
-	"backend/internal/2_adapter/controller"
 	"fmt"
 	"log"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+
+	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
+	"backend/internal/2_adapter/controller"
 )
 
 // GoPubSub ...
@@ -44,7 +46,7 @@ func NewKafkaConsumer() *kafka.Consumer {
 
 // Start ....
 func (receiver *GoPubSub) Start() {
-	receiver.subscribeTestTopic()
+	go receiver.subscribeTestTopic()
 	receiver.subscribeOtherTopic()
 
 }
@@ -59,11 +61,10 @@ func (receiver *GoPubSub) subscribeTestTopic() {
 	fmt.Println("Consumer started, waiting for messages...")
 	for {
 		msg, err := receiver.KafkaConsumer.ReadMessage(-1)
-		 receiver.KafkaConsumer.
-		
-		
+		msg.Value = []byte("test")
 		if err == nil {
-			fmt.Printf("Received: %s\n", string(msg.Value))
+			// RequestContextを生成してコントローラーに渡す
+			ctx := pubsubMiddleware.MetadataToContext(msg)
 			receiver.Controller.GetPersonList(ctx)
 		} else {
 			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
