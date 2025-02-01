@@ -1,7 +1,6 @@
 package goPubSub
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -25,8 +24,10 @@ func NewGoPubSub(controller controller.ToController) *GoPubSub {
 
 // NewKafkaConsumer ...
 // kafkaではtopic毎にシングルトンの為、Consumerインスタンスを共有できない
-func NewKafkaConsumer() *kafka.Consumer {
-	var consumer *kafka.Consumer
+func NewKafkaConsumer() (
+	consumer *kafka.Consumer,
+) {
+	consumer = &kafka.Consumer{}
 	var err error
 	maxRetries := 20
 
@@ -48,54 +49,6 @@ func NewKafkaConsumer() *kafka.Consumer {
 	if err != nil {
 		log.Fatalf("Failed to create consumer after retries: %s", err)
 	}
+
 	return consumer
-}
-
-// Start ....
-func (receiver *GoPubSub) Start() {
-	go receiver.subscribeOtherTopic()
-	receiver.subscribeTestTopic()
-}
-
-// subscribeTestTopic ....
-func (receiver *GoPubSub) subscribeTestTopic() {
-	consumer := NewKafkaConsumer()
-	err := consumer.Subscribe("test-topic", nil)
-	if err != nil {
-		log.Fatalf("Failed to subscribe to topic: %s", err)
-	}
-
-	fmt.Println("subscribeTestTopic Consumer started, waiting for messages...")
-	for {
-		msg, err := consumer.ReadMessage(-1)
-		if err == nil {
-			fmt.Printf("subscribeTestTopic Received message: %s\n", string(msg.Value))
-			// RequestContextを生成してコントローラーに渡す
-			// ctx := pubsubMiddleware.HeaderToContext(msg.Headers)
-
-			// receiver.Controller.GetPersonList(ctx)
-		} else {
-			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
-		}
-	}
-}
-
-// subscribeOtherTopic ....
-func (receiver *GoPubSub) subscribeOtherTopic() {
-	consumer := NewKafkaConsumer()
-	err := consumer.Subscribe("other-topic", nil)
-	if err != nil {
-		log.Fatalf("Failed to subscribe to topic: %s", err)
-	}
-
-	fmt.Println("subscribeOtherTopic Consumer started, waiting for messages...")
-	for {
-		msg, err := consumer.ReadMessage(-1)
-		if err == nil {
-			fmt.Printf("subscribeOtherTopic Received: %s\n", string(msg.Value))
-
-		} else {
-			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
-		}
-	}
 }
