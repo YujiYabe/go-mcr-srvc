@@ -2,7 +2,6 @@ package grpc_middleware
 
 import (
 	"context"
-	"log"
 	"strconv"
 	"strings"
 
@@ -11,6 +10,7 @@ import (
 
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
+	"backend/internal/logger"
 )
 
 // ------------
@@ -131,7 +131,7 @@ func MetadataToContext(
 		newRequestContextArgs,
 	)
 	if requestContext.GetError() != nil {
-		log.Println(requestContext.GetError())
+		logger.Logging(ctx, requestContext.GetError())
 		return ctx
 	}
 

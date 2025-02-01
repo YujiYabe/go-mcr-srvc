@@ -2,7 +2,6 @@ package pubsub_middleware
 
 import (
 	"context"
-	"log"
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -10,6 +9,7 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	valueObject "backend/internal/4_domain/value_object"
+	"backend/internal/logger"
 )
 
 func HeaderToContext(
@@ -65,7 +65,7 @@ func HeaderToContext(
 		newRequestContextArgs,
 	)
 	if requestContext.GetError() != nil {
-		log.Println(requestContext.GetError())
+		logger.Logging(ctx, requestContext.GetError())
 		return
 	}
 

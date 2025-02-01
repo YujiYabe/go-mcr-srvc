@@ -2,12 +2,12 @@ package http_middleware
 
 import (
 	"context"
-	"log"
 
 	"github.com/labstack/echo/v4"
 
 	groupObject "backend/internal/4_domain/group_object"
 	valueObject "backend/internal/4_domain/value_object"
+	"backend/internal/logger"
 )
 
 func ContextMiddleware() echo.MiddlewareFunc {
@@ -51,7 +51,7 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			)
 
 			if requestContext.GetError() != nil {
-				log.Println(requestContext.GetError())
+				logger.Logging(c.Request().Context(), requestContext.GetError())
 				return requestContext.GetError()
 			}
 			ctx := context.WithValue(
