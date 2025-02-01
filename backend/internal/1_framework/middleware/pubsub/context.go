@@ -28,13 +28,13 @@ func HeaderToContext(
 
 		switch keyString {
 		case valueObject.AccessTokenMetaName:
-			newRequestContextArgs.TraceID = &valueString
+			newRequestContextArgs.AccessToken = &valueString
 		case valueObject.ClientIPMetaName:
 			newRequestContextArgs.ClientIP = &valueString
-		case valueObject.LocaleContextName:
+		case valueObject.LocaleMetaName:
 			newRequestContextArgs.Locale = &valueString
 
-		case valueObject.PermissionListContextName:
+		case valueObject.PermissionListMetaName:
 			permissionList := []string{}
 			// permissionList = append(
 			// 	permissionList,
@@ -43,19 +43,19 @@ func HeaderToContext(
 
 			newRequestContextArgs.PermissionList = permissionList
 
-		case valueObject.RequestStartTimeContextName:
+		case valueObject.RequestStartTimeMetaName:
 			requestStartTime, _ := strconv.ParseInt(valueString, 10, 64)
 			newRequestContextArgs.RequestStartTime = &requestStartTime
 
-		case valueObject.TenantIDContextName:
+		case valueObject.TenantIDMetaName:
 			newRequestContextArgs.TenantID = &valueString
-		case valueObject.TimeZoneContextName:
+		case valueObject.TimeZoneMetaName:
 			newRequestContextArgs.TimeZone = &valueString
-		case valueObject.TraceIDContextName:
+		case valueObject.TraceIDMetaName:
 			newRequestContextArgs.TraceID = &valueString
-		case valueObject.UserAgentContextName:
+		case valueObject.UserAgentMetaName:
 			newRequestContextArgs.UserAgent = &valueString
-		case valueObject.UserIDContextName:
+		case valueObject.UserIDMetaName:
 			newRequestContextArgs.UserID = &valueString
 		}
 	}
@@ -117,7 +117,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.LocaleContextName),
+			Key:   string(valueObject.LocaleMetaName),
 			Value: []byte(requestContext.Locale.GetValue()),
 		},
 	)
@@ -125,7 +125,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.RequestStartTimeContextName),
+			Key:   string(valueObject.RequestStartTimeMetaName),
 			Value: []byte(requestContext.RequestStartTime.GetString()),
 		},
 	)
@@ -133,7 +133,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.TenantIDContextName),
+			Key:   string(valueObject.TenantIDMetaName),
 			Value: []byte(requestContext.TenantID.GetValue()),
 		},
 	)
@@ -141,7 +141,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.TimeZoneContextName),
+			Key:   string(valueObject.TimeZoneMetaName),
 			Value: []byte(requestContext.TimeZone.GetValue()),
 		},
 	)
@@ -149,7 +149,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.TraceIDContextName),
+			Key:   string(valueObject.TraceIDMetaName),
 			Value: []byte(requestContext.TraceID.GetValue()),
 		},
 	)
@@ -157,7 +157,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.UserAgentContextName),
+			Key:   string(valueObject.UserAgentMetaName),
 			Value: []byte(requestContext.UserAgent.GetValue()),
 		},
 	)
@@ -165,7 +165,7 @@ func ContextToHeader(
 	headers = append(
 		headers,
 		kafka.Header{
-			Key:   string(valueObject.UserIDContextName),
+			Key:   string(valueObject.UserIDMetaName),
 			Value: []byte(requestContext.UserID.GetValue()),
 		},
 	)
