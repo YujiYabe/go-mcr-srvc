@@ -23,16 +23,26 @@ func HeaderToContext(
 	// ________________________________
 	// pubsubのheaderから、traceIDを取得する
 	for _, header := range headers {
-		keyString := primitiveObject.ContextKey(header.Key)
-		valueString := string(header.Value)
+		headerKey := primitiveObject.ContextKey(header.Key)
+		headerValue := string(header.Value)
 
-		switch keyString {
+		switch headerKey {
 		case valueObject.AccessTokenHeaderName:
-			newRequestContextArgs.AccessToken = &valueString
+			newRequestContextArgs.AccessToken = &headerValue
 		case valueObject.ClientIPHeaderName:
-			newRequestContextArgs.ClientIP = &valueString
+			newRequestContextArgs.ClientIP = &headerValue
 		case valueObject.LocaleHeaderName:
-			newRequestContextArgs.Locale = &valueString
+			newRequestContextArgs.Locale = &headerValue
+		case valueObject.TenantIDHeaderName:
+			newRequestContextArgs.TenantID = &headerValue
+		case valueObject.TimeZoneHeaderName:
+			newRequestContextArgs.TimeZone = &headerValue
+		case valueObject.TraceIDHeaderName:
+			newRequestContextArgs.TraceID = &headerValue
+		case valueObject.UserAgentHeaderName:
+			newRequestContextArgs.UserAgent = &headerValue
+		case valueObject.UserIDHeaderName:
+			newRequestContextArgs.UserID = &headerValue
 
 		case valueObject.PermissionListHeaderName:
 			permissionList := []string{}
@@ -44,19 +54,8 @@ func HeaderToContext(
 			newRequestContextArgs.PermissionList = permissionList
 
 		case valueObject.RequestStartTimeHeaderName:
-			requestStartTime, _ := strconv.ParseInt(valueString, 10, 64)
+			requestStartTime, _ := strconv.ParseInt(headerValue, 10, 64)
 			newRequestContextArgs.RequestStartTime = &requestStartTime
-
-		case valueObject.TenantIDHeaderName:
-			newRequestContextArgs.TenantID = &valueString
-		case valueObject.TimeZoneHeaderName:
-			newRequestContextArgs.TimeZone = &valueString
-		case valueObject.TraceIDHeaderName:
-			newRequestContextArgs.TraceID = &valueString
-		case valueObject.UserAgentHeaderName:
-			newRequestContextArgs.UserAgent = &valueString
-		case valueObject.UserIDHeaderName:
-			newRequestContextArgs.UserID = &valueString
 		}
 	}
 
@@ -78,7 +77,7 @@ func HeaderToContext(
 	return
 }
 
-// contextからpubsubのheaderを生成する。MetadataToContextと逆の関数
+// contextからpubsubのheaderを生成する。 HeaderToContext と逆の関数
 func ContextToHeader(
 	ctx context.Context,
 ) (
