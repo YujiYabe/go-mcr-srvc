@@ -11,7 +11,7 @@ const (
 )
 
 const (
-	TimeOutMillSecondMetaName    primitiveObject.ContextKey = "time-out-second"
+	TimeOutMillSecondHeaderName  primitiveObject.ContextKey = "time-out-second"
 	TimeOutMillSecondContextName primitiveObject.ContextKey = "timeOutMillSecond"
 )
 

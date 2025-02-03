@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	UserIDMetaName    primitiveObject.ContextKey = "user-id"
+	UserIDHeaderName  primitiveObject.ContextKey = "user-id"
 	UserIDContextName primitiveObject.ContextKey = "UserID"
 )
 

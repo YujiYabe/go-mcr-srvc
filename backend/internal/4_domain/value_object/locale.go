@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	LocaleMetaName    primitiveObject.ContextKey = "locale"
+	LocaleHeaderName  primitiveObject.ContextKey = "locale"
 	LocaleContextName primitiveObject.ContextKey = "Locale"
 )
 

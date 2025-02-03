@@ -13,7 +13,7 @@ var (
 )
 
 const (
-	PermissionListMetaName    primitiveObject.ContextKey = "permissions"
+	PermissionListHeaderName  primitiveObject.ContextKey = "permissions"
 	PermissionListContextName primitiveObject.ContextKey = "permissionList"
 )
 

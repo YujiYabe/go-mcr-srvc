@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	AccessTokenMetaName    primitiveObject.ContextKey = "access-token"
+	AccessTokenHeaderName  primitiveObject.ContextKey = "access-token"
 	AccessTokenContextName primitiveObject.ContextKey = "AccessToken"
 )
 

@@ -10,36 +10,36 @@ import (
 )
 
 const (
-	RequestContextMetaName    primitiveObject.ContextKey = "request-context"
+	RequestContextHeaderName  primitiveObject.ContextKey = "request-context"
 	RequestContextContextName primitiveObject.ContextKey = "requestContext"
 )
 
-var MetaNameToContextNameMap = map[primitiveObject.ContextKey]primitiveObject.ContextKey{
-	valueObject.AccessTokenMetaName:       valueObject.AccessTokenContextName,
-	valueObject.ClientIPMetaName:          valueObject.ClientIPContextName,
-	valueObject.LocaleMetaName:            valueObject.LocaleContextName,
-	valueObject.PermissionListMetaName:    valueObject.PermissionListContextName,
-	valueObject.RequestStartTimeMetaName:  valueObject.RequestStartTimeContextName,
-	valueObject.TenantIDMetaName:          valueObject.TenantIDContextName,
-	valueObject.TimeOutMillSecondMetaName: valueObject.TimeOutMillSecondContextName,
-	valueObject.TimeZoneMetaName:          valueObject.TimeZoneContextName,
-	valueObject.TraceIDMetaName:           valueObject.TraceIDContextName,
-	valueObject.UserAgentMetaName:         valueObject.UserAgentContextName,
-	valueObject.UserIDMetaName:            valueObject.UserIDContextName,
+var HeaderNameToContextNameMap = map[primitiveObject.ContextKey]primitiveObject.ContextKey{
+	valueObject.AccessTokenHeaderName:       valueObject.AccessTokenContextName,
+	valueObject.ClientIPHeaderName:          valueObject.ClientIPContextName,
+	valueObject.LocaleHeaderName:            valueObject.LocaleContextName,
+	valueObject.PermissionListHeaderName:    valueObject.PermissionListContextName,
+	valueObject.RequestStartTimeHeaderName:  valueObject.RequestStartTimeContextName,
+	valueObject.TenantIDHeaderName:          valueObject.TenantIDContextName,
+	valueObject.TimeOutMillSecondHeaderName: valueObject.TimeOutMillSecondContextName,
+	valueObject.TimeZoneHeaderName:          valueObject.TimeZoneContextName,
+	valueObject.TraceIDHeaderName:           valueObject.TraceIDContextName,
+	valueObject.UserAgentHeaderName:         valueObject.UserAgentContextName,
+	valueObject.UserIDHeaderName:            valueObject.UserIDContextName,
 }
 
-var ContextNameToMetaNameMap = map[primitiveObject.ContextKey]primitiveObject.ContextKey{
-	valueObject.AccessTokenContextName:       valueObject.AccessTokenMetaName,
-	valueObject.ClientIPContextName:          valueObject.ClientIPMetaName,
-	valueObject.LocaleContextName:            valueObject.LocaleMetaName,
-	valueObject.PermissionListContextName:    valueObject.PermissionListMetaName,
-	valueObject.RequestStartTimeContextName:  valueObject.RequestStartTimeMetaName,
-	valueObject.TenantIDContextName:          valueObject.TenantIDMetaName,
-	valueObject.TimeOutMillSecondContextName: valueObject.TimeOutMillSecondMetaName,
-	valueObject.TimeZoneContextName:          valueObject.TimeZoneMetaName,
-	valueObject.TraceIDContextName:           valueObject.TraceIDMetaName,
-	valueObject.UserAgentContextName:         valueObject.UserAgentMetaName,
-	valueObject.UserIDContextName:            valueObject.UserIDMetaName,
+var ContextNameToHeaderNameMap = map[primitiveObject.ContextKey]primitiveObject.ContextKey{
+	valueObject.AccessTokenContextName:       valueObject.AccessTokenHeaderName,
+	valueObject.ClientIPContextName:          valueObject.ClientIPHeaderName,
+	valueObject.LocaleContextName:            valueObject.LocaleHeaderName,
+	valueObject.PermissionListContextName:    valueObject.PermissionListHeaderName,
+	valueObject.RequestStartTimeContextName:  valueObject.RequestStartTimeHeaderName,
+	valueObject.TenantIDContextName:          valueObject.TenantIDHeaderName,
+	valueObject.TimeOutMillSecondContextName: valueObject.TimeOutMillSecondHeaderName,
+	valueObject.TimeZoneContextName:          valueObject.TimeZoneHeaderName,
+	valueObject.TraceIDContextName:           valueObject.TraceIDHeaderName,
+	valueObject.UserAgentContextName:         valueObject.UserAgentHeaderName,
+	valueObject.UserIDContextName:            valueObject.UserIDHeaderName,
 }
 
 type RequestContext struct {

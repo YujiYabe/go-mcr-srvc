@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	TraceIDMetaName    primitiveObject.ContextKey = "trace-id"
+	TraceIDHeaderName  primitiveObject.ContextKey = "trace-id"
 	TraceIDContextName primitiveObject.ContextKey = "traceID"
 )
 

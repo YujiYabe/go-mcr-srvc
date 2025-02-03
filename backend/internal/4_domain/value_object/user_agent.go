@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	UserAgentMetaName    primitiveObject.ContextKey = "user-agent"
+	UserAgentHeaderName  primitiveObject.ContextKey = "user-agent"
 	UserAgentContextName primitiveObject.ContextKey = "UserAgent"
 )
 

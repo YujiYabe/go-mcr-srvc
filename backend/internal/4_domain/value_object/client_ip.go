@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	ClientIPMetaName    primitiveObject.ContextKey = "client-ip"
+	ClientIPHeaderName  primitiveObject.ContextKey = "client-ip"
 	ClientIPContextName primitiveObject.ContextKey = "clientIP"
 )
 

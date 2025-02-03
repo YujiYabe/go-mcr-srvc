@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	TimeZoneMetaName    primitiveObject.ContextKey = "time-zone"
+	TimeZoneHeaderName  primitiveObject.ContextKey = "time-zone"
 	TimeZoneContextName primitiveObject.ContextKey = "TimeZone"
 )
 

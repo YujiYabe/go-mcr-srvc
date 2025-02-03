@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	RequestStartTimeMetaName    primitiveObject.ContextKey = "request-start-time"
+	RequestStartTimeHeaderName  primitiveObject.ContextKey = "request-start-time"
 	RequestStartTimeContextName primitiveObject.ContextKey = "requestStartTime"
 )
 

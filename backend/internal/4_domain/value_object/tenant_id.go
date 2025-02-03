@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	TenantIDMetaName    primitiveObject.ContextKey = "tenant-id"
+	TenantIDHeaderName  primitiveObject.ContextKey = "tenant-id"
 	TenantIDContextName primitiveObject.ContextKey = "tenantID"
 )
 

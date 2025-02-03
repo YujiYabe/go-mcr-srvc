@@ -22,20 +22,20 @@ func ContextToMetadata(
 	requestContext := groupObject.GetRequestContext(ctx)
 
 	// string value
-	metaDataMap[string(valueObject.TraceIDMetaName)] = requestContext.TraceID.GetValue()
-	metaDataMap[string(valueObject.ClientIPMetaName)] = requestContext.ClientIP.GetValue()
-	metaDataMap[string(valueObject.UserAgentMetaName)] = requestContext.UserAgent.GetValue()
-	metaDataMap[string(valueObject.UserIDMetaName)] = requestContext.UserID.GetValue()
-	metaDataMap[string(valueObject.AccessTokenMetaName)] = requestContext.AccessToken.GetValue()
-	metaDataMap[string(valueObject.TenantIDMetaName)] = requestContext.TenantID.GetValue()
-	metaDataMap[string(valueObject.LocaleMetaName)] = requestContext.Locale.GetValue()
-	metaDataMap[string(valueObject.TimeZoneMetaName)] = requestContext.TimeZone.GetValue()
+	metaDataMap[string(valueObject.TraceIDHeaderName)] = requestContext.TraceID.GetValue()
+	metaDataMap[string(valueObject.ClientIPHeaderName)] = requestContext.ClientIP.GetValue()
+	metaDataMap[string(valueObject.UserAgentHeaderName)] = requestContext.UserAgent.GetValue()
+	metaDataMap[string(valueObject.UserIDHeaderName)] = requestContext.UserID.GetValue()
+	metaDataMap[string(valueObject.AccessTokenHeaderName)] = requestContext.AccessToken.GetValue()
+	metaDataMap[string(valueObject.TenantIDHeaderName)] = requestContext.TenantID.GetValue()
+	metaDataMap[string(valueObject.LocaleHeaderName)] = requestContext.Locale.GetValue()
+	metaDataMap[string(valueObject.TimeZoneHeaderName)] = requestContext.TimeZone.GetValue()
 
 	// int64 value
-	metaDataMap[string(valueObject.RequestStartTimeMetaName)] = requestContext.RequestStartTime.GetString()
+	metaDataMap[string(valueObject.RequestStartTimeHeaderName)] = requestContext.RequestStartTime.GetString()
 
 	// permissionListを文字列のスライスとして格納
-	metaDataMap[string(valueObject.PermissionListMetaName)] = strings.Join(
+	metaDataMap[string(valueObject.PermissionListHeaderName)] = strings.Join(
 		requestContext.PermissionList.GetSliceValue(),
 		",",
 	)
@@ -60,69 +60,69 @@ func MetadataToContext(
 	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.RequestStartTimeMetaName))) != 0 {
+	if len(md.Get(string(valueObject.RequestStartTimeHeaderName))) != 0 {
 		requestStartTime, _ := strconv.ParseInt(
-			md.Get(string(valueObject.RequestStartTimeMetaName))[0], 10, 64,
+			md.Get(string(valueObject.RequestStartTimeHeaderName))[0], 10, 64,
 		)
 		newRequestContextArgs.RequestStartTime = &requestStartTime
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.PermissionListMetaName))) != 0 {
+	if len(md.Get(string(valueObject.PermissionListHeaderName))) != 0 {
 		permissionList := []string{}
 		permissionList = append(
 			permissionList,
-			md.Get(string(valueObject.PermissionListMetaName))...,
+			md.Get(string(valueObject.PermissionListHeaderName))...,
 		)
 		newRequestContextArgs.PermissionList = permissionList
 
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.TraceIDMetaName))) != 0 {
-		value := md.Get(string(valueObject.TraceIDMetaName))[0]
+	if len(md.Get(string(valueObject.TraceIDHeaderName))) != 0 {
+		value := md.Get(string(valueObject.TraceIDHeaderName))[0]
 		newRequestContextArgs.TraceID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.ClientIPMetaName))) != 0 {
-		value := md.Get(string(valueObject.ClientIPMetaName))[0]
+	if len(md.Get(string(valueObject.ClientIPHeaderName))) != 0 {
+		value := md.Get(string(valueObject.ClientIPHeaderName))[0]
 		newRequestContextArgs.ClientIP = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.UserAgentMetaName))) != 0 {
-		value := md.Get(string(valueObject.UserAgentMetaName))[0]
+	if len(md.Get(string(valueObject.UserAgentHeaderName))) != 0 {
+		value := md.Get(string(valueObject.UserAgentHeaderName))[0]
 		newRequestContextArgs.UserAgent = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.UserIDMetaName))) != 0 {
-		value := md.Get(string(valueObject.UserIDMetaName))[0]
+	if len(md.Get(string(valueObject.UserIDHeaderName))) != 0 {
+		value := md.Get(string(valueObject.UserIDHeaderName))[0]
 		newRequestContextArgs.UserID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.AccessTokenMetaName))) != 0 {
-		value := md.Get(string(valueObject.AccessTokenMetaName))[0]
+	if len(md.Get(string(valueObject.AccessTokenHeaderName))) != 0 {
+		value := md.Get(string(valueObject.AccessTokenHeaderName))[0]
 		newRequestContextArgs.AccessToken = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.TenantIDMetaName))) != 0 {
-		value := md.Get(string(valueObject.TenantIDMetaName))[0]
+	if len(md.Get(string(valueObject.TenantIDHeaderName))) != 0 {
+		value := md.Get(string(valueObject.TenantIDHeaderName))[0]
 		newRequestContextArgs.TenantID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.LocaleMetaName))) != 0 {
-		value := md.Get(string(valueObject.LocaleMetaName))[0]
+	if len(md.Get(string(valueObject.LocaleHeaderName))) != 0 {
+		value := md.Get(string(valueObject.LocaleHeaderName))[0]
 		newRequestContextArgs.Locale = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(valueObject.TimeZoneMetaName))) != 0 {
-		value := md.Get(string(valueObject.TimeZoneMetaName))[0]
+	if len(md.Get(string(valueObject.TimeZoneHeaderName))) != 0 {
+		value := md.Get(string(valueObject.TimeZoneHeaderName))[0]
 		newRequestContextArgs.TimeZone = &value
 	}
 
