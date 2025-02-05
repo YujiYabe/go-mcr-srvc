@@ -40,7 +40,7 @@ func (receiver *Server) GetPersonListByCondition(
 
 	// ゴルーチンで処理を実行
 	go func() {
-		v1GetPersonListByConditionResponse, err = receiver.processPersonRequest(
+		v1GetPersonListByConditionResponse, err = receiver.getPersonListByCondition(
 			ctx,
 			getPersonListByConditionRequest,
 		)
@@ -60,14 +60,14 @@ func (receiver *Server) GetPersonListByCondition(
 	}
 }
 
-func (receiver *Server) processPersonRequest(
+func (receiver *Server) getPersonListByCondition(
 	ctx context.Context,
 	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
 ) (
-	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
+	getPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
-	v1GetPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
+	getPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
 
 	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
@@ -96,9 +96,9 @@ func (receiver *Server) processPersonRequest(
 		responseList,
 	)
 
-	v1GetPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
+	getPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
 
 	// logger.Logging(ctx, traceID)
 
-	return v1GetPersonListByConditionResponse, nil
+	return
 }

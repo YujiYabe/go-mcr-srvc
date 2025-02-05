@@ -7,12 +7,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	httpMiddleware "backend/internal/1_framework/middleware/http"
-
 	"backend/internal/1_framework/in/go-echo/openapi"
 	v1 "backend/internal/1_framework/in/go-echo/v1"
 	v1ToPubsub "backend/internal/1_framework/in/go-echo/v1/topubsub"
 	v1users "backend/internal/1_framework/in/go-echo/v1/users"
+	httpMiddleware "backend/internal/1_framework/middleware/http"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/env"
 )
@@ -111,7 +110,10 @@ func (receiver *ServerInterfaceImpl) GetUsers(
 func (receiver *ServerInterfaceImpl) CreateUser(ctx echo.Context) error {
 	var user openapi.User
 	if err := ctx.Bind(&user); err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
+		return ctx.JSON(
+			http.StatusBadRequest,
+			map[string]string{"error": "Invalid request"},
+		)
 	}
 	user.Id = 3 // 仮に新しいユーザーIDを割り当て
 	return ctx.JSON(http.StatusCreated, user)
