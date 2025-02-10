@@ -54,7 +54,7 @@ resetAll: removeAll build up
 # ----------------------------
 .PHONY: gosec
 gosec:
-	cd backend && ./bin/gosec  -exclude=G115 -conf ./bin/gosec.json ./...
+	cd backend && ./bin/gosec  -exclude=G115  ./...
 
 # ----------------------------
 .PHONY: golint

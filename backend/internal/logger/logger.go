@@ -5,56 +5,19 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"runtime"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 
 	valueObject "backend/internal/4_domain/value_object"
 )
 
-type CustomJSONFormatter struct {
-	logrus.JSONFormatter
-}
-
-func (f *CustomJSONFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	if entry.Data == nil {
-		entry.Data = make(logrus.Fields)
-	}
-
-	// Create a new map to control field order
-	orderedData := logrus.Fields{
-		"time": entry.Time.Format("15:04:05"), // Add timestamp first
-	}
-
-	// Add level and message explicitly
-	orderedData["level"] = entry.Level.String()
-	orderedData["msg"] = entry.Message
-
-	// Copy other fields into the ordered map
-	for key, value := range entry.Data {
-		orderedData[key] = value
-	}
-
-	// Use the custom map for JSON formatting
-	buffer := &strings.Builder{}
-	encoder := f.JSONFormatter
-	entry.Data = orderedData
-	encoded, err := encoder.Format(entry)
-	if err != nil {
-		return nil, err
-	}
-
-	buffer.Write(encoded)
-	return []byte(buffer.String()), nil
-}
-
 func init() {
-	logrus.SetFormatter(&CustomJSONFormatter{
-		JSONFormatter: logrus.JSONFormatter{
-			DisableTimestamp: true, // Disable default timestamp
-		},
-	})
+	zerolog.TimeFieldFormat = "15:04:05"
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	log.SetFlags(0)
 }
 
 func Logging(
@@ -73,19 +36,21 @@ func Logging(
 		trimPath = fullPath[idx:]
 	}
 
-	logger := logrus.WithFields(logrus.Fields{
-		"file": fmt.Sprintf("%s:%d", trimPath, line),
-	})
+	logger := zerolog.New(os.Stdout).
+		With().
+		Timestamp().
+		Str("file", fmt.Sprintf("%s:%d", trimPath, line))
 
-	traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string)
-	if ok {
-		logger = logger.WithField("traceID", traceID)
+	if traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string); ok {
+		logger = logger.Str("traceID", traceID)
 	}
+
+	event := logger.Logger()
 
 	switch v := data.(type) {
 	case error:
-		logger.Error(v)
+		event.Error().Msg(v.Error())
 	default:
-		logger.Info(data)
+		event.Info().Interface("data", data).Msg("")
 	}
 }
