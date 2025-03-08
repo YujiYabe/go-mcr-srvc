@@ -3,15 +3,15 @@ package group_object
 import (
 	"context"
 
-	valueObject "backend/internal/4_domain/value_object"
+	domainObject "backend/internal/4_domain/domain_object"
 	"backend/internal/logger"
 )
 
 type Person struct {
 	err         error
-	ID          valueObject.ID
-	Name        valueObject.Name
-	MailAddress valueObject.MailAddress
+	ID          domainObject.ID
+	Name        domainObject.Name
+	MailAddress domainObject.MailAddress
 }
 
 type NewPersonArgs struct {
@@ -28,19 +28,19 @@ func NewPerson(
 ) {
 	person = &Person{}
 
-	person.ID = valueObject.NewID(ctx, args.ID)
+	person.ID = domainObject.NewID(ctx, args.ID)
 	if person.ID.GetError() != nil {
 		person.SetError(ctx, person.ID.GetError())
 		return
 	}
 
-	person.Name = valueObject.NewName(ctx, args.Name)
+	person.Name = domainObject.NewName(ctx, args.Name)
 	if person.Name.GetError() != nil {
 		person.SetError(ctx, person.Name.GetError())
 		return
 	}
 
-	person.MailAddress = valueObject.NewMailAddress(ctx, args.MailAddress)
+	person.MailAddress = domainObject.NewMailAddress(ctx, args.MailAddress)
 	if person.MailAddress.GetError() != nil {
 		person.SetError(ctx, person.MailAddress.GetError())
 		return

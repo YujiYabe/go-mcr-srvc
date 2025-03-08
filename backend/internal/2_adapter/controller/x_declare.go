@@ -8,8 +8,8 @@ import (
 	usecase "backend/internal/3_usecase"
 
 	domain "backend/internal/4_domain"
+	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
 )
 
 // NewController ...
@@ -75,7 +75,7 @@ type (
 			ctx context.Context,
 			credential groupObject.Credential,
 		) (
-			accessToken valueObject.AccessToken,
+			accessToken domainObject.AccessToken,
 		)
 
 		ViaGRPC(

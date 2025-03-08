@@ -3,8 +3,8 @@ package controller
 import (
 	"context"
 
+	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
 )
 
 func (receiver *controller) Start() {}
@@ -35,7 +35,7 @@ func (receiver *controller) FetchAccessToken(
 	ctx context.Context,
 	credential groupObject.Credential,
 ) (
-	accessToken valueObject.AccessToken,
+	accessToken domainObject.AccessToken,
 ) {
 	accessToken = receiver.UseCase.FetchAccessToken(
 		ctx,

@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
 )
 
 // ...
@@ -16,7 +16,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 	ctx context.Context,
 	credential groupObject.Credential,
 ) (
-	accessToken valueObject.AccessToken,
+	accessToken domainObject.AccessToken,
 ) {
 	payload := map[string]string{
 		"client_id":     credential.ClientID.GetValue(),
@@ -61,7 +61,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 		return
 	}
 
-	accessToken = valueObject.NewAccessToken(
+	accessToken = domainObject.NewAccessToken(
 		ctx,
 		&tokenResponse.AccessToken,
 	)

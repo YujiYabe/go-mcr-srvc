@@ -5,8 +5,8 @@ import (
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
+	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
-	valueObject "backend/internal/4_domain/value_object"
 )
 
 // ...
@@ -56,19 +56,19 @@ func (receiver *GRPCClient) ViaGRPC(
 		person := &groupObject.Person{}
 
 		id := int(grpcPerson.GetId())
-		person.ID = valueObject.NewID(
+		person.ID = domainObject.NewID(
 			ctx,
 			&id,
 		)
 
 		name := grpcPerson.GetName()
-		person.Name = valueObject.NewName(
+		person.Name = domainObject.NewName(
 			ctx,
 			&name,
 		)
 
 		mailAddress := grpcPerson.GetMailAddress()
-		person.MailAddress = valueObject.NewMailAddress(
+		person.MailAddress = domainObject.NewMailAddress(
 			ctx,
 			&mailAddress,
 		)

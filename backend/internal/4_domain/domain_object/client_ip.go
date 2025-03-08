@@ -1,4 +1,4 @@
-package value_object
+package domain_object
 
 import (
 	"context"
@@ -7,33 +7,33 @@ import (
 )
 
 const (
-	LocaleHeaderName  primitiveObject.ContextKey = "locale"
-	LocaleContextName primitiveObject.ContextKey = "Locale"
+	ClientIPHeaderName  primitiveObject.ContextKey = "client-ip"
+	ClientIPContextName primitiveObject.ContextKey = "clientIP"
 )
 
 var (
-	localeMaxLength uint = 20
-	localeMinLength uint = 0
+	clientIPMaxLength uint = 30
+	clientIPMinLength uint = 0
 )
 
-type Locale struct {
+type ClientIP struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewLocale(
+func NewClientIP(
 	ctx context.Context,
 	value *string,
 ) (
-	locale Locale,
+	clientIP ClientIP,
 ) {
-	locale = Locale{}
-	locale.SetValue(ctx, value)
+	clientIP = ClientIP{}
+	clientIP.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *Locale) SetValue(
+func (receiver *ClientIP) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -41,8 +41,8 @@ func (receiver *Locale) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&localeMaxLength),
-		primitiveString.WithMinLength(&localeMinLength),
+		primitiveString.WithMaxLength(&clientIPMaxLength),
+		primitiveString.WithMinLength(&clientIPMinLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -52,17 +52,17 @@ func (receiver *Locale) SetValue(
 		)
 	}
 }
-func (receiver *Locale) GetError() error {
+func (receiver *ClientIP) GetError() error {
 	return receiver.err
 }
 
-func (receiver *Locale) SetError(
+func (receiver *ClientIP) SetError(
 	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
 }
 
-func (receiver *Locale) GetValue() string {
+func (receiver *ClientIP) GetValue() string {
 	return receiver.content.GetValue()
 }

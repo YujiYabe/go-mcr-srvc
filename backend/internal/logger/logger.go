@@ -11,7 +11,7 @@ import (
 
 	"github.com/rs/zerolog"
 
-	valueObject "backend/internal/4_domain/value_object"
+	domainObject "backend/internal/4_domain/domain_object"
 )
 
 func init() {
@@ -41,7 +41,7 @@ func Logging(
 		Timestamp().
 		Str("file", fmt.Sprintf("%s:%d", trimPath, line))
 
-	if traceID, ok := ctx.Value(valueObject.TraceIDContextName).(string); ok {
+	if traceID, ok := ctx.Value(domainObject.TraceIDContextName).(string); ok {
 		logger = logger.Str("traceID", traceID)
 	}
 
