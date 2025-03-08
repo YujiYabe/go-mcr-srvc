@@ -1,4 +1,4 @@
-# Value Object
+# Domain Object
 
 primitive_object を利用して、ドメイン固有の値オブジェクトを定義するパッケージです。
 

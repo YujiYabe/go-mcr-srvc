@@ -27,7 +27,7 @@ internal 以下に clean architecture の構成
 
 <img src="doc/ca.drawio.png">
 
-# ddd (value object)
+# ドメインロジックの凝集
 
 ### backend/internal/4_domain に凝集。
 
