@@ -1,7 +1,7 @@
 services:
-  postgres:
+  postgres_db:
+    container_name: postgres_db
     restart: always
-    container_name: postgres
     hostname: postgres
     build:
       context: ./db/engine/postgres
@@ -23,8 +23,8 @@ services:
       retries: 5
 
   redis:
-    restart: always
     container_name: redis
+    restart: always
     build:
       context: ./db/engine/redis
       dockerfile: Dockerfile
@@ -61,14 +61,14 @@ services:
   #     - '${PWD}/db/engine/localstack-data:/var/lib/localstack'
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:7.4.3
     container_name: kafka
+    image: confluentinc/cp-kafka:7.4.3
     ports:
       - '9092:9092'
     depends_on:
@@ -91,12 +91,12 @@ services:
     environment:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
 
-  backend:
+  backend_app:
+    container_name: backend_app
     restart: always
     build:
       context: ./backend
       dockerfile: build/Dockerfile
-    container_name: backend
     volumes:
       - ./backend:/go/src/backend
     ports:
@@ -119,11 +119,11 @@ services:
     stdin_open: true
     links:
       - redis
-      - postgres
+      - postgres_db
       - kafka
       # - localstack
     depends_on:
       - redis
-      - postgres
+      - postgres_db
       - kafka
       # - localstack
