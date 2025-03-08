@@ -9,49 +9,27 @@ unstage_changes() {
 	git restore --staged .
 }
 
-# golangci-lint の実行
-echo ""
-echo "_____________________________________"
-echo "Running golangci-lint..."
-make golint
-if [ $? -ne 0 ]; then
-	echo "golangci-lint failed. Commit aborted."
-	unstage_changes
-	exit 1
-fi
+# チェックを実行する関数
+run_check() {
+	local check_name=$1
+	local make_target=$2
 
-# staticcheck の実行
-echo ""
-echo "_____________________________________"
-echo "Running staticcheck..."
-make staticcheck
-if [ $? -ne 0 ]; then
-	echo "staticcheck failed. Commit aborted."
-	unstage_changes
-	exit 1
-fi
+	echo ""
+	echo "_____________________________________"
+	echo "Running $check_name..."
+	make $make_target
+	if [ $? -ne 0 ]; then
+		echo "$check_name failed. Commit aborted."
+		unstage_changes
+		exit 1
+	fi
+}
 
-# # deadcode の実行
-# echo ""
-# echo "_____________________________________"
-# echo "Running deadcode..."
-# make deadcode
-# if [ $? -ne 0 ]; then
-# 	echo "deadcode failed. Commit aborted."
-# 	unstage_changes
-# 	exit 1
-# fi
-
-# gosec の実行
-echo ""
-echo "_____________________________________"
-echo "Running gosec..."
-make gosec
-if [ $? -ne 0 ]; then
-	echo "gosec detected issues. Commit aborted."
-	unstage_changes
-	exit 1
-fi
+# 各種チェックの実行
+run_check "golangci-lint" "golint"
+run_check "staticcheck" "staticcheck"
+# run_check "deadcode" "deadcode"
+run_check "gosec" "gosec"
 
 # すべてのチェックに合格
 echo ""
