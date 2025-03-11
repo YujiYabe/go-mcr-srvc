@@ -36,14 +36,18 @@ internal 以下に clean architecture の構成
 string や int の基本的なデータ型に対するロジックを定義。
 文字列の長さチェックや nil 判定など
 
-## [value_object](backend/internal/4_domain/value_object)
+## [type_object](backend/internal/4_domain/type_object)
 
 primitive_object を利用して個別のデータ型を定義。
 メールアドレスフォーマットチェックなど
 
 ## [group_object](backend/internal/4_domain/group_object)
 
-value_object を複数組み合わせてドメインモデルを定義。
+type_object を複数組み合わせてドメインモデルを定義。
+
+## [unusual_object](backend/internal/4_domain/unusual_object)
+
+例外的な処理。
 
 # grpc server client
 

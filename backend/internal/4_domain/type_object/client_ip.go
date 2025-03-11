@@ -1,4 +1,4 @@
-package domain_object
+package type_object
 
 import (
 	"context"
@@ -6,29 +6,34 @@ import (
 	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
-var (
-	clientIDMaxLength uint = 99
-	clientIDMinLength uint = 0
+const (
+	ClientIPHeaderName  primitiveObject.ContextKey = "client-ip"
+	ClientIPContextName primitiveObject.ContextKey = "clientIP"
 )
 
-type ClientID struct {
+var (
+	clientIPMaxLength uint = 30
+	clientIPMinLength uint = 0
+)
+
+type ClientIP struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewClientID(
+func NewClientIP(
 	ctx context.Context,
 	value *string,
 ) (
-	clientID ClientID,
+	clientIP ClientIP,
 ) {
-	clientID = ClientID{}
-	clientID.SetValue(ctx, value)
+	clientIP = ClientIP{}
+	clientIP.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *ClientID) SetValue(
+func (receiver *ClientIP) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -36,8 +41,8 @@ func (receiver *ClientID) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&clientIDMaxLength),
-		primitiveString.WithMinLength(&clientIDMinLength),
+		primitiveString.WithMaxLength(&clientIPMaxLength),
+		primitiveString.WithMinLength(&clientIPMinLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -47,17 +52,17 @@ func (receiver *ClientID) SetValue(
 		)
 	}
 }
-func (receiver *ClientID) GetError() error {
+func (receiver *ClientIP) GetError() error {
 	return receiver.err
 }
 
-func (receiver *ClientID) SetError(
+func (receiver *ClientIP) SetError(
 	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
 }
 
-func (receiver *ClientID) GetValue() string {
+func (receiver *ClientIP) GetValue() string {
 	return receiver.content.GetValue()
 }

@@ -3,7 +3,7 @@ package group_object
 import (
 	"context"
 
-	domainObject "backend/internal/4_domain/domain_object"
+	domainObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 

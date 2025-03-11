@@ -1,4 +1,4 @@
-package domain_object
+package type_object
 
 import (
 	"context"

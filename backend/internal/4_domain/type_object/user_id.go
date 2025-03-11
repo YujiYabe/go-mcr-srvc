@@ -1,4 +1,4 @@
-package domain_object
+package type_object
 
 import (
 	"context"
@@ -7,33 +7,33 @@ import (
 )
 
 const (
-	TenantIDHeaderName  primitiveObject.ContextKey = "tenant-id"
-	TenantIDContextName primitiveObject.ContextKey = "tenantID"
+	UserIDHeaderName  primitiveObject.ContextKey = "user-id"
+	UserIDContextName primitiveObject.ContextKey = "UserID"
 )
 
 var (
-	tenantIDMaxLength uint = 99
-	tenantIDMinLength uint = 1
+	userIDMaxLength uint = 9
+	userIDMinLength uint = 0
 )
 
-type TenantID struct {
+type UserID struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewTenantID(
+func NewUserID(
 	ctx context.Context,
 	value *string,
 ) (
-	tenantID TenantID,
+	userID UserID,
 ) {
-	tenantID = TenantID{}
-	tenantID.SetValue(ctx, value)
+	userID = UserID{}
+	userID.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *TenantID) SetValue(
+func (receiver *UserID) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -41,8 +41,8 @@ func (receiver *TenantID) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&tenantIDMaxLength),
-		primitiveString.WithMinLength(&tenantIDMinLength),
+		primitiveString.WithMaxLength(&userIDMaxLength),
+		primitiveString.WithMinLength(&userIDMinLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -52,17 +52,17 @@ func (receiver *TenantID) SetValue(
 		)
 	}
 }
-func (receiver *TenantID) GetError() error {
+func (receiver *UserID) GetError() error {
 	return receiver.err
 }
 
-func (receiver *TenantID) SetError(
+func (receiver *UserID) SetError(
 	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
 }
 
-func (receiver *TenantID) GetValue() string {
+func (receiver *UserID) GetValue() string {
 	return receiver.content.GetValue()
 }

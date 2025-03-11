@@ -6,9 +6,9 @@ import (
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
-	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
 	primitiveObject "backend/internal/4_domain/primitive_object"
+	domainObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 

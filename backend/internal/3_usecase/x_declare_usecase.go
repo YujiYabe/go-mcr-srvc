@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
+	domainObject "backend/internal/4_domain/type_object"
 )
 
 type (

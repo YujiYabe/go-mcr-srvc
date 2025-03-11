@@ -5,8 +5,8 @@ import (
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
-	domainObject "backend/internal/4_domain/domain_object"
 	groupObject "backend/internal/4_domain/group_object"
+	domainObject "backend/internal/4_domain/type_object"
 )
 
 // ...

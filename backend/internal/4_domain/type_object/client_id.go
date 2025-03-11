@@ -1,4 +1,4 @@
-package domain_object
+package type_object
 
 import (
 	"context"
@@ -6,34 +6,29 @@ import (
 	primitiveObject "backend/internal/4_domain/primitive_object"
 )
 
-const (
-	TimeZoneHeaderName  primitiveObject.ContextKey = "time-zone"
-	TimeZoneContextName primitiveObject.ContextKey = "TimeZone"
-)
-
 var (
-	timeZoneMaxLength uint = 9
-	timeZoneMinLength uint = 0
+	clientIDMaxLength uint = 99
+	clientIDMinLength uint = 0
 )
 
-type TimeZone struct {
+type ClientID struct {
 	err     error
 	content *primitiveObject.PrimitiveString
 }
 
-func NewTimeZone(
+func NewClientID(
 	ctx context.Context,
 	value *string,
 ) (
-	timeZone TimeZone,
+	clientID ClientID,
 ) {
-	timeZone = TimeZone{}
-	timeZone.SetValue(ctx, value)
+	clientID = ClientID{}
+	clientID.SetValue(ctx, value)
 
 	return
 }
 
-func (receiver *TimeZone) SetValue(
+func (receiver *ClientID) SetValue(
 	ctx context.Context,
 	value *string,
 ) {
@@ -41,9 +36,8 @@ func (receiver *TimeZone) SetValue(
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-
-		primitiveString.WithMaxLength(&timeZoneMaxLength),
-		primitiveString.WithMinLength(&timeZoneMinLength),
+		primitiveString.WithMaxLength(&clientIDMaxLength),
+		primitiveString.WithMinLength(&clientIDMinLength),
 	)
 
 	if receiver.content.GetError() != nil {
@@ -53,17 +47,17 @@ func (receiver *TimeZone) SetValue(
 		)
 	}
 }
-func (receiver *TimeZone) GetError() error {
+func (receiver *ClientID) GetError() error {
 	return receiver.err
 }
 
-func (receiver *TimeZone) SetError(
+func (receiver *ClientID) SetError(
 	ctx context.Context,
 	err error,
 ) {
 	receiver.err = err
 }
 
-func (receiver *TimeZone) GetValue() string {
+func (receiver *ClientID) GetValue() string {
 	return receiver.content.GetValue()
 }

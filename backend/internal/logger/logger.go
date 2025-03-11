@@ -11,7 +11,7 @@ import (
 
 	"github.com/rs/zerolog"
 
-	domainObject "backend/internal/4_domain/domain_object"
+	domainObject "backend/internal/4_domain/type_object"
 )
 
 func init() {
