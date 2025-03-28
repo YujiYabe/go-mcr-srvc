@@ -18,6 +18,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 ) (
 	accessToken domainObject.AccessToken,
 ) {
+	return accessToken
+
 	payload := map[string]string{
 		"client_id":     credential.ClientID.GetValue(),
 		"client_secret": credential.ClientSecret.GetValue(),

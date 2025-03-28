@@ -2,13 +2,65 @@ package postgres_client
 
 import (
 	"context"
+	// sql.NullStringを使用するために追加
+	// gormを使用するために追加
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	groupObject "backend/internal/4_domain/group_object"
 	"backend/internal/logger"
+
+	"database/sql" // sql.NullStringを使用するために追加
+
+	"gorm.io/gorm" // gormを使用するために追加
 )
 
-// GetPersonList ...
+func (receiver *PostgresClient) ReplacePerson(
+	ctx context.Context,
+	name string,
+	email string,
+	id string,
+) error {
+	err := receiver.Conn.Transaction(func(tx *gorm.DB) error {
+		err := receiver.AddPerson(tx, name, email)
+		if err != nil {
+			return err
+		}
+		err = receiver.DeletePerson(tx, id)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
+}
+
+func (receiver *PostgresClient) AddPerson(
+	tx *gorm.DB,
+	name string,
+	email string,
+) error {
+	newUser := models.Person{
+		Name:        sql.NullString{String: name, Valid: true},
+		MailAddress: sql.NullString{String: email, Valid: true},
+	}
+	if err := tx.Create(&newUser).Error; err != nil {
+		return err // エラーが発生した場合はロールバック
+	}
+	return nil // 正常終了の場合はコミット
+}
+
+func (receiver *PostgresClient) DeletePerson(
+	tx *gorm.DB,
+	id string,
+) error {
+	if err := tx.Delete(&models.Person{}, id).Error; err != nil {
+		return err // エラーが発生した場合はロールバック
+	}
+	return nil // 正常終了の場合はコミット
+}
+
 func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
 ) (

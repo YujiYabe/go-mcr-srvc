@@ -13,8 +13,8 @@ import (
 
 // Start ....
 func (receiver *GoPubSub) Start() {
-	go receiver.subscribeOtherTopic()
-	receiver.subscribeTestTopic()
+	// go receiver.subscribeOtherTopic()
+	// receiver.subscribeTestTopic()
 }
 
 // subscribeTestTopic ....
