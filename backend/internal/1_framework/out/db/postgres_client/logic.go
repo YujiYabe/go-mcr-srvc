@@ -11,6 +11,29 @@ import (
 	"backend/internal/logger"
 )
 
+func (receiver *PostgresClient) WithOutTx() (
+	tx *gorm.DB,
+) {
+	return receiver.Conn
+}
+
+func (receiver *PostgresClient) BeginTx() (
+	tx *gorm.DB,
+) {
+	return receiver.Conn.Begin()
+}
+
+func (receiver *PostgresClient) EndTx(
+	tx *gorm.DB,
+	isSuccess bool,
+) {
+	if isSuccess {
+		tx.Commit()
+	} else {
+		tx.Rollback()
+	}
+}
+
 func (receiver *PostgresClient) ReplacePerson(
 	ctx context.Context,
 	name string,
@@ -42,20 +65,14 @@ func (receiver *PostgresClient) AddPerson(
 		Name:        sql.NullString{String: name, Valid: true},
 		MailAddress: sql.NullString{String: email, Valid: true},
 	}
-	if err := tx.Create(&newUser).Error; err != nil {
-		return err // エラーが発生した場合はロールバック
-	}
-	return nil // 正常終了の場合はコミット
+	return tx.Create(&newUser).Error
 }
 
 func (receiver *PostgresClient) DeletePerson(
 	tx *gorm.DB,
 	id string,
 ) error {
-	if err := tx.Delete(&models.Person{}, id).Error; err != nil {
-		return err // エラーが発生した場合はロールバック
-	}
-	return nil // 正常終了の場合はコミット
+	return tx.Delete(&models.Person{}, id).Error
 }
 
 func (receiver *PostgresClient) GetPersonList(

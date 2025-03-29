@@ -30,3 +30,45 @@ func (receiver *GatewayDB) GetPersonListByCondition(
 
 	return
 }
+
+// // UpdateProduct ...
+// func (receiver *GatewayDB) UpdateProduct(
+// 	ctx context.Context,
+// 	newProduct groupObject.Product,
+// ) (
+// 	err error,
+// ) {
+// 	isSuccess := true
+// 	tx := receiver.ToPostgres.BeginTx()
+// 	defer func() {
+// 		receiver.ToPostgres.EndTx(tx, isSuccess)
+// 	}()
+
+// 	var product domain.Product
+
+// 	if isSuccess {
+// 		var err error
+// 		product, err = receiver.ToPostgres.GetProduct(
+// 			tx,
+// 			newProduct.JANCode,
+// 		)
+// 		if err != nil {
+// 			isSuccess = false
+// 			logger.Logging(ctx, err)
+// 		}
+// 	}
+
+// 	if isSuccess {
+// 		err = receiver.ToPostgres.UpdateProduct(
+// 			tx,
+// 			product,
+// 			newProduct,
+// 		)
+// 		if err != nil {
+// 			isSuccess = false
+// 			logger.Logging(ctx, err)
+// 		}
+// 	}
+
+// 	return err
+// }

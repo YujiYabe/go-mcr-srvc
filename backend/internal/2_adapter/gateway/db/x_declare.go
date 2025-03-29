@@ -3,6 +3,8 @@ package db_gateway
 import (
 	"context"
 
+	"gorm.io/gorm"
+
 	groupObject "backend/internal/4_domain/group_object"
 )
 
@@ -26,6 +28,19 @@ type (
 
 	// ToPostgres ...
 	ToPostgres interface {
+		WithOutTx() (
+			tx *gorm.DB,
+		)
+
+		BeginTx() (
+			tx *gorm.DB,
+		)
+
+		EndTx(
+			tx *gorm.DB,
+			isSuccess bool,
+		)
+
 		GetPersonList(
 			ctx context.Context,
 		) (
