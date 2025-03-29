@@ -2,16 +2,13 @@ package postgres_client
 
 import (
 	"context"
-	// sql.NullStringを使用するために追加
-	// gormを使用するために追加
+	"database/sql"
+
+	"gorm.io/gorm"
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	groupObject "backend/internal/4_domain/group_object"
 	"backend/internal/logger"
-
-	"database/sql" // sql.NullStringを使用するために追加
-
-	"gorm.io/gorm" // gormを使用するために追加
 )
 
 func (receiver *PostgresClient) ReplacePerson(
