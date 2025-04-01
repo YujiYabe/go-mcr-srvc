@@ -2,8 +2,8 @@
 
 ### 下記インストール
 
-- docker (version 20.10.5)
-- docker-compose (version 1.24.0)
+- docker (version ^20.10.5)
+- docker-compose (version ^1.24.0)
 
 ### 立ち上げ
 
@@ -31,33 +31,27 @@ internal 以下に clean architecture の構成
 
 ### backend/internal/4_domain に凝集。
 
-## [primitive_object](backend/internal/4_domain/primitive_object)
+#### [primitive_object](backend/internal/4_domain/primitive_object/_README.md)
 
-string や int の基本的なデータ型に対するロジックを定義。
-文字列の長さチェックや nil 判定など
 
-## [type_object](backend/internal/4_domain/type_object)
+#### [type_object](backend/internal/4_domain/type_object/_README.md)
 
-primitive_object を利用して個別のデータ型を定義。
-メールアドレスフォーマットチェックなど
 
-## [group_object](backend/internal/4_domain/group_object)
+#### [group_object](backend/internal/4_domain/group_object/_README.md)
 
-type_object を複数組み合わせてドメインモデルを定義。
 
-## [unusual_object](backend/internal/4_domain/unusual_object)
+#### [service_object](backend/internal/4_domain/service_object/_README.md)
 
-例外的な処理。
 
 # grpc server client
 
-## [grpc server](backend/internal/1_framework/in/go-grpc/person.go)
+#### [grpc server](backend/internal/1_framework/in/go-grpc/person.go)
 
-## [grpc client](backend/internal/1_framework/out/grpc_client/logic.go)
+#### [grpc client](backend/internal/1_framework/out/grpc_client/logic.go)
 
 # http server
 
-## [http server](backend/internal/1_framework/in/go-echo/v1/person/viaGRPC.go)
+#### [http server](backend/internal/1_framework/in/go-echo/v1/person/viaGRPC.go)
 
 http request を grpc に変換して grpc サーバーにリクエストを送信。
 
@@ -67,7 +61,7 @@ http request を grpc に変換して grpc サーバーにリクエストを送�
 
 # microservice data candidate
 
-### [マイクロサービス間の共通データ項目](backend/internal/4_domain/group_object/request_context.go)
+#### [マイクロサービス間の共通データ項目](backend/internal/4_domain/group_object/request_context.go)
 
 マイクロサービス間の共通データ項目を定義。
 
