@@ -4,7 +4,7 @@ import (
 	"context"
 
 	groupObject "backend/internal/4_domain/group_object"
-	domainObject "backend/internal/4_domain/type_object"
+	typeObject "backend/internal/4_domain/type_object"
 )
 
 type (
@@ -15,7 +15,7 @@ type (
 			ctx context.Context,
 			credential groupObject.Credential,
 		) (
-			accessToken domainObject.AccessToken,
+			accessToken typeObject.AccessToken,
 		)
 
 		ViaGRPC(

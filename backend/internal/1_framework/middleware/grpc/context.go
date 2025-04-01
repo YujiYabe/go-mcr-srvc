@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	groupObject "backend/internal/4_domain/group_object"
-	domainObject "backend/internal/4_domain/type_object"
+	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 
@@ -22,20 +22,20 @@ func ContextToMetadata(
 	requestContext := groupObject.GetRequestContext(ctx)
 
 	// string value
-	metaDataMap[string(domainObject.TraceIDHeaderName)] = requestContext.TraceID.GetValue()
-	metaDataMap[string(domainObject.ClientIPHeaderName)] = requestContext.ClientIP.GetValue()
-	metaDataMap[string(domainObject.UserAgentHeaderName)] = requestContext.UserAgent.GetValue()
-	metaDataMap[string(domainObject.UserIDHeaderName)] = requestContext.UserID.GetValue()
-	metaDataMap[string(domainObject.AccessTokenHeaderName)] = requestContext.AccessToken.GetValue()
-	metaDataMap[string(domainObject.TenantIDHeaderName)] = requestContext.TenantID.GetValue()
-	metaDataMap[string(domainObject.LocaleHeaderName)] = requestContext.Locale.GetValue()
-	metaDataMap[string(domainObject.TimeZoneHeaderName)] = requestContext.TimeZone.GetValue()
+	metaDataMap[string(typeObject.TraceIDHeaderName)] = requestContext.TraceID.GetValue()
+	metaDataMap[string(typeObject.ClientIPHeaderName)] = requestContext.ClientIP.GetValue()
+	metaDataMap[string(typeObject.UserAgentHeaderName)] = requestContext.UserAgent.GetValue()
+	metaDataMap[string(typeObject.UserIDHeaderName)] = requestContext.UserID.GetValue()
+	metaDataMap[string(typeObject.AccessTokenHeaderName)] = requestContext.AccessToken.GetValue()
+	metaDataMap[string(typeObject.TenantIDHeaderName)] = requestContext.TenantID.GetValue()
+	metaDataMap[string(typeObject.LocaleHeaderName)] = requestContext.Locale.GetValue()
+	metaDataMap[string(typeObject.TimeZoneHeaderName)] = requestContext.TimeZone.GetValue()
 
 	// int64 value
-	metaDataMap[string(domainObject.RequestStartTimeHeaderName)] = requestContext.RequestStartTime.GetString()
+	metaDataMap[string(typeObject.RequestStartTimeHeaderName)] = requestContext.RequestStartTime.GetString()
 
 	// permissionListを文字列のスライスとして格納
-	metaDataMap[string(domainObject.PermissionListHeaderName)] = strings.Join(
+	metaDataMap[string(typeObject.PermissionListHeaderName)] = strings.Join(
 		requestContext.PermissionList.GetSliceValue(),
 		",",
 	)
@@ -60,69 +60,69 @@ func MetadataToContext(
 	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.RequestStartTimeHeaderName))) != 0 {
+	if len(md.Get(string(typeObject.RequestStartTimeHeaderName))) != 0 {
 		requestStartTime, _ := strconv.ParseInt(
-			md.Get(string(domainObject.RequestStartTimeHeaderName))[0], 10, 64,
+			md.Get(string(typeObject.RequestStartTimeHeaderName))[0], 10, 64,
 		)
 		newRequestContextArgs.RequestStartTime = &requestStartTime
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.PermissionListHeaderName))) != 0 {
+	if len(md.Get(string(typeObject.PermissionListHeaderName))) != 0 {
 		permissionList := []string{}
 		permissionList = append(
 			permissionList,
-			md.Get(string(domainObject.PermissionListHeaderName))...,
+			md.Get(string(typeObject.PermissionListHeaderName))...,
 		)
 		newRequestContextArgs.PermissionList = permissionList
 
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.TraceIDHeaderName))) != 0 {
-		value := md.Get(string(domainObject.TraceIDHeaderName))[0]
+	if len(md.Get(string(typeObject.TraceIDHeaderName))) != 0 {
+		value := md.Get(string(typeObject.TraceIDHeaderName))[0]
 		newRequestContextArgs.TraceID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.ClientIPHeaderName))) != 0 {
-		value := md.Get(string(domainObject.ClientIPHeaderName))[0]
+	if len(md.Get(string(typeObject.ClientIPHeaderName))) != 0 {
+		value := md.Get(string(typeObject.ClientIPHeaderName))[0]
 		newRequestContextArgs.ClientIP = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.UserAgentHeaderName))) != 0 {
-		value := md.Get(string(domainObject.UserAgentHeaderName))[0]
+	if len(md.Get(string(typeObject.UserAgentHeaderName))) != 0 {
+		value := md.Get(string(typeObject.UserAgentHeaderName))[0]
 		newRequestContextArgs.UserAgent = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.UserIDHeaderName))) != 0 {
-		value := md.Get(string(domainObject.UserIDHeaderName))[0]
+	if len(md.Get(string(typeObject.UserIDHeaderName))) != 0 {
+		value := md.Get(string(typeObject.UserIDHeaderName))[0]
 		newRequestContextArgs.UserID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.AccessTokenHeaderName))) != 0 {
-		value := md.Get(string(domainObject.AccessTokenHeaderName))[0]
+	if len(md.Get(string(typeObject.AccessTokenHeaderName))) != 0 {
+		value := md.Get(string(typeObject.AccessTokenHeaderName))[0]
 		newRequestContextArgs.AccessToken = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.TenantIDHeaderName))) != 0 {
-		value := md.Get(string(domainObject.TenantIDHeaderName))[0]
+	if len(md.Get(string(typeObject.TenantIDHeaderName))) != 0 {
+		value := md.Get(string(typeObject.TenantIDHeaderName))[0]
 		newRequestContextArgs.TenantID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.LocaleHeaderName))) != 0 {
-		value := md.Get(string(domainObject.LocaleHeaderName))[0]
+	if len(md.Get(string(typeObject.LocaleHeaderName))) != 0 {
+		value := md.Get(string(typeObject.LocaleHeaderName))[0]
 		newRequestContextArgs.Locale = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(domainObject.TimeZoneHeaderName))) != 0 {
-		value := md.Get(string(domainObject.TimeZoneHeaderName))[0]
+	if len(md.Get(string(typeObject.TimeZoneHeaderName))) != 0 {
+		value := md.Get(string(typeObject.TimeZoneHeaderName))[0]
 		newRequestContextArgs.TimeZone = &value
 	}
 
@@ -145,7 +145,7 @@ func MetadataToContext(
 	// logで追跡するために、contextにTraceIDを設定する
 	ctx = context.WithValue(
 		ctx,
-		domainObject.TraceIDContextName,
+		typeObject.TraceIDContextName,
 		requestContext.TraceID.GetValue(),
 	)
 

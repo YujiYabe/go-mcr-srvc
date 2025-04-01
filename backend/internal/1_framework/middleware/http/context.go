@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	groupObject "backend/internal/4_domain/group_object"
-	domainObject "backend/internal/4_domain/type_object"
+	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 
@@ -64,7 +64,7 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			// logで追跡するために、contextにTraceIDを設定する
 			ctx = context.WithValue(
 				ctx,
-				domainObject.TraceIDContextName,
+				typeObject.TraceIDContextName,
 				requestContext.TraceID.GetValue(),
 			)
 

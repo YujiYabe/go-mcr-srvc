@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	groupObject "backend/internal/4_domain/group_object"
-	domainObject "backend/internal/4_domain/type_object"
+	typeObject "backend/internal/4_domain/type_object"
 )
 
 // ...
@@ -16,7 +16,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 	ctx context.Context,
 	credential groupObject.Credential,
 ) (
-	accessToken domainObject.AccessToken,
+	accessToken typeObject.AccessToken,
 ) {
 	return accessToken
 
@@ -63,7 +63,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 		return
 	}
 
-	accessToken = domainObject.NewAccessToken(
+	accessToken = typeObject.NewAccessToken(
 		ctx,
 		&tokenResponse.AccessToken,
 	)

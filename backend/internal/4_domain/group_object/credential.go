@@ -3,14 +3,14 @@ package group_object
 import (
 	"context"
 
-	domainObject "backend/internal/4_domain/type_object"
+	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 
 type Credential struct {
 	err          error
-	ClientID     domainObject.ClientID
-	ClientSecret domainObject.ClientSecret
+	ClientID     typeObject.ClientID
+	ClientSecret typeObject.ClientSecret
 }
 
 type NewCredentialArgs struct {
@@ -38,7 +38,7 @@ func NewCredential(
 ) {
 	accessToken = &Credential{}
 
-	accessToken.ClientID = domainObject.NewClientID(
+	accessToken.ClientID = typeObject.NewClientID(
 		ctx,
 		args.ClientID,
 	)
@@ -48,7 +48,7 @@ func NewCredential(
 		return
 	}
 
-	accessToken.ClientSecret = domainObject.NewClientSecret(ctx, args.ClientSecret)
+	accessToken.ClientSecret = typeObject.NewClientSecret(ctx, args.ClientSecret)
 	if accessToken.ClientSecret.GetError() != nil {
 		logger.Logging(ctx, accessToken.ClientSecret.GetError())
 		accessToken.SetError(ctx, accessToken.ClientSecret.GetError())
