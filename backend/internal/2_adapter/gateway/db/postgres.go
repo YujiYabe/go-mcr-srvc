@@ -2,8 +2,12 @@ package db_gateway
 
 import (
 	"context"
+	"fmt"
 
 	groupObject "backend/internal/4_domain/group_object"
+	"backend/internal/logger"
+
+	"gorm.io/gorm"
 )
 
 // GetPersonList ...
@@ -30,45 +34,107 @@ func (receiver *GatewayDB) GetPersonListByCondition(
 
 	return
 }
+func (receiver *PostgresClient) WithOutTx(
+	ctx context.Context,
+) (
+	tx *gorm.DB,
+) {
+	return receiver.Conn.WithContext(ctx)
+}
 
-// // UpdateProduct ...
-// func (receiver *GatewayDB) UpdateProduct(
-// 	ctx context.Context,
-// 	newProduct groupObject.Product,
-// ) (
-// 	err error,
-// ) {
-// 	isSuccess := true
-// 	tx := receiver.ToPostgres.BeginTx()
-// 	defer func() {
-// 		receiver.ToPostgres.EndTx(tx, isSuccess)
-// 	}()
+func (receiver *PostgresClient) BeginTx(
+	ctx context.Context,
+) (
+	tx *gorm.DB,
+) {
+	return receiver.Conn.WithContext(ctx).Begin()
+}
 
-// 	var product domain.Product
+func (receiver *PostgresClient) EndTx(
+	tx *gorm.DB,
+	isSuccess bool,
+) {
+	if isSuccess {
+		tx.Commit()
+	} else {
+		tx.Rollback()
+	}
+}
+func (receiver *PostgresClient) WithOutTx(
+	ctx context.Context,
+) (
+	tx *gorm.DB,
+) {
+	return receiver.Conn.WithContext(ctx)
+}
 
-// 	if isSuccess {
-// 		var err error
-// 		product, err = receiver.ToPostgres.GetProduct(
-// 			tx,
-// 			newProduct.JANCode,
-// 		)
-// 		if err != nil {
-// 			isSuccess = false
-// 			logger.Logging(ctx, err)
-// 		}
-// 	}
+func (receiver *PostgresClient) BeginTx(
+	ctx context.Context,
+) (
+	tx *gorm.DB,
+) {
+	return receiver.Conn.WithContext(ctx).Begin()
+}
 
-// 	if isSuccess {
-// 		err = receiver.ToPostgres.UpdateProduct(
-// 			tx,
-// 			product,
-// 			newProduct,
-// 		)
-// 		if err != nil {
-// 			isSuccess = false
-// 			logger.Logging(ctx, err)
-// 		}
-// 	}
+func (receiver *PostgresClient) EndTx(
+	tx *gorm.DB,
+	isSuccess bool,
+) {
+	if isSuccess {
+		tx.Commit()
+	} else {
+		tx.Rollback()
+	}
+}
 
-// 	return err
-// }
+
+
+// UpdateProduct ...
+func (receiver *GatewayDB) UpdateProduct(
+	ctx context.Context,
+	newProduct groupObject.Product,
+) (
+	err error,
+) {
+	isSuccess := true
+	tx := receiver.ToPostgres.BeginTx(ctx)
+	defer func() {
+		if ctx.Err() != nil {
+			endTxErr := receiver.ToPostgres.EndTx(ctx, tx, false)
+			err = fmt.Errorf("context canceled (%w); rollback result: %v", ctx.Err(), endTxErr)
+			return
+		}
+		endTxErr := receiver.ToPostgres.EndTx(ctx, tx, isSuccess)
+		if endTxErr != nil && err == nil {
+			err = endTxErr
+		}
+
+	}()
+
+	var product domain.Product
+
+	if isSuccess {
+		product, err = receiver.ToPostgres.GetProduct(
+			tx,
+			newProduct.JANCode,
+		)
+		if err != nil {
+			isSuccess = false
+			logger.Logging(ctx, err)
+		}
+	}
+
+	if isSuccess {
+		err = receiver.ToPostgres.UpdateProduct(
+			tx,
+			product,
+			newProduct,
+		)
+		if err != nil {
+			isSuccess = false
+			logger.Logging(ctx, err)
+		}
+	}
+
+	return err
+}

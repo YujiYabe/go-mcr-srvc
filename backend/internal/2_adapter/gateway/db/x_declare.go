@@ -28,17 +28,24 @@ type (
 
 	// ToPostgres ...
 	ToPostgres interface {
-		WithOutTx() (
+		WithOutTx(
+			ctx context.Context,
+		) (
 			tx *gorm.DB,
 		)
 
-		BeginTx() (
+		BeginTx(
+			ctx context.Context,
+		) (
 			tx *gorm.DB,
 		)
 
 		EndTx(
+			ctx context.Context,
 			tx *gorm.DB,
 			isSuccess bool,
+		) (
+			err error,
 		)
 
 		GetPersonList(

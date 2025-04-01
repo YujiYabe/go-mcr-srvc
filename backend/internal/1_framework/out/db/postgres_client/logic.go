@@ -3,6 +3,7 @@ package postgres_client
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"gorm.io/gorm"
 
@@ -11,27 +12,39 @@ import (
 	"backend/internal/logger"
 )
 
-func (receiver *PostgresClient) WithOutTx() (
+func (receiver *PostgresClient) WithOutTx(
+	ctx context.Context,
+) (
 	tx *gorm.DB,
 ) {
-	return receiver.Conn
+	return receiver.Conn.WithContext(ctx)
 }
 
-func (receiver *PostgresClient) BeginTx() (
+func (receiver *PostgresClient) BeginTx(
+	ctx context.Context,
+) (
 	tx *gorm.DB,
 ) {
-	return receiver.Conn.Begin()
+	return receiver.Conn.WithContext(ctx).Begin()
 }
 
 func (receiver *PostgresClient) EndTx(
+	ctx context.Context,
 	tx *gorm.DB,
 	isSuccess bool,
+) (
+	err error,
 ) {
 	if isSuccess {
-		tx.Commit()
+		if err = tx.Commit().Error; err != nil {
+			logger.Logging(ctx, fmt.Errorf("commit failed: %w", err))
+		}
 	} else {
-		tx.Rollback()
+		if err = tx.Rollback().Error; err != nil {
+			logger.Logging(ctx, fmt.Errorf("rollback failed: %w", err))
+		}
 	}
+	return
 }
 
 func (receiver *PostgresClient) ReplacePerson(
