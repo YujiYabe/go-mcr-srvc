@@ -9,6 +9,7 @@ import (
 
 	"backend/internal/1_framework/out/db/postgres_client/models"
 	groupObject "backend/internal/4_domain/group_object"
+	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 
@@ -130,6 +131,36 @@ func (receiver *PostgresClient) GetPersonList(
 	}
 
 	return
+}
+
+func (receiver *PostgresClient) GetPerson(
+	ctx context.Context,
+	tx *gorm.DB,
+	id typeObject.ID,
+) (
+	person groupObject.Person,
+) {
+	person = groupObject.Person{}   // ドメインロジック用
+	resultPerson := models.Person{} // SQL結果保存用
+
+	result := tx.
+		Table("persons").
+		Where("id = ?", id.GetValue()).
+		Take(&resultPerson)
+
+	if result.Error != nil {
+		person.SetError(ctx, result.Error)
+		return
+	}
+
+	args := &groupObject.NewPersonArgs{
+		ID:          &resultPerson.ID,
+		Name:        &resultPerson.Name.String,
+		MailAddress: &resultPerson.MailAddress.String,
+	}
+	newPerson := groupObject.NewPerson(ctx, args)
+
+	return *newPerson
 }
 
 // GetPersonListByCondition ...

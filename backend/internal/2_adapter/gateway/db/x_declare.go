@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 
 	groupObject "backend/internal/4_domain/group_object"
+	typeObject "backend/internal/4_domain/type_object"
 )
 
 type GatewayDB struct {
@@ -46,6 +47,14 @@ type (
 			isSuccess bool,
 		) (
 			err error,
+		)
+
+		GetPerson(
+			ctx context.Context,
+			tx *gorm.DB,
+			id typeObject.ID,
+		) (
+			person groupObject.Person,
 		)
 
 		GetPersonList(
