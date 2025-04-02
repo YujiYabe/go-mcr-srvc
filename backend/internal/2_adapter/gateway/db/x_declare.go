@@ -50,12 +50,14 @@ type (
 
 		GetPersonList(
 			ctx context.Context,
+			tx *gorm.DB,
 		) (
 			personList groupObject.PersonList,
 		)
 
 		GetPersonListByCondition(
 			ctx context.Context,
+			tx *gorm.DB,
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,

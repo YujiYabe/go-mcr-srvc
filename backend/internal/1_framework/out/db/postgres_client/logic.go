@@ -90,13 +90,14 @@ func (receiver *PostgresClient) DeletePerson(
 
 func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
+	tx *gorm.DB,
 ) (
 	personList groupObject.PersonList,
 ) {
 	personList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}          // SQL結果保存用
 
-	result := receiver.Conn.
+	result := tx.
 		Table("persons").
 		Find(&persons)
 
@@ -134,6 +135,7 @@ func (receiver *PostgresClient) GetPersonList(
 // GetPersonListByCondition ...
 func (receiver *PostgresClient) GetPersonListByCondition(
 	ctx context.Context,
+	tx *gorm.DB,
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
@@ -146,7 +148,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	resPersonList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}             // SQL結果保存用
 
-	conn := receiver.Conn.Table("persons")
+	conn := tx.Table("persons")
 
 	if !reqPerson.MailAddress.GetIsNil() && reqPerson.MailAddress.GetValue() != "" {
 		conn.Where("mail_address = ?", reqPerson.MailAddress.GetValue())
