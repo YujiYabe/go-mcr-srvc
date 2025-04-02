@@ -6,8 +6,6 @@ import (
 
 	groupObject "backend/internal/4_domain/group_object"
 	"backend/internal/logger"
-
-	"gorm.io/gorm"
 )
 
 // GetPersonList ...
@@ -34,60 +32,6 @@ func (receiver *GatewayDB) GetPersonListByCondition(
 
 	return
 }
-func (receiver *PostgresClient) WithOutTx(
-	ctx context.Context,
-) (
-	tx *gorm.DB,
-) {
-	return receiver.Conn.WithContext(ctx)
-}
-
-func (receiver *PostgresClient) BeginTx(
-	ctx context.Context,
-) (
-	tx *gorm.DB,
-) {
-	return receiver.Conn.WithContext(ctx).Begin()
-}
-
-func (receiver *PostgresClient) EndTx(
-	tx *gorm.DB,
-	isSuccess bool,
-) {
-	if isSuccess {
-		tx.Commit()
-	} else {
-		tx.Rollback()
-	}
-}
-func (receiver *PostgresClient) WithOutTx(
-	ctx context.Context,
-) (
-	tx *gorm.DB,
-) {
-	return receiver.Conn.WithContext(ctx)
-}
-
-func (receiver *PostgresClient) BeginTx(
-	ctx context.Context,
-) (
-	tx *gorm.DB,
-) {
-	return receiver.Conn.WithContext(ctx).Begin()
-}
-
-func (receiver *PostgresClient) EndTx(
-	tx *gorm.DB,
-	isSuccess bool,
-) {
-	if isSuccess {
-		tx.Commit()
-	} else {
-		tx.Rollback()
-	}
-}
-
-
 
 // UpdateProduct ...
 func (receiver *GatewayDB) UpdateProduct(
