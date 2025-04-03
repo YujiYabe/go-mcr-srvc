@@ -49,10 +49,7 @@ func GetUsers(
 		)
 		if requestErr != nil {
 			logger.Logging(ctxWithTimeout, requestErr)
-			err := echoContext.JSON(http.StatusBadRequest, requestErr)
-			if err != nil {
-				logger.Logging(ctxWithTimeout, err)
-			}
+			_ = echoContext.JSON(http.StatusBadRequest, requestErr)
 			return
 		}
 
