@@ -124,7 +124,7 @@ func (receiver *ServerInterfaceImpl) GetHealth(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, "OK")
 }
 
-// GetUsers は /users GET エンドポイントの実装
+// ToPubsub は /users GET エンドポイントの実装
 func (receiver *ServerInterfaceImpl) ToPubsub(
 	echoContext echo.Context,
 ) error {
