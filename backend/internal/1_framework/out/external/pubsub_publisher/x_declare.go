@@ -20,19 +20,20 @@ type (
 
 // NewToPubSub ...
 func NewToPubSub() gatewayExternal.ToPubSub {
-	pubsubPublisher := new(PubsubPublisher)
-	return pubsubPublisher
 
-	ctx := context.Background()
-	conn, err := open(ctx, 30)
-	if err != nil {
-		logger.Logging(ctx, err)
-		panic(err)
+	pubsubPublisher := new(PubsubPublisher)
+	if false {
+		ctx := context.Background()
+		conn, err := open(ctx, 30)
+		if err != nil {
+			logger.Logging(ctx, err)
+			panic(err)
+		}
+
+		pubsubPublisher.Conn = conn
 	}
 
-	pubsubPublisher.Conn = conn
 	return pubsubPublisher
-
 }
 
 func open(

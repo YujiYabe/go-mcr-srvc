@@ -71,7 +71,7 @@ staticcheck:
 # ----------------------------
 .PHONY: deadcode
 deadcode:
-	cd ./backend && ./bin/deadcode 
+	cd ./backend && ./bin/deadcode ./...
 
 
 

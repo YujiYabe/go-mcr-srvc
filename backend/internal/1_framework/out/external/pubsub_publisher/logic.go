@@ -58,5 +58,4 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 
 	// メッセージ送信を確実にするため、完了を待つ
 	receiver.Conn.Flush(1000)
-	return
 }

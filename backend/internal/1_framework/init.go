@@ -47,7 +47,9 @@ func NewApp() *app {
 
 // Start ...
 func (receiver *app) Start() {
+	if false {
+		go receiver.goPubSub.Start()
+	}
 	go receiver.goGRPC.Start()
-	go receiver.goPubSub.Start()
 	receiver.goEcho.Start()
 }
