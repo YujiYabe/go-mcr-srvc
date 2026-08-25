@@ -7,7 +7,6 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
-	groupObject "backend/internal/4_domain/group_object"
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
@@ -19,7 +18,7 @@ func HeaderToContext(
 	ctx context.Context,
 ) {
 	ctx = context.Background()
-	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
+	newRequestContextArgs := &requestContextMiddleware.NewRequestContextArgs{}
 
 	// ________________________________
 	// pubsubのheaderから、traceIDを取得する
@@ -60,7 +59,7 @@ func HeaderToContext(
 		}
 	}
 
-	requestContext, err := groupObject.NewRequestContext(
+	requestContext, err := requestContextMiddleware.NewRequestContext(
 		newRequestContextArgs,
 	)
 	if err != nil {
@@ -70,7 +69,7 @@ func HeaderToContext(
 
 	ctx = context.WithValue(
 		ctx,
-		groupObject.RequestContextContextName,
+		requestContextMiddleware.RequestContextContextName,
 		*requestContext,
 	)
 

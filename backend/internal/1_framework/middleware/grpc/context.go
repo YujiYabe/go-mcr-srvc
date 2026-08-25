@@ -9,7 +9,6 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
-	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
@@ -58,7 +57,7 @@ func MetadataToContext(
 		return ctx
 	}
 
-	newRequestContextArgs := &groupObject.NewRequestContextArgs{}
+	newRequestContextArgs := &requestContextMiddleware.NewRequestContextArgs{}
 
 	// ________________________________
 	if len(md.Get(string(typeObject.RequestStartTimeHeaderName))) != 0 {
@@ -127,7 +126,7 @@ func MetadataToContext(
 		newRequestContextArgs.TimeZone = &value
 	}
 
-	requestContext, err := groupObject.NewRequestContext(
+	requestContext, err := requestContextMiddleware.NewRequestContext(
 		newRequestContextArgs,
 	)
 	if err != nil {
@@ -137,7 +136,7 @@ func MetadataToContext(
 
 	ctx = context.WithValue(
 		ctx,
-		groupObject.RequestContextContextName,
+		requestContextMiddleware.RequestContextContextName,
 		*requestContext,
 	)
 

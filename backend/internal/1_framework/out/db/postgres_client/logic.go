@@ -91,7 +91,6 @@ func (receiver *PostgresClient) DeletePerson(
 
 func (receiver *PostgresClient) GetPersonList(
 	ctx context.Context,
-	tx *gorm.DB,
 ) (
 	personList groupObject.PersonList,
 	err error,
@@ -99,7 +98,7 @@ func (receiver *PostgresClient) GetPersonList(
 	personList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}          // SQL結果保存用
 
-	result := tx.
+	result := receiver.Conn.WithContext(ctx).
 		Table("persons").
 		Find(&persons)
 
@@ -132,7 +131,6 @@ func (receiver *PostgresClient) GetPersonList(
 
 func (receiver *PostgresClient) GetPerson(
 	ctx context.Context,
-	tx *gorm.DB,
 	id typeObject.ID,
 ) (
 	person groupObject.Person,
@@ -141,7 +139,7 @@ func (receiver *PostgresClient) GetPerson(
 	person = groupObject.Person{}   // ドメインロジック用
 	resultPerson := models.Person{} // SQL結果保存用
 
-	result := tx.
+	result := receiver.Conn.WithContext(ctx).
 		Table("persons").
 		Where("id = ?", id.GetValue()).
 		Take(&resultPerson)
@@ -167,7 +165,6 @@ func (receiver *PostgresClient) GetPerson(
 // GetPersonListByCondition ...
 func (receiver *PostgresClient) GetPersonListByCondition(
 	ctx context.Context,
-	tx *gorm.DB,
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
@@ -181,7 +178,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	resPersonList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}             // SQL結果保存用
 
-	conn := tx.Table("persons")
+	conn := receiver.Conn.WithContext(ctx).Table("persons")
 
 	if !reqPerson.MailAddress().GetIsNil() && reqPerson.MailAddress().GetValue() != "" {
 		conn = conn.Where("mail_address = ?", reqPerson.MailAddress().GetValue())

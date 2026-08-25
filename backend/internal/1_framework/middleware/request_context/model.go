@@ -1,4 +1,4 @@
-package group_object
+package request_context
 
 import (
 	"time"
@@ -41,30 +41,30 @@ var ContextNameToHeaderNameMap = map[primitiveObject.ContextKey]primitiveObject.
 }
 
 type RequestContext struct {
-	timeOutMillSecond typeObject.TimeOutMillSecond // RequestStartTimeからの経過時間を格納
-	requestStartTime  typeObject.RequestStartTime  // httpかgrpcのリクエスト開始時間を格納
-	traceID           typeObject.TraceID           // uuidを格納
-	clientIP          typeObject.ClientIP          // httpアクセス元のIPを格納
-	userAgent         typeObject.UserAgent         // httpアクセス元のUserAgentを格納
-	userID            typeObject.UserID            // 認証ユーザーIDを格納
-	accessToken       typeObject.AccessToken       // 認証トークンを格納
-	tenantID          typeObject.TenantID          // 所属テナントIDを格納
-	locale            typeObject.Locale            // ロケールを格納
-	timeZone          typeObject.TimeZone          // タイムゾーンを格納
-	permissionList    typeObject.PermissionList    // ユーザー権限を格納
+	timeOutMillSecond typeObject.TimeOutMillSecond
+	requestStartTime  typeObject.RequestStartTime
+	traceID           typeObject.TraceID
+	clientIP          typeObject.ClientIP
+	userAgent         typeObject.UserAgent
+	userID            typeObject.UserID
+	accessToken       typeObject.AccessToken
+	tenantID          typeObject.TenantID
+	locale            typeObject.Locale
+	timeZone          typeObject.TimeZone
+	permissionList    typeObject.PermissionList
 }
 
 type NewRequestContextArgs struct {
-	RequestStartTime *int64   //
-	TraceID          *string  //
-	ClientIP         *string  //
-	UserAgent        *string  //
-	UserID           *string  //
-	AccessToken      *string  //
-	TenantID         *string  //
-	Locale           *string  //
-	TimeZone         *string  //
-	PermissionList   []string //
+	RequestStartTime *int64
+	TraceID          *string
+	ClientIP         *string
+	UserAgent        *string
+	UserID           *string
+	AccessToken      *string
+	TenantID         *string
+	Locale           *string
+	TimeZone         *string
+	PermissionList   []string
 }
 
 func NewRequestContext(
@@ -75,55 +75,46 @@ func NewRequestContext(
 ) {
 	requestContext = &RequestContext{}
 
-	// ______________________________________
 	requestContext.requestStartTime, err = typeObject.NewRequestStartTime(args.RequestStartTime)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.traceID, err = typeObject.NewTraceID(args.TraceID)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.clientIP, err = typeObject.NewClientIP(args.ClientIP)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.userAgent, err = typeObject.NewUserAgent(args.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.locale, err = typeObject.NewLocale(args.Locale)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.timeZone, err = typeObject.NewTimeZone(args.TimeZone)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.userID, err = typeObject.NewUserID(args.UserID)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.accessToken, err = typeObject.NewAccessToken(args.AccessToken)
 	if err != nil {
 		return nil, err
 	}
 
-	// ______________________________________
 	requestContext.tenantID, err = typeObject.NewTenantID(args.TenantID)
 	if err != nil {
 		return nil, err
@@ -134,7 +125,6 @@ func NewRequestContext(
 		return nil, err
 	}
 
-	// ______________________________________
 	requestStartTime := requestContext.requestStartTime
 	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(typeObject.TimeOutMillSecondValue * time.Second).UnixMilli()
 	timeoutMillSecond := requestEndTime - time.Now().UnixMilli()
