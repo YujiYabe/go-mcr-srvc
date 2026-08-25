@@ -14,6 +14,12 @@ import (
 
 type txContextKey struct{}
 
+type userRecord struct {
+	ID       int
+	Email    string
+	FullName sql.NullString
+}
+
 func (receiver *PostgresClient) RunInTransaction(
 	ctx context.Context,
 	fn func(context.Context) error,
@@ -59,18 +65,17 @@ func (receiver *PostgresClient) AddPerson(
 	name string,
 	email string,
 ) error {
-	newUser := models.Person{
-		Name:        sql.NullString{String: name, Valid: true},
-		MailAddress: sql.NullString{String: email, Valid: true},
-	}
-	return tx.Create(&newUser).Error
+	return tx.Table("users").Create(map[string]interface{}{
+		"full_name": sql.NullString{String: name, Valid: name != ""},
+		"email":     email,
+	}).Error
 }
 
 func (receiver *PostgresClient) DeletePerson(
 	tx *gorm.DB,
 	id string,
 ) error {
-	return tx.Delete(&models.Person{}, id).Error
+	return tx.Delete(&models.User{}, id).Error
 }
 
 func (receiver *PostgresClient) GetPersonList(
@@ -79,11 +84,12 @@ func (receiver *PostgresClient) GetPersonList(
 	personList groupObject.PersonList,
 	err error,
 ) {
-	persons := []models.Person{} // SQL結果保存用
+	users := []userRecord{} // SQL結果保存用
 
 	result := receiver.conn(ctx).
-		Table("persons").
-		Find(&persons)
+		Table("users").
+		Select("id", "email", "full_name").
+		Find(&users)
 
 	if result.Error != nil {
 		err = result.Error
@@ -94,12 +100,12 @@ func (receiver *PostgresClient) GetPersonList(
 		return
 	}
 
-	personArgs := make([]groupObject.NewPersonArgs, 0, len(persons))
-	for _, person := range persons {
+	personArgs := make([]groupObject.NewPersonArgs, 0, len(users))
+	for _, user := range users {
 		personArgs = append(personArgs, groupObject.NewPersonArgs{
-			ID:          &person.ID,
-			Name:        &person.Name.String,
-			MailAddress: &person.MailAddress.String,
+			ID:          &user.ID,
+			Name:        stringFromNullString(user.FullName),
+			MailAddress: &user.Email,
 		})
 	}
 
@@ -115,13 +121,14 @@ func (receiver *PostgresClient) GetPerson(
 	person groupObject.Person,
 	err error,
 ) {
-	person = groupObject.Person{}   // ドメインロジック用
-	resultPerson := models.Person{} // SQL結果保存用
+	person = groupObject.Person{} // ドメインロジック用
+	resultUser := userRecord{}    // SQL結果保存用
 
 	result := receiver.conn(ctx).
-		Table("persons").
+		Table("users").
+		Select("id", "email", "full_name").
 		Where("id = ?", id.GetValue()).
-		Take(&resultPerson)
+		Take(&resultUser)
 
 	if result.Error != nil {
 		err = result.Error
@@ -129,9 +136,9 @@ func (receiver *PostgresClient) GetPerson(
 	}
 
 	args := &groupObject.NewPersonArgs{
-		ID:          &resultPerson.ID,
-		Name:        &resultPerson.Name.String,
-		MailAddress: &resultPerson.MailAddress.String,
+		ID:          &resultUser.ID,
+		Name:        stringFromNullString(resultUser.FullName),
+		MailAddress: &resultUser.Email,
 	}
 	newPerson, err := groupObject.ReconstructPerson(args)
 	if err != nil {
@@ -150,11 +157,11 @@ func (receiver *PostgresClient) UpdatePerson(
 	}
 
 	result := receiver.conn(ctx).
-		Table("persons").
+		Table("users").
 		Where("id = ?", newPerson.Identity().GetValue()).
 		Updates(map[string]interface{}{
-			"name":         newPerson.Name().GetValue(),
-			"mail_address": newPerson.MailAddress().GetValue(),
+			"full_name": newPerson.Name().GetValue(),
+			"email":     newPerson.MailAddress().GetValue(),
 		})
 	if result.Error != nil {
 		return result.Error
@@ -179,30 +186,32 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
-	persons := []models.Person{} // SQL結果保存用
+	users := []userRecord{} // SQL結果保存用
 
-	conn := receiver.conn(ctx).Table("persons")
+	conn := receiver.conn(ctx).
+		Table("users").
+		Select("id", "email", "full_name")
 
 	if !reqPerson.MailAddress().GetIsNil() && reqPerson.MailAddress().GetValue() != "" {
-		conn = conn.Where("mail_address = ?", reqPerson.MailAddress().GetValue())
+		conn = conn.Where("email = ?", reqPerson.MailAddress().GetValue())
 	}
 
 	if !reqPerson.Name().GetIsNil() && reqPerson.Name().GetValue() != "" {
-		conn = conn.Where("name LIKE ?", "%"+reqPerson.Name().GetValue()+"%")
+		conn = conn.Where("full_name LIKE ?", "%"+reqPerson.Name().GetValue()+"%")
 	}
 
-	result := conn.Find(&persons)
+	result := conn.Find(&users)
 	if result.Error != nil {
 		err = result.Error
 		return
 	}
 
-	personArgs := make([]groupObject.NewPersonArgs, 0, len(persons))
-	for _, person := range persons {
+	personArgs := make([]groupObject.NewPersonArgs, 0, len(users))
+	for _, user := range users {
 		personArgs = append(personArgs, groupObject.NewPersonArgs{
-			ID:          &person.ID,
-			Name:        &person.Name.String,
-			MailAddress: &person.MailAddress.String,
+			ID:          &user.ID,
+			Name:        stringFromNullString(user.FullName),
+			MailAddress: &user.Email,
 		})
 	}
 
@@ -220,4 +229,12 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	}
 
 	return
+}
+
+func stringFromNullString(value sql.NullString) *string {
+	if !value.Valid {
+		return nil
+	}
+
+	return &value.String
 }
