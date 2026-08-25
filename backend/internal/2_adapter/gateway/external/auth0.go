@@ -13,8 +13,9 @@ func (receiver *GatewayExternal) FetchAccessToken(
 	credential groupObject.Credential,
 ) (
 	accessToken typeObject.AccessToken,
+	err error,
 ) {
-	accessToken = receiver.ToAuth0.FetchAccessToken(
+	accessToken, err = receiver.ToAuth0.FetchAccessToken(
 		ctx,
 		credential,
 	)

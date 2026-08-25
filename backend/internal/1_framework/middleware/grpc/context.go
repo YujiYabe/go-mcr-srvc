@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
+	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
@@ -19,24 +20,24 @@ func ContextToMetadata(
 ) context.Context {
 	metaDataMap := map[string]string{}
 
-	requestContext := groupObject.GetRequestContext(ctx)
+	requestContext := requestContextMiddleware.GetRequestContext(ctx)
 
 	// string value
-	metaDataMap[string(typeObject.TraceIDHeaderName)] = requestContext.TraceID.GetValue()
-	metaDataMap[string(typeObject.ClientIPHeaderName)] = requestContext.ClientIP.GetValue()
-	metaDataMap[string(typeObject.UserAgentHeaderName)] = requestContext.UserAgent.GetValue()
-	metaDataMap[string(typeObject.UserIDHeaderName)] = requestContext.UserID.GetValue()
-	metaDataMap[string(typeObject.AccessTokenHeaderName)] = requestContext.AccessToken.GetValue()
-	metaDataMap[string(typeObject.TenantIDHeaderName)] = requestContext.TenantID.GetValue()
-	metaDataMap[string(typeObject.LocaleHeaderName)] = requestContext.Locale.GetValue()
-	metaDataMap[string(typeObject.TimeZoneHeaderName)] = requestContext.TimeZone.GetValue()
+	metaDataMap[string(typeObject.TraceIDHeaderName)] = requestContext.TraceID().GetValue()
+	metaDataMap[string(typeObject.ClientIPHeaderName)] = requestContext.ClientIP().GetValue()
+	metaDataMap[string(typeObject.UserAgentHeaderName)] = requestContext.UserAgent().GetValue()
+	metaDataMap[string(typeObject.UserIDHeaderName)] = requestContext.UserID().GetValue()
+	metaDataMap[string(typeObject.AccessTokenHeaderName)] = requestContext.AccessToken().GetValue()
+	metaDataMap[string(typeObject.TenantIDHeaderName)] = requestContext.TenantID().GetValue()
+	metaDataMap[string(typeObject.LocaleHeaderName)] = requestContext.Locale().GetValue()
+	metaDataMap[string(typeObject.TimeZoneHeaderName)] = requestContext.TimeZone().GetValue()
 
 	// int64 value
-	metaDataMap[string(typeObject.RequestStartTimeHeaderName)] = requestContext.RequestStartTime.GetString()
+	metaDataMap[string(typeObject.RequestStartTimeHeaderName)] = requestContext.RequestStartTime().GetString()
 
 	// permissionListを文字列のスライスとして格納
 	metaDataMap[string(typeObject.PermissionListHeaderName)] = strings.Join(
-		requestContext.PermissionList.GetSliceValue(),
+		requestContext.PermissionList().GetSliceValue(),
 		",",
 	)
 
@@ -126,12 +127,11 @@ func MetadataToContext(
 		newRequestContextArgs.TimeZone = &value
 	}
 
-	requestContext := groupObject.NewRequestContext(
-		ctx,
+	requestContext, err := groupObject.NewRequestContext(
 		newRequestContextArgs,
 	)
-	if requestContext.GetError() != nil {
-		logger.Logging(ctx, requestContext.GetError())
+	if err != nil {
+		logger.Logging(ctx, err)
 		return ctx
 	}
 
@@ -146,7 +146,7 @@ func MetadataToContext(
 	ctx = context.WithValue(
 		ctx,
 		typeObject.TraceIDContextName,
-		requestContext.TraceID.GetValue(),
+		requestContext.TraceID().GetValue(),
 	)
 
 	return ctx

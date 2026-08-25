@@ -1,7 +1,6 @@
 package type_object
 
 import (
-	"context"
 	"time"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
@@ -18,27 +17,25 @@ var (
 )
 
 type RequestStartTime struct {
-	err     error
 	content *primitiveObject.PrimitiveIntX[int64]
 }
 
 func NewRequestStartTime(
-	ctx context.Context,
 	value *int64,
 ) (
 	requestStartTime RequestStartTime,
+	err error,
 ) {
 
 	requestStartTime = RequestStartTime{}
-	requestStartTime.SetValue(ctx, value)
+	err = requestStartTime.SetValue(value)
 
 	return
 }
 
 func (receiver *RequestStartTime) SetValue(
-	ctx context.Context,
 	value *int64,
-) {
+) error {
 	primitiveIntX := &primitiveObject.PrimitiveIntX[int64]{}
 
 	if value == nil {
@@ -55,21 +52,9 @@ func (receiver *RequestStartTime) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *RequestStartTime) GetError() error {
-	return receiver.err
-}
-
-func (receiver *RequestStartTime) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *RequestStartTime) GetValue() int64 {

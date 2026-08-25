@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 	httpParameter "backend/internal/1_framework/parameter/http"
 	groupObject "backend/internal/4_domain/group_object"
 
@@ -21,9 +22,9 @@ func GetUsers(
 	getUsersParams openapi.GetUsersParams,
 ) error {
 	ctx := echoContext.Request().Context()
-	requestContext := groupObject.GetRequestContext(ctx)
+	requestContext := requestContextMiddleware.GetRequestContext(ctx)
 
-	timeoutMillSecond := requestContext.TimeOutMillSecond.GetValue()
+	timeoutMillSecond := requestContext.TimeOutMillSecond().GetValue()
 
 	ctxWithTimeout, cancel := context.WithTimeout(
 		ctx,
@@ -86,35 +87,32 @@ func handleUsersRequest(
 ) {
 	responseList = []httpParameter.V1Person{}
 
-	reqPerson := groupObject.NewPerson(
-		ctx,
+	reqPerson, err := groupObject.NewPerson(
 		&groupObject.NewPersonArgs{
 			ID:          person.ID,
 			Name:        person.Name,
 			MailAddress: person.MailAddress,
 		},
 	)
-
-	if reqPerson.GetError() != nil {
-		logger.Logging(ctx, reqPerson.GetError())
-		return nil, reqPerson.GetError()
+	if err != nil {
+		logger.Logging(ctx, err)
+		return nil, err
 	}
 
-	personList := toController.GetPersonListByCondition(
+	personList, err := toController.GetPersonListByCondition(
 		// personList := toController.ViaGRPC(
 		ctx,
 		*reqPerson,
 	)
-
-	if personList.GetError() != nil {
-		logger.Logging(ctx, personList.GetError())
-		return nil, personList.GetError()
+	if err != nil {
+		logger.Logging(ctx, err)
+		return nil, err
 	}
 
-	for _, person := range personList.Content {
-		id := person.ID.GetValue()
-		name := person.Name.GetValue()
-		mailAddress := person.MailAddress.GetValue()
+	for _, person := range personList.Content() {
+		id := person.ID().GetValue()
+		name := person.Name().GetValue()
+		mailAddress := person.MailAddress().GetValue()
 		responseList = append(
 			responseList,
 			httpParameter.V1Person{

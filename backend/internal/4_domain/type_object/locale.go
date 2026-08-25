@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 const (
 	LocaleHeaderName  primitiveObject.ContextKey = "locale"
@@ -17,26 +13,24 @@ var (
 )
 
 type Locale struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewLocale(
-	ctx context.Context,
 	value *string,
 ) (
 	locale Locale,
+	err error,
 ) {
 	locale = Locale{}
-	locale.SetValue(ctx, value)
+	err = locale.SetValue(value)
 
 	return
 }
 
 func (receiver *Locale) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -46,21 +40,9 @@ func (receiver *Locale) SetValue(
 	)
 
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *Locale) GetError() error {
-	return receiver.err
-}
-
-func (receiver *Locale) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *Locale) GetValue() string {

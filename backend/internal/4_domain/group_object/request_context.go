@@ -1,7 +1,6 @@
 package group_object
 
 import (
-	"context"
 	"time"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
@@ -42,18 +41,17 @@ var ContextNameToHeaderNameMap = map[primitiveObject.ContextKey]primitiveObject.
 }
 
 type RequestContext struct {
-	err               error                        // contextに含める構造体作成時に発生したエラーを格納
-	TimeOutMillSecond typeObject.TimeOutMillSecond // RequestStartTimeからの経過時間を格納
-	RequestStartTime  typeObject.RequestStartTime  // httpかgrpcのリクエスト開始時間を格納
-	TraceID           typeObject.TraceID           // uuidを格納
-	ClientIP          typeObject.ClientIP          // httpアクセス元のIPを格納
-	UserAgent         typeObject.UserAgent         // httpアクセス元のUserAgentを格納
-	UserID            typeObject.UserID            // 認証ユーザーIDを格納
-	AccessToken       typeObject.AccessToken       // 認証トークンを格納
-	TenantID          typeObject.TenantID          // 所属テナントIDを格納
-	Locale            typeObject.Locale            // ロケールを格納
-	TimeZone          typeObject.TimeZone          // タイムゾーンを格納
-	PermissionList    typeObject.PermissionList    // ユーザー権限を格納
+	timeOutMillSecond typeObject.TimeOutMillSecond // RequestStartTimeからの経過時間を格納
+	requestStartTime  typeObject.RequestStartTime  // httpかgrpcのリクエスト開始時間を格納
+	traceID           typeObject.TraceID           // uuidを格納
+	clientIP          typeObject.ClientIP          // httpアクセス元のIPを格納
+	userAgent         typeObject.UserAgent         // httpアクセス元のUserAgentを格納
+	userID            typeObject.UserID            // 認証ユーザーIDを格納
+	accessToken       typeObject.AccessToken       // 認証トークンを格納
+	tenantID          typeObject.TenantID          // 所属テナントIDを格納
+	locale            typeObject.Locale            // ロケールを格納
+	timeZone          typeObject.TimeZone          // タイムゾーンを格納
+	permissionList    typeObject.PermissionList    // ユーザー権限を格納
 }
 
 type NewRequestContextArgs struct {
@@ -70,112 +68,125 @@ type NewRequestContextArgs struct {
 }
 
 func NewRequestContext(
-	ctx context.Context,
 	args *NewRequestContextArgs,
 ) (
 	requestContext *RequestContext,
+	err error,
 ) {
 	requestContext = &RequestContext{}
 
 	// ______________________________________
-	requestContext.RequestStartTime = typeObject.NewRequestStartTime(ctx, args.RequestStartTime)
-	if requestContext.RequestStartTime.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.RequestStartTime.GetError())
-		return
+	requestContext.requestStartTime, err = typeObject.NewRequestStartTime(args.RequestStartTime)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.TraceID = typeObject.NewTraceID(ctx, args.TraceID)
-	if requestContext.TraceID.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.TraceID.GetError())
-		return
+	requestContext.traceID, err = typeObject.NewTraceID(args.TraceID)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.ClientIP = typeObject.NewClientIP(ctx, args.ClientIP)
-	if requestContext.ClientIP.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.ClientIP.GetError())
-		return
+	requestContext.clientIP, err = typeObject.NewClientIP(args.ClientIP)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.UserAgent = typeObject.NewUserAgent(ctx, args.UserAgent)
-	if requestContext.UserAgent.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.UserAgent.GetError())
-		return
+	requestContext.userAgent, err = typeObject.NewUserAgent(args.UserAgent)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.Locale = typeObject.NewLocale(ctx, args.Locale)
-	if requestContext.Locale.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.Locale.GetError())
-		return
+	requestContext.locale, err = typeObject.NewLocale(args.Locale)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.TimeZone = typeObject.NewTimeZone(ctx, args.TimeZone)
-	if requestContext.TimeZone.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.TimeZone.GetError())
-		return
+	requestContext.timeZone, err = typeObject.NewTimeZone(args.TimeZone)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.UserID = typeObject.NewUserID(ctx, args.UserID)
-	if requestContext.UserID.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.UserID.GetError())
-		return
+	requestContext.userID, err = typeObject.NewUserID(args.UserID)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.AccessToken = typeObject.NewAccessToken(ctx, args.AccessToken)
-	if requestContext.AccessToken.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.AccessToken.GetError())
-		return
+	requestContext.accessToken, err = typeObject.NewAccessToken(args.AccessToken)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestContext.TenantID = typeObject.NewTenantID(ctx, args.TenantID)
-	if requestContext.TenantID.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.TenantID.GetError())
-		return
+	requestContext.tenantID, err = typeObject.NewTenantID(args.TenantID)
+	if err != nil {
+		return nil, err
+	}
+
+	requestContext.permissionList, err = typeObject.NewPermissionList(args.PermissionList)
+	if err != nil {
+		return nil, err
 	}
 
 	// ______________________________________
-	requestStartTime := requestContext.RequestStartTime
+	requestStartTime := requestContext.requestStartTime
 	requestEndTime := time.UnixMilli(requestStartTime.GetValue()).Add(typeObject.TimeOutMillSecondValue * time.Second).UnixMilli()
 	timeoutMillSecond := requestEndTime - time.Now().UnixMilli()
 
-	requestContext.TimeOutMillSecond = typeObject.NewTimeOutMillSecond(ctx, &timeoutMillSecond)
-	if requestContext.TimeOutMillSecond.GetError() != nil {
-		requestContext.SetError(ctx, requestContext.TimeOutMillSecond.GetError())
-		return
+	requestContext.timeOutMillSecond, err = typeObject.NewTimeOutMillSecond(&timeoutMillSecond)
+	if err != nil {
+		return nil, err
 	}
 
 	return
 }
 
-func (receiver *RequestContext) GetError() error {
-	return receiver.err
+func (receiver *RequestContext) TimeOutMillSecond() *typeObject.TimeOutMillSecond {
+	return &receiver.timeOutMillSecond
 }
 
-func (receiver *RequestContext) SetError(
-	ctx context.Context,
-	err error,
-) {
-	if receiver.err == nil {
-		receiver.err = err
-	}
+func (receiver *RequestContext) RequestStartTime() *typeObject.RequestStartTime {
+	return &receiver.requestStartTime
 }
 
-func GetRequestContext(
-	ctx context.Context,
-) (
-	value *RequestContext,
-) {
-	requestContext, ok := ctx.Value(RequestContextContextName).(RequestContext)
-	if ok {
-		value = &requestContext
-	}
+func (receiver *RequestContext) TraceID() *typeObject.TraceID {
+	return &receiver.traceID
+}
 
-	return
+func (receiver *RequestContext) ClientIP() *typeObject.ClientIP {
+	return &receiver.clientIP
+}
+
+func (receiver *RequestContext) UserAgent() *typeObject.UserAgent {
+	return &receiver.userAgent
+}
+
+func (receiver *RequestContext) UserID() *typeObject.UserID {
+	return &receiver.userID
+}
+
+func (receiver *RequestContext) AccessToken() *typeObject.AccessToken {
+	return &receiver.accessToken
+}
+
+func (receiver *RequestContext) TenantID() *typeObject.TenantID {
+	return &receiver.tenantID
+}
+
+func (receiver *RequestContext) Locale() *typeObject.Locale {
+	return &receiver.locale
+}
+
+func (receiver *RequestContext) TimeZone() *typeObject.TimeZone {
+	return &receiver.timeZone
+}
+
+func (receiver *RequestContext) PermissionList() *typeObject.PermissionList {
+	return &receiver.permissionList
 }

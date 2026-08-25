@@ -6,7 +6,6 @@ import (
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
-	typeObject "backend/internal/4_domain/type_object"
 )
 
 // ...
@@ -16,11 +15,11 @@ func (receiver *GRPCClient) ViaGRPC(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
-	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// traceID := requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
 
-	var err error
 	resPersonList = groupObject.PersonList{}
 
 	// クライアントの作成
@@ -31,13 +30,13 @@ func (receiver *GRPCClient) ViaGRPC(
 		V1PersonParameter: &grpcParameter.V1PersonParameter{},
 	}
 
-	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {
-		value := reqPerson.Name.GetValue()
+	if !reqPerson.Name().GetIsNil() && reqPerson.Name().GetValue() != "" {
+		value := reqPerson.Name().GetValue()
 		v1GetPersonByConditionRequest.V1PersonParameter.Name = &value
 	}
 
-	if !reqPerson.MailAddress.GetIsNil() && reqPerson.MailAddress.GetValue() != "" {
-		value := reqPerson.MailAddress.GetValue()
+	if !reqPerson.MailAddress().GetIsNil() && reqPerson.MailAddress().GetValue() != "" {
+		value := reqPerson.MailAddress().GetValue()
 		v1GetPersonByConditionRequest.V1PersonParameter.MailAddress = &value
 	}
 
@@ -49,34 +48,25 @@ func (receiver *GRPCClient) ViaGRPC(
 		v1GetPersonByConditionRequest,
 	)
 	if err != nil {
-		resPersonList.SetError(ctx, err)
 		return
 	}
 	for _, grpcPerson := range grpcPersonList.V1PersonParameterArray.Persons {
-		person := &groupObject.Person{}
-
 		id := int(grpcPerson.GetId())
-		person.ID = typeObject.NewID(
-			ctx,
-			&id,
-		)
-
 		name := grpcPerson.GetName()
-		person.Name = typeObject.NewName(
-			ctx,
-			&name,
-		)
-
 		mailAddress := grpcPerson.GetMailAddress()
-		person.MailAddress = typeObject.NewMailAddress(
-			ctx,
-			&mailAddress,
-		)
+		person, err := groupObject.NewPerson(&groupObject.NewPersonArgs{
+			ID:          &id,
+			Name:        &name,
+			MailAddress: &mailAddress,
+		})
+		if err != nil {
+			return resPersonList, err
+		}
 
-		resPersonList.Content = append(resPersonList.Content, *person)
+		resPersonList.Append(*person)
 	}
 
-	// traceID = groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// traceID = requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
 
 	return

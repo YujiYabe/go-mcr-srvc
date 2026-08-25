@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 const (
 	TimeZoneHeaderName  primitiveObject.ContextKey = "time-zone"
@@ -17,26 +13,24 @@ var (
 )
 
 type TimeZone struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewTimeZone(
-	ctx context.Context,
 	value *string,
 ) (
 	timeZone TimeZone,
+	err error,
 ) {
 	timeZone = TimeZone{}
-	timeZone.SetValue(ctx, value)
+	err = timeZone.SetValue(value)
 
 	return
 }
 
 func (receiver *TimeZone) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -47,21 +41,9 @@ func (receiver *TimeZone) SetValue(
 	)
 
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *TimeZone) GetError() error {
-	return receiver.err
-}
-
-func (receiver *TimeZone) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *TimeZone) GetValue() string {

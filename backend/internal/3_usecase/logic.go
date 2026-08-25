@@ -15,8 +15,9 @@ func (receiver *useCase) GetPersonList(
 	ctx context.Context,
 ) (
 	personList groupObject.PersonList,
+	err error,
 ) {
-	personList = receiver.ToGatewayDB.GetPersonList(ctx)
+	personList, err = receiver.ToGatewayDB.GetPersonList(ctx)
 	return
 }
 
@@ -25,9 +26,10 @@ func (receiver *useCase) GetPersonListByCondition(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
 
-	resPersonList = receiver.ToGatewayDB.GetPersonListByCondition(
+	resPersonList, err = receiver.ToGatewayDB.GetPersonListByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -39,8 +41,9 @@ func (receiver *useCase) FetchAccessToken(
 	credential groupObject.Credential,
 ) (
 	accessToken typeObject.AccessToken,
+	err error,
 ) {
-	accessToken = receiver.ToGatewayExternal.FetchAccessToken(
+	accessToken, err = receiver.ToGatewayExternal.FetchAccessToken(
 		ctx,
 		credential,
 	)
@@ -52,8 +55,9 @@ func (receiver *useCase) ViaGRPC(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
-	resPersonList = receiver.ToGatewayExternal.ViaGRPC(
+	resPersonList, err = receiver.ToGatewayExternal.ViaGRPC(
 		ctx,
 		reqPerson,
 	)

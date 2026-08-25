@@ -1,15 +1,10 @@
 package group_object
 
-import (
-	"context"
-
-	typeObject "backend/internal/4_domain/type_object"
-)
+import typeObject "backend/internal/4_domain/type_object"
 
 type Credential struct {
-	err          error
-	ClientID     typeObject.ClientID
-	ClientSecret typeObject.ClientSecret
+	clientID     typeObject.ClientID
+	clientSecret typeObject.ClientSecret
 }
 
 type NewCredentialArgs struct {
@@ -17,39 +12,32 @@ type NewCredentialArgs struct {
 	ClientSecret *string
 }
 
-func (receiver *Credential) GetError() error {
-	return receiver.err
+func (receiver *Credential) ClientID() *typeObject.ClientID {
+	return &receiver.clientID
 }
 
-func (receiver *Credential) SetError(
-	ctx context.Context, err error,
-) {
-	if receiver.err == nil {
-		receiver.err = err
-	}
+func (receiver *Credential) ClientSecret() *typeObject.ClientSecret {
+	return &receiver.clientSecret
 }
 
 func NewCredential(
-	ctx context.Context,
 	args *NewCredentialArgs,
 ) (
-	accessToken *Credential,
+	credential *Credential,
+	err error,
 ) {
-	accessToken = &Credential{}
+	credential = &Credential{}
 
-	accessToken.ClientID = typeObject.NewClientID(
-		ctx,
+	credential.clientID, err = typeObject.NewClientID(
 		args.ClientID,
 	)
-	if accessToken.ClientID.GetError() != nil {
-		accessToken.SetError(ctx, accessToken.ClientID.GetError())
-		return
+	if err != nil {
+		return nil, err
 	}
 
-	accessToken.ClientSecret = typeObject.NewClientSecret(ctx, args.ClientSecret)
-	if accessToken.ClientSecret.GetError() != nil {
-		accessToken.SetError(ctx, accessToken.ClientSecret.GetError())
-		return
+	credential.clientSecret, err = typeObject.NewClientSecret(args.ClientSecret)
+	if err != nil {
+		return nil, err
 	}
 
 	return

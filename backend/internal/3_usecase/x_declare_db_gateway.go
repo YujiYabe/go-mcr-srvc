@@ -14,6 +14,7 @@ type (
 			ctx context.Context,
 		) (
 			personList groupObject.PersonList,
+			err error,
 		)
 
 		GetPersonListByCondition(
@@ -21,6 +22,7 @@ type (
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
+			err error,
 		)
 	}
 )

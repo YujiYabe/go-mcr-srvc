@@ -12,8 +12,9 @@ func (receiver *GatewayExternal) ViaGRPC(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
-	resPersonList = receiver.ToGRPC.ViaGRPC(
+	resPersonList, err = receiver.ToGRPC.ViaGRPC(
 		ctx,
 		reqPerson,
 	)

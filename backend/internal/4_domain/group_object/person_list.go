@@ -1,46 +1,37 @@
 package group_object
 
-import "context"
-
 type PersonList struct {
-	err     error
-	Content []Person
+	content []Person
 }
 
 type NewPersonListArgs struct {
 	Content []NewPersonArgs
 }
 
-func (receiver *PersonList) GetError() error {
-	return receiver.err
+func (receiver PersonList) Content() []Person {
+	return receiver.content
 }
 
-func (receiver *PersonList) SetError(
-	ctx context.Context,
-	err error,
-) {
-	if receiver.err == nil {
-		receiver.err = err
-	}
+func (receiver *PersonList) Append(person Person) {
+	receiver.content = append(receiver.content, person)
 }
 
 func NewPersonList(
-	ctx context.Context,
 	args *NewPersonListArgs,
 ) (
 	personList PersonList,
+	err error,
 ) {
 	personList = PersonList{}
 
 	for _, args := range args.Content {
-		person := NewPerson(ctx, &args)
-		if person.GetError() != nil {
-			personList.SetError(ctx, person.GetError())
-			break
+		person, err := NewPerson(&args)
+		if err != nil {
+			return personList, err
 		}
 
-		personList.Content = append(
-			personList.Content,
+		personList.content = append(
+			personList.content,
 			*person,
 		)
 	}

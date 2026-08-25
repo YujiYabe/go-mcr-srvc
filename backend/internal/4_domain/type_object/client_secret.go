@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 var (
 	clientSecretMaxLength uint = 999
@@ -12,26 +8,24 @@ var (
 )
 
 type ClientSecret struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewClientSecret(
-	ctx context.Context,
 	value *string,
 ) (
 	clientSecret ClientSecret,
+	err error,
 ) {
 	clientSecret = ClientSecret{}
-	clientSecret.SetValue(ctx, value)
+	err = clientSecret.SetValue(value)
 
 	return
 }
 
 func (receiver *ClientSecret) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	minLength := uint(clientSecretMinLength)
@@ -45,20 +39,9 @@ func (receiver *ClientSecret) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *ClientSecret) GetError() error {
-	return receiver.err
-}
-
-func (receiver *ClientSecret) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *ClientSecret) GetValue() string {

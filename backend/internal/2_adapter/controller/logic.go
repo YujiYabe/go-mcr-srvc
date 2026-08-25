@@ -13,8 +13,9 @@ func (receiver *controller) GetPersonList(
 	ctx context.Context,
 ) (
 	personList groupObject.PersonList,
+	err error,
 ) {
-	personList = receiver.UseCase.GetPersonList(ctx)
+	personList, err = receiver.UseCase.GetPersonList(ctx)
 	return
 }
 
@@ -23,8 +24,9 @@ func (receiver *controller) GetPersonListByCondition(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
-	resPersonList = receiver.UseCase.GetPersonListByCondition(
+	resPersonList, err = receiver.UseCase.GetPersonListByCondition(
 		ctx,
 		reqPerson,
 	)
@@ -36,8 +38,9 @@ func (receiver *controller) FetchAccessToken(
 	credential groupObject.Credential,
 ) (
 	accessToken typeObject.AccessToken,
+	err error,
 ) {
-	accessToken = receiver.UseCase.FetchAccessToken(
+	accessToken, err = receiver.UseCase.FetchAccessToken(
 		ctx,
 		credential,
 	)
@@ -49,8 +52,9 @@ func (receiver *controller) ViaGRPC(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
-	resPersonList = receiver.UseCase.ViaGRPC(
+	resPersonList, err = receiver.UseCase.ViaGRPC(
 		ctx,
 		reqPerson,
 	)

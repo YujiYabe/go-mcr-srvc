@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 const (
 	ClientIPHeaderName  primitiveObject.ContextKey = "client-ip"
@@ -17,26 +13,24 @@ var (
 )
 
 type ClientIP struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewClientIP(
-	ctx context.Context,
 	value *string,
 ) (
 	clientIP ClientIP,
+	err error,
 ) {
 	clientIP = ClientIP{}
-	clientIP.SetValue(ctx, value)
+	err = clientIP.SetValue(value)
 
 	return
 }
 
 func (receiver *ClientIP) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -46,21 +40,9 @@ func (receiver *ClientIP) SetValue(
 	)
 
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *ClientIP) GetError() error {
-	return receiver.err
-}
-
-func (receiver *ClientIP) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *ClientIP) GetValue() string {

@@ -94,6 +94,7 @@ func (receiver *PostgresClient) GetPersonList(
 	tx *gorm.DB,
 ) (
 	personList groupObject.PersonList,
+	err error,
 ) {
 	personList = groupObject.PersonList{} // ドメインロジック用
 	persons := []models.Person{}          // SQL結果保存用
@@ -103,7 +104,7 @@ func (receiver *PostgresClient) GetPersonList(
 		Find(&persons)
 
 	if result.Error != nil {
-		personList.SetError(ctx, result.Error)
+		err = result.Error
 		return
 	}
 
@@ -117,17 +118,13 @@ func (receiver *PostgresClient) GetPersonList(
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := groupObject.NewPerson(ctx, args)
-
-		if person.GetError() != nil {
-			personList.SetError(ctx, person.GetError())
+		domainPerson, createErr := groupObject.NewPerson(args)
+		if createErr != nil {
+			err = createErr
 			return
 		}
 
-		personList.Content = append(
-			personList.Content,
-			*person,
-		)
+		personList.Append(*domainPerson)
 	}
 
 	return
@@ -139,6 +136,7 @@ func (receiver *PostgresClient) GetPerson(
 	id typeObject.ID,
 ) (
 	person groupObject.Person,
+	err error,
 ) {
 	person = groupObject.Person{}   // ドメインロジック用
 	resultPerson := models.Person{} // SQL結果保存用
@@ -149,7 +147,7 @@ func (receiver *PostgresClient) GetPerson(
 		Take(&resultPerson)
 
 	if result.Error != nil {
-		person.SetError(ctx, result.Error)
+		err = result.Error
 		return
 	}
 
@@ -158,9 +156,12 @@ func (receiver *PostgresClient) GetPerson(
 		Name:        &resultPerson.Name.String,
 		MailAddress: &resultPerson.MailAddress.String,
 	}
-	newPerson := groupObject.NewPerson(ctx, args)
+	newPerson, err := groupObject.NewPerson(args)
+	if err != nil {
+		return
+	}
 
-	return *newPerson
+	return *newPerson, nil
 }
 
 // GetPersonListByCondition ...
@@ -170,10 +171,11 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
 	// logger.Logging(
 	// 	ctx,
-	// 	groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
 	resPersonList = groupObject.PersonList{} // ドメインロジック用
@@ -181,17 +183,17 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 
 	conn := tx.Table("persons")
 
-	if !reqPerson.MailAddress.GetIsNil() && reqPerson.MailAddress.GetValue() != "" {
-		conn = conn.Where("mail_address = ?", reqPerson.MailAddress.GetValue())
+	if !reqPerson.MailAddress().GetIsNil() && reqPerson.MailAddress().GetValue() != "" {
+		conn = conn.Where("mail_address = ?", reqPerson.MailAddress().GetValue())
 	}
 
-	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {
-		conn = conn.Where("name LIKE ?", "%"+reqPerson.Name.GetValue()+"%")
+	if !reqPerson.Name().GetIsNil() && reqPerson.Name().GetValue() != "" {
+		conn = conn.Where("name LIKE ?", "%"+reqPerson.Name().GetValue()+"%")
 	}
 
 	result := conn.Find(&persons)
 	if result.Error != nil {
-		resPersonList.SetError(ctx, result.Error)
+		err = result.Error
 		return
 	}
 
@@ -201,23 +203,19 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
 		}
-		person := groupObject.NewPerson(ctx, args)
-
-		if person.GetError() != nil {
-			logger.Logging(ctx, person.GetError())
-			resPersonList.SetError(ctx, person.GetError())
+		domainPerson, createErr := groupObject.NewPerson(args)
+		if createErr != nil {
+			err = createErr
+			logger.Logging(ctx, err)
 			return
 		}
 
-		resPersonList.Content = append(
-			resPersonList.Content,
-			*person,
-		)
+		resPersonList.Append(*domainPerson)
 	}
 
 	// logger.Logging(
 	// 	ctx,
-	// 	groupObject.GetRequestContext(ctx).TraceID.GetValue(),
+	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
 	return

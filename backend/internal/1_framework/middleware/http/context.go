@@ -45,14 +45,12 @@ func ContextMiddleware() echo.MiddlewareFunc {
 				TimeZone:  &timeZone,
 			}
 
-			requestContext := groupObject.NewRequestContext(
-				c.Request().Context(),
+			requestContext, err := groupObject.NewRequestContext(
 				newRequestContextArgs,
 			)
-
-			if requestContext.GetError() != nil {
-				logger.Logging(c.Request().Context(), requestContext.GetError())
-				return requestContext.GetError()
+			if err != nil {
+				logger.Logging(c.Request().Context(), err)
+				return err
 			}
 			ctx := context.WithValue(
 				c.Request().Context(),
@@ -65,7 +63,7 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			ctx = context.WithValue(
 				ctx,
 				typeObject.TraceIDContextName,
-				requestContext.TraceID.GetValue(),
+				requestContext.TraceID().GetValue(),
 			)
 
 			c.SetRequest(c.Request().WithContext(ctx))

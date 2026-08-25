@@ -1,7 +1,6 @@
 package type_object
 
 import (
-	"context"
 	"fmt"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
@@ -15,26 +14,24 @@ var (
 var permissionCheckSpell = []string{}
 
 type Permission struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewPermission(
-	ctx context.Context,
 	value *string,
 ) (
 	permission Permission,
+	err error,
 ) {
 	permission = Permission{}
-	permission.SetValue(ctx, value)
+	err = permission.SetValue(value)
 
 	return
 }
 
 func (receiver *Permission) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -46,38 +43,19 @@ func (receiver *Permission) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx, receiver.content.GetError())
-		return
+		return receiver.content.GetError()
 	}
-
+	return nil
 }
 
 func (receiver *Permission) GetValue() string {
 	return receiver.content.GetValue()
 }
 
-func (receiver *Permission) GetError() error {
-	return receiver.err
-}
-
-func (receiver *Permission) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
-}
-
-func (receiver *Permission) SetErrorString(
-	ctx context.Context,
+func (receiver *Permission) ErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		ctx,
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
-	)
+) error {
+	return fmt.Errorf("error: %s", errString)
 }
 
 func (receiver *Permission) GetIsNil() bool {

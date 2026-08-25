@@ -18,17 +18,17 @@ func (receiver *Auth0Client) FetchAccessToken(
 	credential groupObject.Credential,
 ) (
 	accessToken typeObject.AccessToken,
+	err error,
 ) {
 	payload := map[string]string{
-		"client_id":     credential.ClientID.GetValue(),
-		"client_secret": credential.ClientSecret.GetValue(),
+		"client_id":     credential.ClientID().GetValue(),
+		"client_secret": credential.ClientSecret().GetValue(),
 		"audience":      "https://auth0my-yayuji.com",
 		"grant_type":    "client_credentials",
 	}
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		accessToken.SetError(ctx, err)
 		return
 	}
 
@@ -39,7 +39,6 @@ func (receiver *Auth0Client) FetchAccessToken(
 		bytes.NewBuffer(jsonData),
 	)
 	if err != nil {
-		accessToken.SetError(ctx, err)
 		return
 	}
 
@@ -48,12 +47,11 @@ func (receiver *Auth0Client) FetchAccessToken(
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		accessToken.SetError(ctx, err)
 		return
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
-		accessToken.SetError(ctx, fmt.Errorf("auth0 token request failed: status %d", resp.StatusCode))
+		err = fmt.Errorf("auth0 token request failed: status %d", resp.StatusCode)
 		return
 	}
 
@@ -61,13 +59,11 @@ func (receiver *Auth0Client) FetchAccessToken(
 		AccessToken string `json:"access_token"`
 	}
 
-	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		accessToken.SetError(ctx, err)
+	if err = json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
 		return
 	}
 
-	accessToken = typeObject.NewAccessToken(
-		ctx,
+	accessToken, err = typeObject.NewAccessToken(
 		&tokenResponse.AccessToken,
 	)
 

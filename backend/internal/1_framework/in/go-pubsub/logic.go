@@ -8,7 +8,7 @@ import (
 	// pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 	// groupObject "backend/internal/4_domain/group_object"
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
-	groupObject "backend/internal/4_domain/group_object"
+	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 )
 
 // Start ....
@@ -34,10 +34,10 @@ func (receiver *GoPubSub) subscribeTestTopic() {
 			fmt.Printf(topicName+" Received message: %s\n", string(msg.Value))
 			// RequestContextを生成してコントローラーに渡す
 			ctx := pubsubMiddleware.HeaderToContext(msg.Headers)
-			requestContext := groupObject.GetRequestContext(ctx)
+			requestContext := requestContextMiddleware.GetRequestContext(ctx)
 			log.Println("== == == == == == == == == == ")
-			log.Printf("%#v\n", requestContext.TraceID.GetValue())
-			log.Printf("%#v\n", requestContext.RequestStartTime.GetValue())
+			log.Printf("%#v\n", requestContext.TraceID().GetValue())
+			log.Printf("%#v\n", requestContext.RequestStartTime().GetValue())
 			log.Println("== == == == == == == == == == ")
 
 			// receiver.Controller.GetPersonList(ctx)

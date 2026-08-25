@@ -12,6 +12,7 @@ func RefillPersonGRPCToDomain(
 	request *grpcParameter.V1PersonParameter,
 ) (
 	reqPerson *groupObject.Person,
+	err error,
 ) {
 	var id *int
 	if request.GetId() != 0 {
@@ -29,8 +30,7 @@ func RefillPersonGRPCToDomain(
 		mailAddress = request.MailAddress
 	}
 
-	reqPerson = groupObject.NewPerson(
-		ctx,
+	reqPerson, err = groupObject.NewPerson(
 		&groupObject.NewPersonArgs{
 			ID:          id,
 			Name:        name,
@@ -50,10 +50,10 @@ func RefillPersonDomainToGRPC(
 ) {
 	v1PersonParameterList = []*grpcParameter.V1PersonParameter{}
 
-	for _, response := range personList.Content {
-		id32 := uint32(response.ID.GetValue())
-		name := response.Name.GetValue()
-		mailAddress := response.MailAddress.GetValue()
+	for _, response := range personList.Content() {
+		id32 := uint32(response.ID().GetValue())
+		name := response.Name().GetValue()
+		mailAddress := response.MailAddress().GetValue()
 		v1PersonParameter := &grpcParameter.V1PersonParameter{
 			Id:          &id32,
 			Name:        &name,

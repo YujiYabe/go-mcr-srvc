@@ -6,6 +6,7 @@ import (
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
+	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 	groupObject "backend/internal/4_domain/group_object"
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	typeObject "backend/internal/4_domain/type_object"
@@ -59,12 +60,11 @@ func HeaderToContext(
 		}
 	}
 
-	requestContext := groupObject.NewRequestContext(
-		ctx,
+	requestContext, err := groupObject.NewRequestContext(
 		newRequestContextArgs,
 	)
-	if requestContext.GetError() != nil {
-		logger.Logging(ctx, requestContext.GetError())
+	if err != nil {
+		logger.Logging(ctx, err)
 		return
 	}
 
@@ -83,7 +83,7 @@ func ContextToHeader(
 ) (
 	headers []kafka.Header,
 ) {
-	requestContext := groupObject.GetRequestContext(ctx)
+	requestContext := requestContextMiddleware.GetRequestContext(ctx)
 	if requestContext == nil {
 		return headers
 	}
@@ -93,7 +93,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.AccessTokenHeaderName),
-			Value: []byte(requestContext.AccessToken.GetValue()),
+			Value: []byte(requestContext.AccessToken().GetValue()),
 		},
 	)
 
@@ -101,7 +101,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.ClientIPHeaderName),
-			Value: []byte(requestContext.AccessToken.GetValue()),
+			Value: []byte(requestContext.AccessToken().GetValue()),
 		},
 	)
 
@@ -109,7 +109,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.ClientIPHeaderName),
-			Value: []byte(requestContext.ClientIP.GetValue()),
+			Value: []byte(requestContext.ClientIP().GetValue()),
 		},
 	)
 
@@ -117,7 +117,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.LocaleHeaderName),
-			Value: []byte(requestContext.Locale.GetValue()),
+			Value: []byte(requestContext.Locale().GetValue()),
 		},
 	)
 
@@ -125,7 +125,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.RequestStartTimeHeaderName),
-			Value: []byte(requestContext.RequestStartTime.GetString()),
+			Value: []byte(requestContext.RequestStartTime().GetString()),
 		},
 	)
 
@@ -133,7 +133,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.TenantIDHeaderName),
-			Value: []byte(requestContext.TenantID.GetValue()),
+			Value: []byte(requestContext.TenantID().GetValue()),
 		},
 	)
 
@@ -141,7 +141,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.TimeZoneHeaderName),
-			Value: []byte(requestContext.TimeZone.GetValue()),
+			Value: []byte(requestContext.TimeZone().GetValue()),
 		},
 	)
 
@@ -149,7 +149,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.TraceIDHeaderName),
-			Value: []byte(requestContext.TraceID.GetValue()),
+			Value: []byte(requestContext.TraceID().GetValue()),
 		},
 	)
 
@@ -157,7 +157,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.UserAgentHeaderName),
-			Value: []byte(requestContext.UserAgent.GetValue()),
+			Value: []byte(requestContext.UserAgent().GetValue()),
 		},
 	)
 
@@ -165,7 +165,7 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.UserIDHeaderName),
-			Value: []byte(requestContext.UserID.GetValue()),
+			Value: []byte(requestContext.UserID().GetValue()),
 		},
 	)
 

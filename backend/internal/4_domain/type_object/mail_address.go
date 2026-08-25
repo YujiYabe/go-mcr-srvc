@@ -1,7 +1,6 @@
 package type_object
 
 import (
-	"context"
 	"fmt"
 	"regexp"
 
@@ -16,26 +15,24 @@ var (
 var mailAddressCheckSpell = []string{}
 
 type MailAddress struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewMailAddress(
-	ctx context.Context,
 	value *string,
 ) (
 	mailAddress MailAddress,
+	err error,
 ) {
 	mailAddress = MailAddress{}
-	mailAddress.SetValue(ctx, value)
+	err = mailAddress.SetValue(value)
 
 	return
 }
 
 func (receiver *MailAddress) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -47,50 +44,28 @@ func (receiver *MailAddress) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx, receiver.content.GetError())
-		return
+		return receiver.content.GetError()
 	}
 
-	// メールアドレスのバリデーション
-	receiver.Validation(ctx)
+	return receiver.Validation()
 }
 func (receiver *MailAddress) GetValue() string {
 	return receiver.content.GetValue()
 }
 
-func (receiver *MailAddress) GetError() error {
-	return receiver.err
-}
-
-func (receiver *MailAddress) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
-}
-
-func (receiver *MailAddress) SetErrorString(
-	ctx context.Context,
+func (receiver *MailAddress) ErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		ctx,
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
-	)
+) error {
+	return fmt.Errorf("error: %s", errString)
 }
 
 func (receiver *MailAddress) GetIsNil() bool {
 	return receiver.content.GetIsNil()
 }
 
-func (receiver *MailAddress) Validation(
-	ctx context.Context,
-) {
+func (receiver *MailAddress) Validation() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
 	// メールアドレスの正規表現パターン
@@ -101,22 +76,11 @@ func (receiver *MailAddress) Validation(
 		receiver.GetValue(),
 	)
 	if err != nil {
-		receiver.SetError(
-			ctx,
-			fmt.Errorf(
-				"failed to validate email format: %w", err,
-			),
-		)
-		return
+		return fmt.Errorf("failed to validate email format: %w", err)
 	}
 
 	if !matched {
-		receiver.SetError(
-			ctx,
-			fmt.Errorf(
-				"invalid email format: %s", receiver.GetValue(),
-			),
-		)
-		return
+		return fmt.Errorf("invalid email format: %s", receiver.GetValue())
 	}
+	return nil
 }

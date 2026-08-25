@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 var (
 	nameMaxLength uint = 30
@@ -17,26 +13,24 @@ var nameCheckSpell = []string{
 }
 
 type Name struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewName(
-	ctx context.Context,
 	value *string,
 ) (
 	name Name,
+	err error,
 ) {
 	name = Name{}
-	name.SetValue(ctx, value)
+	err = name.SetValue(value)
 
 	return
 }
 
 func (receiver *Name) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -48,18 +42,9 @@ func (receiver *Name) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx, receiver.content.GetError())
+		return receiver.content.GetError()
 	}
-}
-func (receiver *Name) GetError() error {
-	return receiver.err
-}
-
-func (receiver *Name) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *Name) GetValue() string {

@@ -13,6 +13,7 @@ func (receiver *GatewayDB) GetPersonList(
 	ctx context.Context,
 ) (
 	personList groupObject.PersonList,
+	err error,
 ) {
 	return receiver.ToPostgres.GetPersonList(
 		ctx,
@@ -26,8 +27,9 @@ func (receiver *GatewayDB) GetPersonListByCondition(
 	reqPerson groupObject.Person,
 ) (
 	resPersonList groupObject.PersonList,
+	err error,
 ) {
-	resPersonList = receiver.ToPostgres.GetPersonListByCondition(
+	resPersonList, err = receiver.ToPostgres.GetPersonListByCondition(
 		ctx,
 		receiver.ToPostgres.WithOutTx(ctx),
 		reqPerson,
@@ -58,17 +60,15 @@ func (receiver *GatewayDB) UpdatePerson(
 
 	}()
 
-	var person groupObject.Person
-
 	if isSuccess {
-		person = receiver.ToPostgres.GetPerson(
+		_, err = receiver.ToPostgres.GetPerson(
 			ctx,
 			tx,
-			newPerson.ID,
+			*newPerson.ID(),
 		)
-		if person.GetError() != nil {
+		if err != nil {
 			isSuccess = false
-			logger.Logging(ctx, person.GetError())
+			logger.Logging(ctx, err)
 		}
 	}
 
