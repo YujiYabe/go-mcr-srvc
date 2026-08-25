@@ -12,7 +12,7 @@ import (
 
 type fakeGatewayDB struct {
 	runInTransactionCalled bool
-	updatePersonCalled     bool
+	updateUserCalled       bool
 	getByConditionCalled   bool
 }
 
@@ -24,31 +24,31 @@ func (receiver *fakeGatewayDB) RunInTransaction(
 	return fn(ctx)
 }
 
-func (receiver *fakeGatewayDB) GetPersonList(
+func (receiver *fakeGatewayDB) GetUserList(
 	ctx context.Context,
 ) (
-	groupObject.PersonList,
+	groupObject.UserList,
 	error,
 ) {
-	return groupObject.PersonList{}, nil
+	return groupObject.UserList{}, nil
 }
 
-func (receiver *fakeGatewayDB) GetPersonListByCondition(
+func (receiver *fakeGatewayDB) GetUserListByCondition(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	groupObject.PersonList,
+	groupObject.UserList,
 	error,
 ) {
 	receiver.getByConditionCalled = true
-	return groupObject.PersonList{}, nil
+	return groupObject.UserList{}, nil
 }
 
-func (receiver *fakeGatewayDB) UpdatePerson(
+func (receiver *fakeGatewayDB) UpdateUser(
 	ctx context.Context,
-	newPerson groupObject.Person,
+	newUser groupObject.User,
 ) error {
-	receiver.updatePersonCalled = true
+	receiver.updateUserCalled = true
 	return nil
 }
 
@@ -69,12 +69,12 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 
 func (receiver *fakeGatewayExternal) ViaGRPC(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	groupObject.PersonList,
+	groupObject.UserList,
 	error,
 ) {
-	return groupObject.PersonList{}, nil
+	return groupObject.UserList{}, nil
 }
 
 func (receiver *fakeGatewayExternal) PublishTestTopic(
@@ -83,16 +83,16 @@ func (receiver *fakeGatewayExternal) PublishTestTopic(
 	return nil
 }
 
-func TestGetPersonListByConditionRequiresCondition(t *testing.T) {
+func TestGetUserListByConditionRequiresCondition(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
-	person := newTestPerson(t, nil, nil, nil)
+	user := newTestUser(t, nil, nil, nil)
 
-	_, err := useCase.GetPersonListByCondition(context.Background(), person)
+	_, err := useCase.GetUserListByCondition(context.Background(), user)
 	if err == nil {
 		t.Fatal("expected condition error")
 	}
-	if !strings.Contains(err.Error(), "person search condition is required") {
+	if !strings.Contains(err.Error(), "user search condition is required") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if dbGateway.getByConditionCalled {
@@ -117,39 +117,39 @@ func TestFetchAccessTokenRequiresCredential(t *testing.T) {
 	}
 }
 
-func TestUpdatePersonRunsInTransaction(t *testing.T) {
+func TestUpdateUserRunsInTransaction(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
-	person := newTestPerson(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
 
-	if err := useCase.UpdatePerson(context.Background(), person); err != nil {
+	if err := useCase.UpdateUser(context.Background(), user); err != nil {
 		t.Fatalf("expected update success, got: %v", err)
 	}
 	if !dbGateway.runInTransactionCalled {
 		t.Fatal("transaction boundary was not used")
 	}
-	if !dbGateway.updatePersonCalled {
+	if !dbGateway.updateUserCalled {
 		t.Fatal("update gateway was not called")
 	}
 }
 
-func TestUpdatePersonRequiresIdentity(t *testing.T) {
+func TestUpdateUserRequiresIdentity(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
-	person := newTestPerson(t, nil, stringPointer("name"), stringPointer("test@example.com"))
+	user := newTestUser(t, nil, stringPointer("name"), stringPointer("test@example.com"))
 
-	err := useCase.UpdatePerson(context.Background(), person)
+	err := useCase.UpdateUser(context.Background(), user)
 	if err == nil {
 		t.Fatal("expected identity error")
 	}
-	if !strings.Contains(err.Error(), "person identity is required") {
+	if !strings.Contains(err.Error(), "user identity is required") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if dbGateway.runInTransactionCalled {
-		t.Fatal("transaction should not run when person lifecycle state is invalid")
+		t.Fatal("transaction should not run when user lifecycle state is invalid")
 	}
-	if dbGateway.updatePersonCalled {
-		t.Fatal("gateway should not be called when person lifecycle state is invalid")
+	if dbGateway.updateUserCalled {
+		t.Fatal("gateway should not be called when user lifecycle state is invalid")
 	}
 }
 
@@ -158,30 +158,30 @@ func TestEnsureContextReadyReturnsCanceledError(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	_, err := useCase.GetPersonList(ctx)
+	_, err := useCase.GetUserList(ctx)
 	if !errors.Is(err, context.Canceled) {
 		t.Fatalf("expected context.Canceled, got: %v", err)
 	}
 }
 
-func newTestPerson(
+func newTestUser(
 	t *testing.T,
 	id *int,
 	name *string,
-	mailAddress *string,
-) groupObject.Person {
+	email *string,
+) groupObject.User {
 	t.Helper()
 
-	person, err := groupObject.NewPerson(&groupObject.NewPersonArgs{
-		ID:          id,
-		Name:        name,
-		MailAddress: mailAddress,
+	user, err := groupObject.NewUser(&groupObject.NewUserArgs{
+		ID:    id,
+		Name:  name,
+		Email: email,
 	})
 	if err != nil {
-		t.Fatalf("failed to create person: %v", err)
+		t.Fatalf("failed to create user: %v", err)
 	}
 
-	return *person
+	return *user
 }
 
 func newTestCredential(

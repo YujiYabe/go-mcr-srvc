@@ -9,14 +9,14 @@ import (
 // ViaGRPC ...
 func (receiver *GatewayExternal) ViaGRPC(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	resPersonList groupObject.PersonList,
+	resUserList groupObject.UserList,
 	err error,
 ) {
-	resPersonList, err = receiver.ToGRPC.ViaGRPC(
+	resUserList, err = receiver.ToGRPC.ViaGRPC(
 		ctx,
-		reqPerson,
+		reqUser,
 	)
 	return
 }

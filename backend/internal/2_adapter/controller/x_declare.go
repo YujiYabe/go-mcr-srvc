@@ -58,18 +58,18 @@ type (
 	ToController interface {
 		Start()
 
-		GetPersonList(
+		GetUserList(
 			ctx context.Context,
 		) (
-			personList groupObject.PersonList,
+			userList groupObject.UserList,
 			err error,
 		)
 
-		GetPersonListByCondition(
+		GetUserListByCondition(
 			ctx context.Context,
-			reqPerson groupObject.Person,
+			reqUser groupObject.User,
 		) (
-			resPersonList groupObject.PersonList,
+			resUserList groupObject.UserList,
 			err error,
 		)
 
@@ -83,15 +83,15 @@ type (
 
 		ViaGRPC(
 			ctx context.Context,
-			reqPerson groupObject.Person,
+			reqUser groupObject.User,
 		) (
-			resPersonList groupObject.PersonList,
+			resUserList groupObject.UserList,
 			err error,
 		)
 
-		UpdatePerson(
+		UpdateUser(
 			ctx context.Context,
-			newPerson groupObject.Person,
+			newUser groupObject.User,
 		) error
 
 		PublishTestTopic(

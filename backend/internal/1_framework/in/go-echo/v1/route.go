@@ -4,7 +4,6 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"backend/internal/1_framework/in/go-echo/v1/auth"
-	"backend/internal/1_framework/in/go-echo/v1/person"
 	httpMiddleware "backend/internal/1_framework/middleware/http"
 	"backend/internal/2_adapter/controller"
 )
@@ -17,12 +16,6 @@ func NewRoute(
 ) {
 	group := parent.Group(
 		"/v1",
-	)
-
-	person.NewRoute(
-		EchoEcho,
-		toController,
-		group,
 	)
 
 	auth.NewRoute(

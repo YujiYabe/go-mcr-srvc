@@ -8,7 +8,7 @@ import (
 func TestNewPermissionAcceptsValidValue(t *testing.T) {
 	t.Parallel()
 
-	value := "person:read"
+	value := "user:read"
 
 	permission, err := NewPermission(&value)
 	if err != nil {

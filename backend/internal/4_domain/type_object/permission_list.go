@@ -16,8 +16,8 @@ const (
 	PermissionListHeaderName  primitiveObject.ContextKey = "permissions"
 	PermissionListContextName primitiveObject.ContextKey = "permissionList"
 
-	PermissionPersonRead  = "person:read"
-	PermissionPersonWrite = "person:write"
+	PermissionUserRead  = "user:read"
+	PermissionUserWrite = "user:write"
 )
 
 type PermissionList struct {
@@ -100,12 +100,12 @@ func (receiver PermissionList) HasValue(
 	return receiver.Has(permission)
 }
 
-func (receiver PermissionList) CanReadPerson() bool {
-	return receiver.HasValue(PermissionPersonRead)
+func (receiver PermissionList) CanReadUser() bool {
+	return receiver.HasValue(PermissionUserRead)
 }
 
-func (receiver PermissionList) CanWritePerson() bool {
-	return receiver.HasValue(PermissionPersonWrite)
+func (receiver PermissionList) CanWriteUser() bool {
+	return receiver.HasValue(PermissionUserWrite)
 }
 
 func (receiver PermissionList) EnsureHas(

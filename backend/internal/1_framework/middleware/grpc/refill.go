@@ -7,11 +7,11 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
-func RefillPersonGRPCToDomain(
+func RefillUserGRPCToDomain(
 	ctx context.Context,
-	request *grpcParameter.V1PersonParameter,
+	request *grpcParameter.V1UserParameter,
 ) (
-	reqPerson *groupObject.Person,
+	reqUser *groupObject.User,
 	err error,
 ) {
 	var id *int
@@ -25,43 +25,43 @@ func RefillPersonGRPCToDomain(
 		name = request.Name
 	}
 
-	var mailAddress *string
-	if request.MailAddress != nil {
-		mailAddress = request.MailAddress
+	var email *string
+	if request.Email != nil {
+		email = request.Email
 	}
 
-	reqPerson, err = groupObject.NewPerson(
-		&groupObject.NewPersonArgs{
-			ID:          id,
-			Name:        name,
-			MailAddress: mailAddress,
+	reqUser, err = groupObject.NewUser(
+		&groupObject.NewUserArgs{
+			ID:    id,
+			Name:  name,
+			Email: email,
 		},
 	)
 
 	return
 }
 
-func RefillPersonDomainToGRPC(
+func RefillUserDomainToGRPC(
 	ctx context.Context,
-	personList groupObject.PersonList,
+	userList groupObject.UserList,
 ) (
-	v1PersonParameterList []*grpcParameter.V1PersonParameter,
+	v1UserParameterList []*grpcParameter.V1UserParameter,
 
 ) {
-	v1PersonParameterList = []*grpcParameter.V1PersonParameter{}
+	v1UserParameterList = []*grpcParameter.V1UserParameter{}
 
-	for _, response := range personList.Content() {
+	for _, response := range userList.Content() {
 		id32 := uint32(response.ID().GetValue())
 		name := response.Name().GetValue()
-		mailAddress := response.MailAddress().GetValue()
-		v1PersonParameter := &grpcParameter.V1PersonParameter{
-			Id:          &id32,
-			Name:        &name,
-			MailAddress: &mailAddress,
+		email := response.Email().GetValue()
+		v1UserParameter := &grpcParameter.V1UserParameter{
+			Id:    &id32,
+			Name:  &name,
+			Email: &email,
 		}
-		v1PersonParameterList = append(
-			v1PersonParameterList,
-			v1PersonParameter,
+		v1UserParameterList = append(
+			v1UserParameterList,
+			v1UserParameter,
 		)
 	}
 

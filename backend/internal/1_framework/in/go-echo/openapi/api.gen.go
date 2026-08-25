@@ -20,8 +20,8 @@ type User struct {
 
 // GetUsersParams defines parameters for GetUsers.
 type GetUsersParams struct {
-	Name        *string `form:"name,omitempty" json:"name,omitempty"`
-	MailAddress *string `form:"mailAddress,omitempty" json:"mailAddress,omitempty"`
+	Name  *string `form:"name,omitempty" json:"name,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty"`
 }
 
 // CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
@@ -79,11 +79,11 @@ func (w *ServerInterfaceWrapper) GetUsers(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter name: %s", err))
 	}
 
-	// ------------- Optional query parameter "mailAddress" -------------
+	// ------------- Optional query parameter "email" -------------
 
-	err = runtime.BindQueryParameter("form", true, false, "mailAddress", ctx.QueryParams(), &params.MailAddress)
+	err = runtime.BindQueryParameter("form", true, false, "email", ctx.QueryParams(), &params.Email)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter mailAddress: %s", err))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter email: %s", err))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments

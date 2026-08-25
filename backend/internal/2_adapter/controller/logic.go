@@ -9,26 +9,26 @@ import (
 
 func (receiver *controller) Start() {}
 
-func (receiver *controller) GetPersonList(
+func (receiver *controller) GetUserList(
 	ctx context.Context,
 ) (
-	personList groupObject.PersonList,
+	userList groupObject.UserList,
 	err error,
 ) {
-	personList, err = receiver.UseCase.GetPersonList(ctx)
+	userList, err = receiver.UseCase.GetUserList(ctx)
 	return
 }
 
-func (receiver *controller) GetPersonListByCondition(
+func (receiver *controller) GetUserListByCondition(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	resPersonList groupObject.PersonList,
+	resUserList groupObject.UserList,
 	err error,
 ) {
-	resPersonList, err = receiver.UseCase.GetPersonListByCondition(
+	resUserList, err = receiver.UseCase.GetUserListByCondition(
 		ctx,
-		reqPerson,
+		reqUser,
 	)
 	return
 }
@@ -49,23 +49,23 @@ func (receiver *controller) FetchAccessToken(
 
 func (receiver *controller) ViaGRPC(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	resPersonList groupObject.PersonList,
+	resUserList groupObject.UserList,
 	err error,
 ) {
-	resPersonList, err = receiver.UseCase.ViaGRPC(
+	resUserList, err = receiver.UseCase.ViaGRPC(
 		ctx,
-		reqPerson,
+		reqUser,
 	)
 	return
 }
 
-func (receiver *controller) UpdatePerson(
+func (receiver *controller) UpdateUser(
 	ctx context.Context,
-	newPerson groupObject.Person,
+	newUser groupObject.User,
 ) error {
-	return receiver.UseCase.UpdatePerson(ctx, newPerson)
+	return receiver.UseCase.UpdateUser(ctx, newUser)
 }
 
 func (receiver *controller) PublishTestTopic(

@@ -14,5 +14,4 @@ func PublishTestTopic(
 
 	return toController.PublishTestTopic(ctx)
 
-
 }

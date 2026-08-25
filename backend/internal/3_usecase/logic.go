@@ -12,43 +12,43 @@ import (
 func (receiver *useCase) Start() {
 }
 
-func (receiver *useCase) GetPersonList(
+func (receiver *useCase) GetUserList(
 	ctx context.Context,
 ) (
-	personList groupObject.PersonList,
+	userList groupObject.UserList,
 	err error,
 ) {
-	if err = ensureContextReady(ctx, "GetPersonList"); err != nil {
+	if err = ensureContextReady(ctx, "GetUserList"); err != nil {
 		return
 	}
-	personList, err = receiver.ToGatewayDB.GetPersonList(ctx)
+	userList, err = receiver.ToGatewayDB.GetUserList(ctx)
 	if err != nil {
-		err = fmt.Errorf("GetPersonList: %w", err)
+		err = fmt.Errorf("GetUserList: %w", err)
 	}
 	return
 }
 
-func (receiver *useCase) GetPersonListByCondition(
+func (receiver *useCase) GetUserListByCondition(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	resPersonList groupObject.PersonList,
+	resUserList groupObject.UserList,
 	err error,
 ) {
-	if err = ensureContextReady(ctx, "GetPersonListByCondition"); err != nil {
+	if err = ensureContextReady(ctx, "GetUserListByCondition"); err != nil {
 		return
 	}
-	if !reqPerson.CanBeUsedAsSearchCondition() {
-		err = fmt.Errorf("GetPersonListByCondition: person search condition is required")
+	if !reqUser.CanBeUsedAsSearchCondition() {
+		err = fmt.Errorf("GetUserListByCondition: user search condition is required")
 		return
 	}
 
-	resPersonList, err = receiver.ToGatewayDB.GetPersonListByCondition(
+	resUserList, err = receiver.ToGatewayDB.GetUserListByCondition(
 		ctx,
-		reqPerson,
+		reqUser,
 	)
 	if err != nil {
-		err = fmt.Errorf("GetPersonListByCondition: %w", err)
+		err = fmt.Errorf("GetUserListByCondition: %w", err)
 	}
 	return
 }
@@ -79,21 +79,21 @@ func (receiver *useCase) FetchAccessToken(
 
 func (receiver *useCase) ViaGRPC(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	resPersonList groupObject.PersonList,
+	resUserList groupObject.UserList,
 	err error,
 ) {
 	if err = ensureContextReady(ctx, "ViaGRPC"); err != nil {
 		return
 	}
-	if !reqPerson.CanBeUsedAsSearchCondition() {
-		err = fmt.Errorf("ViaGRPC: person search condition is required")
+	if !reqUser.CanBeUsedAsSearchCondition() {
+		err = fmt.Errorf("ViaGRPC: user search condition is required")
 		return
 	}
-	resPersonList, err = receiver.ToGatewayExternal.ViaGRPC(
+	resUserList, err = receiver.ToGatewayExternal.ViaGRPC(
 		ctx,
-		reqPerson,
+		reqUser,
 	)
 	if err != nil {
 		err = fmt.Errorf("ViaGRPC: %w", err)
@@ -101,24 +101,24 @@ func (receiver *useCase) ViaGRPC(
 	return
 }
 
-func (receiver *useCase) UpdatePerson(
+func (receiver *useCase) UpdateUser(
 	ctx context.Context,
-	newPerson groupObject.Person,
+	newUser groupObject.User,
 ) error {
-	if err := ensureContextReady(ctx, "UpdatePerson"); err != nil {
+	if err := ensureContextReady(ctx, "UpdateUser"); err != nil {
 		return err
 	}
-	if err := newPerson.EnsureReadyToUpdate(); err != nil {
-		return fmt.Errorf("UpdatePerson: %w", err)
+	if err := newUser.EnsureReadyToUpdate(); err != nil {
+		return fmt.Errorf("UpdateUser: %w", err)
 	}
 
 	if err := receiver.ToGatewayDB.RunInTransaction(
 		ctx,
 		func(txCtx context.Context) error {
-			return receiver.ToGatewayDB.UpdatePerson(txCtx, newPerson)
+			return receiver.ToGatewayDB.UpdateUser(txCtx, newUser)
 		},
 	); err != nil {
-		return fmt.Errorf("UpdatePerson: %w", err)
+		return fmt.Errorf("UpdateUser: %w", err)
 	}
 
 	return nil

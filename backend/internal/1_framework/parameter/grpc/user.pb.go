@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.1
 // 	protoc        v5.29.2
-// source: backend/internal/1_framework/parameter/grpc/person.proto
+// source: backend/internal/1_framework/parameter/grpc/user.proto
 
 package grpc
 
@@ -20,28 +20,28 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type GetPersonListByConditionRequest struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	V1PersonParameter *V1PersonParameter     `protobuf:"bytes,2,opt,name=v1_person_parameter,json=v1PersonParameter,proto3" json:"v1_person_parameter,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+type GetUserListByConditionRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	V1UserParameter *V1UserParameter       `protobuf:"bytes,2,opt,name=v1_user_parameter,json=v1UserParameter,proto3" json:"v1_user_parameter,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
-func (x *GetPersonListByConditionRequest) Reset() {
-	*x = GetPersonListByConditionRequest{}
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[0]
+func (x *GetUserListByConditionRequest) Reset() {
+	*x = GetUserListByConditionRequest{}
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPersonListByConditionRequest) String() string {
+func (x *GetUserListByConditionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPersonListByConditionRequest) ProtoMessage() {}
+func (*GetUserListByConditionRequest) ProtoMessage() {}
 
-func (x *GetPersonListByConditionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[0]
+func (x *GetUserListByConditionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -52,40 +52,40 @@ func (x *GetPersonListByConditionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPersonListByConditionRequest.ProtoReflect.Descriptor instead.
-func (*GetPersonListByConditionRequest) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{0}
+// Deprecated: Use GetUserListByConditionRequest.ProtoReflect.Descriptor instead.
+func (*GetUserListByConditionRequest) Descriptor() ([]byte, []int) {
+	return file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetPersonListByConditionRequest) GetV1PersonParameter() *V1PersonParameter {
+func (x *GetUserListByConditionRequest) GetV1UserParameter() *V1UserParameter {
 	if x != nil {
-		return x.V1PersonParameter
+		return x.V1UserParameter
 	}
 	return nil
 }
 
-type GetPersonListByConditionResponse struct {
-	state                  protoimpl.MessageState  `protogen:"open.v1"`
-	V1PersonParameterArray *V1PersonParameterArray `protobuf:"bytes,2,opt,name=v1_person_parameter_array,json=v1PersonParameterArray,proto3" json:"v1_person_parameter_array,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+type GetUserListByConditionResponse struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	V1UserParameterArray *V1UserParameterArray  `protobuf:"bytes,2,opt,name=v1_user_parameter_array,json=v1UserParameterArray,proto3" json:"v1_user_parameter_array,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
-func (x *GetPersonListByConditionResponse) Reset() {
-	*x = GetPersonListByConditionResponse{}
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[1]
+func (x *GetUserListByConditionResponse) Reset() {
+	*x = GetUserListByConditionResponse{}
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPersonListByConditionResponse) String() string {
+func (x *GetUserListByConditionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPersonListByConditionResponse) ProtoMessage() {}
+func (*GetUserListByConditionResponse) ProtoMessage() {}
 
-func (x *GetPersonListByConditionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[1]
+func (x *GetUserListByConditionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -96,42 +96,42 @@ func (x *GetPersonListByConditionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPersonListByConditionResponse.ProtoReflect.Descriptor instead.
-func (*GetPersonListByConditionResponse) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{1}
+// Deprecated: Use GetUserListByConditionResponse.ProtoReflect.Descriptor instead.
+func (*GetUserListByConditionResponse) Descriptor() ([]byte, []int) {
+	return file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetPersonListByConditionResponse) GetV1PersonParameterArray() *V1PersonParameterArray {
+func (x *GetUserListByConditionResponse) GetV1UserParameterArray() *V1UserParameterArray {
 	if x != nil {
-		return x.V1PersonParameterArray
+		return x.V1UserParameterArray
 	}
 	return nil
 }
 
-type V1PersonParameter struct {
+type V1UserParameter struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            *uint32                `protobuf:"varint,2,opt,name=id,proto3,oneof" json:"id,omitempty"`
 	Name          *string                `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	MailAddress   *string                `protobuf:"bytes,4,opt,name=mail_address,json=mailAddress,proto3,oneof" json:"mail_address,omitempty"`
+	Email         *string                `protobuf:"bytes,4,opt,name=email,json=email,proto3,oneof" json:"email,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *V1PersonParameter) Reset() {
-	*x = V1PersonParameter{}
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[2]
+func (x *V1UserParameter) Reset() {
+	*x = V1UserParameter{}
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *V1PersonParameter) String() string {
+func (x *V1UserParameter) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*V1PersonParameter) ProtoMessage() {}
+func (*V1UserParameter) ProtoMessage() {}
 
-func (x *V1PersonParameter) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[2]
+func (x *V1UserParameter) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -142,54 +142,54 @@ func (x *V1PersonParameter) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use V1PersonParameter.ProtoReflect.Descriptor instead.
-func (*V1PersonParameter) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use V1UserParameter.ProtoReflect.Descriptor instead.
+func (*V1UserParameter) Descriptor() ([]byte, []int) {
+	return file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *V1PersonParameter) GetId() uint32 {
+func (x *V1UserParameter) GetId() uint32 {
 	if x != nil && x.Id != nil {
 		return *x.Id
 	}
 	return 0
 }
 
-func (x *V1PersonParameter) GetName() string {
+func (x *V1UserParameter) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
 	}
 	return ""
 }
 
-func (x *V1PersonParameter) GetMailAddress() string {
-	if x != nil && x.MailAddress != nil {
-		return *x.MailAddress
+func (x *V1UserParameter) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
 
-type V1PersonParameterArray struct {
+type V1UserParameterArray struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Persons       []*V1PersonParameter   `protobuf:"bytes,2,rep,name=persons,proto3" json:"persons,omitempty"`
+	Users         []*V1UserParameter     `protobuf:"bytes,2,rep,name=users,proto3" json:"users,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *V1PersonParameterArray) Reset() {
-	*x = V1PersonParameterArray{}
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[3]
+func (x *V1UserParameterArray) Reset() {
+	*x = V1UserParameterArray{}
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *V1PersonParameterArray) String() string {
+func (x *V1UserParameterArray) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*V1PersonParameterArray) ProtoMessage() {}
+func (*V1UserParameterArray) ProtoMessage() {}
 
-func (x *V1PersonParameterArray) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[3]
+func (x *V1UserParameterArray) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,21 +200,21 @@ func (x *V1PersonParameterArray) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use V1PersonParameterArray.ProtoReflect.Descriptor instead.
-func (*V1PersonParameterArray) Descriptor() ([]byte, []int) {
-	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP(), []int{3}
+// Deprecated: Use V1UserParameterArray.ProtoReflect.Descriptor instead.
+func (*V1UserParameterArray) Descriptor() ([]byte, []int) {
+	return file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *V1PersonParameterArray) GetPersons() []*V1PersonParameter {
+func (x *V1UserParameterArray) GetUsers() []*V1UserParameter {
 	if x != nil {
-		return x.Persons
+		return x.Users
 	}
 	return nil
 }
 
-var File_backend_internal_1_framework_parameter_grpc_person_proto protoreflect.FileDescriptor
+var File_backend_internal_1_framework_parameter_grpc_user_proto protoreflect.FileDescriptor
 
-var file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc = []byte{
+var file_backend_internal_1_framework_parameter_grpc_user_proto_rawDesc = []byte{
 	0x0a, 0x38, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e,
 	0x61, 0x6c, 0x2f, 0x31, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x77, 0x6f, 0x72, 0x6b, 0x2f, 0x70,
 	0x61, 0x72, 0x61, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x70, 0x65,
@@ -265,30 +265,30 @@ var file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc = []by
 }
 
 var (
-	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescOnce sync.Once
-	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData = file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc
+	file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescOnce sync.Once
+	file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescData = file_backend_internal_1_framework_parameter_grpc_user_proto_rawDesc
 )
 
-func file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescGZIP() []byte {
-	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescOnce.Do(func() {
-		file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData = protoimpl.X.CompressGZIP(file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData)
+func file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescGZIP() []byte {
+	file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescOnce.Do(func() {
+		file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescData = protoimpl.X.CompressGZIP(file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescData)
 	})
-	return file_backend_internal_1_framework_parameter_grpc_person_proto_rawDescData
+	return file_backend_internal_1_framework_parameter_grpc_user_proto_rawDescData
 }
 
-var file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_backend_internal_1_framework_parameter_grpc_person_proto_goTypes = []any{
-	(*GetPersonListByConditionRequest)(nil),  // 0: grpc_parameter.v1.GetPersonListByConditionRequest
-	(*GetPersonListByConditionResponse)(nil), // 1: grpc_parameter.v1.GetPersonListByConditionResponse
-	(*V1PersonParameter)(nil),                // 2: grpc_parameter.v1.V1PersonParameter
-	(*V1PersonParameterArray)(nil),           // 3: grpc_parameter.v1.V1PersonParameterArray
+var file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_backend_internal_1_framework_parameter_grpc_user_proto_goTypes = []any{
+	(*GetUserListByConditionRequest)(nil),  // 0: grpc_parameter.v1.GetUserListByConditionRequest
+	(*GetUserListByConditionResponse)(nil), // 1: grpc_parameter.v1.GetUserListByConditionResponse
+	(*V1UserParameter)(nil),                // 2: grpc_parameter.v1.V1UserParameter
+	(*V1UserParameterArray)(nil),           // 3: grpc_parameter.v1.V1UserParameterArray
 }
-var file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs = []int32{
-	2, // 0: grpc_parameter.v1.GetPersonListByConditionRequest.v1_person_parameter:type_name -> grpc_parameter.v1.V1PersonParameter
-	3, // 1: grpc_parameter.v1.GetPersonListByConditionResponse.v1_person_parameter_array:type_name -> grpc_parameter.v1.V1PersonParameterArray
-	2, // 2: grpc_parameter.v1.V1PersonParameterArray.persons:type_name -> grpc_parameter.v1.V1PersonParameter
-	0, // 3: grpc_parameter.v1.PersonService.GetPersonListByCondition:input_type -> grpc_parameter.v1.GetPersonListByConditionRequest
-	1, // 4: grpc_parameter.v1.PersonService.GetPersonListByCondition:output_type -> grpc_parameter.v1.GetPersonListByConditionResponse
+var file_backend_internal_1_framework_parameter_grpc_user_proto_depIdxs = []int32{
+	2, // 0: grpc_parameter.v1.GetUserListByConditionRequest.v1_user_parameter:type_name -> grpc_parameter.v1.V1UserParameter
+	3, // 1: grpc_parameter.v1.GetUserListByConditionResponse.v1_user_parameter_array:type_name -> grpc_parameter.v1.V1UserParameterArray
+	2, // 2: grpc_parameter.v1.V1UserParameterArray.users:type_name -> grpc_parameter.v1.V1UserParameter
+	0, // 3: grpc_parameter.v1.UserService.GetUserListByCondition:input_type -> grpc_parameter.v1.GetUserListByConditionRequest
+	1, // 4: grpc_parameter.v1.UserService.GetUserListByCondition:output_type -> grpc_parameter.v1.GetUserListByConditionResponse
 	4, // [4:5] is the sub-list for method output_type
 	3, // [3:4] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -296,28 +296,28 @@ var file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs = []in
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_backend_internal_1_framework_parameter_grpc_person_proto_init() }
-func file_backend_internal_1_framework_parameter_grpc_person_proto_init() {
-	if File_backend_internal_1_framework_parameter_grpc_person_proto != nil {
+func init() { file_backend_internal_1_framework_parameter_grpc_user_proto_init() }
+func file_backend_internal_1_framework_parameter_grpc_user_proto_init() {
+	if File_backend_internal_1_framework_parameter_grpc_user_proto != nil {
 		return
 	}
-	file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes[2].OneofWrappers = []any{}
+	file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc,
+			RawDescriptor: file_backend_internal_1_framework_parameter_grpc_user_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_backend_internal_1_framework_parameter_grpc_person_proto_goTypes,
-		DependencyIndexes: file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs,
-		MessageInfos:      file_backend_internal_1_framework_parameter_grpc_person_proto_msgTypes,
+		GoTypes:           file_backend_internal_1_framework_parameter_grpc_user_proto_goTypes,
+		DependencyIndexes: file_backend_internal_1_framework_parameter_grpc_user_proto_depIdxs,
+		MessageInfos:      file_backend_internal_1_framework_parameter_grpc_user_proto_msgTypes,
 	}.Build()
-	File_backend_internal_1_framework_parameter_grpc_person_proto = out.File
-	file_backend_internal_1_framework_parameter_grpc_person_proto_rawDesc = nil
-	file_backend_internal_1_framework_parameter_grpc_person_proto_goTypes = nil
-	file_backend_internal_1_framework_parameter_grpc_person_proto_depIdxs = nil
+	File_backend_internal_1_framework_parameter_grpc_user_proto = out.File
+	file_backend_internal_1_framework_parameter_grpc_user_proto_rawDesc = nil
+	file_backend_internal_1_framework_parameter_grpc_user_proto_goTypes = nil
+	file_backend_internal_1_framework_parameter_grpc_user_proto_depIdxs = nil
 }

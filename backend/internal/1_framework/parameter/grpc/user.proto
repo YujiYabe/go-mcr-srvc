@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package grpc_parameter.v1;
+
+
+option go_package = "internal/grpc";
+
+service UserService {
+  rpc GetUserListByCondition(GetUserListByConditionRequest) returns (GetUserListByConditionResponse);
+}
+
+message GetUserListByConditionRequest {
+  V1UserParameter v1_user_parameter = 2;
+}
+
+message GetUserListByConditionResponse {
+  V1UserParameterArray v1_user_parameter_array = 2;
+}
+
+message V1UserParameter {
+  optional uint32 id = 2;
+  optional string name = 3;
+  optional string email = 4;
+}
+
+message V1UserParameterArray {
+  repeated V1UserParameter users = 2;
+}
