@@ -4,7 +4,6 @@ import (
 	"context"
 
 	typeObject "backend/internal/4_domain/type_object"
-	"backend/internal/logger"
 )
 
 type Credential struct {
@@ -43,14 +42,12 @@ func NewCredential(
 		args.ClientID,
 	)
 	if accessToken.ClientID.GetError() != nil {
-		logger.Logging(ctx, accessToken.ClientID.GetError())
 		accessToken.SetError(ctx, accessToken.ClientID.GetError())
 		return
 	}
 
 	accessToken.ClientSecret = typeObject.NewClientSecret(ctx, args.ClientSecret)
 	if accessToken.ClientSecret.GetError() != nil {
-		logger.Logging(ctx, accessToken.ClientSecret.GetError())
 		accessToken.SetError(ctx, accessToken.ClientSecret.GetError())
 		return
 	}

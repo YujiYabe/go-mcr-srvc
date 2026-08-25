@@ -6,7 +6,6 @@ import (
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	typeObject "backend/internal/4_domain/type_object"
-	"backend/internal/logger"
 )
 
 const (
@@ -81,7 +80,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.RequestStartTime = typeObject.NewRequestStartTime(ctx, args.RequestStartTime)
 	if requestContext.RequestStartTime.GetError() != nil {
-		logger.Logging(ctx, requestContext.RequestStartTime.GetError())
 		requestContext.SetError(ctx, requestContext.RequestStartTime.GetError())
 		return
 	}
@@ -89,7 +87,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.TraceID = typeObject.NewTraceID(ctx, args.TraceID)
 	if requestContext.TraceID.GetError() != nil {
-		logger.Logging(ctx, requestContext.TraceID.GetError())
 		requestContext.SetError(ctx, requestContext.TraceID.GetError())
 		return
 	}
@@ -97,7 +94,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.ClientIP = typeObject.NewClientIP(ctx, args.ClientIP)
 	if requestContext.ClientIP.GetError() != nil {
-		logger.Logging(ctx, requestContext.ClientIP.GetError())
 		requestContext.SetError(ctx, requestContext.ClientIP.GetError())
 		return
 	}
@@ -105,7 +101,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.UserAgent = typeObject.NewUserAgent(ctx, args.UserAgent)
 	if requestContext.UserAgent.GetError() != nil {
-		logger.Logging(ctx, requestContext.UserAgent.GetError())
 		requestContext.SetError(ctx, requestContext.UserAgent.GetError())
 		return
 	}
@@ -113,7 +108,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.Locale = typeObject.NewLocale(ctx, args.Locale)
 	if requestContext.Locale.GetError() != nil {
-		logger.Logging(ctx, requestContext.Locale.GetError())
 		requestContext.SetError(ctx, requestContext.Locale.GetError())
 		return
 	}
@@ -121,7 +115,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.TimeZone = typeObject.NewTimeZone(ctx, args.TimeZone)
 	if requestContext.TimeZone.GetError() != nil {
-		logger.Logging(ctx, requestContext.TimeZone.GetError())
 		requestContext.SetError(ctx, requestContext.TimeZone.GetError())
 		return
 	}
@@ -129,7 +122,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.UserID = typeObject.NewUserID(ctx, args.UserID)
 	if requestContext.UserID.GetError() != nil {
-		logger.Logging(ctx, requestContext.UserID.GetError())
 		requestContext.SetError(ctx, requestContext.UserID.GetError())
 		return
 	}
@@ -137,7 +129,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.AccessToken = typeObject.NewAccessToken(ctx, args.AccessToken)
 	if requestContext.AccessToken.GetError() != nil {
-		logger.Logging(ctx, requestContext.AccessToken.GetError())
 		requestContext.SetError(ctx, requestContext.AccessToken.GetError())
 		return
 	}
@@ -145,7 +136,6 @@ func NewRequestContext(
 	// ______________________________________
 	requestContext.TenantID = typeObject.NewTenantID(ctx, args.TenantID)
 	if requestContext.TenantID.GetError() != nil {
-		logger.Logging(ctx, requestContext.TenantID.GetError())
 		requestContext.SetError(ctx, requestContext.TenantID.GetError())
 		return
 	}
@@ -157,7 +147,6 @@ func NewRequestContext(
 
 	requestContext.TimeOutMillSecond = typeObject.NewTimeOutMillSecond(ctx, &timeoutMillSecond)
 	if requestContext.TimeOutMillSecond.GetError() != nil {
-		logger.Logging(ctx, requestContext.TimeOutMillSecond.GetError())
 		requestContext.SetError(ctx, requestContext.TimeOutMillSecond.GetError())
 		return
 	}
@@ -175,7 +164,6 @@ func (receiver *RequestContext) SetError(
 ) {
 	if receiver.err == nil {
 		receiver.err = err
-		logger.Logging(ctx, receiver.GetError())
 	}
 }
 

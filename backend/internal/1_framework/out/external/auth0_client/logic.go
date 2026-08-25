@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	groupObject "backend/internal/4_domain/group_object"
@@ -18,8 +19,6 @@ func (receiver *Auth0Client) FetchAccessToken(
 ) (
 	accessToken typeObject.AccessToken,
 ) {
-	return accessToken
-
 	payload := map[string]string{
 		"client_id":     credential.ClientID.GetValue(),
 		"client_secret": credential.ClientSecret.GetValue(),
@@ -53,6 +52,10 @@ func (receiver *Auth0Client) FetchAccessToken(
 		return
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		accessToken.SetError(ctx, fmt.Errorf("auth0 token request failed: status %d", resp.StatusCode))
+		return
+	}
 
 	var tokenResponse struct {
 		AccessToken string `json:"access_token"`
