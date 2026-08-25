@@ -6,7 +6,6 @@ import (
 
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
-	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -26,8 +25,12 @@ func (receiver *GoPubSub) Start() error {
 func (receiver *GoPubSub) subscribeTestTopic(
 	ctx context.Context,
 ) error {
-	topicName := env.PubSubConfig.TestTopic
-	consumer, err := NewKafkaConsumer(ctx)
+	topicName := receiver.testTopic
+	consumer, err := NewKafkaConsumer(
+		ctx,
+		receiver.bootstrapServers,
+		receiver.consumerGroupID,
+	)
 	if err != nil {
 		return err
 	}
@@ -61,11 +64,15 @@ func (receiver *GoPubSub) subscribeTestTopic(
 func (receiver *GoPubSub) subscribeOtherTopic(
 	ctx context.Context,
 ) error {
-	consumer, err := NewKafkaConsumer(ctx)
+	consumer, err := NewKafkaConsumer(
+		ctx,
+		receiver.bootstrapServers,
+		receiver.consumerGroupID,
+	)
 	if err != nil {
 		return err
 	}
-	topicName := env.PubSubConfig.OtherTopic
+	topicName := receiver.otherTopic
 	err = consumer.Subscribe(topicName, nil)
 	if err != nil {
 		return fmt.Errorf("subscribe topic %s: %w", topicName, err)

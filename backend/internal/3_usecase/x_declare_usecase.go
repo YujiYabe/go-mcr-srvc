@@ -44,6 +44,11 @@ type (
 			err error,
 		)
 
+		UpdatePerson(
+			ctx context.Context,
+			newPerson groupObject.Person,
+		) error
+
 		PublishTestTopic(
 			ctx context.Context,
 		) error

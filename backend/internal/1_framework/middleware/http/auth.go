@@ -9,11 +9,16 @@ import (
 	"github.com/MicahParks/keyfunc"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
-
-	"backend/internal/env"
 )
 
-func JWTMiddleware() echo.MiddlewareFunc {
+type AuthConfig struct {
+	Domain       string
+	ClientSecret string
+}
+
+func JWTMiddleware(
+	config AuthConfig,
+) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			authHeader := c.Request().Header.Get("Authorization")
@@ -44,7 +49,7 @@ func JWTMiddleware() echo.MiddlewareFunc {
 							token.Header["alg"],
 						)
 					}
-					return []byte(env.Auth0Config.ClientSecret), nil
+					return []byte(config.ClientSecret), nil
 				},
 			)
 
@@ -66,48 +71,52 @@ func JWTMiddleware() echo.MiddlewareFunc {
 }
 
 // JWTMiddleware validates the JWT token from the Authorization header
-func JWTMiddlewareAuth0(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		authHeader := c.Request().Header.Get("Authorization")
-		if authHeader == "" {
-			return echo.NewHTTPError(
-				http.StatusUnauthorized,
-				"Authorization header is required",
+func JWTMiddlewareAuth0(
+	config AuthConfig,
+) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			authHeader := c.Request().Header.Get("Authorization")
+			if authHeader == "" {
+				return echo.NewHTTPError(
+					http.StatusUnauthorized,
+					"Authorization header is required",
+				)
+			}
+
+			tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+			if tokenString == authHeader { // No "Bearer " prefix
+				return echo.NewHTTPError(
+					http.StatusUnauthorized,
+					"Authorization header format must be Bearer {token}",
+				)
+			}
+
+			// Auth0の公開鍵を取得
+			jwksURL := fmt.Sprintf(
+				"https://%s/.well-known/jwks.json",
+				config.Domain,
 			)
-		}
 
-		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
-		if tokenString == authHeader { // No "Bearer " prefix
-			return echo.NewHTTPError(
-				http.StatusUnauthorized,
-				"Authorization header format must be Bearer {token}",
+			claims := jwt.MapClaims{}
+			token, err := jwt.ParseWithClaims(
+				tokenString,
+				claims,
+				func(token *jwt.Token) (interface{}, error) {
+					return validateAndGetKey(token, jwksURL)
+				},
 			)
+			if err != nil || !token.Valid {
+				return echo.NewHTTPError(
+					http.StatusUnauthorized,
+					"Invalid token",
+				)
+			}
+
+			c.Set("user", claims)
+
+			return next(c)
 		}
-
-		// Auth0の公開鍵を取得
-		jwksURL := fmt.Sprintf(
-			"https://%s/.well-known/jwks.json",
-			env.Auth0Config.Domain,
-		)
-
-		claims := jwt.MapClaims{}
-		token, err := jwt.ParseWithClaims(
-			tokenString,
-			claims,
-			func(token *jwt.Token) (interface{}, error) {
-				return validateAndGetKey(token, jwksURL)
-			},
-		)
-		if err != nil || !token.Valid {
-			return echo.NewHTTPError(
-				http.StatusUnauthorized,
-				"Invalid token",
-			)
-		}
-
-		c.Set("user", claims)
-
-		return next(c)
 	}
 }
 

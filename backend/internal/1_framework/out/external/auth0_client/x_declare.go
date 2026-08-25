@@ -5,12 +5,24 @@ import (
 )
 
 // Auth0Client ...
-type Auth0Client struct{}
+type Auth0Client struct {
+	tokenURL  string
+	audience  string
+	grantType string
+}
 
 // NewToAuth0 ...
-func NewToAuth0() (
+func NewToAuth0(
+	tokenURL string,
+	audience string,
+	grantType string,
+) (
 	toAuth0 gatewayExternal.ToAuth0,
 ) {
-	toAuth0 = new(Auth0Client)
+	toAuth0 = &Auth0Client{
+		tokenURL:  tokenURL,
+		audience:  audience,
+		grantType: grantType,
+	}
 	return
 }

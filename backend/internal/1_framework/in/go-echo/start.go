@@ -12,7 +12,6 @@ import (
 	v1users "backend/internal/1_framework/in/go-echo/v1/users"
 	httpMiddleware "backend/internal/1_framework/middleware/http"
 	"backend/internal/2_adapter/controller"
-	"backend/internal/env"
 )
 
 type (
@@ -20,6 +19,8 @@ type (
 	GoEcho struct {
 		Controller controller.ToController
 		EchoEcho   *echo.Echo
+		port       string
+		authConfig httpMiddleware.AuthConfig
 	}
 
 	// ServerInterfaceImpl は生成された ServerInterface を実装する構造体
@@ -31,12 +32,20 @@ type (
 // NewGoEcho ...
 func NewGoEcho(
 	controller controller.ToController,
+	port string,
+	auth0Domain string,
+	auth0ClientSecret string,
 ) (
 	goEcho *GoEcho,
 ) {
 	goEcho = &GoEcho{
 		Controller: controller,
 		EchoEcho:   NewEcho(),
+		port:       port,
+		authConfig: httpMiddleware.AuthConfig{
+			Domain:       auth0Domain,
+			ClientSecret: auth0ClientSecret,
+		},
 	}
 
 	return goEcho
@@ -78,9 +87,10 @@ func (receiver *GoEcho) Start() error {
 		receiver.EchoEcho,
 		receiver.Controller,
 		group,
+		receiver.authConfig,
 	)
 
-	return receiver.EchoEcho.Start(":" + env.ServerConfig.GoEchoPort)
+	return receiver.EchoEcho.Start(":" + receiver.port)
 }
 
 // GetUsers は /users GET エンドポイントの実装

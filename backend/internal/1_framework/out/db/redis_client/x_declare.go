@@ -4,7 +4,6 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	gatewayDB "backend/internal/2_adapter/gateway/db"
-	"backend/internal/env"
 )
 
 type (
@@ -14,14 +13,17 @@ type (
 	}
 )
 
-// NewToRedis ...
-func NewToRedis() (
+func NewToRedis(
+	addr string,
+	password string,
+	db int,
+) (
 	toRedis gatewayDB.ToRedis,
 ) {
 	conn := redis.NewClient(&redis.Options{
-		Addr:     env.RedisConfig.Addr,
-		Password: env.RedisConfig.Password,
-		DB:       env.RedisConfig.DB,
+		Addr:     addr,
+		Password: password,
+		DB:       db,
 	})
 
 	redisClient := new(RedisClient)
@@ -29,7 +31,4 @@ func NewToRedis() (
 
 	toRedis = redisClient
 	return
-}
-
-func init() {
 }

@@ -9,7 +9,6 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
-	"backend/internal/env"
 )
 
 type UserMessage struct {
@@ -28,7 +27,7 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 
 	message := UserMessage{
 		ID:        1,
-		Name:      env.PubSubConfig.SampleUserName,
+		Name:      receiver.sampleUserName,
 		Timestamp: time.Now(),
 	}
 
@@ -43,7 +42,7 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 	err = receiver.Conn.Produce(
 		&kafka.Message{
 			TopicPartition: kafka.TopicPartition{
-				Topic:     &env.PubSubConfig.TestTopic,
+				Topic:     &receiver.testTopic,
 				Partition: kafka.PartitionAny,
 			},
 			Value:   jsonData,
@@ -57,7 +56,7 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 	}
 
 	// メッセージ送信を確実にするため、完了を待つ
-	receiver.Conn.Flush(env.PubSubConfig.FlushTimeoutMS)
+	receiver.Conn.Flush(receiver.flushTimeoutMS)
 
 	return nil
 }

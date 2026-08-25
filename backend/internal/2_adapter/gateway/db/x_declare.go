@@ -27,6 +27,11 @@ type (
 
 	// ToPostgres ...
 	ToPostgres interface {
+		RunInTransaction(
+			ctx context.Context,
+			fn func(context.Context) error,
+		) error
+
 		GetPerson(
 			ctx context.Context,
 			id typeObject.ID,

@@ -9,7 +9,6 @@ import (
 	"gorm.io/gorm"
 
 	gatewayDB "backend/internal/2_adapter/gateway/db"
-	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -23,11 +22,12 @@ type (
 // NewToPostgres ...
 func NewToPostgres(
 	ctx context.Context,
+	dsn string,
 ) (
 	gatewayDB.ToPostgres,
 	error,
 ) {
-	conn, err := open(ctx, 30)
+	conn, err := open(ctx, dsn, 30)
 	if err != nil {
 		return nil, err
 	}
@@ -39,23 +39,44 @@ func NewToPostgres(
 
 func open(
 	ctx context.Context,
+	dsn string,
 	count uint,
 ) (*gorm.DB, error) {
-	db, err := gorm.Open(
-		postgres.Open(env.DatabaseConfig.DSN),
-		&gorm.Config{},
-	)
-
-	if err != nil {
-		if count == 0 {
-			logger.Logging(ctx, err)
-			return nil, fmt.Errorf(
-				"retry count over")
+	var lastErr error
+	for attempt := uint(0); attempt <= count; attempt++ {
+		if err := ctx.Err(); err != nil {
+			return nil, err
 		}
-		time.Sleep(time.Second)
-		count--
-		return open(ctx, count)
+
+		db, err := gorm.Open(
+			postgres.Open(dsn),
+			&gorm.Config{},
+		)
+		if err == nil {
+			return db, nil
+		}
+
+		lastErr = err
+		logger.Logging(ctx, err)
+
+		if attempt == count {
+			break
+		}
+
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-time.After(retryBackoff(attempt)):
+		}
 	}
 
-	return db, nil
+	return nil, fmt.Errorf("retry count over: %w", lastErr)
+}
+
+func retryBackoff(attempt uint) time.Duration {
+	backoff := time.Duration(attempt+1) * time.Second
+	if backoff > 5*time.Second {
+		return 5 * time.Second
+	}
+	return backoff
 }

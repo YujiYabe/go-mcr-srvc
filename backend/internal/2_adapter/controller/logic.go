@@ -61,6 +61,13 @@ func (receiver *controller) ViaGRPC(
 	return
 }
 
+func (receiver *controller) UpdatePerson(
+	ctx context.Context,
+	newPerson groupObject.Person,
+) error {
+	return receiver.UseCase.UpdatePerson(ctx, newPerson)
+}
+
 func (receiver *controller) PublishTestTopic(
 	ctx context.Context,
 ) error {

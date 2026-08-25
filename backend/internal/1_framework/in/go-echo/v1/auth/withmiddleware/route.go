@@ -11,6 +11,7 @@ func NewRoute(
 	EchoEcho *echo.Echo,
 	toController controller.ToController,
 	parent *echo.Group,
+	authConfig httpMiddleware.AuthConfig,
 ) {
 	group := parent.Group(
 		"/withmiddleware",
@@ -34,6 +35,6 @@ func NewRoute(
 		) {
 			return protected(c, toController)
 		},
-		httpMiddleware.JWTMiddleware(),
+		httpMiddleware.JWTMiddleware(authConfig),
 	)
 }

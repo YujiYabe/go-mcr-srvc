@@ -8,19 +8,32 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	"backend/internal/2_adapter/controller"
-	"backend/internal/env"
 	// pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 )
 
 // GoPubSub ...
 type GoPubSub struct {
-	Controller controller.ToController
+	Controller       controller.ToController
+	bootstrapServers string
+	consumerGroupID  string
+	testTopic        string
+	otherTopic       string
 }
 
 // NewGoPubSub ...
-func NewGoPubSub(controller controller.ToController) *GoPubSub {
+func NewGoPubSub(
+	controller controller.ToController,
+	bootstrapServers string,
+	consumerGroupID string,
+	testTopic string,
+	otherTopic string,
+) *GoPubSub {
 	return &GoPubSub{
-		Controller: controller,
+		Controller:       controller,
+		bootstrapServers: bootstrapServers,
+		consumerGroupID:  consumerGroupID,
+		testTopic:        testTopic,
+		otherTopic:       otherTopic,
 	}
 }
 
@@ -28,6 +41,8 @@ func NewGoPubSub(controller controller.ToController) *GoPubSub {
 // kafkaではtopic毎にシングルトンの為、Consumerインスタンスを共有できない
 func NewKafkaConsumer(
 	ctx context.Context,
+	bootstrapServers string,
+	consumerGroupID string,
 ) (
 	consumer *kafka.Consumer,
 	err error,
@@ -42,8 +57,8 @@ func NewKafkaConsumer(
 
 		consumer, err = kafka.NewConsumer(
 			&kafka.ConfigMap{
-				"bootstrap.servers": env.PubSubConfig.BootstrapServers,
-				"group.id":          env.PubSubConfig.ConsumerGroupID,
+				"bootstrap.servers": bootstrapServers,
+				"group.id":          consumerGroupID,
 				"auto.offset.reset": "earliest",
 			},
 		)
@@ -53,7 +68,7 @@ func NewKafkaConsumer(
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
-		case <-time.After(5 * time.Second):
+		case <-time.After(retryBackoff(uint(i))):
 		}
 	}
 	if err != nil {
@@ -61,4 +76,12 @@ func NewKafkaConsumer(
 	}
 
 	return consumer, nil
+}
+
+func retryBackoff(attempt uint) time.Duration {
+	backoff := time.Duration(attempt+1) * time.Second
+	if backoff > 5*time.Second {
+		return 5 * time.Second
+	}
+	return backoff
 }

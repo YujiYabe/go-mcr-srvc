@@ -10,6 +10,11 @@ type (
 
 	// ToGatewayDB ...
 	ToGatewayDB interface {
+		RunInTransaction(
+			ctx context.Context,
+			fn func(context.Context) error,
+		) error
+
 		GetPersonList(
 			ctx context.Context,
 		) (
@@ -24,5 +29,10 @@ type (
 			resPersonList groupObject.PersonList,
 			err error,
 		)
+
+		UpdatePerson(
+			ctx context.Context,
+			newPerson groupObject.Person,
+		) error
 	}
 )

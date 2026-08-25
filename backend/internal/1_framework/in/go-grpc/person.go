@@ -13,6 +13,7 @@ import (
 // GoGRPC ...
 type GoGRPC struct {
 	Server
+	address string
 }
 
 // ------------

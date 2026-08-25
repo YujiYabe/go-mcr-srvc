@@ -32,38 +32,67 @@ type (
 // NewApp ...
 func NewApp() (*app, error) {
 	ctx := context.Background()
-	if err := env.Err(); err != nil {
+	config, err := env.Load()
+	if err != nil {
 		return nil, err
 	}
 
-	toPostgres, err := postgresClient.NewToPostgres(ctx)
+	toPostgres, err := postgresClient.NewToPostgres(ctx, config.Database.DSN)
 	if err != nil {
 		return nil, fmt.Errorf("new postgres client: %w", err)
 	}
 
-	toGRPC, err := grpcClient.NewToGRPC(ctx)
+	toGRPC, err := grpcClient.NewToGRPC(ctx, config.Server.GRPCAddress)
 	if err != nil {
 		return nil, fmt.Errorf("new grpc client: %w", err)
 	}
 
-	toPubSub, err := pubsubPublisher.NewToPubSub(ctx)
+	toPubSub, err := pubsubPublisher.NewToPubSub(
+		ctx,
+		config.PubSub.BootstrapServers,
+		config.PubSub.TestTopic,
+		config.PubSub.FlushTimeoutMS,
+		config.PubSub.SampleUserName,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("new pubsub publisher: %w", err)
 	}
 
 	ctrl := controller.NewController(
 		toPostgres,
-		redisClient.NewToRedis(),
-		auth0Client.NewToAuth0(),
+		redisClient.NewToRedis(
+			config.Redis.Addr,
+			config.Redis.Password,
+			config.Redis.DB,
+		),
+		auth0Client.NewToAuth0(
+			config.Auth0.TokenURL,
+			config.Auth0.Audience,
+			config.Auth0.GrantType,
+		),
 		toGRPC,
 		toPubSub,
 	)
 	ctrl.Start()
 
 	a := &app{
-		goGRPC:   goGRPC.NewGoGRPC(ctrl),
-		goEcho:   goEcho.NewGoEcho(ctrl),
-		goPubSub: goPubSub.NewGoPubSub(ctrl),
+		goGRPC: goGRPC.NewGoGRPC(
+			ctrl,
+			config.Server.GRPCAddress,
+		),
+		goEcho: goEcho.NewGoEcho(
+			ctrl,
+			config.Server.GoEchoPort,
+			config.Auth0.Domain,
+			config.Auth0.ClientSecret,
+		),
+		goPubSub: goPubSub.NewGoPubSub(
+			ctrl,
+			config.PubSub.BootstrapServers,
+			config.PubSub.ConsumerGroupID,
+			config.PubSub.TestTopic,
+			config.PubSub.OtherTopic,
+		),
 	}
 
 	return a, nil
