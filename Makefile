@@ -2,6 +2,7 @@ include ./backend/internal/env/local.env
 
 GO_TOOLCHAIN ?= go1.27.0
 GOLANGCI_LINT ?= github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+GOVULNCHECK ?= golang.org/x/vuln/cmd/govulncheck@latest
 
 # ----------------------------
 .PHONY: gomod
@@ -64,6 +65,15 @@ gotest:
 .PHONY: lint
 lint:
 	cd ./backend && GOTOOLCHAIN=$(GO_TOOLCHAIN) go run $(GOLANGCI_LINT) run ./...
+
+# ----------------------------
+.PHONY: govulncheck
+govulncheck:
+	cd ./backend && GOTOOLCHAIN=$(GO_TOOLCHAIN) go run $(GOVULNCHECK) ./...
+
+# ----------------------------
+.PHONY: security
+security: govulncheck
 
 # ----------------------------
 .PHONY: gosec
@@ -141,6 +151,7 @@ install-tools:
 	
 	# Install other tools
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(GOLANGCI_LINT)
+	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(GOVULNCHECK)
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install github.com/securego/gosec/v2/cmd/gosec@latest
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install honnef.co/go/tools/cmd/staticcheck@latest
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install github.com/air-verse/air@latest
