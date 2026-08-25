@@ -94,6 +94,49 @@ func TestReconstructPersonListRequiresIdentityForEachPerson(t *testing.T) {
 	}
 }
 
+func TestPersonListCanManageCollectionRules(t *testing.T) {
+	person, err := ReconstructPerson(&NewPersonArgs{
+		ID:          intPointer(1),
+		Name:        stringPointer("alice"),
+		MailAddress: stringPointer("alice@example.com"),
+	})
+	if err != nil {
+		t.Fatalf("failed to reconstruct person: %v", err)
+	}
+
+	personList, err := ReconstructPersonList(&NewPersonListArgs{
+		Content: []NewPersonArgs{
+			{
+				ID:          intPointer(2),
+				Name:        stringPointer("bob"),
+				MailAddress: stringPointer("bob@example.com"),
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("failed to reconstruct person list: %v", err)
+	}
+
+	if personList.IsEmpty() {
+		t.Fatal("expected person list not to be empty")
+	}
+	if personList.Count() != 1 {
+		t.Fatalf("expected person count 1, got %d", personList.Count())
+	}
+	if err := personList.Append(*person); err != nil {
+		t.Fatalf("expected append success, got: %v", err)
+	}
+	if !personList.ContainsIdentity(person.Identity()) {
+		t.Fatal("expected appended identity")
+	}
+	if !personList.ContainsMailAddress(person.MailAddress()) {
+		t.Fatal("expected appended mail address")
+	}
+	if err := personList.Append(*person); err == nil {
+		t.Fatal("expected duplicate person error")
+	}
+}
+
 func intPointer(value int) *int {
 	return &value
 }

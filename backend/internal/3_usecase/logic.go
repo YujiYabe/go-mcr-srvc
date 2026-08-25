@@ -63,7 +63,7 @@ func (receiver *useCase) FetchAccessToken(
 	if err = ensureContextReady(ctx, "FetchAccessToken"); err != nil {
 		return
 	}
-	if err = ensureCredentialReady(credential); err != nil {
+	if err = credential.EnsureReadyToAuthenticate(); err != nil {
 		err = fmt.Errorf("FetchAccessToken: %w", err)
 		return
 	}
@@ -142,19 +142,6 @@ func ensureContextReady(
 ) error {
 	if err := ctx.Err(); err != nil {
 		return fmt.Errorf("%s: context is not ready: %w", usecaseName, err)
-	}
-
-	return nil
-}
-
-func ensureCredentialReady(
-	credential groupObject.Credential,
-) error {
-	if credential.ClientID().GetValue() == "" {
-		return fmt.Errorf("client id is required")
-	}
-	if credential.ClientSecret().GetValue() == "" {
-		return fmt.Errorf("client secret is required")
 	}
 
 	return nil

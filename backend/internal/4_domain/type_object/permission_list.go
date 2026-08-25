@@ -2,6 +2,7 @@ package type_object
 
 import (
 	"fmt"
+	"slices"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
 )
@@ -14,6 +15,9 @@ var (
 const (
 	PermissionListHeaderName  primitiveObject.ContextKey = "permissions"
 	PermissionListContextName primitiveObject.ContextKey = "permissionList"
+
+	PermissionPersonRead  = "person:read"
+	PermissionPersonWrite = "person:write"
 )
 
 type PermissionList struct {
@@ -69,4 +73,47 @@ func (receiver PermissionList) GetSliceValue() (
 	}
 
 	return sliceValue
+}
+
+func (receiver PermissionList) IsEmpty() bool {
+	return len(receiver.content) == 0
+}
+
+func (receiver PermissionList) Count() int {
+	return len(receiver.content)
+}
+
+func (receiver PermissionList) Has(
+	permission Permission,
+) bool {
+	return slices.Contains(receiver.GetSliceValue(), permission.GetValue())
+}
+
+func (receiver PermissionList) HasValue(
+	value string,
+) bool {
+	permission, err := NewPermission(&value)
+	if err != nil {
+		return false
+	}
+
+	return receiver.Has(permission)
+}
+
+func (receiver PermissionList) CanReadPerson() bool {
+	return receiver.HasValue(PermissionPersonRead)
+}
+
+func (receiver PermissionList) CanWritePerson() bool {
+	return receiver.HasValue(PermissionPersonWrite)
+}
+
+func (receiver PermissionList) EnsureHas(
+	value string,
+) error {
+	if receiver.HasValue(value) {
+		return nil
+	}
+
+	return receiver.ErrorString(fmt.Sprintf("permission is required: %s", value))
 }
