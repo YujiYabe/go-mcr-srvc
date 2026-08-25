@@ -7,6 +7,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	"backend/internal/2_adapter/controller"
+	"backend/internal/env"
 	// pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 )
 
@@ -34,10 +35,8 @@ func NewKafkaConsumer() (
 	for i := 0; i < maxRetries; i++ {
 		consumer, err = kafka.NewConsumer(
 			&kafka.ConfigMap{
-				"bootstrap.servers": "kafka:9092",
-				// "bootstrap.servers": "localhost:9092",
-				// "bootstrap.servers": "0.0.0.0:9092",
-				"group.id":          "my-group",
+				"bootstrap.servers": env.PubSubConfig.BootstrapServers,
+				"group.id":          env.PubSubConfig.ConsumerGroupID,
 				"auto.offset.reset": "earliest",
 			},
 		)

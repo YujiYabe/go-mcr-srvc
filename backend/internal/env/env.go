@@ -25,9 +25,35 @@ type databaseConfig struct {
 	DSN string
 }
 
+type auth0Config struct {
+	Domain       string
+	TokenURL     string
+	Audience     string
+	GrantType    string
+	ClientSecret string
+}
+
+type pubSubConfig struct {
+	BootstrapServers string
+	ConsumerGroupID  string
+	TestTopic        string
+	OtherTopic       string
+	FlushTimeoutMS   int
+	SampleUserName   string
+}
+
+type redisConfig struct {
+	Addr     string
+	Password string
+	DB       int
+}
+
 var (
 	ServerConfig   serverConfig
 	DatabaseConfig databaseConfig
+	Auth0Config    auth0Config
+	PubSubConfig   pubSubConfig
+	RedisConfig    redisConfig
 )
 
 func init() {
@@ -51,6 +77,9 @@ func init() {
 
 	newServerConfig(viperViper)
 	newDatabaseConfig(viperViper)
+	newAuth0Config(viperViper)
+	newPubSubConfig(viperViper)
+	newRedisConfig(viperViper)
 }
 
 func initViper() *viper.Viper {
@@ -146,15 +175,57 @@ func newDatabaseConfig(
 	viperViper *viper.Viper,
 ) {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=app sslmode=disable",
+		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=%s sslmode=disable",
 		viperViper.GetString("POSTGRES_HOST"),
 		viperViper.GetString("POSTGRES_USER"),
 		viperViper.GetString("POSTGRES_PASSWORD"),
 		viperViper.GetString("POSTGRES_BACK_PORT"),
 		viperViper.GetString("TZ"),
+		viperViper.GetString("POSTGRES_DB"),
 	)
 
 	DatabaseConfig = databaseConfig{
 		DSN: dsn,
+	}
+}
+
+func newAuth0Config(
+	viperViper *viper.Viper,
+) {
+	domain := viperViper.GetString("AUTH0_DOMAIN")
+	tokenURL := viperViper.GetString("AUTH0_TOKEN_URL")
+	if tokenURL == "" && domain != "" {
+		tokenURL = fmt.Sprintf("https://%s/oauth/token", domain)
+	}
+
+	Auth0Config = auth0Config{
+		Domain:       domain,
+		TokenURL:     tokenURL,
+		Audience:     viperViper.GetString("AUTH0_AUDIENCE"),
+		GrantType:    viperViper.GetString("AUTH0_GRANT_TYPE"),
+		ClientSecret: viperViper.GetString("AUTH0_CLIENT_SECRET"),
+	}
+}
+
+func newPubSubConfig(
+	viperViper *viper.Viper,
+) {
+	PubSubConfig = pubSubConfig{
+		BootstrapServers: viperViper.GetString("KAFKA_BOOTSTRAP_SERVERS"),
+		ConsumerGroupID:  viperViper.GetString("KAFKA_CONSUMER_GROUP_ID"),
+		TestTopic:        viperViper.GetString("PUBSUB_TEST_TOPIC"),
+		OtherTopic:       viperViper.GetString("PUBSUB_OTHER_TOPIC"),
+		FlushTimeoutMS:   viperViper.GetInt("PUBSUB_FLUSH_TIMEOUT_MS"),
+		SampleUserName:   viperViper.GetString("PUBSUB_SAMPLE_USER_NAME"),
+	}
+}
+
+func newRedisConfig(
+	viperViper *viper.Viper,
+) {
+	RedisConfig = redisConfig{
+		Addr:     viperViper.GetString("REDIS_ADDR"),
+		Password: viperViper.GetString("REDIS_PASSWORD"),
+		DB:       viperViper.GetInt("REDIS_DB"),
 	}
 }

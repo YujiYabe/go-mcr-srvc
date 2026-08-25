@@ -4,12 +4,13 @@ import (
 	"crypto/rsa"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/MicahParks/keyfunc"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
+
+	"backend/internal/env"
 )
 
 func JWTMiddleware() echo.MiddlewareFunc {
@@ -43,7 +44,7 @@ func JWTMiddleware() echo.MiddlewareFunc {
 							token.Header["alg"],
 						)
 					}
-					return []byte(os.Getenv("AUTH0_CLIENT_SECRET")), nil
+					return []byte(env.Auth0Config.ClientSecret), nil
 				},
 			)
 
@@ -86,7 +87,7 @@ func JWTMiddlewareAuth0(next echo.HandlerFunc) echo.HandlerFunc {
 		// Auth0の公開鍵を取得
 		jwksURL := fmt.Sprintf(
 			"https://%s/.well-known/jwks.json",
-			os.Getenv("AUTH0_DOMAIN"),
+			env.Auth0Config.Domain,
 		)
 
 		claims := jwt.MapClaims{}

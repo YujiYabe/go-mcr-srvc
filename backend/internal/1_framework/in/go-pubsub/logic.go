@@ -9,6 +9,7 @@ import (
 	// groupObject "backend/internal/4_domain/group_object"
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	"backend/internal/env"
 )
 
 // Start ....
@@ -19,7 +20,7 @@ func (receiver *GoPubSub) Start() {
 
 // subscribeTestTopic ....
 func (receiver *GoPubSub) subscribeTestTopic() {
-	topicName := "test-topic"
+	topicName := env.PubSubConfig.TestTopic
 	consumer := NewKafkaConsumer()
 
 	err := consumer.Subscribe(topicName, nil)
@@ -50,16 +51,17 @@ func (receiver *GoPubSub) subscribeTestTopic() {
 // subscribeOtherTopic ....
 func (receiver *GoPubSub) subscribeOtherTopic() {
 	consumer := NewKafkaConsumer()
-	err := consumer.Subscribe("other-topic", nil)
+	topicName := env.PubSubConfig.OtherTopic
+	err := consumer.Subscribe(topicName, nil)
 	if err != nil {
 		log.Fatalf("Failed to subscribe to topic: %s", err)
 	}
 
-	fmt.Println("subscribeOtherTopic Consumer started, waiting for messages...")
+	fmt.Println(topicName + " Consumer started, waiting for messages...")
 	for {
 		msg, err := consumer.ReadMessage(-1)
 		if err == nil {
-			fmt.Printf("subscribeOtherTopic Received: %s\n", string(msg.Value))
+			fmt.Printf(topicName+" Received: %s\n", string(msg.Value))
 
 		} else {
 			fmt.Printf("Consumer error: %v (%v)\n", err, msg)

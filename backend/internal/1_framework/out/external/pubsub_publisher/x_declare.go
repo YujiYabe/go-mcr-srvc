@@ -8,6 +8,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	gatewayExternal "backend/internal/2_adapter/gateway/external"
+	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -42,7 +43,7 @@ func open(
 ) (*kafka.Producer, error) {
 	conn, err := kafka.NewProducer(
 		&kafka.ConfigMap{
-			"bootstrap.servers": "kafka:9092",
+			"bootstrap.servers": env.PubSubConfig.BootstrapServers,
 		},
 	)
 
