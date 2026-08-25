@@ -8,28 +8,40 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	gatewayExternal "backend/internal/2_adapter/gateway/external"
-	"backend/internal/env"
 	"backend/internal/logger"
 )
 
 // PubsubPublisher ...
 type (
 	PubsubPublisher struct {
-		Conn *kafka.Producer
+		Conn             *kafka.Producer
+		bootstrapServers string
+		testTopic        string
+		flushTimeoutMS   int
+		sampleUserName   string
 	}
 )
 
 // NewToPubSub ...
 func NewToPubSub(
 	ctx context.Context,
+	bootstrapServers string,
+	testTopic string,
+	flushTimeoutMS int,
+	sampleUserName string,
 ) (
 	gatewayExternal.ToPubSub,
 	error,
 ) {
 
-	pubsubPublisher := new(PubsubPublisher)
+	pubsubPublisher := &PubsubPublisher{
+		bootstrapServers: bootstrapServers,
+		testTopic:        testTopic,
+		flushTimeoutMS:   flushTimeoutMS,
+		sampleUserName:   sampleUserName,
+	}
 	if false {
-		conn, err := open(ctx, 30)
+		conn, err := open(ctx, bootstrapServers, 30)
 		if err != nil {
 			return nil, err
 		}
@@ -42,24 +54,45 @@ func NewToPubSub(
 
 func open(
 	ctx context.Context,
+	bootstrapServers string,
 	count uint,
 ) (*kafka.Producer, error) {
-	conn, err := kafka.NewProducer(
-		&kafka.ConfigMap{
-			"bootstrap.servers": env.PubSubConfig.BootstrapServers,
-		},
-	)
-
-	if err != nil {
-		if count == 0 {
-			logger.Logging(ctx, err)
-			return nil, fmt.Errorf(
-				"retry count over")
+	var lastErr error
+	for attempt := uint(0); attempt <= count; attempt++ {
+		if err := ctx.Err(); err != nil {
+			return nil, err
 		}
-		time.Sleep(time.Second)
-		count--
-		return open(ctx, count)
+
+		conn, err := kafka.NewProducer(
+			&kafka.ConfigMap{
+				"bootstrap.servers": bootstrapServers,
+			},
+		)
+		if err == nil {
+			return conn, nil
+		}
+
+		lastErr = err
+		logger.Logging(ctx, err)
+
+		if attempt == count {
+			break
+		}
+
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-time.After(retryBackoff(attempt)):
+		}
 	}
 
-	return conn, nil
+	return nil, fmt.Errorf("retry count over: %w", lastErr)
+}
+
+func retryBackoff(attempt uint) time.Duration {
+	backoff := time.Duration(attempt+1) * time.Second
+	if backoff > 5*time.Second {
+		return 5 * time.Second
+	}
+	return backoff
 }

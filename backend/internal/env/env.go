@@ -47,6 +47,14 @@ type redisConfig struct {
 	DB       int
 }
 
+type Config struct {
+	Server   serverConfig
+	Database databaseConfig
+	Auth0    auth0Config
+	PubSub   pubSubConfig
+	Redis    redisConfig
+}
+
 var (
 	ServerConfig   serverConfig
 	DatabaseConfig databaseConfig
@@ -86,6 +94,20 @@ func init() {
 
 func Err() error {
 	return initErr
+}
+
+func Load() (Config, error) {
+	if initErr != nil {
+		return Config{}, initErr
+	}
+
+	return Config{
+		Server:   ServerConfig,
+		Database: DatabaseConfig,
+		Auth0:    Auth0Config,
+		PubSub:   PubSubConfig,
+		Redis:    RedisConfig,
+	}, nil
 }
 
 func initViper() *viper.Viper {

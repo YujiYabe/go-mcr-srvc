@@ -9,7 +9,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	gatewayExternal "backend/internal/2_adapter/gateway/external"
-	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -23,11 +22,12 @@ type (
 // NewToGRPC ...
 func NewToGRPC(
 	ctx context.Context,
+	address string,
 ) (
 	toGRPC gatewayExternal.ToGRPC,
 	err error,
 ) {
-	conn, err := open(ctx, 30)
+	conn, err := open(ctx, address, 30)
 	if err != nil {
 		return
 	}
@@ -39,26 +39,48 @@ func NewToGRPC(
 
 func open(
 	ctx context.Context,
+	address string,
 	count uint,
 ) (*GRPCClient, error) {
-	conn, err := grpc.NewClient(
-		env.ServerConfig.GRPCAddress,
-		grpc.WithTransportCredentials(
-			insecure.NewCredentials(),
-		),
-	)
-
-	if err != nil {
-		if count == 0 {
-			logger.Logging(ctx, err)
-			return nil, fmt.Errorf("retry count over")
+	var lastErr error
+	for attempt := uint(0); attempt <= count; attempt++ {
+		if err := ctx.Err(); err != nil {
+			return nil, err
 		}
-		time.Sleep(time.Second)
-		count--
-		return open(ctx, count)
+
+		conn, err := grpc.NewClient(
+			address,
+			grpc.WithTransportCredentials(
+				insecure.NewCredentials(),
+			),
+		)
+		if err == nil {
+			return &GRPCClient{
+				Conn: conn,
+			}, nil
+		}
+
+		lastErr = err
+		logger.Logging(ctx, err)
+
+		if attempt == count {
+			break
+		}
+
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-time.After(retryBackoff(attempt)):
+		}
 	}
 
-	return &GRPCClient{
-		Conn: conn,
-	}, nil
+	return nil, fmt.Errorf("retry count over: %w", lastErr)
+}
+
+func retryBackoff(attempt uint) time.Duration {
+	backoff := time.Duration(attempt+1) * time.Second
+	if backoff > 5*time.Second {
+		return 5 * time.Second
+	}
+	return backoff
 }

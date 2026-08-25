@@ -9,7 +9,6 @@ import (
 
 	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
-	"backend/internal/env"
 )
 
 // ...
@@ -24,8 +23,8 @@ func (receiver *Auth0Client) FetchAccessToken(
 	payload := map[string]string{
 		"client_id":     credential.ClientID().GetValue(),
 		"client_secret": credential.ClientSecret().GetValue(),
-		"audience":      env.Auth0Config.Audience,
-		"grant_type":    env.Auth0Config.GrantType,
+		"audience":      receiver.audience,
+		"grant_type":    receiver.grantType,
 	}
 
 	jsonData, err := json.Marshal(payload)
@@ -36,7 +35,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 	req, err := http.NewRequestWithContext(
 		ctx,
 		"POST",
-		env.Auth0Config.TokenURL,
+		receiver.tokenURL,
 		bytes.NewBuffer(jsonData),
 	)
 	if err != nil {

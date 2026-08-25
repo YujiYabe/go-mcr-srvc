@@ -11,7 +11,6 @@ import (
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/2_adapter/controller"
-	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -24,11 +23,13 @@ type Server struct {
 // NewGoGRPC ...
 func NewGoGRPC(
 	controller controller.ToController,
+	address string,
 ) *GoGRPC {
 	goGRPC := &GoGRPC{
 		Server: Server{
 			Controller: controller,
 		},
+		address: address,
 	}
 	return goGRPC
 }
@@ -38,7 +39,7 @@ func (receiver *GoGRPC) Start() error {
 	logger.Logging(context.Background(), "start GRPC")
 	listen, err := net.Listen(
 		"tcp",
-		env.ServerConfig.GRPCAddress,
+		receiver.address,
 	)
 	if err != nil {
 		return fmt.Errorf("listen grpc: %w", err)
