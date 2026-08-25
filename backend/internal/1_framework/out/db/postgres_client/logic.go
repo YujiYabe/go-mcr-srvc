@@ -182,11 +182,11 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	conn := tx.Table("persons")
 
 	if !reqPerson.MailAddress.GetIsNil() && reqPerson.MailAddress.GetValue() != "" {
-		conn.Where("mail_address = ?", reqPerson.MailAddress.GetValue())
+		conn = conn.Where("mail_address = ?", reqPerson.MailAddress.GetValue())
 	}
 
 	if !reqPerson.Name.GetIsNil() && reqPerson.Name.GetValue() != "" {
-		conn.Where("name LIKE ?", "%"+reqPerson.Name.GetValue()+"%")
+		conn = conn.Where("name LIKE ?", "%"+reqPerson.Name.GetValue()+"%")
 	}
 
 	result := conn.Find(&persons)

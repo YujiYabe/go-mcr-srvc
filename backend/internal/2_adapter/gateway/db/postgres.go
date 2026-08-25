@@ -68,7 +68,7 @@ func (receiver *GatewayDB) UpdatePerson(
 		)
 		if person.GetError() != nil {
 			isSuccess = false
-			logger.Logging(ctx, err)
+			logger.Logging(ctx, person.GetError())
 		}
 	}
 

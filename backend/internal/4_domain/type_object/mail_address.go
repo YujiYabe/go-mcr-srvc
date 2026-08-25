@@ -86,7 +86,7 @@ func (receiver *MailAddress) GetIsNil() bool {
 	return receiver.content.GetIsNil()
 }
 
-func (receiver MailAddress) Validation(
+func (receiver *MailAddress) Validation(
 	ctx context.Context,
 ) {
 	if receiver.GetIsNil() {
@@ -94,7 +94,7 @@ func (receiver MailAddress) Validation(
 	}
 
 	// メールアドレスの正規表現パターン
-	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}`
+	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 
 	matched, err := regexp.MatchString(
 		emailPattern,
