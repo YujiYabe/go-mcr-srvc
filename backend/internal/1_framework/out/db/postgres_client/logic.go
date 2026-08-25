@@ -3,7 +3,6 @@ package postgres_client
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"gorm.io/gorm"
 
@@ -13,39 +12,24 @@ import (
 	"backend/internal/logger"
 )
 
-func (receiver *PostgresClient) WithOutTx(
+type txContextKey struct{}
+
+func (receiver *PostgresClient) RunInTransaction(
 	ctx context.Context,
-) (
-	tx *gorm.DB,
-) {
-	return receiver.Conn.WithContext(ctx)
+	fn func(context.Context) error,
+) error {
+	return receiver.Conn.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		return fn(context.WithValue(ctx, txContextKey{}, tx))
+	})
 }
 
-func (receiver *PostgresClient) BeginTx(
+func (receiver *PostgresClient) conn(
 	ctx context.Context,
-) (
-	tx *gorm.DB,
-) {
-	return receiver.Conn.WithContext(ctx).Begin()
-}
-
-func (receiver *PostgresClient) EndTx(
-	ctx context.Context,
-	tx *gorm.DB,
-	isSuccess bool,
-) (
-	err error,
-) {
-	if isSuccess {
-		if err = tx.Commit().Error; err != nil {
-			logger.Logging(ctx, fmt.Errorf("commit failed: %w", err))
-		}
-	} else {
-		if err = tx.Rollback().Error; err != nil {
-			logger.Logging(ctx, fmt.Errorf("rollback failed: %w", err))
-		}
+) *gorm.DB {
+	if tx, ok := ctx.Value(txContextKey{}).(*gorm.DB); ok {
+		return tx.WithContext(ctx)
 	}
-	return
+	return receiver.Conn.WithContext(ctx)
 }
 
 func (receiver *PostgresClient) ReplacePerson(
@@ -54,7 +38,7 @@ func (receiver *PostgresClient) ReplacePerson(
 	email string,
 	id string,
 ) error {
-	err := receiver.Conn.Transaction(func(tx *gorm.DB) error {
+	err := receiver.conn(ctx).Transaction(func(tx *gorm.DB) error {
 		err := receiver.AddPerson(tx, name, email)
 		if err != nil {
 			return err
@@ -97,7 +81,7 @@ func (receiver *PostgresClient) GetPersonList(
 ) {
 	persons := []models.Person{} // SQL結果保存用
 
-	result := receiver.Conn.WithContext(ctx).
+	result := receiver.conn(ctx).
 		Table("persons").
 		Find(&persons)
 
@@ -134,7 +118,7 @@ func (receiver *PostgresClient) GetPerson(
 	person = groupObject.Person{}   // ドメインロジック用
 	resultPerson := models.Person{} // SQL結果保存用
 
-	result := receiver.Conn.WithContext(ctx).
+	result := receiver.conn(ctx).
 		Table("persons").
 		Where("id = ?", id.GetValue()).
 		Take(&resultPerson)
@@ -172,7 +156,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 
 	persons := []models.Person{} // SQL結果保存用
 
-	conn := receiver.Conn.WithContext(ctx).Table("persons")
+	conn := receiver.conn(ctx).Table("persons")
 
 	if !reqPerson.MailAddress().GetIsNil() && reqPerson.MailAddress().GetValue() != "" {
 		conn = conn.Where("mail_address = ?", reqPerson.MailAddress().GetValue())

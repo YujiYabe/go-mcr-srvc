@@ -32,6 +32,3 @@ func NewToRedis(
 	toRedis = redisClient
 	return
 }
-
-func init() {
-}

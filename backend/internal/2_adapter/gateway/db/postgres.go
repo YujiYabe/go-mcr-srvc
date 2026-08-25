@@ -6,6 +6,13 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
+func (receiver *GatewayDB) RunInTransaction(
+	ctx context.Context,
+	fn func(context.Context) error,
+) error {
+	return receiver.ToPostgres.RunInTransaction(ctx, fn)
+}
+
 // GetPersonList ...
 func (receiver *GatewayDB) GetPersonList(
 	ctx context.Context,

@@ -101,6 +101,26 @@ func (receiver *useCase) ViaGRPC(
 	return
 }
 
+func (receiver *useCase) UpdatePerson(
+	ctx context.Context,
+	newPerson groupObject.Person,
+) error {
+	if err := ensureContextReady(ctx, "UpdatePerson"); err != nil {
+		return err
+	}
+
+	if err := receiver.ToGatewayDB.RunInTransaction(
+		ctx,
+		func(txCtx context.Context) error {
+			return receiver.ToGatewayDB.UpdatePerson(txCtx, newPerson)
+		},
+	); err != nil {
+		return fmt.Errorf("UpdatePerson: %w", err)
+	}
+
+	return nil
+}
+
 func (receiver *useCase) PublishTestTopic(
 	ctx context.Context,
 ) error {

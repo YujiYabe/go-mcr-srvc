@@ -55,16 +55,7 @@ type Config struct {
 	Redis    redisConfig
 }
 
-var (
-	ServerConfig   serverConfig
-	DatabaseConfig databaseConfig
-	Auth0Config    auth0Config
-	PubSubConfig   pubSubConfig
-	RedisConfig    redisConfig
-	initErr        error
-)
-
-func init() {
+func Load() (Config, error) {
 	// OS環境変数で環境を切り替える
 	// 機密情報以外はXXX.envに記載。secret managerのキーはgithub secretsに保存?
 	// 機密情報はsecret managerに保存
@@ -74,39 +65,21 @@ func init() {
 
 	viperViper.SetConfigName(env + ".env")
 	if err := viperViper.ReadInConfig(); err != nil {
-		initErr = fmt.Errorf("load environment file: %w", err)
-		return
+		return Config{}, fmt.Errorf("load environment file: %w", err)
 	}
 
 	if env == "lcl" {
 		if err := setupLocalstack(viperViper); err != nil {
-			initErr = fmt.Errorf("setup localstack: %w", err)
-			return
+			return Config{}, fmt.Errorf("setup localstack: %w", err)
 		}
 	}
 
-	newServerConfig(viperViper)
-	newDatabaseConfig(viperViper)
-	newAuth0Config(viperViper)
-	newPubSubConfig(viperViper)
-	newRedisConfig(viperViper)
-}
-
-func Err() error {
-	return initErr
-}
-
-func Load() (Config, error) {
-	if initErr != nil {
-		return Config{}, initErr
-	}
-
 	return Config{
-		Server:   ServerConfig,
-		Database: DatabaseConfig,
-		Auth0:    Auth0Config,
-		PubSub:   PubSubConfig,
-		Redis:    RedisConfig,
+		Server:   newServerConfig(viperViper),
+		Database: newDatabaseConfig(viperViper),
+		Auth0:    newAuth0Config(viperViper),
+		PubSub:   newPubSubConfig(viperViper),
+		Redis:    newRedisConfig(viperViper),
 	}, nil
 }
 
@@ -167,8 +140,8 @@ func setupLocalstack(
 		return err
 	}
 
-	viper.Set("db_user", secretString.Username)
-	viper.Set("db_password", secretString.Password)
+	viperViper.Set("POSTGRES_USER", secretString.Username)
+	viperViper.Set("POSTGRES_PASSWORD", secretString.Password)
 
 	return nil
 }
@@ -186,8 +159,8 @@ type SecretString struct {
 
 func newServerConfig(
 	viperViper *viper.Viper,
-) {
-	ServerConfig = serverConfig{
+) serverConfig {
+	return serverConfig{
 		BackendHost: viperViper.GetString("BACKEND_HOST"),
 		GoEchoPort:  viperViper.GetString("GO_ECHO_PORT"),
 		GRPCPort:    viperViper.GetString("GRPC_PORT"),
@@ -201,7 +174,7 @@ func newServerConfig(
 
 func newDatabaseConfig(
 	viperViper *viper.Viper,
-) {
+) databaseConfig {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=%s sslmode=disable",
 		viperViper.GetString("POSTGRES_HOST"),
@@ -212,21 +185,21 @@ func newDatabaseConfig(
 		viperViper.GetString("POSTGRES_DB"),
 	)
 
-	DatabaseConfig = databaseConfig{
+	return databaseConfig{
 		DSN: dsn,
 	}
 }
 
 func newAuth0Config(
 	viperViper *viper.Viper,
-) {
+) auth0Config {
 	domain := viperViper.GetString("AUTH0_DOMAIN")
 	tokenURL := viperViper.GetString("AUTH0_TOKEN_URL")
 	if tokenURL == "" && domain != "" {
 		tokenURL = fmt.Sprintf("https://%s/oauth/token", domain)
 	}
 
-	Auth0Config = auth0Config{
+	return auth0Config{
 		Domain:       domain,
 		TokenURL:     tokenURL,
 		Audience:     viperViper.GetString("AUTH0_AUDIENCE"),
@@ -237,8 +210,8 @@ func newAuth0Config(
 
 func newPubSubConfig(
 	viperViper *viper.Viper,
-) {
-	PubSubConfig = pubSubConfig{
+) pubSubConfig {
+	return pubSubConfig{
 		BootstrapServers: viperViper.GetString("KAFKA_BOOTSTRAP_SERVERS"),
 		ConsumerGroupID:  viperViper.GetString("KAFKA_CONSUMER_GROUP_ID"),
 		TestTopic:        viperViper.GetString("PUBSUB_TEST_TOPIC"),
@@ -250,8 +223,8 @@ func newPubSubConfig(
 
 func newRedisConfig(
 	viperViper *viper.Viper,
-) {
-	RedisConfig = redisConfig{
+) redisConfig {
+	return redisConfig{
 		Addr:     viperViper.GetString("REDIS_ADDR"),
 		Password: viperViper.GetString("REDIS_PASSWORD"),
 		DB:       viperViper.GetInt("REDIS_DB"),
