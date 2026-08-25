@@ -1,16 +1,11 @@
 package group_object
 
-import (
-	"context"
-
-	typeObject "backend/internal/4_domain/type_object"
-)
+import typeObject "backend/internal/4_domain/type_object"
 
 type Person struct {
-	err         error
-	ID          typeObject.ID
-	Name        typeObject.Name
-	MailAddress typeObject.MailAddress
+	id          typeObject.ID
+	name        typeObject.Name
+	mailAddress typeObject.MailAddress
 }
 
 type NewPersonArgs struct {
@@ -20,43 +15,39 @@ type NewPersonArgs struct {
 }
 
 func NewPerson(
-	ctx context.Context,
 	args *NewPersonArgs,
 ) (
 	person *Person,
+	err error,
 ) {
 	person = &Person{}
 
-	person.ID = typeObject.NewID(ctx, args.ID)
-	if person.ID.GetError() != nil {
-		person.SetError(ctx, person.ID.GetError())
-		return
+	person.id, err = typeObject.NewID(args.ID)
+	if err != nil {
+		return nil, err
 	}
 
-	person.Name = typeObject.NewName(ctx, args.Name)
-	if person.Name.GetError() != nil {
-		person.SetError(ctx, person.Name.GetError())
-		return
+	person.name, err = typeObject.NewName(args.Name)
+	if err != nil {
+		return nil, err
 	}
 
-	person.MailAddress = typeObject.NewMailAddress(ctx, args.MailAddress)
-	if person.MailAddress.GetError() != nil {
-		person.SetError(ctx, person.MailAddress.GetError())
-		return
+	person.mailAddress, err = typeObject.NewMailAddress(args.MailAddress)
+	if err != nil {
+		return nil, err
 	}
 
 	return
 }
 
-func (receiver *Person) GetError() error {
-	return receiver.err
+func (receiver *Person) ID() *typeObject.ID {
+	return &receiver.id
 }
 
-func (receiver *Person) SetError(
-	ctx context.Context,
-	err error,
-) {
-	if receiver.err == nil {
-		receiver.err = err
-	}
+func (receiver *Person) Name() *typeObject.Name {
+	return &receiver.name
+}
+
+func (receiver *Person) MailAddress() *typeObject.MailAddress {
+	return &receiver.mailAddress
 }

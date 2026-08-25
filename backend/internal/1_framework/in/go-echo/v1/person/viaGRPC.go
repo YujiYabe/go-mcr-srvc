@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 	httpParameter "backend/internal/1_framework/parameter/http"
 	"backend/internal/2_adapter/controller"
 	groupObject "backend/internal/4_domain/group_object"
@@ -20,8 +21,8 @@ func viaGRPC(
 	err error,
 ) {
 	ctx := c.Request().Context()
-	requestContext := groupObject.GetRequestContext(ctx)
-	timeoutMillSecond := requestContext.TimeOutMillSecond.GetValue()
+	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	timeoutMillSecond := requestContext.TimeOutMillSecond().GetValue()
 	ctx, cancel := context.WithTimeout(
 		ctx,
 		time.Duration(timeoutMillSecond)*time.Millisecond,
@@ -30,7 +31,6 @@ func viaGRPC(
 	done := make(chan struct{})
 
 	responseList := []httpParameter.V1Person{}
-	var requestErr error
 
 	// ゴルーチンで処理を実行
 	go func() {
@@ -44,8 +44,7 @@ func viaGRPC(
 			return
 		}
 
-		reqPerson := groupObject.NewPerson(
-			ctx,
+		reqPerson, requestErr := groupObject.NewPerson(
 			&groupObject.NewPersonArgs{
 				ID:          person.ID,
 				Name:        person.Name,
@@ -53,8 +52,8 @@ func viaGRPC(
 			},
 		)
 
-		if reqPerson.GetError() != nil {
-			logger.Logging(ctx, err)
+		if requestErr != nil {
+			logger.Logging(ctx, requestErr)
 			err := c.JSON(http.StatusBadRequest, requestErr)
 			if err != nil {
 				logger.Logging(ctx, err)
@@ -62,13 +61,13 @@ func viaGRPC(
 			return
 		}
 
-		resPersonList := toController.ViaGRPC(
+		resPersonList, requestErr := toController.ViaGRPC(
 			ctx,
 			*reqPerson,
 		)
 
-		if resPersonList.GetError() != nil {
-			logger.Logging(ctx, resPersonList.GetError())
+		if requestErr != nil {
+			logger.Logging(ctx, requestErr)
 			err := c.JSON(http.StatusBadRequest, requestErr)
 			if err != nil {
 				logger.Logging(ctx, err)
@@ -77,10 +76,10 @@ func viaGRPC(
 
 		}
 
-		for _, person := range resPersonList.Content {
-			id := person.ID.GetValue()
-			name := person.Name.GetValue()
-			mailAddress := person.MailAddress.GetValue()
+		for _, person := range resPersonList.Content() {
+			id := person.ID().GetValue()
+			name := person.Name().GetValue()
+			mailAddress := person.MailAddress().GetValue()
 			responseList = append(
 				responseList,
 				httpParameter.V1Person{

@@ -35,6 +35,7 @@ type (
 			credential groupObject.Credential,
 		) (
 			accessToken typeObject.AccessToken,
+			err error,
 		)
 	}
 
@@ -45,6 +46,7 @@ type (
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
+			err error,
 		)
 	}
 

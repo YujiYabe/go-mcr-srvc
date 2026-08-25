@@ -5,8 +5,8 @@ import (
 	"time"
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
+	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
-	groupObject "backend/internal/4_domain/group_object"
 	"backend/internal/logger"
 )
 
@@ -23,12 +23,12 @@ func (receiver *Server) GetPersonListByCondition(
 	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
 	err error,
 ) {
-	requestContext := groupObject.GetRequestContext(ctx)
-	if requestContext.GetError() != nil {
-		return nil, requestContext.GetError()
+	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	if requestContext == nil {
+		return nil, ctx.Err()
 	}
 
-	timeoutMillSecond := requestContext.TimeOutMillSecond.GetValue()
+	timeoutMillSecond := requestContext.TimeOutMillSecond().GetValue()
 
 	ctx, cancel := context.WithTimeout(
 		ctx,
@@ -69,25 +69,25 @@ func (receiver *Server) getPersonListByCondition(
 ) {
 	getPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
 
-	// traceID := groupObject.GetRequestContext(ctx).TraceID.GetValue()
+	// traceID := requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
 
-	reqPerson := grpcMiddleware.RefillPersonGRPCToDomain(
+	reqPerson, err := grpcMiddleware.RefillPersonGRPCToDomain(
 		ctx,
 		getPersonListByConditionRequest.GetV1PersonParameter(),
 	)
-	if reqPerson.GetError() != nil {
-		logger.Logging(ctx, reqPerson.GetError())
-		return nil, reqPerson.GetError()
+	if err != nil {
+		logger.Logging(ctx, err)
+		return nil, err
 	}
 
-	responseList := receiver.Controller.GetPersonListByCondition(
+	responseList, err := receiver.Controller.GetPersonListByCondition(
 		ctx,
 		*reqPerson,
 	)
-	if responseList.GetError() != nil {
-		logger.Logging(ctx, responseList.GetError())
-		return nil, responseList.GetError()
+	if err != nil {
+		logger.Logging(ctx, err)
+		return nil, err
 	}
 
 	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}

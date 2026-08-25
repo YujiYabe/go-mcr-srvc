@@ -55,6 +55,7 @@ type (
 			id typeObject.ID,
 		) (
 			person groupObject.Person,
+			err error,
 		)
 
 		GetPersonList(
@@ -62,6 +63,7 @@ type (
 			tx *gorm.DB,
 		) (
 			personList groupObject.PersonList,
+			err error,
 		)
 
 		GetPersonListByCondition(
@@ -70,6 +72,7 @@ type (
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
+			err error,
 		)
 	}
 

@@ -1,7 +1,6 @@
 package type_object
 
 import (
-	"context"
 	"fmt"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
@@ -18,26 +17,24 @@ var (
 )
 
 type AccessToken struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewAccessToken(
-	ctx context.Context,
 	value *string,
 ) (
 	accessToken AccessToken,
+	err error,
 ) {
 	accessToken = AccessToken{}
-	accessToken.SetValue(ctx, value)
+	err = accessToken.SetValue(value)
 
 	return
 }
 
 func (receiver *AccessToken) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -48,31 +45,15 @@ func (receiver *AccessToken) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx, receiver.content.GetError())
+		return receiver.content.GetError()
 	}
-}
-func (receiver *AccessToken) GetError() error {
-	return receiver.err
+	return nil
 }
 
-func (receiver *AccessToken) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
-}
-
-func (receiver *AccessToken) SetErrorString(
-	ctx context.Context,
+func (receiver *AccessToken) ErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		ctx,
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
-	)
+) error {
+	return fmt.Errorf("error: %s", errString)
 }
 
 func (receiver *AccessToken) GetValue() string {

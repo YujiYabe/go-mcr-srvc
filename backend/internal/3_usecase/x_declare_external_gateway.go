@@ -16,6 +16,7 @@ type (
 			credential groupObject.Credential,
 		) (
 			accessToken typeObject.AccessToken,
+			err error,
 		)
 
 		ViaGRPC(
@@ -23,6 +24,7 @@ type (
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
+			err error,
 		)
 
 		PublishTestTopic(

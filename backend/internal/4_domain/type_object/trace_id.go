@@ -1,8 +1,6 @@
 package type_object
 
 import (
-	"context"
-
 	"github.com/google/uuid"
 
 	primitiveObject "backend/internal/4_domain/primitive_object"
@@ -19,25 +17,23 @@ var (
 )
 
 type TraceID struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewTraceID(
-	ctx context.Context,
 	value *string,
 ) (
 	traceID TraceID,
+	err error,
 ) {
 	traceID = TraceID{}
-	traceID.SetValue(ctx, value)
+	err = traceID.SetValue(value)
 
 	return
 }
 func (receiver *TraceID) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 	if value == nil {
 		// デフォルト値を設定
@@ -53,33 +49,10 @@ func (receiver *TraceID) SetValue(
 
 	receiver.content.Validation()
 	if receiver.content.GetError() != nil {
-		receiver.SetError(ctx, receiver.content.GetError())
+		return receiver.content.GetError()
 	}
+	return nil
 }
 func (receiver *TraceID) GetValue() string {
 	return receiver.content.GetValue()
-}
-
-func (receiver *TraceID) GetError() error {
-	return receiver.err
-}
-
-func (receiver *TraceID) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
-}
-
-func GetTraceID(
-	ctx context.Context,
-) (
-	value string,
-) {
-	traceID, ok := ctx.Value(TraceIDContextName).(string)
-	if ok {
-		value = traceID
-	}
-
-	return
 }

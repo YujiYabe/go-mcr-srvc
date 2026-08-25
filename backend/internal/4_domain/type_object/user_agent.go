@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 const (
 	UserAgentHeaderName  primitiveObject.ContextKey = "user-agent"
@@ -17,26 +13,24 @@ var (
 )
 
 type UserAgent struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewUserAgent(
-	ctx context.Context,
 	value *string,
 ) (
 	userAgent UserAgent,
+	err error,
 ) {
 	userAgent = UserAgent{}
-	userAgent.SetValue(ctx, value)
+	err = userAgent.SetValue(value)
 
 	return
 }
 
 func (receiver *UserAgent) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -46,21 +40,9 @@ func (receiver *UserAgent) SetValue(
 	)
 
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *UserAgent) GetError() error {
-	return receiver.err
-}
-
-func (receiver *UserAgent) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *UserAgent) GetValue() string {

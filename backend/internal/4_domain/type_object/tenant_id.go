@@ -1,10 +1,6 @@
 package type_object
 
-import (
-	"context"
-
-	primitiveObject "backend/internal/4_domain/primitive_object"
-)
+import primitiveObject "backend/internal/4_domain/primitive_object"
 
 const (
 	TenantIDHeaderName  primitiveObject.ContextKey = "tenant-id"
@@ -17,26 +13,24 @@ var (
 )
 
 type TenantID struct {
-	err     error
 	content *primitiveObject.PrimitiveString
 }
 
 func NewTenantID(
-	ctx context.Context,
 	value *string,
 ) (
 	tenantID TenantID,
+	err error,
 ) {
 	tenantID = TenantID{}
-	tenantID.SetValue(ctx, value)
+	err = tenantID.SetValue(value)
 
 	return
 }
 
 func (receiver *TenantID) SetValue(
-	ctx context.Context,
 	value *string,
-) {
+) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -46,21 +40,9 @@ func (receiver *TenantID) SetValue(
 	)
 
 	if receiver.content.GetError() != nil {
-		receiver.SetError(
-			ctx,
-			receiver.content.GetError(),
-		)
+		return receiver.content.GetError()
 	}
-}
-func (receiver *TenantID) GetError() error {
-	return receiver.err
-}
-
-func (receiver *TenantID) SetError(
-	ctx context.Context,
-	err error,
-) {
-	receiver.err = err
+	return nil
 }
 
 func (receiver *TenantID) GetValue() string {

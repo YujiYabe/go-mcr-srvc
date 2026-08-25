@@ -1,9 +1,6 @@
 package type_object
 
-import (
-	"context"
-	"testing"
-)
+import "testing"
 
 func TestNewMailAddressRejectsInvalidFormat(t *testing.T) {
 	t.Parallel()
@@ -18,8 +15,8 @@ func TestNewMailAddressRejectsInvalidFormat(t *testing.T) {
 		t.Run(value, func(t *testing.T) {
 			t.Parallel()
 
-			mailAddress := NewMailAddress(context.Background(), &value)
-			if mailAddress.GetError() == nil {
+			_, err := NewMailAddress(&value)
+			if err == nil {
 				t.Fatal("expected invalid mail address to return an error")
 			}
 		})
@@ -31,9 +28,9 @@ func TestNewMailAddressAcceptsValidFormat(t *testing.T) {
 
 	value := "user@example.com"
 
-	mailAddress := NewMailAddress(context.Background(), &value)
-	if mailAddress.GetError() != nil {
-		t.Fatalf("expected valid mail address, got error: %v", mailAddress.GetError())
+	mailAddress, err := NewMailAddress(&value)
+	if err != nil {
+		t.Fatalf("expected valid mail address, got error: %v", err)
 	}
 	if mailAddress.GetValue() != value {
 		t.Fatalf("expected %q, got %q", value, mailAddress.GetValue())

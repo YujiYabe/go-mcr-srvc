@@ -30,31 +30,30 @@ func fetchAccessToken(
 	}
 
 	//-------------------------
-	credential := groupObject.NewCredential(
-		ctx,
+	credential, err := groupObject.NewCredential(
 		&groupObject.NewCredentialArgs{
 			ClientID:     v1Credential.ClientID,
 			ClientSecret: v1Credential.ClientSecret,
 		},
 	)
-	if credential.GetError() != nil {
-		logger.Logging(ctx, credential.GetError())
+	if err != nil {
+		logger.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
-			credential.GetError(),
+			err,
 		)
 	}
 
 	//-------------------------
-	accessToken := toController.FetchAccessToken(
+	accessToken, err := toController.FetchAccessToken(
 		ctx,
 		*credential,
 	)
-	if accessToken.GetError() != nil {
-		logger.Logging(ctx, accessToken.GetError())
+	if err != nil {
+		logger.Logging(ctx, err)
 		return c.JSON(
 			http.StatusBadRequest,
-			accessToken.GetError(),
+			err,
 		)
 	}
 
