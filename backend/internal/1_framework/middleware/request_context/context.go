@@ -2,16 +2,14 @@ package request_context
 
 import (
 	"context"
-
-	groupObject "backend/internal/4_domain/group_object"
 )
 
 func GetRequestContext(
 	ctx context.Context,
 ) (
-	value *groupObject.RequestContext,
+	value *RequestContext,
 ) {
-	requestContext, ok := ctx.Value(groupObject.RequestContextContextName).(groupObject.RequestContext)
+	requestContext, ok := ctx.Value(RequestContextContextName).(RequestContext)
 	if ok {
 		value = &requestContext
 	}

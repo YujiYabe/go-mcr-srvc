@@ -3,8 +3,6 @@ package db_gateway
 import (
 	"context"
 
-	"gorm.io/gorm"
-
 	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
 )
@@ -29,29 +27,8 @@ type (
 
 	// ToPostgres ...
 	ToPostgres interface {
-		WithOutTx(
-			ctx context.Context,
-		) (
-			tx *gorm.DB,
-		)
-
-		BeginTx(
-			ctx context.Context,
-		) (
-			tx *gorm.DB,
-		)
-
-		EndTx(
-			ctx context.Context,
-			tx *gorm.DB,
-			isSuccess bool,
-		) (
-			err error,
-		)
-
 		GetPerson(
 			ctx context.Context,
-			tx *gorm.DB,
 			id typeObject.ID,
 		) (
 			person groupObject.Person,
@@ -60,7 +37,6 @@ type (
 
 		GetPersonList(
 			ctx context.Context,
-			tx *gorm.DB,
 		) (
 			personList groupObject.PersonList,
 			err error,
@@ -68,7 +44,6 @@ type (
 
 		GetPersonListByCondition(
 			ctx context.Context,
-			tx *gorm.DB,
 			reqPerson groupObject.Person,
 		) (
 			resPersonList groupObject.PersonList,
