@@ -7,7 +7,6 @@ import (
 
 // ______________________________________
 type PrimitiveUint struct {
-	err      error
 	value    int
 	isNil    bool
 	maxDigit *uint
@@ -17,16 +16,6 @@ type PrimitiveUint struct {
 // ______________________________________
 type PrimitiveUintOption func(*PrimitiveUint)
 
-// ______________________________________
-func (receiver *PrimitiveUint) WithError(
-	err error,
-) PrimitiveUintOption {
-	return func(s *PrimitiveUint) {
-		s.err = err
-	}
-}
-
-// ______________________________________
 func (receiver *PrimitiveUint) WithValue(
 	value *int,
 ) PrimitiveUintOption {
@@ -77,7 +66,6 @@ func NewPrimitiveUint(
 ) {
 	// デフォルト値を設定
 	primitiveUint = &PrimitiveUint{
-		err:      nil,
 		value:    0,
 		isNil:    true,
 		maxDigit: nil,
@@ -93,12 +81,12 @@ func NewPrimitiveUint(
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) GetIsNil() bool {
+func (receiver PrimitiveUint) GetIsNil() bool {
 	return receiver.isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) SetIsNil(
+func (receiver *PrimitiveUint) setIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
@@ -117,32 +105,17 @@ func (receiver *PrimitiveUint) CheckNil(
 	return
 }
 
-// ______________________________________
-func (receiver *PrimitiveUint) GetError() error {
-	return receiver.err
-}
-
-// ______________________________________
-func (receiver *PrimitiveUint) SetError(
-	err error,
-) {
-	receiver.err = err
-}
-
-// ______________________________________
-func (receiver *PrimitiveUint) SetErrorString(
+func (receiver PrimitiveUint) newErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
+) error {
+	return fmt.Errorf(
+		"error: %s",
+		errString,
 	)
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) GetValue() int {
+func (receiver PrimitiveUint) GetValue() int {
 	if receiver.GetIsNil() {
 		return 0
 	}
@@ -151,45 +124,40 @@ func (receiver *PrimitiveUint) GetValue() int {
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) SetValue(
+func (receiver *PrimitiveUint) setValue(
 	value *int,
 ) {
 	if value == nil {
-		receiver.SetIsNil(true)
+		receiver.setIsNil(true)
 		return
 	}
-	receiver.SetIsNil(false)
+	receiver.setIsNil(false)
 	receiver.value = *value
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) Validation() {
-
+func (receiver PrimitiveUint) Validation() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
-	receiver.ValidationMaxDigit()
-	if receiver.err != nil {
-		return
+	if err := receiver.ValidationMaxDigit(); err != nil {
+		return err
 	}
 
-	receiver.ValidationMinDigit()
-	if receiver.err != nil {
-		return
-	}
+	return receiver.ValidationMinDigit()
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) ValidationMaxDigit() {
+func (receiver PrimitiveUint) ValidationMaxDigit() error {
 	if receiver.maxDigit == nil { //上限値なし
-		return
+		return nil
 	}
 
 	// 上限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		// receiver.SetErrorString("is nil")
-		return
+		// receiver.setErrorString("is nil")
+		return nil
 	}
 
 	strValue := strconv.Itoa(receiver.value)
@@ -203,21 +171,22 @@ func (receiver *PrimitiveUint) ValidationMaxDigit() {
 	}
 
 	if digitCount > *receiver.maxDigit {
-		receiver.SetErrorString("max limitation")
-		return
+		return receiver.newErrorString("max limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) ValidationMinDigit() {
+func (receiver PrimitiveUint) ValidationMinDigit() error {
 	if receiver.minDigit == nil { // 下限値なし
-		return
+		return nil
 	}
 
 	// 下限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		// receiver.SetErrorString("is nil")
-		return
+		// receiver.setErrorString("is nil")
+		return nil
 	}
 
 	strValue := strconv.Itoa(receiver.value)
@@ -231,7 +200,8 @@ func (receiver *PrimitiveUint) ValidationMinDigit() {
 	}
 
 	if digitCount < *receiver.minDigit {
-		receiver.SetErrorString("min limitation")
-		return
+		return receiver.newErrorString("min limitation")
 	}
+
+	return nil
 }

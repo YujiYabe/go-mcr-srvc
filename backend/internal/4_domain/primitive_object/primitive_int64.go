@@ -7,7 +7,6 @@ import (
 
 // ______________________________________
 type PrimitiveInt64 struct {
-	err      error
 	value    int64
 	isNil    bool
 	maxDigit *uint
@@ -17,16 +16,6 @@ type PrimitiveInt64 struct {
 // ______________________________________
 type PrimitiveInt64Option func(*PrimitiveInt64)
 
-// ______________________________________
-func (receiver *PrimitiveInt64) WithError(
-	err error,
-) PrimitiveInt64Option {
-	return func(s *PrimitiveInt64) {
-		s.err = err
-	}
-}
-
-// ______________________________________
 func (receiver *PrimitiveInt64) WithValue(
 	value *int64,
 ) PrimitiveInt64Option {
@@ -77,7 +66,6 @@ func NewPrimitiveInt64(
 ) {
 	// デフォルト値を設定
 	primitiveInt64 = &PrimitiveInt64{
-		err:      nil,
 		value:    0,
 		isNil:    true,
 		maxDigit: nil,
@@ -93,43 +81,28 @@ func NewPrimitiveInt64(
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) SetIsNil(
+func (receiver *PrimitiveInt64) setIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) GetIsNil() bool {
+func (receiver PrimitiveInt64) GetIsNil() bool {
 	return receiver.isNil
 }
 
-// ______________________________________
-func (receiver *PrimitiveInt64) GetError() error {
-	return receiver.err
-}
-
-// ______________________________________
-func (receiver *PrimitiveInt64) SetError(
-	err error,
-) {
-	receiver.err = err
-}
-
-// ______________________________________
-func (receiver *PrimitiveInt64) SetErrorString(
+func (receiver PrimitiveInt64) newErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
+) error {
+	return fmt.Errorf(
+		"error: %s",
+		errString,
 	)
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) GetValue() int64 {
+func (receiver PrimitiveInt64) GetValue() int64 {
 	if receiver.GetIsNil() {
 		return 0
 	}
@@ -137,7 +110,7 @@ func (receiver *PrimitiveInt64) GetValue() int64 {
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) GetString() string {
+func (receiver PrimitiveInt64) GetString() string {
 	if receiver.GetIsNil() {
 		return ""
 	}
@@ -145,44 +118,40 @@ func (receiver *PrimitiveInt64) GetString() string {
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) SetValue(
+func (receiver *PrimitiveInt64) setValue(
 	value *int64,
 ) {
 	if value == nil {
-		receiver.SetIsNil(true)
+		receiver.setIsNil(true)
 		return
 	}
-	receiver.SetIsNil(false)
+	receiver.setIsNil(false)
 	receiver.value = *value
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) Validation() {
+func (receiver PrimitiveInt64) Validation() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
-	receiver.ValidationMaxDigit()
-	if receiver.err != nil {
-		return
+	if err := receiver.ValidationMaxDigit(); err != nil {
+		return err
 	}
 
-	receiver.ValidationMinDigit()
-	if receiver.err != nil {
-		return
-	}
+	return receiver.ValidationMinDigit()
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) ValidationMaxDigit() {
+func (receiver PrimitiveInt64) ValidationMaxDigit() error {
 	if receiver.maxDigit == nil { //上限値なし
-		return
+		return nil
 	}
 
 	// 上限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		// receiver.SetErrorString("is nil")
-		return
+		// receiver.setErrorString("is nil")
+		return nil
 	}
 
 	strValue := strconv.FormatInt(receiver.value, 10)
@@ -196,21 +165,22 @@ func (receiver *PrimitiveInt64) ValidationMaxDigit() {
 	}
 
 	if digitCount > *receiver.maxDigit {
-		receiver.SetErrorString("max limitation")
-		return
+		return receiver.newErrorString("max limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) ValidationMinDigit() {
+func (receiver PrimitiveInt64) ValidationMinDigit() error {
 	if receiver.minDigit == nil { //上限値なし
-		return
+		return nil
 	}
 
 	// 下限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		// receiver.SetErrorString("is nil")
-		return
+		// receiver.setErrorString("is nil")
+		return nil
 	}
 
 	strValue := strconv.FormatInt(receiver.value, 10)
@@ -224,9 +194,10 @@ func (receiver *PrimitiveInt64) ValidationMinDigit() {
 	}
 
 	if digitCount < *receiver.minDigit {
-		receiver.SetErrorString("min limitation")
-		return
+		return receiver.newErrorString("min limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________

@@ -4,7 +4,6 @@ import "fmt"
 
 // ______________________________________
 type PrimitiveSliceInt struct {
-	err       error          // バリデーションエラーを格納
 	value     []PrimitiveInt // primitive_object.PrimitiveInt
 	isNil     bool           // nil状態を示すフラグ
 	maxLength *uint          // 最大列長
@@ -13,15 +12,6 @@ type PrimitiveSliceInt struct {
 
 // ______________________________________
 type PrimitiveSliceIntOption func(*PrimitiveSliceInt)
-
-// ______________________________________
-func (receiver *PrimitiveSliceInt) WithError(
-	err error,
-) PrimitiveSliceIntOption {
-	return func(s *PrimitiveSliceInt) {
-		s.err = err
-	}
-}
 
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithValue(
@@ -71,7 +61,6 @@ func NewPrimitiveSliceInt(
 	primitiveSliceInt *PrimitiveSliceInt,
 ) {
 	primitiveSliceInt = &PrimitiveSliceInt{
-		err:       nil,
 		value:     []PrimitiveInt{},
 		isNil:     true,
 		maxLength: nil,
@@ -86,12 +75,12 @@ func NewPrimitiveSliceInt(
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceInt) GetIsNil() bool {
+func (receiver PrimitiveSliceInt) GetIsNil() bool {
 	return receiver.isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceInt) SetIsNil(
+func (receiver *PrimitiveSliceInt) setIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
@@ -110,51 +99,33 @@ func (receiver *PrimitiveSliceInt) CheckNil(
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceInt) GetError() error {
-	return receiver.err
-}
-
-// ______________________________________
-func (receiver *PrimitiveSliceInt) SetError(
-	err error,
-) {
-	receiver.err = err
-}
-
-// ______________________________________
-func (receiver *PrimitiveSliceInt) SetErrorString(
+func (receiver PrimitiveSliceInt) newErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
+) error {
+	return fmt.Errorf(
+		"error: %s",
+		errString,
 	)
 }
 
 // ______________________________________
 // Validate validates the PrimitiveSliceInt
-func (receiver *PrimitiveSliceInt) Validation() error {
+func (receiver PrimitiveSliceInt) Validation() error {
 	if receiver.isNil {
 		return nil
 	}
 
-	receiver.ValidationMax()
-	if receiver.err != nil {
-		return receiver.err
+	if err := receiver.ValidationMax(); err != nil {
+		return err
 	}
 
-	receiver.ValidationMin()
-	if receiver.err != nil {
-		return receiver.err
+	if err := receiver.ValidationMin(); err != nil {
+		return err
 	}
 
 	for _, value := range receiver.value {
-		value.Validation()
-		if value.GetError() != nil {
-			receiver.SetError(value.GetError())
-			break
+		if err := value.Validation(); err != nil {
+			return err
 		}
 	}
 
@@ -163,38 +134,42 @@ func (receiver *PrimitiveSliceInt) Validation() error {
 
 // ______________________________________
 // ValidationMax は最大文字列長のチェックを行います
-func (receiver *PrimitiveSliceInt) ValidationMax() {
+func (receiver PrimitiveSliceInt) ValidationMax() error {
 	if receiver.maxLength == nil {
-		return
+		return nil
 	}
 
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
 	if len(receiver.value) > int(*receiver.maxLength) {
-		receiver.SetErrorString("max limitation")
+		return receiver.newErrorString("max limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceInt) ValidationMin() {
-	if receiver.maxLength == nil {
-		return
+func (receiver PrimitiveSliceInt) ValidationMin() error {
+	if receiver.minLength == nil {
+		return nil
 	}
 
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
 	if len(receiver.value) < int(*receiver.minLength) {
-		receiver.SetErrorString("min limitation")
+		return receiver.newErrorString("min limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________
 // GetValue returns the underlying int slice
-func (receiver *PrimitiveSliceInt) GetValue() []PrimitiveInt {
+func (receiver PrimitiveSliceInt) GetValue() []PrimitiveInt {
 	if receiver.isNil {
 		return nil
 	}
@@ -203,16 +178,14 @@ func (receiver *PrimitiveSliceInt) GetValue() []PrimitiveInt {
 }
 
 // ______________________________________
-// SetMaxLength sets the maximum allowed length
-func (receiver *PrimitiveSliceInt) SetMaxLength(
+func (receiver *PrimitiveSliceInt) setMaxLength(
 	maxLength *uint,
 ) {
 	receiver.maxLength = maxLength
 }
 
 // ______________________________________
-// SetMinLength sets the minimum allowed length
-func (receiver *PrimitiveSliceInt) SetMinLength(
+func (receiver *PrimitiveSliceInt) setMinLength(
 	minLength *uint,
 ) {
 	receiver.minLength = minLength

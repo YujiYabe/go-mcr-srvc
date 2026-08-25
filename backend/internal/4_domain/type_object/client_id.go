@@ -18,12 +18,12 @@ func NewClientID(
 	err error,
 ) {
 	clientID = ClientID{}
-	err = clientID.SetValue(value)
+	err = clientID.setValue(value)
 
 	return
 }
 
-func (receiver *ClientID) SetValue(
+func (receiver *ClientID) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -33,13 +33,12 @@ func (receiver *ClientID) SetValue(
 		primitiveString.WithMaxLength(&clientIDMaxLength),
 		primitiveString.WithMinLength(&clientIDMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *ClientID) GetValue() string {
+func (receiver ClientID) GetValue() string {
 	return receiver.content.GetValue()
 }

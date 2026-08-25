@@ -18,12 +18,12 @@ func NewID(
 	err error,
 ) {
 	id = ID{}
-	err = id.SetValue(value)
+	err = id.setValue(value)
 
 	return
 }
 
-func (receiver *ID) SetValue(
+func (receiver *ID) setValue(
 	value *int,
 ) error {
 	primitiveIntX := &primitiveObject.PrimitiveIntX[int]{}
@@ -33,14 +33,12 @@ func (receiver *ID) SetValue(
 		primitiveIntX.WithMaxDigit(&idMaxDigit),
 		primitiveIntX.WithMinDigit(&idMinDigit),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *ID) GetValue() int {
+func (receiver ID) GetValue() int {
 	return receiver.content.GetValue()
 }

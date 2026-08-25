@@ -23,12 +23,12 @@ func NewName(
 	err error,
 ) {
 	name = Name{}
-	err = name.SetValue(value)
+	err = name.setValue(value)
 
 	return
 }
 
-func (receiver *Name) SetValue(
+func (receiver *Name) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -39,18 +39,16 @@ func (receiver *Name) SetValue(
 		primitiveString.WithMinLength(&nameMinLength),
 		primitiveString.WithCheckSpell(nameCheckSpell),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *Name) GetValue() string {
+func (receiver Name) GetValue() string {
 	return receiver.content.GetValue()
 }
 
-func (receiver *Name) GetIsNil() bool {
+func (receiver Name) GetIsNil() bool {
 	return receiver.content.GetIsNil()
 }

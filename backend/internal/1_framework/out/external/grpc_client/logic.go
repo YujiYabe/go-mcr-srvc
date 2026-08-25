@@ -20,8 +20,6 @@ func (receiver *GRPCClient) ViaGRPC(
 	// traceID := requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
 
-	resPersonList = groupObject.PersonList{}
-
 	// クライアントの作成
 	client := grpcParameter.NewPersonServiceClient(receiver.Conn)
 
@@ -50,25 +48,23 @@ func (receiver *GRPCClient) ViaGRPC(
 	if err != nil {
 		return
 	}
+	personArgs := make([]groupObject.NewPersonArgs, 0, len(grpcPersonList.V1PersonParameterArray.Persons))
 	for _, grpcPerson := range grpcPersonList.V1PersonParameterArray.Persons {
 		id := int(grpcPerson.GetId())
 		name := grpcPerson.GetName()
 		mailAddress := grpcPerson.GetMailAddress()
-		person, err := groupObject.NewPerson(&groupObject.NewPersonArgs{
+		personArgs = append(personArgs, groupObject.NewPersonArgs{
 			ID:          &id,
 			Name:        &name,
 			MailAddress: &mailAddress,
 		})
-		if err != nil {
-			return resPersonList, err
-		}
-
-		resPersonList.Append(*person)
 	}
 
 	// traceID = requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
 
-	return
+	return groupObject.NewPersonList(&groupObject.NewPersonListArgs{
+		Content: personArgs,
+	})
 
 }

@@ -95,8 +95,7 @@ func (receiver *PostgresClient) GetPersonList(
 	personList groupObject.PersonList,
 	err error,
 ) {
-	personList = groupObject.PersonList{} // ドメインロジック用
-	persons := []models.Person{}          // SQL結果保存用
+	persons := []models.Person{} // SQL結果保存用
 
 	result := receiver.Conn.WithContext(ctx).
 		Table("persons").
@@ -111,22 +110,18 @@ func (receiver *PostgresClient) GetPersonList(
 		return
 	}
 
+	personArgs := make([]groupObject.NewPersonArgs, 0, len(persons))
 	for _, person := range persons {
-		args := &groupObject.NewPersonArgs{
+		personArgs = append(personArgs, groupObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
-		}
-		domainPerson, createErr := groupObject.NewPerson(args)
-		if createErr != nil {
-			err = createErr
-			return
-		}
-
-		personList.Append(*domainPerson)
+		})
 	}
 
-	return
+	return groupObject.NewPersonList(&groupObject.NewPersonListArgs{
+		Content: personArgs,
+	})
 }
 
 func (receiver *PostgresClient) GetPerson(
@@ -175,8 +170,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
-	resPersonList = groupObject.PersonList{} // ドメインロジック用
-	persons := []models.Person{}             // SQL結果保存用
+	persons := []models.Person{} // SQL結果保存用
 
 	conn := receiver.Conn.WithContext(ctx).Table("persons")
 
@@ -194,26 +188,27 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 		return
 	}
 
+	personArgs := make([]groupObject.NewPersonArgs, 0, len(persons))
 	for _, person := range persons {
-		args := &groupObject.NewPersonArgs{
+		personArgs = append(personArgs, groupObject.NewPersonArgs{
 			ID:          &person.ID,
 			Name:        &person.Name.String,
 			MailAddress: &person.MailAddress.String,
-		}
-		domainPerson, createErr := groupObject.NewPerson(args)
-		if createErr != nil {
-			err = createErr
-			logger.Logging(ctx, err)
-			return
-		}
-
-		resPersonList.Append(*domainPerson)
+		})
 	}
 
 	// logger.Logging(
 	// 	ctx,
 	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
+
+	resPersonList, err = groupObject.NewPersonList(&groupObject.NewPersonListArgs{
+		Content: personArgs,
+	})
+	if err != nil {
+		logger.Logging(ctx, err)
+		return
+	}
 
 	return
 }

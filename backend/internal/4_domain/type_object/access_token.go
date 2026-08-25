@@ -27,12 +27,12 @@ func NewAccessToken(
 	err error,
 ) {
 	accessToken = AccessToken{}
-	err = accessToken.SetValue(value)
+	err = accessToken.setValue(value)
 
 	return
 }
 
-func (receiver *AccessToken) SetValue(
+func (receiver *AccessToken) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -42,10 +42,8 @@ func (receiver *AccessToken) SetValue(
 		primitiveString.WithMaxLength(&accessTokenMaxLength),
 		primitiveString.WithMinLength(&accessTokenMinLength),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -56,6 +54,6 @@ func (receiver *AccessToken) ErrorString(
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver *AccessToken) GetValue() string {
+func (receiver AccessToken) GetValue() string {
 	return receiver.content.GetValue()
 }

@@ -23,12 +23,12 @@ func NewUserAgent(
 	err error,
 ) {
 	userAgent = UserAgent{}
-	err = userAgent.SetValue(value)
+	err = userAgent.setValue(value)
 
 	return
 }
 
-func (receiver *UserAgent) SetValue(
+func (receiver *UserAgent) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -38,13 +38,12 @@ func (receiver *UserAgent) SetValue(
 		primitiveString.WithMaxLength(&userAgentMaxLength),
 		primitiveString.WithMinLength(&userAgentMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *UserAgent) GetValue() string {
+func (receiver UserAgent) GetValue() string {
 	return receiver.content.GetValue()
 }

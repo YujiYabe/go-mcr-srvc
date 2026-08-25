@@ -23,12 +23,12 @@ func NewUserID(
 	err error,
 ) {
 	userID = UserID{}
-	err = userID.SetValue(value)
+	err = userID.setValue(value)
 
 	return
 }
 
-func (receiver *UserID) SetValue(
+func (receiver *UserID) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -38,13 +38,12 @@ func (receiver *UserID) SetValue(
 		primitiveString.WithMaxLength(&userIDMaxLength),
 		primitiveString.WithMinLength(&userIDMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *UserID) GetValue() string {
+func (receiver UserID) GetValue() string {
 	return receiver.content.GetValue()
 }

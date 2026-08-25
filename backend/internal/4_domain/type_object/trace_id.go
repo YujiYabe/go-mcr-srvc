@@ -27,11 +27,11 @@ func NewTraceID(
 	err error,
 ) {
 	traceID = TraceID{}
-	err = traceID.SetValue(value)
+	err = traceID.setValue(value)
 
 	return
 }
-func (receiver *TraceID) SetValue(
+func (receiver *TraceID) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -46,13 +46,11 @@ func (receiver *TraceID) SetValue(
 		primitiveString.WithMaxLength(&traceIDMaxLength),
 		primitiveString.WithMinLength(&traceIDMinLength),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
-func (receiver *TraceID) GetValue() string {
+func (receiver TraceID) GetValue() string {
 	return receiver.content.GetValue()
 }

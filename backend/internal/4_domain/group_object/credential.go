@@ -12,12 +12,12 @@ type NewCredentialArgs struct {
 	ClientSecret *string
 }
 
-func (receiver *Credential) ClientID() *typeObject.ClientID {
-	return &receiver.clientID
+func (receiver Credential) ClientID() typeObject.ClientID {
+	return receiver.clientID
 }
 
-func (receiver *Credential) ClientSecret() *typeObject.ClientSecret {
-	return &receiver.clientSecret
+func (receiver Credential) ClientSecret() typeObject.ClientSecret {
+	return receiver.clientSecret
 }
 
 func NewCredential(

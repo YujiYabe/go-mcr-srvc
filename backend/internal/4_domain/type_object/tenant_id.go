@@ -23,12 +23,12 @@ func NewTenantID(
 	err error,
 ) {
 	tenantID = TenantID{}
-	err = tenantID.SetValue(value)
+	err = tenantID.setValue(value)
 
 	return
 }
 
-func (receiver *TenantID) SetValue(
+func (receiver *TenantID) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -38,13 +38,12 @@ func (receiver *TenantID) SetValue(
 		primitiveString.WithMaxLength(&tenantIDMaxLength),
 		primitiveString.WithMinLength(&tenantIDMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *TenantID) GetValue() string {
+func (receiver TenantID) GetValue() string {
 	return receiver.content.GetValue()
 }
