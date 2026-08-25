@@ -1,7 +1,8 @@
 package goPubSub
 
 import (
-	"log"
+	"context"
+	"fmt"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -25,14 +26,20 @@ func NewGoPubSub(controller controller.ToController) *GoPubSub {
 
 // NewKafkaConsumer ...
 // kafkaではtopic毎にシングルトンの為、Consumerインスタンスを共有できない
-func NewKafkaConsumer() (
+func NewKafkaConsumer(
+	ctx context.Context,
+) (
 	consumer *kafka.Consumer,
+	err error,
 ) {
 	consumer = &kafka.Consumer{}
-	var err error
 	maxRetries := 20
 
 	for i := 0; i < maxRetries; i++ {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+
 		consumer, err = kafka.NewConsumer(
 			&kafka.ConfigMap{
 				"bootstrap.servers": env.PubSubConfig.BootstrapServers,
@@ -43,11 +50,15 @@ func NewKafkaConsumer() (
 		if err == nil {
 			break
 		}
-		time.Sleep(5 * time.Second)
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-time.After(5 * time.Second):
+		}
 	}
 	if err != nil {
-		log.Fatalf("Failed to create consumer after retries: %s", err)
+		return nil, fmt.Errorf("create kafka consumer after retries: %w", err)
 	}
 
-	return consumer
+	return consumer, nil
 }

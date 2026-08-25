@@ -91,11 +91,14 @@ func (receiver *useCase) ViaGRPC(
 
 func (receiver *useCase) PublishTestTopic(
 	ctx context.Context,
-) {
+) error {
 	if err := ensureContextReady(ctx, "PublishTestTopic"); err != nil {
-		return
+		return err
 	}
-	receiver.ToGatewayExternal.PublishTestTopic(ctx)
+	if err := receiver.ToGatewayExternal.PublishTestTopic(ctx); err != nil {
+		return fmt.Errorf("PublishTestTopic: %w", err)
+	}
+	return nil
 }
 
 func ensureContextReady(

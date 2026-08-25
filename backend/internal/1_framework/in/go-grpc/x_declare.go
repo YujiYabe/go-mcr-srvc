@@ -1,7 +1,8 @@
 package goGRPC
 
 import (
-	"log"
+	"context"
+	"fmt"
 	"net"
 
 	"google.golang.org/grpc"
@@ -11,6 +12,7 @@ import (
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/2_adapter/controller"
 	"backend/internal/env"
+	"backend/internal/logger"
 )
 
 // Server ...
@@ -32,15 +34,14 @@ func NewGoGRPC(
 }
 
 // Start ....
-func (receiver *GoGRPC) Start() {
-	log.Println("------------------------- start GRPC ------------------------- ")
-
+func (receiver *GoGRPC) Start() error {
+	logger.Logging(context.Background(), "start GRPC")
 	listen, err := net.Listen(
 		"tcp",
 		env.ServerConfig.GRPCAddress,
 	)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		return fmt.Errorf("listen grpc: %w", err)
 	}
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(
@@ -52,6 +53,8 @@ func (receiver *GoGRPC) Start() {
 	reflection.Register(server)
 
 	if err := server.Serve(listen); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		return fmt.Errorf("serve grpc: %w", err)
 	}
+
+	return nil
 }

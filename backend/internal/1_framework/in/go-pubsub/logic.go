@@ -1,70 +1,84 @@
 package goPubSub
 
 import (
+	"context"
 	"fmt"
-	"log"
 
-	// "backend/internal/2_adapter/controller"
-	// pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
-	// groupObject "backend/internal/4_domain/group_object"
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
 	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
 	"backend/internal/env"
+	"backend/internal/logger"
 )
 
 // Start ....
-func (receiver *GoPubSub) Start() {
-	go receiver.subscribeOtherTopic()
-	receiver.subscribeTestTopic()
+func (receiver *GoPubSub) Start() error {
+	ctx := context.Background()
+	go func() {
+		if err := receiver.subscribeOtherTopic(ctx); err != nil {
+			logger.Logging(ctx, err)
+		}
+	}()
+
+	return receiver.subscribeTestTopic(ctx)
 }
 
 // subscribeTestTopic ....
-func (receiver *GoPubSub) subscribeTestTopic() {
+func (receiver *GoPubSub) subscribeTestTopic(
+	ctx context.Context,
+) error {
 	topicName := env.PubSubConfig.TestTopic
-	consumer := NewKafkaConsumer()
-
-	err := consumer.Subscribe(topicName, nil)
+	consumer, err := NewKafkaConsumer(ctx)
 	if err != nil {
-		log.Fatalf("Failed to subscribe to topic: %s", err)
+		return err
 	}
 
-	fmt.Println(topicName + " Consumer started, waiting for messages...")
+	err = consumer.Subscribe(topicName, nil)
+	if err != nil {
+		return fmt.Errorf("subscribe topic %s: %w", topicName, err)
+	}
+
+	logger.Logging(ctx, fmt.Sprintf("%s consumer started", topicName))
 	for {
 		msg, err := consumer.ReadMessage(-1)
 		if err == nil {
-			fmt.Printf(topicName+" Received message: %s\n", string(msg.Value))
+			logger.Logging(ctx, fmt.Sprintf("%s received message: %s", topicName, string(msg.Value)))
 			// RequestContextを生成してコントローラーに渡す
-			ctx := pubsubMiddleware.HeaderToContext(msg.Headers)
-			requestContext := requestContextMiddleware.GetRequestContext(ctx)
-			log.Println("== == == == == == == == == == ")
-			log.Printf("%#v\n", requestContext.TraceID().GetValue())
-			log.Printf("%#v\n", requestContext.RequestStartTime().GetValue())
-			log.Println("== == == == == == == == == == ")
+			messageCtx := pubsubMiddleware.HeaderToContext(msg.Headers)
+			requestContext := requestContextMiddleware.GetRequestContext(messageCtx)
+			logger.Logging(messageCtx, map[string]interface{}{
+				"traceID":          requestContext.TraceID().GetValue(),
+				"requestStartTime": requestContext.RequestStartTime().GetValue(),
+			})
 
 			// receiver.Controller.GetPersonList(ctx)
 		} else {
-			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
+			logger.Logging(ctx, fmt.Errorf("consume topic %s: %w", topicName, err))
 		}
 	}
 }
 
 // subscribeOtherTopic ....
-func (receiver *GoPubSub) subscribeOtherTopic() {
-	consumer := NewKafkaConsumer()
-	topicName := env.PubSubConfig.OtherTopic
-	err := consumer.Subscribe(topicName, nil)
+func (receiver *GoPubSub) subscribeOtherTopic(
+	ctx context.Context,
+) error {
+	consumer, err := NewKafkaConsumer(ctx)
 	if err != nil {
-		log.Fatalf("Failed to subscribe to topic: %s", err)
+		return err
+	}
+	topicName := env.PubSubConfig.OtherTopic
+	err = consumer.Subscribe(topicName, nil)
+	if err != nil {
+		return fmt.Errorf("subscribe topic %s: %w", topicName, err)
 	}
 
-	fmt.Println(topicName + " Consumer started, waiting for messages...")
+	logger.Logging(ctx, fmt.Sprintf("%s consumer started", topicName))
 	for {
 		msg, err := consumer.ReadMessage(-1)
 		if err == nil {
-			fmt.Printf(topicName+" Received: %s\n", string(msg.Value))
+			logger.Logging(ctx, fmt.Sprintf("%s received message: %s", topicName, string(msg.Value)))
 
 		} else {
-			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
+			logger.Logging(ctx, fmt.Errorf("consume topic %s: %w", topicName, err))
 		}
 	}
 }

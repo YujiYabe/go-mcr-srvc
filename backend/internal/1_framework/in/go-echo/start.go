@@ -1,7 +1,6 @@
 package goEcho
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -64,7 +63,7 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (receiver *GoEcho) Start() {
+func (receiver *GoEcho) Start() error {
 	group := receiver.EchoEcho.Group("")
 
 	server := &ServerInterfaceImpl{
@@ -81,17 +80,7 @@ func (receiver *GoEcho) Start() {
 		group,
 	)
 
-	isShowRoute := false
-	if isShowRoute {
-		routes := receiver.EchoEcho.Routes()
-		for _, route := range routes {
-			log.Printf("%#v\n", route)
-		}
-	}
-
-	receiver.EchoEcho.Logger.Fatal(
-		receiver.EchoEcho.Start(":" + env.ServerConfig.GoEchoPort),
-	)
+	return receiver.EchoEcho.Start(":" + env.ServerConfig.GoEchoPort)
 }
 
 // GetUsers は /users GET エンドポイントの実装

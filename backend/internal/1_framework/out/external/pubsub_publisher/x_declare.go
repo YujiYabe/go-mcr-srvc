@@ -20,21 +20,24 @@ type (
 )
 
 // NewToPubSub ...
-func NewToPubSub() gatewayExternal.ToPubSub {
+func NewToPubSub(
+	ctx context.Context,
+) (
+	gatewayExternal.ToPubSub,
+	error,
+) {
 
 	pubsubPublisher := new(PubsubPublisher)
 	if false {
-		ctx := context.Background()
 		conn, err := open(ctx, 30)
 		if err != nil {
-			logger.Logging(ctx, err)
-			panic(err)
+			return nil, err
 		}
 
 		pubsubPublisher.Conn = conn
 	}
 
-	return pubsubPublisher
+	return pubsubPublisher, nil
 }
 
 func open(

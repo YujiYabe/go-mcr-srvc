@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -54,6 +53,7 @@ var (
 	Auth0Config    auth0Config
 	PubSubConfig   pubSubConfig
 	RedisConfig    redisConfig
+	initErr        error
 )
 
 func init() {
@@ -66,12 +66,14 @@ func init() {
 
 	viperViper.SetConfigName(env + ".env")
 	if err := viperViper.ReadInConfig(); err != nil {
-		log.Fatalf("failed to load environment file: %v", err)
+		initErr = fmt.Errorf("load environment file: %w", err)
+		return
 	}
 
 	if env == "lcl" {
 		if err := setupLocalstack(viperViper); err != nil {
-			log.Fatalf("failed to setup localstack: %v", err)
+			initErr = fmt.Errorf("setup localstack: %w", err)
+			return
 		}
 	}
 
@@ -80,6 +82,10 @@ func init() {
 	newAuth0Config(viperViper)
 	newPubSubConfig(viperViper)
 	newRedisConfig(viperViper)
+}
+
+func Err() error {
+	return initErr
 }
 
 func initViper() *viper.Viper {

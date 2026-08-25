@@ -1,7 +1,9 @@
 package app
 
 import (
-	//
+	"context"
+	"fmt"
+
 	goEcho "backend/internal/1_framework/in/go-echo"
 	goGRPC "backend/internal/1_framework/in/go-grpc"
 	goPubSub "backend/internal/1_framework/in/go-pubsub"
@@ -15,6 +17,8 @@ import (
 
 	//
 	"backend/internal/2_adapter/controller"
+	"backend/internal/env"
+	"backend/internal/logger"
 )
 
 type (
@@ -26,13 +30,33 @@ type (
 )
 
 // NewApp ...
-func NewApp() *app {
+func NewApp() (*app, error) {
+	ctx := context.Background()
+	if err := env.Err(); err != nil {
+		return nil, err
+	}
+
+	toPostgres, err := postgresClient.NewToPostgres(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("new postgres client: %w", err)
+	}
+
+	toGRPC, err := grpcClient.NewToGRPC(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("new grpc client: %w", err)
+	}
+
+	toPubSub, err := pubsubPublisher.NewToPubSub(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("new pubsub publisher: %w", err)
+	}
+
 	ctrl := controller.NewController(
-		postgresClient.NewToPostgres(),
+		toPostgres,
 		redisClient.NewToRedis(),
 		auth0Client.NewToAuth0(),
-		grpcClient.NewToGRPC(),
-		pubsubPublisher.NewToPubSub(),
+		toGRPC,
+		toPubSub,
 	)
 	ctrl.Start()
 
@@ -42,14 +66,23 @@ func NewApp() *app {
 		goPubSub: goPubSub.NewGoPubSub(ctrl),
 	}
 
-	return a
+	return a, nil
 }
 
 // Start ...
-func (receiver *app) Start() {
+func (receiver *app) Start() error {
+	ctx := context.Background()
 	if false {
-		go receiver.goPubSub.Start()
+		go func() {
+			if err := receiver.goPubSub.Start(); err != nil {
+				logger.Logging(ctx, err)
+			}
+		}()
 	}
-	go receiver.goGRPC.Start()
-	receiver.goEcho.Start()
+	go func() {
+		if err := receiver.goGRPC.Start(); err != nil {
+			logger.Logging(ctx, err)
+		}
+	}()
+	return receiver.goEcho.Start()
 }
