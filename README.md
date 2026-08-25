@@ -105,7 +105,7 @@ DB テーブル名や transport の DTO 名ではなく、業務上の言葉を�
 
 # http server
 
-#### [http server](backend/internal/1_framework/in/go-echo/v1/users/get.go)
+#### [http server](backend/internal/1_framework/in/go-echo/handlers/v1/users/get.go)
 
 http request を grpc に変換して grpc サーバーにリクエストを送信。
 
