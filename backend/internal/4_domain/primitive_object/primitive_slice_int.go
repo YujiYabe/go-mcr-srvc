@@ -80,12 +80,6 @@ func (receiver PrimitiveSliceInt) GetIsNil() bool {
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceInt) setIsNil(
-	isNil bool,
-) {
-	receiver.isNil = isNil
-}
-
 func (receiver *PrimitiveSliceInt) CheckNil(
 	value *int,
 ) (
@@ -175,20 +169,6 @@ func (receiver PrimitiveSliceInt) GetValue() []PrimitiveInt {
 	}
 
 	return receiver.value
-}
-
-// ______________________________________
-func (receiver *PrimitiveSliceInt) setMaxLength(
-	maxLength *uint,
-) {
-	receiver.maxLength = maxLength
-}
-
-// ______________________________________
-func (receiver *PrimitiveSliceInt) setMinLength(
-	minLength *uint,
-) {
-	receiver.minLength = minLength
 }
 
 // ______________________________________

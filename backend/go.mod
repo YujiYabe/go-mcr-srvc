@@ -1,6 +1,6 @@
 module backend
 
-go 1.23
+go 1.27.0
 
 require (
 	github.com/MicahParks/keyfunc v1.9.0

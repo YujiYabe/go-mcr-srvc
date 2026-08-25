@@ -105,11 +105,6 @@ func NewPrimitiveString(
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) setIsNil(isNil bool) {
-	receiver.isNil = isNil
-}
-
-// ______________________________________
 func (receiver PrimitiveString) GetIsNil() bool {
 	return receiver.isNil
 }
@@ -133,18 +128,6 @@ func (receiver PrimitiveString) GetValue() string {
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) setValue(
-	value *string,
-) {
-	if value == nil {
-		receiver.setIsNil(true)
-		return
-	}
-	receiver.setIsNil(false)
-	receiver.value = *value
-}
-
-// Validation は全てのバリデーションチェックを実行します
 // ______________________________________
 func (receiver PrimitiveString) Validation() error {
 	if receiver.GetIsNil() {

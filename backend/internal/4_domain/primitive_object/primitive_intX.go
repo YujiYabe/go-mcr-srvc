@@ -141,24 +141,6 @@ func (receiver PrimitiveIntX[T]) CheckNil(
 }
 
 // ______________________________________
-func (receiver *PrimitiveIntX[T]) setIsNil(
-	isNil bool,
-) {
-	receiver.isNil = isNil
-}
-
-// ______________________________________
-func (receiver *PrimitiveIntX[T]) setValue(
-	value *T,
-) {
-	if value == nil {
-		receiver.setIsNil(true)
-		return
-	}
-	receiver.setIsNil(false)
-	receiver.value = *value
-}
-
 func (receiver *PrimitiveIntX[T]) WithIsNil(
 	isNil bool,
 ) PrimitiveIntXOption[T] {

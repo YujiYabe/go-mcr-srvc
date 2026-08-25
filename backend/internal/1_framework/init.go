@@ -103,9 +103,7 @@ func (receiver *app) Start() error {
 	ctx := context.Background()
 	if false {
 		go func() {
-			if err := receiver.goPubSub.Start(); err != nil {
-				logger.Logging(ctx, err)
-			}
+			logger.Logging(ctx, receiver.goPubSub.Start())
 		}()
 	}
 	go func() {

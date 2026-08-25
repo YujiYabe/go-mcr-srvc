@@ -86,13 +86,6 @@ func (receiver PrimitiveUint) GetIsNil() bool {
 }
 
 // ______________________________________
-func (receiver *PrimitiveUint) setIsNil(
-	isNil bool,
-) {
-	receiver.isNil = isNil
-}
-
-// ______________________________________
 func (receiver *PrimitiveUint) CheckNil(
 	value *int,
 ) (
@@ -121,18 +114,6 @@ func (receiver PrimitiveUint) GetValue() int {
 	}
 
 	return receiver.value
-}
-
-// ______________________________________
-func (receiver *PrimitiveUint) setValue(
-	value *int,
-) {
-	if value == nil {
-		receiver.setIsNil(true)
-		return
-	}
-	receiver.setIsNil(false)
-	receiver.value = *value
 }
 
 // ______________________________________
