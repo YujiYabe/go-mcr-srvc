@@ -8,6 +8,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	gatewayExternal "backend/internal/2_adapter/gateway/external"
+	"backend/internal/env"
 	"backend/internal/logger"
 )
 
@@ -19,21 +20,24 @@ type (
 )
 
 // NewToPubSub ...
-func NewToPubSub() gatewayExternal.ToPubSub {
+func NewToPubSub(
+	ctx context.Context,
+) (
+	gatewayExternal.ToPubSub,
+	error,
+) {
 
 	pubsubPublisher := new(PubsubPublisher)
 	if false {
-		ctx := context.Background()
 		conn, err := open(ctx, 30)
 		if err != nil {
-			logger.Logging(ctx, err)
-			panic(err)
+			return nil, err
 		}
 
 		pubsubPublisher.Conn = conn
 	}
 
-	return pubsubPublisher
+	return pubsubPublisher, nil
 }
 
 func open(
@@ -42,7 +46,7 @@ func open(
 ) (*kafka.Producer, error) {
 	conn, err := kafka.NewProducer(
 		&kafka.ConfigMap{
-			"bootstrap.servers": "kafka:9092",
+			"bootstrap.servers": env.PubSubConfig.BootstrapServers,
 		},
 	)
 

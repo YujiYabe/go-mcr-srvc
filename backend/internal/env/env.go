@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -25,9 +24,36 @@ type databaseConfig struct {
 	DSN string
 }
 
+type auth0Config struct {
+	Domain       string
+	TokenURL     string
+	Audience     string
+	GrantType    string
+	ClientSecret string
+}
+
+type pubSubConfig struct {
+	BootstrapServers string
+	ConsumerGroupID  string
+	TestTopic        string
+	OtherTopic       string
+	FlushTimeoutMS   int
+	SampleUserName   string
+}
+
+type redisConfig struct {
+	Addr     string
+	Password string
+	DB       int
+}
+
 var (
 	ServerConfig   serverConfig
 	DatabaseConfig databaseConfig
+	Auth0Config    auth0Config
+	PubSubConfig   pubSubConfig
+	RedisConfig    redisConfig
+	initErr        error
 )
 
 func init() {
@@ -40,17 +66,26 @@ func init() {
 
 	viperViper.SetConfigName(env + ".env")
 	if err := viperViper.ReadInConfig(); err != nil {
-		log.Fatalf("failed to load environment file: %v", err)
+		initErr = fmt.Errorf("load environment file: %w", err)
+		return
 	}
 
 	if env == "lcl" {
 		if err := setupLocalstack(viperViper); err != nil {
-			log.Fatalf("failed to setup localstack: %v", err)
+			initErr = fmt.Errorf("setup localstack: %w", err)
+			return
 		}
 	}
 
 	newServerConfig(viperViper)
 	newDatabaseConfig(viperViper)
+	newAuth0Config(viperViper)
+	newPubSubConfig(viperViper)
+	newRedisConfig(viperViper)
+}
+
+func Err() error {
+	return initErr
 }
 
 func initViper() *viper.Viper {
@@ -146,15 +181,57 @@ func newDatabaseConfig(
 	viperViper *viper.Viper,
 ) {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=app sslmode=disable",
+		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=%s sslmode=disable",
 		viperViper.GetString("POSTGRES_HOST"),
 		viperViper.GetString("POSTGRES_USER"),
 		viperViper.GetString("POSTGRES_PASSWORD"),
 		viperViper.GetString("POSTGRES_BACK_PORT"),
 		viperViper.GetString("TZ"),
+		viperViper.GetString("POSTGRES_DB"),
 	)
 
 	DatabaseConfig = databaseConfig{
 		DSN: dsn,
+	}
+}
+
+func newAuth0Config(
+	viperViper *viper.Viper,
+) {
+	domain := viperViper.GetString("AUTH0_DOMAIN")
+	tokenURL := viperViper.GetString("AUTH0_TOKEN_URL")
+	if tokenURL == "" && domain != "" {
+		tokenURL = fmt.Sprintf("https://%s/oauth/token", domain)
+	}
+
+	Auth0Config = auth0Config{
+		Domain:       domain,
+		TokenURL:     tokenURL,
+		Audience:     viperViper.GetString("AUTH0_AUDIENCE"),
+		GrantType:    viperViper.GetString("AUTH0_GRANT_TYPE"),
+		ClientSecret: viperViper.GetString("AUTH0_CLIENT_SECRET"),
+	}
+}
+
+func newPubSubConfig(
+	viperViper *viper.Viper,
+) {
+	PubSubConfig = pubSubConfig{
+		BootstrapServers: viperViper.GetString("KAFKA_BOOTSTRAP_SERVERS"),
+		ConsumerGroupID:  viperViper.GetString("KAFKA_CONSUMER_GROUP_ID"),
+		TestTopic:        viperViper.GetString("PUBSUB_TEST_TOPIC"),
+		OtherTopic:       viperViper.GetString("PUBSUB_OTHER_TOPIC"),
+		FlushTimeoutMS:   viperViper.GetInt("PUBSUB_FLUSH_TIMEOUT_MS"),
+		SampleUserName:   viperViper.GetString("PUBSUB_SAMPLE_USER_NAME"),
+	}
+}
+
+func newRedisConfig(
+	viperViper *viper.Viper,
+) {
+	RedisConfig = redisConfig{
+		Addr:     viperViper.GetString("REDIS_ADDR"),
+		Password: viperViper.GetString("REDIS_PASSWORD"),
+		DB:       viperViper.GetInt("REDIS_DB"),
 	}
 }

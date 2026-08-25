@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
+	"backend/internal/env"
 )
 
 type UserMessage struct {
@@ -21,18 +21,20 @@ type UserMessage struct {
 // PublishTestTopic ...
 func (receiver *PubsubPublisher) PublishTestTopic(
 	ctx context.Context,
-) {
-	topic := "test-topic"
+) error {
+	if receiver.Conn == nil {
+		return fmt.Errorf("pubsub producer is not initialized")
+	}
 
 	message := UserMessage{
 		ID:        1,
-		Name:      "Alice",
+		Name:      env.PubSubConfig.SampleUserName,
 		Timestamp: time.Now(),
 	}
 
 	jsonData, err := json.Marshal(message)
 	if err != nil {
-		log.Fatalf("Failed to marshal JSON: %s", err)
+		return fmt.Errorf("marshal pubsub message: %w", err)
 	}
 
 	// Add headers to the message
@@ -41,7 +43,7 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 	err = receiver.Conn.Produce(
 		&kafka.Message{
 			TopicPartition: kafka.TopicPartition{
-				Topic:     &topic,
+				Topic:     &env.PubSubConfig.TestTopic,
 				Partition: kafka.PartitionAny,
 			},
 			Value:   jsonData,
@@ -51,11 +53,11 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 	)
 
 	if err != nil {
-		log.Printf("Failed to produce message: %s", err)
-	} else {
-		fmt.Printf("Produced message: %s\n", string(jsonData))
+		return fmt.Errorf("produce pubsub message: %w", err)
 	}
 
 	// メッセージ送信を確実にするため、完了を待つ
-	receiver.Conn.Flush(1000)
+	receiver.Conn.Flush(env.PubSubConfig.FlushTimeoutMS)
+
+	return nil
 }

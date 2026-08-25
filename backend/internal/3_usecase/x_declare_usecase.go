@@ -46,6 +46,6 @@ type (
 
 		PublishTestTopic(
 			ctx context.Context,
-		)
+		) error
 	}
 )

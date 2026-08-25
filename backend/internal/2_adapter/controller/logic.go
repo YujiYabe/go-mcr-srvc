@@ -63,6 +63,6 @@ func (receiver *controller) ViaGRPC(
 
 func (receiver *controller) PublishTestTopic(
 	ctx context.Context,
-) {
-	receiver.UseCase.PublishTestTopic(ctx)
+) error {
+	return receiver.UseCase.PublishTestTopic(ctx)
 }

@@ -54,6 +54,6 @@ type (
 	ToPubSub interface {
 		PublishTestTopic(
 			ctx context.Context,
-		)
+		) error
 	}
 )

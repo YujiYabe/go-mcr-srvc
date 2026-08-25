@@ -21,14 +21,15 @@ type (
 )
 
 // NewToGRPC ...
-func NewToGRPC() (
+func NewToGRPC(
+	ctx context.Context,
+) (
 	toGRPC gatewayExternal.ToGRPC,
+	err error,
 ) {
-	ctx := context.Background()
 	conn, err := open(ctx, 30)
 	if err != nil {
-		logger.Logging(ctx, err)
-		panic(err)
+		return
 	}
 
 	toGRPC = conn

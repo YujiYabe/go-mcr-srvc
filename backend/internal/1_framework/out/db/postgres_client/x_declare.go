@@ -21,17 +21,20 @@ type (
 )
 
 // NewToPostgres ...
-func NewToPostgres() gatewayDB.ToPostgres {
-	ctx := context.Background()
+func NewToPostgres(
+	ctx context.Context,
+) (
+	gatewayDB.ToPostgres,
+	error,
+) {
 	conn, err := open(ctx, 30)
 	if err != nil {
-		logger.Logging(ctx, err)
-		panic(err)
+		return nil, err
 	}
 
 	postgresClient := new(PostgresClient)
 	postgresClient.Conn = conn
-	return postgresClient
+	return postgresClient, nil
 }
 
 func open(
