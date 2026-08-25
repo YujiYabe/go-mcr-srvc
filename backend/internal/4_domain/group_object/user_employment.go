@@ -125,19 +125,3 @@ func (receiver UserEmployment) EnsureReadyToAssign() error {
 
 	return nil
 }
-
-func (receiver UserEmployment) EnsureBelongsTo(
-	user User,
-) error {
-	if err := receiver.EnsureReadyToAssign(); err != nil {
-		return err
-	}
-	if !user.HasIdentity() {
-		return fmt.Errorf("user identity is required")
-	}
-	if receiver.userID.GetValue() != user.Identity().GetValue() {
-		return fmt.Errorf("user employment must belong to the user")
-	}
-
-	return nil
-}

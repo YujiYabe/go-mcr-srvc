@@ -24,39 +24,17 @@ func TestUserEmploymentRequiresAssignmentIdentities(t *testing.T) {
 	}
 }
 
-func TestUserEmploymentCanValidateUserOwnership(t *testing.T) {
-	user, err := ReconstructUser(&NewUserArgs{
-		ID:    intPointer(1),
-		Name:  stringPointer("alice"),
-		Email: stringPointer("alice@example.com"),
-	})
-	if err != nil {
-		t.Fatalf("failed to reconstruct user: %v", err)
-	}
+func TestUserEmploymentExposesAssignmentValues(t *testing.T) {
 	employment := newTestUserEmployment(t, 1)
 
-	if err := employment.EnsureBelongsTo(*user); err != nil {
-		t.Fatalf("expected ownership success, got: %v", err)
+	if employment.UserID().GetValue() != 1 {
+		t.Fatalf("expected user id 1, got: %d", employment.UserID().GetValue())
 	}
-}
-
-func TestUserEmploymentRejectsDifferentUser(t *testing.T) {
-	user, err := ReconstructUser(&NewUserArgs{
-		ID:    intPointer(1),
-		Name:  stringPointer("alice"),
-		Email: stringPointer("alice@example.com"),
-	})
-	if err != nil {
-		t.Fatalf("failed to reconstruct user: %v", err)
+	if !employment.IsPrimary() {
+		t.Fatal("expected primary employment")
 	}
-	employment := newTestUserEmployment(t, 2)
-
-	err = employment.EnsureBelongsTo(*user)
-	if err == nil {
-		t.Fatal("expected ownership error")
-	}
-	if !strings.Contains(err.Error(), "must belong to the user") {
-		t.Fatalf("unexpected error: %v", err)
+	if employment.EmployeeCode() != "EMP001" {
+		t.Fatalf("expected employee code EMP001, got: %s", employment.EmployeeCode())
 	}
 }
 

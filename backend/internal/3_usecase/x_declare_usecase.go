@@ -49,7 +49,7 @@ type (
 			newUser groupObject.User,
 		) error
 
-		UpdateUserWithEmployment(
+		UpdateUserProfileWithPrimaryEmployment(
 			ctx context.Context,
 			newUser groupObject.User,
 			userEmployment groupObject.UserEmployment,

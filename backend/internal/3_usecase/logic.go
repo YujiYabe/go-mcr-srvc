@@ -124,19 +124,19 @@ func (receiver *useCase) UpdateUser(
 	return nil
 }
 
-func (receiver *useCase) UpdateUserWithEmployment(
+func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 	ctx context.Context,
 	newUser groupObject.User,
 	userEmployment groupObject.UserEmployment,
 ) error {
-	if err := ensureContextReady(ctx, "UpdateUserWithEmployment"); err != nil {
+	if err := ensureContextReady(ctx, "UpdateUserProfileWithPrimaryEmployment"); err != nil {
 		return err
 	}
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
-		return fmt.Errorf("UpdateUserWithEmployment: %w", err)
+		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
 	}
-	if err := userEmployment.EnsureBelongsTo(newUser); err != nil {
-		return fmt.Errorf("UpdateUserWithEmployment: %w", err)
+	if err := receiver.ToDomain.EnsurePrimaryEmploymentAssignable(newUser, userEmployment); err != nil {
+		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
 	}
 
 	if err := receiver.ToGatewayDB.RunInTransaction(
@@ -148,7 +148,7 @@ func (receiver *useCase) UpdateUserWithEmployment(
 			return receiver.ToGatewayDB.UpdateUserEmployment(txCtx, userEmployment)
 		},
 	); err != nil {
-		return fmt.Errorf("UpdateUserWithEmployment: %w", err)
+		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
 	}
 
 	return nil

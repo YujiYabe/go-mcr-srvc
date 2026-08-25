@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	domain "backend/internal/4_domain"
 	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
 )
@@ -167,13 +168,13 @@ func TestUpdateUserRequiresIdentity(t *testing.T) {
 	}
 }
 
-func TestUpdateUserWithEmploymentRunsMultipleUpdatesInTransaction(t *testing.T) {
+func TestUpdateUserProfileWithPrimaryEmploymentRunsMultipleUpdatesInTransaction(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
-	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	useCase := NewUseCase(domain.NewDomain(), dbGateway, &fakeGatewayExternal{})
 	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
-	employment := newTestUserEmployment(t, 1)
+	employment := newTestUserEmployment(t, 1, true)
 
-	if err := useCase.UpdateUserWithEmployment(context.Background(), user, employment); err != nil {
+	if err := useCase.UpdateUserProfileWithPrimaryEmployment(context.Background(), user, employment); err != nil {
 		t.Fatalf("expected update success, got: %v", err)
 	}
 	if !dbGateway.runInTransactionCalled {
@@ -190,13 +191,13 @@ func TestUpdateUserWithEmploymentRunsMultipleUpdatesInTransaction(t *testing.T) 
 	}
 }
 
-func TestUpdateUserWithEmploymentRejectsDifferentUser(t *testing.T) {
+func TestUpdateUserProfileWithPrimaryEmploymentRejectsDifferentUser(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
-	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	useCase := NewUseCase(domain.NewDomain(), dbGateway, &fakeGatewayExternal{})
 	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
-	employment := newTestUserEmployment(t, 2)
+	employment := newTestUserEmployment(t, 2, true)
 
-	err := useCase.UpdateUserWithEmployment(context.Background(), user, employment)
+	err := useCase.UpdateUserProfileWithPrimaryEmployment(context.Background(), user, employment)
 	if err == nil {
 		t.Fatal("expected ownership error")
 	}
@@ -263,12 +264,12 @@ func newTestCredential(
 func newTestUserEmployment(
 	t *testing.T,
 	userID int,
+	isPrimary bool,
 ) groupObject.UserEmployment {
 	t.Helper()
 
 	employeeCode := "EMP001"
 	employmentType := "full_time"
-	isPrimary := true
 	userEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
 		UserID:         intPointer(userID),
 		CompanyID:      intPointer(1),
