@@ -27,12 +27,12 @@ func NewTimeOutMillSecond(
 	err error,
 ) {
 	timeOutMillSecond = TimeOutMillSecond{}
-	err = timeOutMillSecond.SetValue(value)
+	err = timeOutMillSecond.setValue(value)
 
 	return
 }
 
-func (receiver *TimeOutMillSecond) SetValue(
+func (receiver *TimeOutMillSecond) setValue(
 	value *int64,
 ) error {
 	primitiveIntX := &primitiveObject.PrimitiveIntX[int64]{}
@@ -42,18 +42,16 @@ func (receiver *TimeOutMillSecond) SetValue(
 		primitiveIntX.WithMaxDigit(&timeOutMillSecondMaxDigit),
 		primitiveIntX.WithMinDigit(&timeOutMillSecondMinDigit),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *TimeOutMillSecond) GetValue() int64 {
+func (receiver TimeOutMillSecond) GetValue() int64 {
 	return receiver.content.GetValue()
 }
 
-func (receiver *TimeOutMillSecond) GetString() string {
+func (receiver TimeOutMillSecond) GetString() string {
 	return receiver.content.GetString()
 }

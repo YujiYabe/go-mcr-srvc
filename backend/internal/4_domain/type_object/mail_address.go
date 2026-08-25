@@ -25,12 +25,12 @@ func NewMailAddress(
 	err error,
 ) {
 	mailAddress = MailAddress{}
-	err = mailAddress.SetValue(value)
+	err = mailAddress.setValue(value)
 
 	return
 }
 
-func (receiver *MailAddress) SetValue(
+func (receiver *MailAddress) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -41,15 +41,13 @@ func (receiver *MailAddress) SetValue(
 		primitiveString.WithMinLength(&mailAddressMinLength),
 		primitiveString.WithCheckSpell(mailAddressCheckSpell),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 
 	return receiver.Validation()
 }
-func (receiver *MailAddress) GetValue() string {
+func (receiver MailAddress) GetValue() string {
 	return receiver.content.GetValue()
 }
 
@@ -59,11 +57,11 @@ func (receiver *MailAddress) ErrorString(
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver *MailAddress) GetIsNil() bool {
+func (receiver MailAddress) GetIsNil() bool {
 	return receiver.content.GetIsNil()
 }
 
-func (receiver *MailAddress) Validation() error {
+func (receiver MailAddress) Validation() error {
 	if receiver.GetIsNil() {
 		return nil
 	}

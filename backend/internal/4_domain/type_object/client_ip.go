@@ -23,12 +23,12 @@ func NewClientIP(
 	err error,
 ) {
 	clientIP = ClientIP{}
-	err = clientIP.SetValue(value)
+	err = clientIP.setValue(value)
 
 	return
 }
 
-func (receiver *ClientIP) SetValue(
+func (receiver *ClientIP) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -38,13 +38,12 @@ func (receiver *ClientIP) SetValue(
 		primitiveString.WithMaxLength(&clientIPMaxLength),
 		primitiveString.WithMinLength(&clientIPMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *ClientIP) GetValue() string {
+func (receiver ClientIP) GetValue() string {
 	return receiver.content.GetValue()
 }

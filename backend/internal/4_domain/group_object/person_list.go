@@ -12,10 +12,6 @@ func (receiver PersonList) Content() []Person {
 	return receiver.content
 }
 
-func (receiver *PersonList) Append(person Person) {
-	receiver.content = append(receiver.content, person)
-}
-
 func NewPersonList(
 	args *NewPersonListArgs,
 ) (

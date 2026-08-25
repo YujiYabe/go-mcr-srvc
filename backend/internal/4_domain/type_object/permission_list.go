@@ -27,12 +27,12 @@ func NewPermissionList(
 	err error,
 ) {
 	permissionList = PermissionList{}
-	err = permissionList.SetValue(valueList)
+	err = permissionList.setValue(valueList)
 
 	return
 }
 
-func (receiver *PermissionList) SetValue(
+func (receiver *PermissionList) setValue(
 	valueList []string,
 ) error {
 
@@ -56,7 +56,7 @@ func (receiver *PermissionList) ErrorString(
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver *PermissionList) GetSliceValue() (
+func (receiver PermissionList) GetSliceValue() (
 	sliceValue []string,
 ) {
 	sliceValue = []string{}

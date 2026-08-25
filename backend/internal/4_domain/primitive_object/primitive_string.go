@@ -12,7 +12,6 @@ type ContextKey string
 // PrimitiveString は文字列値に対してバリデーション機能を提供する構造体です。
 // nil チェック、長さ制限、禁止文字列のチェックなどの機能を備えています。
 type PrimitiveString struct {
-	err       error    // バリデーションエラーを格納
 	value     string   // 実際の文字列値
 	isNil     bool     // nil状態を示すフラグ
 	maxLength *uint    // 最大文字列長
@@ -23,16 +22,6 @@ type PrimitiveString struct {
 // ______________________________________
 // NewPrimitiveString は指定されたオプションで新しいPrimitiveStringインスタンスを生成します
 type PrimitiveStringOption func(*PrimitiveString)
-
-// ______________________________________
-// WithError はエラーを設定するオプションを返します
-func (receiver *PrimitiveString) WithError(
-	err error,
-) PrimitiveStringOption {
-	return func(s *PrimitiveString) {
-		s.err = err
-	}
-}
 
 // ______________________________________
 // WithValue は文字列値を設定するオプションを返します
@@ -100,7 +89,6 @@ func NewPrimitiveString(
 
 	// デフォルト値を設定
 	primitiveString = &PrimitiveString{
-		err:       nil,
 		value:     "",
 		isNil:     true,
 		maxLength: nil,
@@ -117,41 +105,27 @@ func NewPrimitiveString(
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) SetIsNil(isNil bool) {
+func (receiver *PrimitiveString) setIsNil(isNil bool) {
 	receiver.isNil = isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) GetIsNil() bool {
+func (receiver PrimitiveString) GetIsNil() bool {
 	return receiver.isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) GetError() error {
-	return receiver.err
-}
-
-// ______________________________________
-func (receiver *PrimitiveString) SetErrorString(
+func (receiver PrimitiveString) newErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
+) error {
+	return fmt.Errorf(
+		"error: %s",
+		errString,
 	)
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) SetError(
-	err error,
-) {
-	receiver.err = err
-}
-
-// ______________________________________
-func (receiver *PrimitiveString) GetValue() string {
+func (receiver PrimitiveString) GetValue() string {
 	if receiver.GetIsNil() {
 		return ""
 	}
@@ -159,88 +133,84 @@ func (receiver *PrimitiveString) GetValue() string {
 }
 
 // ______________________________________
-func (receiver *PrimitiveString) SetValue(
+func (receiver *PrimitiveString) setValue(
 	value *string,
 ) {
 	if value == nil {
-		receiver.SetIsNil(true)
+		receiver.setIsNil(true)
 		return
 	}
-	receiver.SetIsNil(false)
+	receiver.setIsNil(false)
 	receiver.value = *value
 }
 
 // Validation は全てのバリデーションチェックを実行します
 // ______________________________________
-func (receiver *PrimitiveString) Validation() {
-
+func (receiver PrimitiveString) Validation() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
-	receiver.ValidationMax()
-	if receiver.GetError() != nil {
-		return
+	if err := receiver.ValidationMax(); err != nil {
+		return err
 	}
 
-	receiver.ValidationMin()
-	if receiver.GetError() != nil {
-		return
+	if err := receiver.ValidationMin(); err != nil {
+		return err
 	}
 
-	receiver.ValidationSpell()
-	if receiver.GetError() != nil {
-		return
-	}
-
+	return receiver.ValidationSpell()
 }
 
 // ValidationMax は最大文字列長のチェックを行います
 // ______________________________________
-func (receiver *PrimitiveString) ValidationMax() {
+func (receiver PrimitiveString) ValidationMax() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
 	if receiver.maxLength == nil {
-		return
+		return nil
 	}
 
 	if utf8.RuneCountInString(receiver.value) > int(*receiver.maxLength) {
-		receiver.SetErrorString("max limitation")
-		return
+		return receiver.newErrorString("max limitation")
 	}
+
+	return nil
 }
 
 // ValidationMin は最小文字列長のチェックを行います
 // ______________________________________
-func (receiver *PrimitiveString) ValidationMin() {
+func (receiver PrimitiveString) ValidationMin() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
 	if receiver.minLength == nil {
-		return
+		return nil
 	}
 
 	if utf8.RuneCountInString(receiver.value) < int(*receiver.minLength) {
-		receiver.SetErrorString("min limitation")
-		return
+		return receiver.newErrorString("min limitation")
 	}
+
+	return nil
 }
 
 // ValidationSpell は禁止文字列のチェックを行います
 // ______________________________________
-func (receiver *PrimitiveString) ValidationSpell() {
+func (receiver PrimitiveString) ValidationSpell() error {
 	if len(receiver.spellList) == 0 {
-		return
+		return nil
 	}
 	for _, spell := range receiver.spellList {
 		if strings.Contains(receiver.value, spell) {
-			receiver.SetErrorString("detect target spell : " + spell)
-			return
+			return receiver.newErrorString("detect target spell : " + spell)
 		}
 	}
+
+	return nil
 }
 
 // CheckNil は文字列ポインタのnilチェックを行い、適切な値を返します

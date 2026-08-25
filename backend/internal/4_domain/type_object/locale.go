@@ -23,12 +23,12 @@ func NewLocale(
 	err error,
 ) {
 	locale = Locale{}
-	err = locale.SetValue(value)
+	err = locale.setValue(value)
 
 	return
 }
 
-func (receiver *Locale) SetValue(
+func (receiver *Locale) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -38,13 +38,12 @@ func (receiver *Locale) SetValue(
 		primitiveString.WithMaxLength(&localeMaxLength),
 		primitiveString.WithMinLength(&localeMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *Locale) GetValue() string {
+func (receiver Locale) GetValue() string {
 	return receiver.content.GetValue()
 }

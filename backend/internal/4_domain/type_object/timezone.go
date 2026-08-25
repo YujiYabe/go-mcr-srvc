@@ -23,12 +23,12 @@ func NewTimeZone(
 	err error,
 ) {
 	timeZone = TimeZone{}
-	err = timeZone.SetValue(value)
+	err = timeZone.setValue(value)
 
 	return
 }
 
-func (receiver *TimeZone) SetValue(
+func (receiver *TimeZone) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -39,13 +39,12 @@ func (receiver *TimeZone) SetValue(
 		primitiveString.WithMaxLength(&timeZoneMaxLength),
 		primitiveString.WithMinLength(&timeZoneMinLength),
 	)
-
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *TimeZone) GetValue() string {
+func (receiver TimeZone) GetValue() string {
 	return receiver.content.GetValue()
 }

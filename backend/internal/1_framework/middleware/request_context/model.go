@@ -137,46 +137,46 @@ func NewRequestContext(
 	return
 }
 
-func (receiver *RequestContext) TimeOutMillSecond() *typeObject.TimeOutMillSecond {
-	return &receiver.timeOutMillSecond
+func (receiver RequestContext) TimeOutMillSecond() typeObject.TimeOutMillSecond {
+	return receiver.timeOutMillSecond
 }
 
-func (receiver *RequestContext) RequestStartTime() *typeObject.RequestStartTime {
-	return &receiver.requestStartTime
+func (receiver RequestContext) RequestStartTime() typeObject.RequestStartTime {
+	return receiver.requestStartTime
 }
 
-func (receiver *RequestContext) TraceID() *typeObject.TraceID {
-	return &receiver.traceID
+func (receiver RequestContext) TraceID() typeObject.TraceID {
+	return receiver.traceID
 }
 
-func (receiver *RequestContext) ClientIP() *typeObject.ClientIP {
-	return &receiver.clientIP
+func (receiver RequestContext) ClientIP() typeObject.ClientIP {
+	return receiver.clientIP
 }
 
-func (receiver *RequestContext) UserAgent() *typeObject.UserAgent {
-	return &receiver.userAgent
+func (receiver RequestContext) UserAgent() typeObject.UserAgent {
+	return receiver.userAgent
 }
 
-func (receiver *RequestContext) UserID() *typeObject.UserID {
-	return &receiver.userID
+func (receiver RequestContext) UserID() typeObject.UserID {
+	return receiver.userID
 }
 
-func (receiver *RequestContext) AccessToken() *typeObject.AccessToken {
-	return &receiver.accessToken
+func (receiver RequestContext) AccessToken() typeObject.AccessToken {
+	return receiver.accessToken
 }
 
-func (receiver *RequestContext) TenantID() *typeObject.TenantID {
-	return &receiver.tenantID
+func (receiver RequestContext) TenantID() typeObject.TenantID {
+	return receiver.tenantID
 }
 
-func (receiver *RequestContext) Locale() *typeObject.Locale {
-	return &receiver.locale
+func (receiver RequestContext) Locale() typeObject.Locale {
+	return receiver.locale
 }
 
-func (receiver *RequestContext) TimeZone() *typeObject.TimeZone {
-	return &receiver.timeZone
+func (receiver RequestContext) TimeZone() typeObject.TimeZone {
+	return receiver.timeZone
 }
 
-func (receiver *RequestContext) PermissionList() *typeObject.PermissionList {
-	return &receiver.permissionList
+func (receiver RequestContext) PermissionList() typeObject.PermissionList {
+	return receiver.permissionList
 }

@@ -13,7 +13,6 @@ type UIntX interface {
 
 // ______________________________________
 type PrimitiveUIntX[T IntX] struct {
-	err      error
 	value    T
 	isNil    bool
 	maxDigit *uint
@@ -28,7 +27,6 @@ func NewPrimitiveUIntX[T IntX](
 	options ...func(*PrimitiveUIntX[T]),
 ) *PrimitiveUIntX[T] {
 	primitive := &PrimitiveUIntX[T]{
-		err:      nil,
 		value:    0,
 		isNil:    true,
 		maxDigit: nil,
@@ -43,33 +41,32 @@ func NewPrimitiveUIntX[T IntX](
 }
 
 // 共通メソッド
-func (receiver *PrimitiveUIntX[T]) GetValue() T {
+func (receiver PrimitiveUIntX[T]) GetValue() T {
 	if receiver.GetIsNil() {
 		return 0
 	}
 	return receiver.value
 }
 
-func (receiver *PrimitiveUIntX[T]) Validation() {
+func (receiver PrimitiveUIntX[T]) Validation() error {
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
-	receiver.ValidationMaxDigit()
-	if receiver.err != nil {
-		return
+	if err := receiver.ValidationMaxDigit(); err != nil {
+		return err
 	}
 
-	receiver.ValidationMinDigit()
+	return receiver.ValidationMinDigit()
 }
 
-func (receiver *PrimitiveUIntX[T]) ValidationMaxDigit() {
+func (receiver PrimitiveUIntX[T]) ValidationMaxDigit() error {
 	if receiver.maxDigit == nil {
-		return
+		return nil
 	}
 
 	if receiver.GetIsNil() {
-		return
+		return nil
 	}
 
 	strValue := strconv.FormatInt(int64(receiver.value), 10)
@@ -80,44 +77,37 @@ func (receiver *PrimitiveUIntX[T]) ValidationMaxDigit() {
 	}
 
 	if digitCount > *receiver.maxDigit {
-		receiver.SetErrorString("max limitation")
+		return receiver.newErrorString("max limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________
-func (receiver *PrimitiveUIntX[T]) GetIsNil() bool {
+func (receiver PrimitiveUIntX[T]) GetIsNil() bool {
 	return receiver.isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveUIntX[T]) SetErrorString(
+func (receiver PrimitiveUIntX[T]) newErrorString(
 	errString string,
-) {
-	receiver.SetError(
-		fmt.Errorf(
-			"error: %s",
-			errString,
-		),
+) error {
+	return fmt.Errorf(
+		"error: %s",
+		errString,
 	)
 }
 
 // ______________________________________
-func (receiver *PrimitiveUIntX[T]) SetError(
-	err error,
-) {
-	receiver.err = err
-}
-
-// ______________________________________
-func (receiver *PrimitiveUIntX[T]) ValidationMinDigit() {
+func (receiver PrimitiveUIntX[T]) ValidationMinDigit() error {
 	if receiver.minDigit == nil { // 下限値なし
-		return
+		return nil
 	}
 
 	// 下限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
-		// receiver.SetErrorString("is nil")
-		return
+		// receiver.setErrorString("is nil")
+		return nil
 	}
 
 	strValue := strconv.FormatInt(int64(receiver.value), 10)
@@ -131,9 +121,10 @@ func (receiver *PrimitiveUIntX[T]) ValidationMinDigit() {
 	}
 
 	if digitCount < *receiver.minDigit {
-		receiver.SetErrorString("min limitation")
-		return
+		return receiver.newErrorString("min limitation")
 	}
+
+	return nil
 }
 
 // ______________________________________
@@ -149,40 +140,24 @@ func (receiver *PrimitiveUIntX[T]) CheckNil(
 	return
 }
 
-// ______________________________________
-func (receiver *PrimitiveUIntX[T]) GetError() error {
-	return receiver.err
-}
-
-// ______________________________________
-func (receiver *PrimitiveUIntX[T]) SetIsNil(
+func (receiver *PrimitiveUIntX[T]) setIsNil(
 	isNil bool,
 ) {
 	receiver.isNil = isNil
 }
 
 // ______________________________________
-func (receiver *PrimitiveUIntX[T]) SetValue(
+func (receiver *PrimitiveUIntX[T]) setValue(
 	value *T,
 ) {
 	if value == nil {
-		receiver.SetIsNil(true)
+		receiver.setIsNil(true)
 		return
 	}
-	receiver.SetIsNil(false)
+	receiver.setIsNil(false)
 	receiver.value = *value
 }
 
-// ______________________________________
-func (receiver *PrimitiveUIntX[T]) WithError(
-	err error,
-) PrimitiveUIntXOption[T] {
-	return func(s *PrimitiveUIntX[T]) {
-		s.err = err
-	}
-}
-
-// ______________________________________
 func (receiver *PrimitiveUIntX[T]) WithIsNil(
 	isNil bool,
 ) PrimitiveUIntXOption[T] {
@@ -226,7 +201,7 @@ func (receiver *PrimitiveUIntX[T]) WithValue(
 }
 
 // ______________________________________
-func (receiver *PrimitiveUIntX[T]) GetString() string {
+func (receiver PrimitiveUIntX[T]) GetString() string {
 	if receiver.GetIsNil() {
 		return ""
 	}

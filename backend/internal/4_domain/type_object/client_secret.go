@@ -18,12 +18,12 @@ func NewClientSecret(
 	err error,
 ) {
 	clientSecret = ClientSecret{}
-	err = clientSecret.SetValue(value)
+	err = clientSecret.setValue(value)
 
 	return
 }
 
-func (receiver *ClientSecret) SetValue(
+func (receiver *ClientSecret) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
@@ -36,14 +36,12 @@ func (receiver *ClientSecret) SetValue(
 		primitiveString.WithMaxLength(&maxLength),
 		primitiveString.WithMinLength(&minLength),
 	)
-
-	receiver.content.Validation()
-	if receiver.content.GetError() != nil {
-		return receiver.content.GetError()
+	if err := receiver.content.Validation(); err != nil {
+		return err
 	}
 	return nil
 }
 
-func (receiver *ClientSecret) GetValue() string {
+func (receiver ClientSecret) GetValue() string {
 	return receiver.content.GetValue()
 }

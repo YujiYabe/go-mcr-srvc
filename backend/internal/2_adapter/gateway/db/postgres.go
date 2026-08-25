@@ -43,7 +43,7 @@ func (receiver *GatewayDB) UpdatePerson(
 ) {
 	_, err = receiver.ToPostgres.GetPerson(
 		ctx,
-		*newPerson.ID(),
+		newPerson.ID(),
 	)
 	return
 }

@@ -40,14 +40,14 @@ func NewPerson(
 	return
 }
 
-func (receiver *Person) ID() *typeObject.ID {
-	return &receiver.id
+func (receiver Person) ID() typeObject.ID {
+	return receiver.id
 }
 
-func (receiver *Person) Name() *typeObject.Name {
-	return &receiver.name
+func (receiver Person) Name() typeObject.Name {
+	return receiver.name
 }
 
-func (receiver *Person) MailAddress() *typeObject.MailAddress {
-	return &receiver.mailAddress
+func (receiver Person) MailAddress() typeObject.MailAddress {
+	return receiver.mailAddress
 }
