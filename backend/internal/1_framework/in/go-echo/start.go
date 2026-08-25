@@ -57,10 +57,21 @@ func NewEcho() *echo.Echo {
 	echoEcho.HideBanner = true
 
 	echoEcho.Use(
-		middleware.LoggerWithConfig(
-			middleware.LoggerConfig{
-				Format:           "${time_custom}__${status}__${method}__${uri}\n",
-				CustomTimeFormat: "15:04:05",
+		middleware.RequestLoggerWithConfig(
+			middleware.RequestLoggerConfig{
+				LogMethod: true,
+				LogStatus: true,
+				LogURI:    true,
+				LogValuesFunc: func(echoContext echo.Context, values middleware.RequestLoggerValues) error {
+					echoContext.Logger().Printf(
+						"%s__%d__%s__%s\n",
+						values.StartTime.Format("15:04:05"),
+						values.Status,
+						values.Method,
+						values.URI,
+					)
+					return nil
+				},
 			},
 		),
 	)
