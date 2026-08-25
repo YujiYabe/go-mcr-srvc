@@ -133,6 +133,26 @@ func TestUpdatePersonRunsInTransaction(t *testing.T) {
 	}
 }
 
+func TestUpdatePersonRequiresIdentity(t *testing.T) {
+	dbGateway := &fakeGatewayDB{}
+	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	person := newTestPerson(t, nil, stringPointer("name"), stringPointer("test@example.com"))
+
+	err := useCase.UpdatePerson(context.Background(), person)
+	if err == nil {
+		t.Fatal("expected identity error")
+	}
+	if !strings.Contains(err.Error(), "person identity is required") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if dbGateway.runInTransactionCalled {
+		t.Fatal("transaction should not run when person lifecycle state is invalid")
+	}
+	if dbGateway.updatePersonCalled {
+		t.Fatal("gateway should not be called when person lifecycle state is invalid")
+	}
+}
+
 func TestEnsureContextReadyReturnsCanceledError(t *testing.T) {
 	useCase := NewUseCase(nil, &fakeGatewayDB{}, &fakeGatewayExternal{})
 	ctx, cancel := context.WithCancel(context.Background())

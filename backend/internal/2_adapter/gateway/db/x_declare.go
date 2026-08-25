@@ -54,6 +54,11 @@ type (
 			resPersonList groupObject.PersonList,
 			err error,
 		)
+
+		UpdatePerson(
+			ctx context.Context,
+			newPerson groupObject.Person,
+		) error
 	}
 
 	// ToRedis ...

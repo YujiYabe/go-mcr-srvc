@@ -103,7 +103,7 @@ func (receiver *PostgresClient) GetPersonList(
 		})
 	}
 
-	return groupObject.NewPersonList(&groupObject.NewPersonListArgs{
+	return groupObject.ReconstructPersonList(&groupObject.NewPersonListArgs{
 		Content: personArgs,
 	})
 }
@@ -133,12 +133,37 @@ func (receiver *PostgresClient) GetPerson(
 		Name:        &resultPerson.Name.String,
 		MailAddress: &resultPerson.MailAddress.String,
 	}
-	newPerson, err := groupObject.NewPerson(args)
+	newPerson, err := groupObject.ReconstructPerson(args)
 	if err != nil {
 		return
 	}
 
 	return *newPerson, nil
+}
+
+func (receiver *PostgresClient) UpdatePerson(
+	ctx context.Context,
+	newPerson groupObject.Person,
+) error {
+	if err := newPerson.EnsureReadyToUpdate(); err != nil {
+		return err
+	}
+
+	result := receiver.conn(ctx).
+		Table("persons").
+		Where("id = ?", newPerson.Identity().GetValue()).
+		Updates(map[string]interface{}{
+			"name":         newPerson.Name().GetValue(),
+			"mail_address": newPerson.MailAddress().GetValue(),
+		})
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	return nil
 }
 
 // GetPersonListByCondition ...
@@ -186,7 +211,7 @@ func (receiver *PostgresClient) GetPersonListByCondition(
 	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
-	resPersonList, err = groupObject.NewPersonList(&groupObject.NewPersonListArgs{
+	resPersonList, err = groupObject.ReconstructPersonList(&groupObject.NewPersonListArgs{
 		Content: personArgs,
 	})
 	if err != nil {

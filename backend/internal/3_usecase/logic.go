@@ -38,8 +38,8 @@ func (receiver *useCase) GetPersonListByCondition(
 	if err = ensureContextReady(ctx, "GetPersonListByCondition"); err != nil {
 		return
 	}
-	if err = ensurePersonSearchCondition(reqPerson); err != nil {
-		err = fmt.Errorf("GetPersonListByCondition: %w", err)
+	if !reqPerson.CanBeUsedAsSearchCondition() {
+		err = fmt.Errorf("GetPersonListByCondition: person search condition is required")
 		return
 	}
 
@@ -87,8 +87,8 @@ func (receiver *useCase) ViaGRPC(
 	if err = ensureContextReady(ctx, "ViaGRPC"); err != nil {
 		return
 	}
-	if err = ensurePersonSearchCondition(reqPerson); err != nil {
-		err = fmt.Errorf("ViaGRPC: %w", err)
+	if !reqPerson.CanBeUsedAsSearchCondition() {
+		err = fmt.Errorf("ViaGRPC: person search condition is required")
 		return
 	}
 	resPersonList, err = receiver.ToGatewayExternal.ViaGRPC(
@@ -107,6 +107,9 @@ func (receiver *useCase) UpdatePerson(
 ) error {
 	if err := ensureContextReady(ctx, "UpdatePerson"); err != nil {
 		return err
+	}
+	if err := newPerson.EnsureReadyToUpdate(); err != nil {
+		return fmt.Errorf("UpdatePerson: %w", err)
 	}
 
 	if err := receiver.ToGatewayDB.RunInTransaction(
@@ -139,18 +142,6 @@ func ensureContextReady(
 ) error {
 	if err := ctx.Err(); err != nil {
 		return fmt.Errorf("%s: context is not ready: %w", usecaseName, err)
-	}
-
-	return nil
-}
-
-func ensurePersonSearchCondition(
-	person groupObject.Person,
-) error {
-	hasName := !person.Name().GetIsNil() && person.Name().GetValue() != ""
-	hasMailAddress := !person.MailAddress().GetIsNil() && person.MailAddress().GetValue() != ""
-	if !hasName && !hasMailAddress {
-		return fmt.Errorf("person search condition is required")
 	}
 
 	return nil

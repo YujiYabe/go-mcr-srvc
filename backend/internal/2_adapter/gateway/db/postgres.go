@@ -48,9 +48,5 @@ func (receiver *GatewayDB) UpdatePerson(
 ) (
 	err error,
 ) {
-	_, err = receiver.ToPostgres.GetPerson(
-		ctx,
-		newPerson.ID(),
-	)
-	return
+	return receiver.ToPostgres.UpdatePerson(ctx, newPerson)
 }
