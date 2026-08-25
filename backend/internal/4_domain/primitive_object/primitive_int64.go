@@ -81,13 +81,6 @@ func NewPrimitiveInt64(
 }
 
 // ______________________________________
-func (receiver *PrimitiveInt64) setIsNil(
-	isNil bool,
-) {
-	receiver.isNil = isNil
-}
-
-// ______________________________________
 func (receiver PrimitiveInt64) GetIsNil() bool {
 	return receiver.isNil
 }
@@ -115,18 +108,6 @@ func (receiver PrimitiveInt64) GetString() string {
 		return ""
 	}
 	return fmt.Sprintf("%d", receiver.value)
-}
-
-// ______________________________________
-func (receiver *PrimitiveInt64) setValue(
-	value *int64,
-) {
-	if value == nil {
-		receiver.setIsNil(true)
-		return
-	}
-	receiver.setIsNil(false)
-	receiver.value = *value
 }
 
 // ______________________________________

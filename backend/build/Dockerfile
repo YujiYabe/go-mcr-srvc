@@ -1,4 +1,4 @@
-FROM golang:1.23
+FROM golang:1.27.0
 WORKDIR /go/src/backend
 
 SHELL ["/bin/bash", "-c"]
@@ -17,6 +17,5 @@ RUN \
 COPY config/.bashrc /root/.bashrc
 
 ENTRYPOINT ["./script/entrypoint.sh"]
-
 
 

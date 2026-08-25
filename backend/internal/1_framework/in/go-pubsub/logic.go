@@ -12,11 +12,7 @@ import (
 // Start ....
 func (receiver *GoPubSub) Start() error {
 	ctx := context.Background()
-	go func() {
-		if err := receiver.subscribeOtherTopic(ctx); err != nil {
-			logger.Logging(ctx, err)
-		}
-	}()
+	go receiver.subscribeOtherTopic(ctx)
 
 	return receiver.subscribeTestTopic(ctx)
 }
@@ -63,19 +59,21 @@ func (receiver *GoPubSub) subscribeTestTopic(
 // subscribeOtherTopic ....
 func (receiver *GoPubSub) subscribeOtherTopic(
 	ctx context.Context,
-) error {
+) {
 	consumer, err := NewKafkaConsumer(
 		ctx,
 		receiver.bootstrapServers,
 		receiver.consumerGroupID,
 	)
 	if err != nil {
-		return err
+		logger.Logging(ctx, err)
+		return
 	}
 	topicName := receiver.otherTopic
 	err = consumer.Subscribe(topicName, nil)
 	if err != nil {
-		return fmt.Errorf("subscribe topic %s: %w", topicName, err)
+		logger.Logging(ctx, fmt.Errorf("subscribe topic %s: %w", topicName, err))
+		return
 	}
 
 	logger.Logging(ctx, fmt.Sprintf("%s consumer started", topicName))

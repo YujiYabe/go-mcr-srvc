@@ -140,24 +140,6 @@ func (receiver *PrimitiveUIntX[T]) CheckNil(
 	return
 }
 
-func (receiver *PrimitiveUIntX[T]) setIsNil(
-	isNil bool,
-) {
-	receiver.isNil = isNil
-}
-
-// ______________________________________
-func (receiver *PrimitiveUIntX[T]) setValue(
-	value *T,
-) {
-	if value == nil {
-		receiver.setIsNil(true)
-		return
-	}
-	receiver.setIsNil(false)
-	receiver.value = *value
-}
-
 func (receiver *PrimitiveUIntX[T]) WithIsNil(
 	isNil bool,
 ) PrimitiveUIntXOption[T] {

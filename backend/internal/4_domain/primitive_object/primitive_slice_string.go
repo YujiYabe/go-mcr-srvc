@@ -20,14 +20,15 @@ type PrimitiveSliceStringOption func(*PrimitiveSliceString)
 func (receiver *PrimitiveSliceString) WithValue(
 	value []PrimitiveString,
 ) PrimitiveSliceStringOption {
-	receiver.setIsNil(true)
+	isNil := true
 	var resValue []PrimitiveString
 	if value != nil {
-		receiver.setIsNil(false)
+		isNil = false
 		resValue = value
 	}
 	return func(s *PrimitiveSliceString) {
 		s.value = resValue
+		s.isNil = isNil
 	}
 }
 
@@ -79,40 +80,11 @@ func NewPrimitiveSliceString(
 }
 
 // ______________________________________
-func (receiver *PrimitiveSliceString) setIsNil(
-	isNil bool,
-) {
-	receiver.isNil = isNil
-}
-
-// ______________________________________
-func (receiver PrimitiveSliceString) newErrorString(
-	errString string,
-) error {
-	return fmt.Errorf(
-		"error: %s",
-		errString,
-	)
-}
-
-// ______________________________________
 func (receiver PrimitiveSliceString) GetValue() []PrimitiveString {
 	if receiver.isNil {
 		return []PrimitiveString{}
 	}
 	return receiver.value
-}
-
-// ______________________________________
-func (receiver *PrimitiveSliceString) setValue(
-	valueList []PrimitiveString,
-) {
-	if valueList == nil {
-		receiver.setIsNil(true)
-		return
-	}
-	receiver.setIsNil(false)
-	receiver.value = valueList
 }
 
 // ______________________________________

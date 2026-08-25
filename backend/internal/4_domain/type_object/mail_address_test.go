@@ -8,6 +8,7 @@ func TestNewMailAddressRejectsInvalidFormat(t *testing.T) {
 	values := []string{
 		"invalid-mail-address",
 		"user@example.com invalid",
+		"long-long-long-long-user@example.com",
 	}
 
 	for _, value := range values {
