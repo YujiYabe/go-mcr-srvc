@@ -11,9 +11,13 @@ import (
 )
 
 type fakeGatewayDB struct {
-	runInTransactionCalled bool
-	updateUserCalled       bool
-	getByConditionCalled   bool
+	runInTransactionCalled  bool
+	updateUserCalled        bool
+	updateEmploymentCalled  bool
+	getByConditionCalled    bool
+	calls                   []string
+	updateUserErr           error
+	updateUserEmploymentErr error
 }
 
 func (receiver *fakeGatewayDB) RunInTransaction(
@@ -49,7 +53,17 @@ func (receiver *fakeGatewayDB) UpdateUser(
 	newUser groupObject.User,
 ) error {
 	receiver.updateUserCalled = true
-	return nil
+	receiver.calls = append(receiver.calls, "update_user")
+	return receiver.updateUserErr
+}
+
+func (receiver *fakeGatewayDB) UpdateUserEmployment(
+	ctx context.Context,
+	userEmployment groupObject.UserEmployment,
+) error {
+	receiver.updateEmploymentCalled = true
+	receiver.calls = append(receiver.calls, "update_user_employment")
+	return receiver.updateUserEmploymentErr
 }
 
 type fakeGatewayExternal struct {
@@ -153,6 +167,50 @@ func TestUpdateUserRequiresIdentity(t *testing.T) {
 	}
 }
 
+func TestUpdateUserWithEmploymentRunsMultipleUpdatesInTransaction(t *testing.T) {
+	dbGateway := &fakeGatewayDB{}
+	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+	employment := newTestUserEmployment(t, 1)
+
+	if err := useCase.UpdateUserWithEmployment(context.Background(), user, employment); err != nil {
+		t.Fatalf("expected update success, got: %v", err)
+	}
+	if !dbGateway.runInTransactionCalled {
+		t.Fatal("transaction boundary was not used")
+	}
+	if !dbGateway.updateUserCalled {
+		t.Fatal("user update gateway was not called")
+	}
+	if !dbGateway.updateEmploymentCalled {
+		t.Fatal("employment update gateway was not called")
+	}
+	if strings.Join(dbGateway.calls, ",") != "update_user,update_user_employment" {
+		t.Fatalf("unexpected call order: %v", dbGateway.calls)
+	}
+}
+
+func TestUpdateUserWithEmploymentRejectsDifferentUser(t *testing.T) {
+	dbGateway := &fakeGatewayDB{}
+	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+	employment := newTestUserEmployment(t, 2)
+
+	err := useCase.UpdateUserWithEmployment(context.Background(), user, employment)
+	if err == nil {
+		t.Fatal("expected ownership error")
+	}
+	if !strings.Contains(err.Error(), "must belong to the user") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if dbGateway.runInTransactionCalled {
+		t.Fatal("transaction should not run when employment does not belong to user")
+	}
+	if dbGateway.updateUserCalled || dbGateway.updateEmploymentCalled {
+		t.Fatal("gateway should not be called when employment does not belong to user")
+	}
+}
+
 func TestEnsureContextReadyReturnsCanceledError(t *testing.T) {
 	useCase := NewUseCase(nil, &fakeGatewayDB{}, &fakeGatewayExternal{})
 	ctx, cancel := context.WithCancel(context.Background())
@@ -200,6 +258,31 @@ func newTestCredential(
 	}
 
 	return *credential
+}
+
+func newTestUserEmployment(
+	t *testing.T,
+	userID int,
+) groupObject.UserEmployment {
+	t.Helper()
+
+	employeeCode := "EMP001"
+	employmentType := "full_time"
+	isPrimary := true
+	userEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
+		UserID:         intPointer(userID),
+		CompanyID:      intPointer(1),
+		DepartmentID:   intPointer(2),
+		PositionID:     intPointer(3),
+		EmployeeCode:   &employeeCode,
+		EmploymentType: &employmentType,
+		IsPrimary:      &isPrimary,
+	})
+	if err != nil {
+		t.Fatalf("failed to create user employment: %v", err)
+	}
+
+	return *userEmployment
 }
 
 func intPointer(value int) *int {

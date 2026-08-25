@@ -94,6 +94,12 @@ type (
 			newUser groupObject.User,
 		) error
 
+		UpdateUserWithEmployment(
+			ctx context.Context,
+			newUser groupObject.User,
+			userEmployment groupObject.UserEmployment,
+		) error
+
 		PublishTestTopic(
 			ctx context.Context,
 		) error

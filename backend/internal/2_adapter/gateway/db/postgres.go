@@ -50,3 +50,12 @@ func (receiver *GatewayDB) UpdateUser(
 ) {
 	return receiver.ToPostgres.UpdateUser(ctx, newUser)
 }
+
+func (receiver *GatewayDB) UpdateUserEmployment(
+	ctx context.Context,
+	userEmployment groupObject.UserEmployment,
+) (
+	err error,
+) {
+	return receiver.ToPostgres.UpdateUserEmployment(ctx, userEmployment)
+}

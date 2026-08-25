@@ -124,6 +124,36 @@ func (receiver *useCase) UpdateUser(
 	return nil
 }
 
+func (receiver *useCase) UpdateUserWithEmployment(
+	ctx context.Context,
+	newUser groupObject.User,
+	userEmployment groupObject.UserEmployment,
+) error {
+	if err := ensureContextReady(ctx, "UpdateUserWithEmployment"); err != nil {
+		return err
+	}
+	if err := newUser.EnsureReadyToUpdate(); err != nil {
+		return fmt.Errorf("UpdateUserWithEmployment: %w", err)
+	}
+	if err := userEmployment.EnsureBelongsTo(newUser); err != nil {
+		return fmt.Errorf("UpdateUserWithEmployment: %w", err)
+	}
+
+	if err := receiver.ToGatewayDB.RunInTransaction(
+		ctx,
+		func(txCtx context.Context) error {
+			if err := receiver.ToGatewayDB.UpdateUser(txCtx, newUser); err != nil {
+				return err
+			}
+			return receiver.ToGatewayDB.UpdateUserEmployment(txCtx, userEmployment)
+		},
+	); err != nil {
+		return fmt.Errorf("UpdateUserWithEmployment: %w", err)
+	}
+
+	return nil
+}
+
 func (receiver *useCase) PublishTestTopic(
 	ctx context.Context,
 ) error {

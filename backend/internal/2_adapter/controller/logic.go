@@ -68,6 +68,14 @@ func (receiver *controller) UpdateUser(
 	return receiver.UseCase.UpdateUser(ctx, newUser)
 }
 
+func (receiver *controller) UpdateUserWithEmployment(
+	ctx context.Context,
+	newUser groupObject.User,
+	userEmployment groupObject.UserEmployment,
+) error {
+	return receiver.UseCase.UpdateUserWithEmployment(ctx, newUser, userEmployment)
+}
+
 func (receiver *controller) PublishTestTopic(
 	ctx context.Context,
 ) error {

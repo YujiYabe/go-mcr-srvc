@@ -59,6 +59,11 @@ type (
 			ctx context.Context,
 			newUser groupObject.User,
 		) error
+
+		UpdateUserEmployment(
+			ctx context.Context,
+			userEmployment groupObject.UserEmployment,
+		) error
 	}
 
 	// ToRedis ...
