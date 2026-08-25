@@ -10,7 +10,7 @@ import (
 // User represents a row from 'public.users'.
 type User struct {
 	ID          int            `json:"id"`            // id
-	Auth0UserID string         `json:"auth0_user_id"` // auth0_user_id
+	Auth0UserID sql.NullString `json:"auth0_user_id"` // auth0_user_id
 	Email       string         `json:"email"`         // email
 	FullName    sql.NullString `json:"full_name"`     // full_name
 	CreatedAt   sql.NullTime   `json:"created_at"`    // created_at

@@ -21,9 +21,9 @@ type (
 
 		ViaGRPC(
 			ctx context.Context,
-			reqPerson groupObject.Person,
+			reqUser groupObject.User,
 		) (
-			resPersonList groupObject.PersonList,
+			resUserList groupObject.UserList,
 			err error,
 		)
 

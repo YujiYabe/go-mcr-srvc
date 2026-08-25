@@ -8,7 +8,7 @@ get:
     schema:
       type: string
     required: false
-  - name: mailAddress
+  - name: email
     description: ''
     schema:
       type: string

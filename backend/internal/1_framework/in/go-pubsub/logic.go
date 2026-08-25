@@ -49,7 +49,7 @@ func (receiver *GoPubSub) subscribeTestTopic(
 				"requestStartTime": requestContext.RequestStartTime().GetValue(),
 			})
 
-			// receiver.Controller.GetPersonList(ctx)
+			// receiver.Controller.GetUserList(ctx)
 		} else {
 			logger.Logging(ctx, fmt.Errorf("consume topic %s: %w", topicName, err))
 		}

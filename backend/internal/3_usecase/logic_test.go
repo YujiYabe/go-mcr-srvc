@@ -6,14 +6,19 @@ import (
 	"strings"
 	"testing"
 
+	domain "backend/internal/4_domain"
 	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
 )
 
 type fakeGatewayDB struct {
-	runInTransactionCalled bool
-	updatePersonCalled     bool
-	getByConditionCalled   bool
+	runInTransactionCalled  bool
+	updateUserCalled        bool
+	updateEmploymentCalled  bool
+	getByConditionCalled    bool
+	calls                   []string
+	updateUserErr           error
+	updateUserEmploymentErr error
 }
 
 func (receiver *fakeGatewayDB) RunInTransaction(
@@ -24,32 +29,42 @@ func (receiver *fakeGatewayDB) RunInTransaction(
 	return fn(ctx)
 }
 
-func (receiver *fakeGatewayDB) GetPersonList(
+func (receiver *fakeGatewayDB) GetUserList(
 	ctx context.Context,
 ) (
-	groupObject.PersonList,
+	groupObject.UserList,
 	error,
 ) {
-	return groupObject.PersonList{}, nil
+	return groupObject.UserList{}, nil
 }
 
-func (receiver *fakeGatewayDB) GetPersonListByCondition(
+func (receiver *fakeGatewayDB) GetUserListByCondition(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	groupObject.PersonList,
+	groupObject.UserList,
 	error,
 ) {
 	receiver.getByConditionCalled = true
-	return groupObject.PersonList{}, nil
+	return groupObject.UserList{}, nil
 }
 
-func (receiver *fakeGatewayDB) UpdatePerson(
+func (receiver *fakeGatewayDB) UpdateUser(
 	ctx context.Context,
-	newPerson groupObject.Person,
+	newUser groupObject.User,
 ) error {
-	receiver.updatePersonCalled = true
-	return nil
+	receiver.updateUserCalled = true
+	receiver.calls = append(receiver.calls, "update_user")
+	return receiver.updateUserErr
+}
+
+func (receiver *fakeGatewayDB) UpdateUserEmployment(
+	ctx context.Context,
+	userEmployment groupObject.UserEmployment,
+) error {
+	receiver.updateEmploymentCalled = true
+	receiver.calls = append(receiver.calls, "update_user_employment")
+	return receiver.updateUserEmploymentErr
 }
 
 type fakeGatewayExternal struct {
@@ -69,12 +84,12 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 
 func (receiver *fakeGatewayExternal) ViaGRPC(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	groupObject.PersonList,
+	groupObject.UserList,
 	error,
 ) {
-	return groupObject.PersonList{}, nil
+	return groupObject.UserList{}, nil
 }
 
 func (receiver *fakeGatewayExternal) PublishTestTopic(
@@ -83,16 +98,16 @@ func (receiver *fakeGatewayExternal) PublishTestTopic(
 	return nil
 }
 
-func TestGetPersonListByConditionRequiresCondition(t *testing.T) {
+func TestGetUserListByConditionRequiresCondition(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
-	person := newTestPerson(t, nil, nil, nil)
+	user := newTestUser(t, nil, nil, nil)
 
-	_, err := useCase.GetPersonListByCondition(context.Background(), person)
+	_, err := useCase.GetUserListByCondition(context.Background(), user)
 	if err == nil {
 		t.Fatal("expected condition error")
 	}
-	if !strings.Contains(err.Error(), "person search condition is required") {
+	if !strings.Contains(err.Error(), "user search condition is required") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if dbGateway.getByConditionCalled {
@@ -117,19 +132,83 @@ func TestFetchAccessTokenRequiresCredential(t *testing.T) {
 	}
 }
 
-func TestUpdatePersonRunsInTransaction(t *testing.T) {
+func TestUpdateUserRunsInTransaction(t *testing.T) {
 	dbGateway := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
-	person := newTestPerson(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
 
-	if err := useCase.UpdatePerson(context.Background(), person); err != nil {
+	if err := useCase.UpdateUser(context.Background(), user); err != nil {
 		t.Fatalf("expected update success, got: %v", err)
 	}
 	if !dbGateway.runInTransactionCalled {
 		t.Fatal("transaction boundary was not used")
 	}
-	if !dbGateway.updatePersonCalled {
+	if !dbGateway.updateUserCalled {
 		t.Fatal("update gateway was not called")
+	}
+}
+
+func TestUpdateUserRequiresIdentity(t *testing.T) {
+	dbGateway := &fakeGatewayDB{}
+	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	user := newTestUser(t, nil, stringPointer("name"), stringPointer("test@example.com"))
+
+	err := useCase.UpdateUser(context.Background(), user)
+	if err == nil {
+		t.Fatal("expected identity error")
+	}
+	if !strings.Contains(err.Error(), "user identity is required") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if dbGateway.runInTransactionCalled {
+		t.Fatal("transaction should not run when user lifecycle state is invalid")
+	}
+	if dbGateway.updateUserCalled {
+		t.Fatal("gateway should not be called when user lifecycle state is invalid")
+	}
+}
+
+func TestUpdateUserProfileWithPrimaryEmploymentRunsMultipleUpdatesInTransaction(t *testing.T) {
+	dbGateway := &fakeGatewayDB{}
+	useCase := NewUseCase(domain.NewDomain(), dbGateway, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+	employment := newTestUserEmployment(t, 1, true)
+
+	if err := useCase.UpdateUserProfileWithPrimaryEmployment(context.Background(), user, employment); err != nil {
+		t.Fatalf("expected update success, got: %v", err)
+	}
+	if !dbGateway.runInTransactionCalled {
+		t.Fatal("transaction boundary was not used")
+	}
+	if !dbGateway.updateUserCalled {
+		t.Fatal("user update gateway was not called")
+	}
+	if !dbGateway.updateEmploymentCalled {
+		t.Fatal("employment update gateway was not called")
+	}
+	if strings.Join(dbGateway.calls, ",") != "update_user,update_user_employment" {
+		t.Fatalf("unexpected call order: %v", dbGateway.calls)
+	}
+}
+
+func TestUpdateUserProfileWithPrimaryEmploymentRejectsDifferentUser(t *testing.T) {
+	dbGateway := &fakeGatewayDB{}
+	useCase := NewUseCase(domain.NewDomain(), dbGateway, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+	employment := newTestUserEmployment(t, 2, true)
+
+	err := useCase.UpdateUserProfileWithPrimaryEmployment(context.Background(), user, employment)
+	if err == nil {
+		t.Fatal("expected ownership error")
+	}
+	if !strings.Contains(err.Error(), "must belong to the user") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if dbGateway.runInTransactionCalled {
+		t.Fatal("transaction should not run when employment does not belong to user")
+	}
+	if dbGateway.updateUserCalled || dbGateway.updateEmploymentCalled {
+		t.Fatal("gateway should not be called when employment does not belong to user")
 	}
 }
 
@@ -138,30 +217,30 @@ func TestEnsureContextReadyReturnsCanceledError(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	_, err := useCase.GetPersonList(ctx)
+	_, err := useCase.GetUserList(ctx)
 	if !errors.Is(err, context.Canceled) {
 		t.Fatalf("expected context.Canceled, got: %v", err)
 	}
 }
 
-func newTestPerson(
+func newTestUser(
 	t *testing.T,
 	id *int,
 	name *string,
-	mailAddress *string,
-) groupObject.Person {
+	email *string,
+) groupObject.User {
 	t.Helper()
 
-	person, err := groupObject.NewPerson(&groupObject.NewPersonArgs{
-		ID:          id,
-		Name:        name,
-		MailAddress: mailAddress,
+	user, err := groupObject.NewUser(&groupObject.NewUserArgs{
+		ID:    id,
+		Name:  name,
+		Email: email,
 	})
 	if err != nil {
-		t.Fatalf("failed to create person: %v", err)
+		t.Fatalf("failed to create user: %v", err)
 	}
 
-	return *person
+	return *user
 }
 
 func newTestCredential(
@@ -180,6 +259,31 @@ func newTestCredential(
 	}
 
 	return *credential
+}
+
+func newTestUserEmployment(
+	t *testing.T,
+	userID int,
+	isPrimary bool,
+) groupObject.UserEmployment {
+	t.Helper()
+
+	employeeCode := "EMP001"
+	employmentType := "full_time"
+	userEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
+		UserID:         intPointer(userID),
+		CompanyID:      intPointer(1),
+		DepartmentID:   intPointer(2),
+		PositionID:     intPointer(3),
+		EmployeeCode:   &employeeCode,
+		EmploymentType: &employmentType,
+		IsPrimary:      &isPrimary,
+	})
+	if err != nil {
+		t.Fatalf("failed to create user employment: %v", err)
+	}
+
+	return *userEmployment
 }
 
 func intPointer(value int) *int {

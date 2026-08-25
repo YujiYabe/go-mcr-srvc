@@ -17,11 +17,11 @@ type GoGRPC struct {
 }
 
 // ------------
-func (receiver *Server) GetPersonListByCondition(
+func (receiver *Server) GetUserListByCondition(
 	ctx context.Context,
-	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
+	getUserListByConditionRequest *grpcParameter.GetUserListByConditionRequest,
 ) (
-	v1GetPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
+	v1GetUserListByConditionResponse *grpcParameter.GetUserListByConditionResponse,
 	err error,
 ) {
 	requestContext := requestContextMiddleware.GetRequestContext(ctx)
@@ -41,9 +41,9 @@ func (receiver *Server) GetPersonListByCondition(
 
 	// ゴルーチンで処理を実行
 	go func() {
-		v1GetPersonListByConditionResponse, err = receiver.getPersonListByCondition(
+		v1GetUserListByConditionResponse, err = receiver.getUserListByCondition(
 			ctx,
-			getPersonListByConditionRequest,
+			getUserListByConditionRequest,
 		)
 		close(done) // 処理完了を通知
 	}()
@@ -52,7 +52,7 @@ func (receiver *Server) GetPersonListByCondition(
 	select {
 	case <-done:
 		// 処理が完了した場合
-		return v1GetPersonListByConditionResponse, err
+		return v1GetUserListByConditionResponse, err
 
 	case <-ctx.Done():
 		// タイムアウトした場合
@@ -61,43 +61,43 @@ func (receiver *Server) GetPersonListByCondition(
 	}
 }
 
-func (receiver *Server) getPersonListByCondition(
+func (receiver *Server) getUserListByCondition(
 	ctx context.Context,
-	getPersonListByConditionRequest *grpcParameter.GetPersonListByConditionRequest,
+	getUserListByConditionRequest *grpcParameter.GetUserListByConditionRequest,
 ) (
-	getPersonListByConditionResponse *grpcParameter.GetPersonListByConditionResponse,
+	getUserListByConditionResponse *grpcParameter.GetUserListByConditionResponse,
 	err error,
 ) {
-	getPersonListByConditionResponse = &grpcParameter.GetPersonListByConditionResponse{}
+	getUserListByConditionResponse = &grpcParameter.GetUserListByConditionResponse{}
 
 	// traceID := requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
 	// logger.Logging(ctx, traceID)
 
-	reqPerson, err := grpcMiddleware.RefillPersonGRPCToDomain(
+	reqUser, err := grpcMiddleware.RefillUserGRPCToDomain(
 		ctx,
-		getPersonListByConditionRequest.GetV1PersonParameter(),
+		getUserListByConditionRequest.GetV1UserParameter(),
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
 		return nil, err
 	}
 
-	responseList, err := receiver.Controller.GetPersonListByCondition(
+	responseList, err := receiver.Controller.GetUserListByCondition(
 		ctx,
-		*reqPerson,
+		*reqUser,
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
 		return nil, err
 	}
 
-	v1PersonParameterArray := &grpcParameter.V1PersonParameterArray{}
-	v1PersonParameterArray.Persons = grpcMiddleware.RefillPersonDomainToGRPC(
+	v1UserParameterArray := &grpcParameter.V1UserParameterArray{}
+	v1UserParameterArray.Users = grpcMiddleware.RefillUserDomainToGRPC(
 		ctx,
 		responseList,
 	)
 
-	getPersonListByConditionResponse.V1PersonParameterArray = v1PersonParameterArray
+	getUserListByConditionResponse.V1UserParameterArray = v1UserParameterArray
 
 	// logger.Logging(ctx, traceID)
 

@@ -13,44 +13,49 @@ func (receiver *GatewayDB) RunInTransaction(
 	return receiver.ToPostgres.RunInTransaction(ctx, fn)
 }
 
-// GetPersonList ...
-func (receiver *GatewayDB) GetPersonList(
+// GetUserList ...
+func (receiver *GatewayDB) GetUserList(
 	ctx context.Context,
 ) (
-	personList groupObject.PersonList,
+	userList groupObject.UserList,
 	err error,
 ) {
-	return receiver.ToPostgres.GetPersonList(
+	return receiver.ToPostgres.GetUserList(
 		ctx,
 	)
 }
 
-// GetPersonListByCondition ...
-func (receiver *GatewayDB) GetPersonListByCondition(
+// GetUserListByCondition ...
+func (receiver *GatewayDB) GetUserListByCondition(
 	ctx context.Context,
-	reqPerson groupObject.Person,
+	reqUser groupObject.User,
 ) (
-	resPersonList groupObject.PersonList,
+	resUserList groupObject.UserList,
 	err error,
 ) {
-	resPersonList, err = receiver.ToPostgres.GetPersonListByCondition(
+	resUserList, err = receiver.ToPostgres.GetUserListByCondition(
 		ctx,
-		reqPerson,
+		reqUser,
 	)
 
 	return
 }
 
-// UpdatePerson ...
-func (receiver *GatewayDB) UpdatePerson(
+// UpdateUser ...
+func (receiver *GatewayDB) UpdateUser(
 	ctx context.Context,
-	newPerson groupObject.Person,
+	newUser groupObject.User,
 ) (
 	err error,
 ) {
-	_, err = receiver.ToPostgres.GetPerson(
-		ctx,
-		newPerson.ID(),
-	)
-	return
+	return receiver.ToPostgres.UpdateUser(ctx, newUser)
+}
+
+func (receiver *GatewayDB) UpdateUserEmployment(
+	ctx context.Context,
+	userEmployment groupObject.UserEmployment,
+) (
+	err error,
+) {
+	return receiver.ToPostgres.UpdateUserEmployment(ctx, userEmployment)
 }

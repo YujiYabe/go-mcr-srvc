@@ -32,28 +32,38 @@ type (
 			fn func(context.Context) error,
 		) error
 
-		GetPerson(
+		GetUser(
 			ctx context.Context,
 			id typeObject.ID,
 		) (
-			person groupObject.Person,
+			user groupObject.User,
 			err error,
 		)
 
-		GetPersonList(
+		GetUserList(
 			ctx context.Context,
 		) (
-			personList groupObject.PersonList,
+			userList groupObject.UserList,
 			err error,
 		)
 
-		GetPersonListByCondition(
+		GetUserListByCondition(
 			ctx context.Context,
-			reqPerson groupObject.Person,
+			reqUser groupObject.User,
 		) (
-			resPersonList groupObject.PersonList,
+			resUserList groupObject.UserList,
 			err error,
 		)
+
+		UpdateUser(
+			ctx context.Context,
+			newUser groupObject.User,
+		) error
+
+		UpdateUserEmployment(
+			ctx context.Context,
+			userEmployment groupObject.UserEmployment,
+		) error
 	}
 
 	// ToRedis ...

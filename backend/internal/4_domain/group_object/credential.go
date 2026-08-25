@@ -1,6 +1,10 @@
 package group_object
 
-import typeObject "backend/internal/4_domain/type_object"
+import (
+	"fmt"
+
+	typeObject "backend/internal/4_domain/type_object"
+)
 
 type Credential struct {
 	clientID     typeObject.ClientID
@@ -20,6 +24,34 @@ func (receiver Credential) ClientSecret() typeObject.ClientSecret {
 	return receiver.clientSecret
 }
 
+func (receiver Credential) CanAuthenticate() bool {
+	return receiver.ClientID().GetValue() != "" && receiver.ClientSecret().GetValue() != ""
+}
+
+func (receiver Credential) EnsureReadyToAuthenticate() error {
+	if receiver.ClientID().GetValue() == "" {
+		return fmt.Errorf("client id is required")
+	}
+	if receiver.ClientSecret().GetValue() == "" {
+		return fmt.Errorf("client secret is required")
+	}
+
+	return nil
+}
+
+func (receiver *Credential) RotateSecret(
+	value *string,
+) error {
+	clientSecret, err := typeObject.NewClientSecret(value)
+	if err != nil {
+		return err
+	}
+
+	receiver.clientSecret = clientSecret
+
+	return nil
+}
+
 func NewCredential(
 	args *NewCredentialArgs,
 ) (
@@ -27,6 +59,9 @@ func NewCredential(
 	err error,
 ) {
 	credential = &Credential{}
+	if args == nil {
+		args = &NewCredentialArgs{}
+	}
 
 	credential.clientID, err = typeObject.NewClientID(
 		args.ClientID,

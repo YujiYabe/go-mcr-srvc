@@ -33,19 +33,19 @@ func GetUsers(
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 	done := make(chan struct{})
 
-	responseList := []httpParameter.V1Person{}
+	responseList := []httpParameter.V1User{}
 	var requestErr error
 
 	// ゴルーチンで処理を実行
 	go func() {
-		person := httpParameter.V1Person{
-			Name:        getUsersParams.Name,
-			MailAddress: getUsersParams.MailAddress,
+		user := httpParameter.V1User{
+			Name:  getUsersParams.Name,
+			Email: getUsersParams.Email,
 		}
 
 		responseList, requestErr = handleUsersRequest(
 			ctxWithTimeout,
-			person,
+			user,
 			toController,
 		)
 		if requestErr != nil {
@@ -79,19 +79,19 @@ func GetUsers(
 
 func handleUsersRequest(
 	ctx context.Context,
-	person httpParameter.V1Person,
+	user httpParameter.V1User,
 	toController controller.ToController,
 ) (
-	responseList []httpParameter.V1Person,
+	responseList []httpParameter.V1User,
 	err error,
 ) {
-	responseList = []httpParameter.V1Person{}
+	responseList = []httpParameter.V1User{}
 
-	reqPerson, err := groupObject.NewPerson(
-		&groupObject.NewPersonArgs{
-			ID:          person.ID,
-			Name:        person.Name,
-			MailAddress: person.MailAddress,
+	reqUser, err := groupObject.NewUser(
+		&groupObject.NewUserArgs{
+			ID:    user.ID,
+			Name:  user.Name,
+			Email: user.Email,
 		},
 	)
 	if err != nil {
@@ -99,26 +99,26 @@ func handleUsersRequest(
 		return nil, err
 	}
 
-	personList, err := toController.GetPersonListByCondition(
-		// personList := toController.ViaGRPC(
+	userList, err := toController.GetUserListByCondition(
+		// userList := toController.ViaGRPC(
 		ctx,
-		*reqPerson,
+		*reqUser,
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
 		return nil, err
 	}
 
-	for _, person := range personList.Content() {
-		id := person.ID().GetValue()
-		name := person.Name().GetValue()
-		mailAddress := person.MailAddress().GetValue()
+	for _, user := range userList.Content() {
+		id := user.ID().GetValue()
+		name := user.Name().GetValue()
+		email := user.Email().GetValue()
 		responseList = append(
 			responseList,
-			httpParameter.V1Person{
-				ID:          &id,
-				Name:        &name,
-				MailAddress: &mailAddress,
+			httpParameter.V1User{
+				ID:    &id,
+				Name:  &name,
+				Email: &email,
 			},
 		)
 	}

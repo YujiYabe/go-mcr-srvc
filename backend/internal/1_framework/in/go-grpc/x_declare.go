@@ -17,7 +17,7 @@ import (
 // Server ...
 type Server struct {
 	Controller controller.ToController
-	grpcParameter.UnimplementedPersonServiceServer
+	grpcParameter.UnimplementedUserServiceServer
 }
 
 // NewGoGRPC ...
@@ -50,7 +50,7 @@ func (receiver *GoGRPC) Start() error {
 		),
 	)
 
-	grpcParameter.RegisterPersonServiceServer(server, &receiver.Server)
+	grpcParameter.RegisterUserServiceServer(server, &receiver.Server)
 	reflection.Register(server)
 
 	if err := server.Serve(listen); err != nil {

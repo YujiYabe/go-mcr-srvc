@@ -45,13 +45,13 @@ internal 以下に clean architecture の構成
 
 # grpc server client
 
-#### [grpc server](backend/internal/1_framework/in/go-grpc/person.go)
+#### [grpc server](backend/internal/1_framework/in/go-grpc/user.go)
 
 #### [grpc client](backend/internal/1_framework/out/grpc_client/logic.go)
 
 # http server
 
-#### [http server](backend/internal/1_framework/in/go-echo/v1/person/viaGRPC.go)
+#### [http server](backend/internal/1_framework/in/go-echo/v1/users/get.go)
 
 http request を grpc に変換して grpc サーバーにリクエストを送信。
 

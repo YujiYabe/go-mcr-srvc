@@ -1,0 +1,33 @@
+
+### --------------------------------
+proto < ../../parameter/grpc/user.proto
+GRPC localhost:43456/grpc_parameter.v1.UserService/GetUserListByCondition
+{
+	"v1UserParameter": {
+		"email": "aaaa@gmail.com"
+	}
+}
+
+### --------------------------------
+proto < ../../parameter/grpc/user.proto
+GRPC localhost:43456/grpc_parameter.v1.UserService/GetUserListByCondition
+{
+	"v1UserParameter": {
+		"name": "b"
+	}
+}
+
+# ### --------------------------------
+# proto < ../../parameter/grpc/user.proto
+# GRPC localhost:43456/grpc_parameter.v1.UserService/GetUserListByCondition
+# {
+# 	"common": {
+# 		"traceID": "test-trace-id",
+# 		"timestamp": "2024-01-01T00:00:00Z"
+# 	},
+# 	"parameter": {
+# 		"id": 1,
+# 		"name": "test user",
+# 		"email": "test@example.com"
+# 	}
+# }

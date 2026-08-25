@@ -8,38 +8,38 @@ import (
 )
 
 var (
-	mailAddressMaxLength uint = 30
-	mailAddressMinLength uint = 1
+	emailMaxLength uint = 30
+	emailMinLength uint = 1
 )
 
-var mailAddressCheckSpell = []string{}
+var emailCheckSpell = []string{}
 
-type MailAddress struct {
+type Email struct {
 	content *primitiveObject.PrimitiveString
 }
 
-func NewMailAddress(
+func NewEmail(
 	value *string,
 ) (
-	mailAddress MailAddress,
+	email Email,
 	err error,
 ) {
-	mailAddress = MailAddress{}
-	err = mailAddress.setValue(value)
+	email = Email{}
+	err = email.setValue(value)
 
 	return
 }
 
-func (receiver *MailAddress) setValue(
+func (receiver *Email) setValue(
 	value *string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&mailAddressMaxLength),
-		primitiveString.WithMinLength(&mailAddressMinLength),
-		primitiveString.WithCheckSpell(mailAddressCheckSpell),
+		primitiveString.WithMaxLength(&emailMaxLength),
+		primitiveString.WithMinLength(&emailMinLength),
+		primitiveString.WithCheckSpell(emailCheckSpell),
 	)
 	if err := receiver.content.Validation(); err != nil {
 		return err
@@ -47,21 +47,21 @@ func (receiver *MailAddress) setValue(
 
 	return receiver.Validation()
 }
-func (receiver MailAddress) GetValue() string {
+func (receiver Email) GetValue() string {
 	return receiver.content.GetValue()
 }
 
-func (receiver *MailAddress) ErrorString(
+func (receiver *Email) ErrorString(
 	errString string,
 ) error {
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver MailAddress) GetIsNil() bool {
+func (receiver Email) GetIsNil() bool {
 	return receiver.content.GetIsNil()
 }
 
-func (receiver MailAddress) Validation() error {
+func (receiver Email) Validation() error {
 	if receiver.GetIsNil() {
 		return nil
 	}
