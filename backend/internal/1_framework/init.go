@@ -17,6 +17,10 @@ import (
 
 	//
 	"backend/internal/2_adapter/controller"
+	gatewayDB "backend/internal/2_adapter/gateway/db"
+	gatewayExternal "backend/internal/2_adapter/gateway/external"
+	usecase "backend/internal/3_usecase"
+	domain "backend/internal/4_domain"
 	"backend/internal/env"
 	"backend/internal/logger"
 )
@@ -58,13 +62,16 @@ func NewApp() (*app, error) {
 		return nil, fmt.Errorf("new pubsub publisher: %w", err)
 	}
 
-	ctrl := controller.NewController(
+	toGatewayDB := gatewayDB.NewGatewayDB(
 		toPostgres,
 		redisClient.NewToRedis(
 			config.Redis.Addr,
 			config.Redis.Password,
 			config.Redis.DB,
 		),
+	)
+
+	toGatewayExternal := gatewayExternal.NewGatewayExternal(
 		auth0Client.NewToAuth0(
 			config.Auth0.TokenURL,
 			config.Auth0.Audience,
@@ -73,6 +80,14 @@ func NewApp() (*app, error) {
 		toGRPC,
 		toPubSub,
 	)
+
+	useCase := usecase.NewUseCase(
+		domain.NewDomain(),
+		toGatewayDB,
+		toGatewayExternal,
+	)
+
+	ctrl := controller.NewController(useCase)
 	ctrl.Start()
 
 	a := &app{

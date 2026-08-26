@@ -3,6 +3,7 @@ package pubsub_middleware
 import (
 	"context"
 	"strconv"
+	"strings"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
@@ -46,10 +47,12 @@ func HeaderToContext(
 
 		case typeObject.PermissionListHeaderName:
 			permissionList := []string{}
-			// permissionList = append(
-			// 	permissionList,
-			// 	md.Get(string(typeObject.PermissionListHeaderName))...,
-			// )
+			for _, permission := range strings.Split(headerValue, ",") {
+				if permission == "" {
+					continue
+				}
+				permissionList = append(permissionList, permission)
+			}
 
 			newRequestContextArgs.PermissionList = permissionList
 
@@ -100,14 +103,6 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.ClientIPHeaderName),
-			Value: []byte(requestContext.AccessToken().GetValue()),
-		},
-	)
-
-	headers = append(
-		headers,
-		kafka.Header{
-			Key:   string(typeObject.ClientIPHeaderName),
 			Value: []byte(requestContext.ClientIP().GetValue()),
 		},
 	)
@@ -117,6 +112,17 @@ func ContextToHeader(
 		kafka.Header{
 			Key:   string(typeObject.LocaleHeaderName),
 			Value: []byte(requestContext.Locale().GetValue()),
+		},
+	)
+
+	headers = append(
+		headers,
+		kafka.Header{
+			Key: string(typeObject.PermissionListHeaderName),
+			Value: []byte(strings.Join(
+				requestContext.PermissionList().GetSliceValue(),
+				",",
+			)),
 		},
 	)
 

@@ -97,6 +97,21 @@ domain は純粋な業務ルールを担当します。
 
 DB テーブル名や transport の DTO 名ではなく、業務上の言葉を中心に命名します。
 
+# interface の命名規約
+
+層をまたいで依存を受け渡す interface は、プロジェクト内ルールとして `ToXXXX` 形式で命名します。
+
+例:
+
+- `ToUseCase`
+- `ToController`
+- `ToGatewayDB`
+- `ToPostgres`
+- `ToAuth0`
+
+`ToXXXX` は「現在の層から XXXX 側へ依存を向けるための境界」を表します。
+一般的な Go の慣習では責務名を使う interface も多いですが、このプロジェクトではクリーンアーキテクチャ上の接続先を明示し、層間の依存関係を読みやすくするため `ToXXXX` に統一します。
+
 # grpc server client
 
 #### [grpc server](backend/internal/1_framework/in/go-grpc/user.go)

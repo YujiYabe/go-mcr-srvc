@@ -110,6 +110,9 @@ domain に置くもの:
 - 将来複数テーブルを扱う repository / gateway は、特定テーブル名へ寄せすぎない。
 - HTTP DTO、gRPC message、DB model は外側の都合として扱う。
 - domain/usecase の名前は業務語彙を優先する。
+- 層をまたいで依存を受け渡す interface は、プロジェクト内ルールとして `ToXXXX` 形式で統一する。
+- `ToXXXX` は「現在の層から XXXX 側へ依存を向けるための境界」を表す。
+- 一般的な Go の慣習で責務名の interface が自然な場合でも、このリポジトリでは既存規約との一貫性を優先する。
 
 ## テスト
 

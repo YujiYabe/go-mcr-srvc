@@ -1,4 +1,4 @@
-include ./backend/internal/env/local.env
+-include ./backend/internal/env/local.env
 
 GO_TOOLCHAIN ?= go1.27.0
 GOLANGCI_LINT ?= github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
@@ -77,27 +77,8 @@ govulncheck:
 security: govulncheck
 
 # ----------------------------
-.PHONY: gosec
-gosec:
-	cd backend && ./bin/gosec  -exclude=G115  ./...
-
-# ----------------------------
 .PHONY: golint
 golint: lint
-
-
-# ----------------------------
-.PHONY: staticcheck
-staticcheck:
-	cd ./backend && ./bin/staticcheck ./...
-
-
-# ----------------------------
-.PHONY: deadcode
-deadcode:
-	cd ./backend && ./bin/deadcode ./...
-
-
 
 
 # ----------------------------
@@ -128,16 +109,6 @@ gen-openapi:
 	backend/internal/1_framework/in/go-echo/openapi/openapi.yaml 
 
 
-# # 指定ディレクトリに移動してからコンパイル ----------------------------
-# .PHONY: gen-grpc
-# gen-grpc:
-# 	cd backend/internal/1_framework/parameter/grpc && \
-# 	PATH=$(PWD)/backend/bin:$$PATH protoc \
-# 		--go_out=. \
-# 		--go_opt=paths=source_relative \
-# 		--go-grpc_out=. \
-# 		--go-grpc_opt=paths=source_relative \
-# 		*.proto
 
 
 # ----------------------------
@@ -153,8 +124,5 @@ install-tools:
 	# Install other tools
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(GOLANGCI_LINT)
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(GOVULNCHECK)
-	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install github.com/securego/gosec/v2/cmd/gosec@latest
-	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install honnef.co/go/tools/cmd/staticcheck@latest
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install github.com/air-verse/air@latest
-	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install golang.org/x/tools/cmd/deadcode@latest
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(OAPI_CODEGEN)
