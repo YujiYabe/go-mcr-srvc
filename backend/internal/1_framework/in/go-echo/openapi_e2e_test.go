@@ -157,8 +157,6 @@ func TestOpenAPIE2E_V1ToPubsubGet(t *testing.T) {
 	}
 }
 
-func (receiver *fakeController) Start() {}
-
 func (receiver *fakeController) GetUserList(
 	ctx context.Context,
 ) (

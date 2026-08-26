@@ -88,7 +88,6 @@ func NewApp() (*app, error) {
 	)
 
 	ctrl := controller.NewController(useCase)
-	ctrl.Start()
 
 	a := &app{
 		goGRPC: goGRPC.NewGoGRPC(

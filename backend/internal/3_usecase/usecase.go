@@ -12,8 +12,6 @@ type (
 
 	// ToUseCase ...
 	ToUseCase interface {
-		Start()
-
 		GetUserList(
 			ctx context.Context,
 		) (
@@ -61,10 +59,6 @@ type (
 		) error
 	}
 )
-
-// Start ...
-func (receiver *useCase) Start() {
-}
 
 func ensureContextReady(
 	ctx context.Context,

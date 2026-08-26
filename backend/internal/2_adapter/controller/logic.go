@@ -7,8 +7,6 @@ import (
 	typeObject "backend/internal/4_domain/type_object"
 )
 
-func (receiver *controller) Start() {}
-
 func (receiver *controller) GetUserList(
 	ctx context.Context,
 ) (

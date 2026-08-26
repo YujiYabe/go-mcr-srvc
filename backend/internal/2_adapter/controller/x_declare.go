@@ -30,8 +30,6 @@ type (
 
 	// ToController ...
 	ToController interface {
-		Start()
-
 		GetUserList(
 			ctx context.Context,
 		) (
