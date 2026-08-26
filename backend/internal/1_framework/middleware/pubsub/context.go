@@ -100,14 +100,6 @@ func ContextToHeader(
 		headers,
 		kafka.Header{
 			Key:   string(typeObject.ClientIPHeaderName),
-			Value: []byte(requestContext.AccessToken().GetValue()),
-		},
-	)
-
-	headers = append(
-		headers,
-		kafka.Header{
-			Key:   string(typeObject.ClientIPHeaderName),
 			Value: []byte(requestContext.ClientIP().GetValue()),
 		},
 	)
