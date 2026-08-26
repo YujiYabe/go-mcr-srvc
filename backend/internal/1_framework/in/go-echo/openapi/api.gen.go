@@ -18,29 +18,29 @@ type User struct {
 	Name  string `json:"name"`
 }
 
-// GetUsersParams defines parameters for GetUsers.
-type GetUsersParams struct {
+// V1UsersGetParams defines parameters for V1UsersGet.
+type V1UsersGetParams struct {
 	Name  *string `form:"name,omitempty" json:"name,omitempty"`
 	Email *string `form:"email,omitempty" json:"email,omitempty"`
 }
 
-// CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
-type CreateUserJSONRequestBody = User
+// V1UsersPostJSONRequestBody defines body for V1UsersPost for application/json ContentType.
+type V1UsersPostJSONRequestBody = User
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Check service health
 	// (GET /v1/health)
-	GetHealth(ctx echo.Context) error
+	V1HealthGet(ctx echo.Context) error
 	// send to pubsub
 	// (GET /v1/to-pubsub)
-	ToPubsub(ctx echo.Context) error
+	V1ToPubsubGet(ctx echo.Context) error
 	// Get all users
 	// (GET /v1/users)
-	GetUsers(ctx echo.Context, params GetUsersParams) error
+	V1UsersGet(ctx echo.Context, params V1UsersGetParams) error
 	// Create a user
 	// (POST /v1/users)
-	CreateUser(ctx echo.Context) error
+	V1UsersPost(ctx echo.Context) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -48,30 +48,30 @@ type ServerInterfaceWrapper struct {
 	Handler ServerInterface
 }
 
-// GetHealth converts echo context to params.
-func (w *ServerInterfaceWrapper) GetHealth(ctx echo.Context) error {
+// V1HealthGet converts echo context to params.
+func (w *ServerInterfaceWrapper) V1HealthGet(ctx echo.Context) error {
 	var err error
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetHealth(ctx)
+	err = w.Handler.V1HealthGet(ctx)
 	return err
 }
 
-// ToPubsub converts echo context to params.
-func (w *ServerInterfaceWrapper) ToPubsub(ctx echo.Context) error {
+// V1ToPubsubGet converts echo context to params.
+func (w *ServerInterfaceWrapper) V1ToPubsubGet(ctx echo.Context) error {
 	var err error
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.ToPubsub(ctx)
+	err = w.Handler.V1ToPubsubGet(ctx)
 	return err
 }
 
-// GetUsers converts echo context to params.
-func (w *ServerInterfaceWrapper) GetUsers(ctx echo.Context) error {
+// V1UsersGet converts echo context to params.
+func (w *ServerInterfaceWrapper) V1UsersGet(ctx echo.Context) error {
 	var err error
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetUsersParams
+	var params V1UsersGetParams
 	// ------------- Optional query parameter "name" -------------
 
 	err = runtime.BindQueryParameter("form", true, false, "name", ctx.QueryParams(), &params.Name)
@@ -87,16 +87,16 @@ func (w *ServerInterfaceWrapper) GetUsers(ctx echo.Context) error {
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.GetUsers(ctx, params)
+	err = w.Handler.V1UsersGet(ctx, params)
 	return err
 }
 
-// CreateUser converts echo context to params.
-func (w *ServerInterfaceWrapper) CreateUser(ctx echo.Context) error {
+// V1UsersPost converts echo context to params.
+func (w *ServerInterfaceWrapper) V1UsersPost(ctx echo.Context) error {
 	var err error
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.CreateUser(ctx)
+	err = w.Handler.V1UsersPost(ctx)
 	return err
 }
 
@@ -128,9 +128,9 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 		Handler: si,
 	}
 
-	router.GET(baseURL+"/v1/health", wrapper.GetHealth)
-	router.GET(baseURL+"/v1/to-pubsub", wrapper.ToPubsub)
-	router.GET(baseURL+"/v1/users", wrapper.GetUsers)
-	router.POST(baseURL+"/v1/users", wrapper.CreateUser)
+	router.GET(baseURL+"/v1/health", wrapper.V1HealthGet)
+	router.GET(baseURL+"/v1/to-pubsub", wrapper.V1ToPubsubGet)
+	router.GET(baseURL+"/v1/users", wrapper.V1UsersGet)
+	router.POST(baseURL+"/v1/users", wrapper.V1UsersPost)
 
 }

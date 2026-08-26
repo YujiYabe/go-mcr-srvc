@@ -16,10 +16,10 @@ import (
 	"backend/internal/logger"
 )
 
-func GetUsers(
+func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
-	getUsersParams openapi.GetUsersParams,
+	getUsersParams openapi.V1UsersGetParams,
 ) error {
 	ctx := echoContext.Request().Context()
 	requestContext := requestContextMiddleware.GetRequestContext(ctx)

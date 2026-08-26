@@ -16,20 +16,20 @@ type ServerInterfaceImpl struct {
 	Controller controller.ToController
 }
 
-// GetUsers は /users GET エンドポイントの実装
-func (receiver *ServerInterfaceImpl) GetUsers(
+// V1UsersGet は /v1/users GET エンドポイントの実装
+func (receiver *ServerInterfaceImpl) V1UsersGet(
 	echoContext echo.Context,
-	getUsersParams openapi.GetUsersParams,
+	getUsersParams openapi.V1UsersGetParams,
 ) error {
-	return v1users.GetUsers(
+	return v1users.Get(
 		echoContext,
 		receiver.Controller,
 		getUsersParams,
 	)
 }
 
-// CreateUser は /users POST エンドポイントの実装
-func (receiver *ServerInterfaceImpl) CreateUser(ctx echo.Context) error {
+// V1UsersPost は /v1/users POST エンドポイントの実装
+func (receiver *ServerInterfaceImpl) V1UsersPost(ctx echo.Context) error {
 	var user openapi.User
 	if err := ctx.Bind(&user); err != nil {
 		return ctx.JSON(
@@ -41,16 +41,16 @@ func (receiver *ServerInterfaceImpl) CreateUser(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, user)
 }
 
-// GetHealth は /health GET エンドポイントの実装
-func (receiver *ServerInterfaceImpl) GetHealth(ctx echo.Context) error {
+// V1HealthGet は /v1/health GET エンドポイントの実装
+func (receiver *ServerInterfaceImpl) V1HealthGet(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, "OK")
 }
 
-// ToPubsub は /users GET エンドポイントの実装
-func (receiver *ServerInterfaceImpl) ToPubsub(
+// V1ToPubsubGet は /v1/to-pubsub GET エンドポイントの実装
+func (receiver *ServerInterfaceImpl) V1ToPubsubGet(
 	echoContext echo.Context,
 ) error {
-	return v1ToPubsub.PublishTestTopic(
+	return v1ToPubsub.Get(
 		echoContext,
 		receiver.Controller,
 	)

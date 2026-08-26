@@ -1,6 +1,6 @@
 get:
   summary: Check service health
-  operationId: getHealth
+  operationId: v1HealthGet
   responses:
     '200':
       description: Service is healthy

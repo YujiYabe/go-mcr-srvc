@@ -3,6 +3,7 @@ include ./backend/internal/env/local.env
 GO_TOOLCHAIN ?= go1.27.0
 GOLANGCI_LINT ?= github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 GOVULNCHECK ?= golang.org/x/vuln/cmd/govulncheck@latest
+OAPI_CODEGEN ?= github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.16.3
 
 # ----------------------------
 .PHONY: gomod
@@ -120,7 +121,7 @@ gen-grpc:
 # ----------------------------
 .PHONY: gen-openapi
 gen-openapi:
-	oapi-codegen \
+	PATH=$(PWD)/backend/bin:$$PATH oapi-codegen \
 	-generate types,server \
 	-o backend/internal/1_framework/in/go-echo/openapi/api.gen.go \
 	-package openapi \
@@ -156,3 +157,4 @@ install-tools:
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install honnef.co/go/tools/cmd/staticcheck@latest
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install github.com/air-verse/air@latest
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install golang.org/x/tools/cmd/deadcode@latest
+	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(OAPI_CODEGEN)
