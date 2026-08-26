@@ -15,8 +15,11 @@ type fakeGatewayDB struct {
 	runInTransactionCalled  bool
 	updateUserCalled        bool
 	updateEmploymentCalled  bool
+	getListCalled           bool
 	getByConditionCalled    bool
 	calls                   []string
+	getListErr              error
+	getByConditionErr       error
 	updateUserErr           error
 	updateUserEmploymentErr error
 }
@@ -35,7 +38,8 @@ func (receiver *fakeGatewayDB) GetUserList(
 	groupObject.UserList,
 	error,
 ) {
-	return groupObject.UserList{}, nil
+	receiver.getListCalled = true
+	return groupObject.UserList{}, receiver.getListErr
 }
 
 func (receiver *fakeGatewayDB) GetUserListByCondition(
@@ -46,7 +50,7 @@ func (receiver *fakeGatewayDB) GetUserListByCondition(
 	error,
 ) {
 	receiver.getByConditionCalled = true
-	return groupObject.UserList{}, nil
+	return groupObject.UserList{}, receiver.getByConditionErr
 }
 
 func (receiver *fakeGatewayDB) UpdateUser(
@@ -69,6 +73,11 @@ func (receiver *fakeGatewayDB) UpdateUserEmployment(
 
 type fakeGatewayExternal struct {
 	fetchAccessTokenCalled bool
+	viaGRPCCalled          bool
+	publishTestTopicCalled bool
+	fetchAccessTokenErr    error
+	viaGRPCErr             error
+	publishTestTopicErr    error
 }
 
 func (receiver *fakeGatewayExternal) FetchAccessToken(
@@ -79,6 +88,9 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 	error,
 ) {
 	receiver.fetchAccessTokenCalled = true
+	if receiver.fetchAccessTokenErr != nil {
+		return typeObject.AccessToken{}, receiver.fetchAccessTokenErr
+	}
 	return typeObject.NewAccessToken(stringPointer("access-token"))
 }
 
@@ -89,13 +101,34 @@ func (receiver *fakeGatewayExternal) ViaGRPC(
 	groupObject.UserList,
 	error,
 ) {
-	return groupObject.UserList{}, nil
+	receiver.viaGRPCCalled = true
+	return groupObject.UserList{}, receiver.viaGRPCErr
 }
 
 func (receiver *fakeGatewayExternal) PublishTestTopic(
 	ctx context.Context,
 ) error {
-	return nil
+	receiver.publishTestTopicCalled = true
+	return receiver.publishTestTopicErr
+}
+
+func TestGetUserListWrapsGatewayError(t *testing.T) {
+	t.Parallel()
+
+	gatewayErr := errors.New("db unavailable")
+	dbGateway := &fakeGatewayDB{getListErr: gatewayErr}
+	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+
+	_, err := useCase.GetUserList(context.Background())
+	if !errors.Is(err, gatewayErr) {
+		t.Fatalf("expected wrapped gateway error, got: %v", err)
+	}
+	if !strings.Contains(err.Error(), "GetUserList") {
+		t.Fatalf("expected usecase name in error, got: %v", err)
+	}
+	if !dbGateway.getListCalled {
+		t.Fatal("gateway should be called")
+	}
 }
 
 func TestGetUserListByConditionRequiresCondition(t *testing.T) {
@@ -115,6 +148,53 @@ func TestGetUserListByConditionRequiresCondition(t *testing.T) {
 	}
 }
 
+func TestGetUserListByConditionGatewayCases(t *testing.T) {
+	t.Parallel()
+
+	gatewayErr := errors.New("query failed")
+	tests := []struct {
+		name        string
+		gatewayErr  error
+		wantErr     error
+		wantErrText string
+	}{
+		{
+			name: "success",
+		},
+		{
+			name:        "gateway error",
+			gatewayErr:  gatewayErr,
+			wantErr:     gatewayErr,
+			wantErrText: "GetUserListByCondition",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			dbGateway := &fakeGatewayDB{getByConditionErr: tt.gatewayErr}
+			useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+			user := newTestUser(t, nil, stringPointer("alice"), nil)
+
+			_, err := useCase.GetUserListByCondition(context.Background(), user)
+			if tt.wantErr == nil && err != nil {
+				t.Fatalf("expected success, got: %v", err)
+			}
+			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
+				t.Fatalf("expected wrapped gateway error, got: %v", err)
+			}
+			if tt.wantErrText != "" && !strings.Contains(err.Error(), tt.wantErrText) {
+				t.Fatalf("expected error to contain %q, got: %v", tt.wantErrText, err)
+			}
+			if !dbGateway.getByConditionCalled {
+				t.Fatal("gateway should be called")
+			}
+		})
+	}
+}
+
 func TestFetchAccessTokenRequiresCredential(t *testing.T) {
 	externalGateway := &fakeGatewayExternal{}
 	useCase := NewUseCase(nil, &fakeGatewayDB{}, externalGateway)
@@ -129,6 +209,117 @@ func TestFetchAccessTokenRequiresCredential(t *testing.T) {
 	}
 	if externalGateway.fetchAccessTokenCalled {
 		t.Fatal("gateway should not be called when credential is invalid")
+	}
+}
+
+func TestFetchAccessTokenGatewayCases(t *testing.T) {
+	t.Parallel()
+
+	gatewayErr := errors.New("auth service unavailable")
+	tests := []struct {
+		name        string
+		gatewayErr  error
+		wantErr     error
+		wantErrText string
+	}{
+		{
+			name: "success",
+		},
+		{
+			name:        "gateway error",
+			gatewayErr:  gatewayErr,
+			wantErr:     gatewayErr,
+			wantErrText: "FetchAccessToken",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			externalGateway := &fakeGatewayExternal{fetchAccessTokenErr: tt.gatewayErr}
+			useCase := NewUseCase(nil, &fakeGatewayDB{}, externalGateway)
+			credential := newTestCredential(t, "client-id", "secret")
+
+			_, err := useCase.FetchAccessToken(context.Background(), credential)
+			if tt.wantErr == nil && err != nil {
+				t.Fatalf("expected success, got: %v", err)
+			}
+			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
+				t.Fatalf("expected wrapped gateway error, got: %v", err)
+			}
+			if tt.wantErrText != "" && !strings.Contains(err.Error(), tt.wantErrText) {
+				t.Fatalf("expected error to contain %q, got: %v", tt.wantErrText, err)
+			}
+			if !externalGateway.fetchAccessTokenCalled {
+				t.Fatal("gateway should be called")
+			}
+		})
+	}
+}
+
+func TestViaGRPCCases(t *testing.T) {
+	t.Parallel()
+
+	gatewayErr := errors.New("grpc unavailable")
+	tests := []struct {
+		name                string
+		gatewayErr          error
+		wantErr             error
+		wantErrText         string
+		wantGatewayCall     bool
+		buildUserInsideCase func(t *testing.T) groupObject.User
+	}{
+		{
+			name:            "missing condition",
+			wantErrText:     "user search condition is required",
+			wantGatewayCall: false,
+			buildUserInsideCase: func(t *testing.T) groupObject.User {
+				return newTestUser(t, nil, nil, nil)
+			},
+		},
+		{
+			name:            "success",
+			wantGatewayCall: true,
+			buildUserInsideCase: func(t *testing.T) groupObject.User {
+				return newTestUser(t, nil, nil, stringPointer("alice@example.com"))
+			},
+		},
+		{
+			name:            "gateway error",
+			gatewayErr:      gatewayErr,
+			wantErr:         gatewayErr,
+			wantErrText:     "ViaGRPC",
+			wantGatewayCall: true,
+			buildUserInsideCase: func(t *testing.T) groupObject.User {
+				return newTestUser(t, nil, stringPointer("alice"), nil)
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			externalGateway := &fakeGatewayExternal{viaGRPCErr: tt.gatewayErr}
+			useCase := NewUseCase(nil, &fakeGatewayDB{}, externalGateway)
+
+			_, err := useCase.ViaGRPC(context.Background(), tt.buildUserInsideCase(t))
+			if tt.wantErr == nil && tt.wantErrText == "" && err != nil {
+				t.Fatalf("expected success, got: %v", err)
+			}
+			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
+				t.Fatalf("expected wrapped gateway error, got: %v", err)
+			}
+			if tt.wantErrText != "" && (err == nil || !strings.Contains(err.Error(), tt.wantErrText)) {
+				t.Fatalf("expected error to contain %q, got: %v", tt.wantErrText, err)
+			}
+			if externalGateway.viaGRPCCalled != tt.wantGatewayCall {
+				t.Fatalf("gateway call = %v, want %v", externalGateway.viaGRPCCalled, tt.wantGatewayCall)
+			}
+		})
 	}
 }
 
@@ -165,6 +356,29 @@ func TestUpdateUserRequiresIdentity(t *testing.T) {
 	}
 	if dbGateway.updateUserCalled {
 		t.Fatal("gateway should not be called when user lifecycle state is invalid")
+	}
+}
+
+func TestUpdateUserWrapsGatewayError(t *testing.T) {
+	t.Parallel()
+
+	gatewayErr := errors.New("update failed")
+	dbGateway := &fakeGatewayDB{updateUserErr: gatewayErr}
+	useCase := NewUseCase(nil, dbGateway, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+
+	err := useCase.UpdateUser(context.Background(), user)
+	if !errors.Is(err, gatewayErr) {
+		t.Fatalf("expected wrapped gateway error, got: %v", err)
+	}
+	if !strings.Contains(err.Error(), "UpdateUser") {
+		t.Fatalf("expected usecase name in error, got: %v", err)
+	}
+	if !dbGateway.runInTransactionCalled {
+		t.Fatal("transaction boundary should be used")
+	}
+	if !dbGateway.updateUserCalled {
+		t.Fatal("gateway should be called")
 	}
 }
 
@@ -209,6 +423,108 @@ func TestUpdateUserProfileWithPrimaryEmploymentRejectsDifferentUser(t *testing.T
 	}
 	if dbGateway.updateUserCalled || dbGateway.updateEmploymentCalled {
 		t.Fatal("gateway should not be called when employment does not belong to user")
+	}
+}
+
+func TestUpdateUserProfileWithPrimaryEmploymentGatewayErrors(t *testing.T) {
+	t.Parallel()
+
+	updateUserErr := errors.New("user update failed")
+	updateEmploymentErr := errors.New("employment update failed")
+	tests := []struct {
+		name                    string
+		updateUserErr           error
+		updateUserEmploymentErr error
+		wantErr                 error
+		wantCalls               string
+	}{
+		{
+			name:          "user update fails before employment update",
+			updateUserErr: updateUserErr,
+			wantErr:       updateUserErr,
+			wantCalls:     "update_user",
+		},
+		{
+			name:                    "employment update fails after user update",
+			updateUserEmploymentErr: updateEmploymentErr,
+			wantErr:                 updateEmploymentErr,
+			wantCalls:               "update_user,update_user_employment",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			dbGateway := &fakeGatewayDB{
+				updateUserErr:           tt.updateUserErr,
+				updateUserEmploymentErr: tt.updateUserEmploymentErr,
+			}
+			useCase := NewUseCase(domain.NewDomain(), dbGateway, &fakeGatewayExternal{})
+			user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+			employment := newTestUserEmployment(t, 1, true)
+
+			err := useCase.UpdateUserProfileWithPrimaryEmployment(context.Background(), user, employment)
+			if !errors.Is(err, tt.wantErr) {
+				t.Fatalf("expected wrapped gateway error, got: %v", err)
+			}
+			if !strings.Contains(err.Error(), "UpdateUserProfileWithPrimaryEmployment") {
+				t.Fatalf("expected usecase name in error, got: %v", err)
+			}
+			if !dbGateway.runInTransactionCalled {
+				t.Fatal("transaction boundary should be used")
+			}
+			if strings.Join(dbGateway.calls, ",") != tt.wantCalls {
+				t.Fatalf("unexpected call order: %v", dbGateway.calls)
+			}
+		})
+	}
+}
+
+func TestPublishTestTopicCases(t *testing.T) {
+	t.Parallel()
+
+	gatewayErr := errors.New("publish failed")
+	tests := []struct {
+		name        string
+		gatewayErr  error
+		wantErr     error
+		wantErrText string
+	}{
+		{
+			name: "success",
+		},
+		{
+			name:        "gateway error",
+			gatewayErr:  gatewayErr,
+			wantErr:     gatewayErr,
+			wantErrText: "PublishTestTopic",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			externalGateway := &fakeGatewayExternal{publishTestTopicErr: tt.gatewayErr}
+			useCase := NewUseCase(nil, &fakeGatewayDB{}, externalGateway)
+
+			err := useCase.PublishTestTopic(context.Background())
+			if tt.wantErr == nil && err != nil {
+				t.Fatalf("expected success, got: %v", err)
+			}
+			if tt.wantErr != nil && !errors.Is(err, tt.wantErr) {
+				t.Fatalf("expected wrapped gateway error, got: %v", err)
+			}
+			if tt.wantErrText != "" && !strings.Contains(err.Error(), tt.wantErrText) {
+				t.Fatalf("expected error to contain %q, got: %v", tt.wantErrText, err)
+			}
+			if !externalGateway.publishTestTopicCalled {
+				t.Fatal("gateway should be called")
+			}
+		})
 	}
 }
 
