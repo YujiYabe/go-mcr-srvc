@@ -70,10 +70,14 @@ func MetadataToContext(
 	// ________________________________
 	if len(md.Get(string(typeObject.PermissionListHeaderName))) != 0 {
 		permissionList := []string{}
-		permissionList = append(
-			permissionList,
-			md.Get(string(typeObject.PermissionListHeaderName))...,
-		)
+		for _, permissionHeader := range md.Get(string(typeObject.PermissionListHeaderName)) {
+			for _, permission := range strings.Split(permissionHeader, ",") {
+				if permission == "" {
+					continue
+				}
+				permissionList = append(permissionList, permission)
+			}
+		}
 		newRequestContextArgs.PermissionList = permissionList
 
 	}
