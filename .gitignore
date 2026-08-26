@@ -31,6 +31,7 @@
 db/tool/phpmyadmin/sessions/*
 .envrc
 direnv
+backend/internal/env/*.env
 
 */tmp/main
 backend/main

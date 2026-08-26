@@ -61,9 +61,16 @@ func Load() (Config, error) {
 	// 機密情報はsecret managerに保存
 
 	env := os.Getenv("ENV")
+	if env == "" {
+		env = "local"
+	}
+	configName := env
+	if env == "lcl" {
+		configName = "local"
+	}
 	viperViper := initViper()
 
-	viperViper.SetConfigName(env + ".env")
+	viperViper.SetConfigName(configName + ".env")
 	if err := viperViper.ReadInConfig(); err != nil {
 		return Config{}, fmt.Errorf("load environment file: %w", err)
 	}

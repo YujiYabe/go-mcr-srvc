@@ -1,4 +1,4 @@
-include ./backend/internal/env/local.env
+-include ./backend/internal/env/local.env
 
 GO_TOOLCHAIN ?= go1.27.0
 GOLANGCI_LINT ?= github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
