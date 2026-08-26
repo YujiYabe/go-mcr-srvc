@@ -53,6 +53,14 @@ func TestHeaderToContextRestoresPermissionList(t *testing.T) {
 	}
 }
 
+func TestContextToHeaderWithoutRequestContextReturnsEmptyHeaders(t *testing.T) {
+	headers := ContextToHeader(context.Background())
+
+	if len(headers) != 0 {
+		t.Fatalf("expected empty headers, got %d", len(headers))
+	}
+}
+
 func newRequestContextForTest(t *testing.T) *requestContextMiddleware.RequestContext {
 	t.Helper()
 

@@ -17,9 +17,12 @@ import (
 func ContextToMetadata(
 	ctx context.Context,
 ) context.Context {
-	metaDataMap := map[string]string{}
-
 	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	if requestContext == nil {
+		return ctx
+	}
+
+	metaDataMap := map[string]string{}
 
 	// string value
 	metaDataMap[string(typeObject.TraceIDHeaderName)] = requestContext.TraceID().GetValue()

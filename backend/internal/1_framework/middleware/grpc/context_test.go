@@ -36,3 +36,16 @@ func TestMetadataToContextRestoresPermissionList(t *testing.T) {
 		t.Fatalf("expected 2 permissions, got %d", permissionList.Count())
 	}
 }
+
+func TestContextToMetadataWithoutRequestContextReturnsOriginalContext(t *testing.T) {
+	ctx := context.Background()
+
+	got := ContextToMetadata(ctx)
+
+	if got != ctx {
+		t.Fatal("expected original context")
+	}
+	if _, ok := metadata.FromOutgoingContext(got); ok {
+		t.Fatal("expected no outgoing metadata")
+	}
+}
