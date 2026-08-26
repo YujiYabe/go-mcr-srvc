@@ -4,7 +4,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	v1 "backend/internal/1_framework/in/go-echo/handlers/v1"
 	"backend/internal/1_framework/in/go-echo/openapi"
 	httpMiddleware "backend/internal/1_framework/middleware/http"
 	"backend/internal/2_adapter/controller"
@@ -75,21 +74,12 @@ func NewEcho() *echo.Echo {
 
 // Start ...
 func (receiver *GoEcho) Start() error {
-	group := receiver.EchoEcho.Group("")
-
 	server := &ServerInterfaceImpl{
 		Controller: receiver.Controller,
 	}
 	openapi.RegisterHandlers(
 		receiver.EchoEcho,
 		server,
-	)
-
-	v1.NewRoute(
-		receiver.EchoEcho,
-		receiver.Controller,
-		group,
-		receiver.authConfig,
 	)
 
 	return receiver.EchoEcho.Start(":" + receiver.port)

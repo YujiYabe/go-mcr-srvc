@@ -8,11 +8,11 @@ servers:
 
 paths:
   /v1/users:
-    $ref: './paths/users.yaml'
+    $ref: './paths/v1/users.yaml'
   /v1/health:
-    $ref: './paths/health.yaml'
+    $ref: './paths/v1/health.yaml'
   /v1/to-pubsub:
-    $ref: './paths/to-pubsub.yaml'
+    $ref: './paths/v1/to-pubsub.yaml'
 
 components:
   schemas:

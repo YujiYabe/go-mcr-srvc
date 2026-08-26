@@ -16,10 +16,10 @@ import (
 	"backend/internal/logger"
 )
 
-func GetUsers(
+func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
-	getUsersParams openapi.GetUsersParams,
+	getUsersParams openapi.V1UsersGetParams,
 ) error {
 	ctx := echoContext.Request().Context()
 	requestContext := requestContextMiddleware.GetRequestContext(ctx)
@@ -36,7 +36,18 @@ func GetUsers(
 	responseList := []httpParameter.V1User{}
 	var requestErr error
 
-	// ゴルーチンで処理を実行
+	// 通常の GET request であれば handler 内で同期的に処理してもよいが、
+	// マイクロサービス化すると controller/usecase の先で DB だけでなく
+	// gRPC や Pub/Sub など別サービスへの I/O が発生する可能性がある。
+	// その場合、下流サービスの遅延・停止・ネットワーク待ちによって
+	// HTTP handler が長時間ブロックされると、呼び出し元へ timeout を返す制御や
+	// request context のキャンセル伝播が見えづらくなる。
+	//
+	// ここでは実処理を goroutine 側に逃がし、handler 側は select で
+	// 「処理完了」と「request context の timeout/cancel」のどちらが先に来るかを待つ。
+	// これにより、下流処理が時間内に終われば通常レスポンスを返し、
+	// request context の期限を超えた場合は HTTP request として明示的に
+	// StatusRequestTimeout を返せるようにしている。
 	go func() {
 		user := httpParameter.V1User{
 			Name:  getUsersParams.Name,

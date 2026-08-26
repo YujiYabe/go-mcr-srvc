@@ -1,6 +1,6 @@
 get:
   summary: Get all users
-  operationId: getUsers
+  operationId: v1UsersGet
   parameters:
   - name: name
     in: query
@@ -24,12 +24,12 @@ get:
             type: array
             items:
               $ref: '#/components/schemas/User'
-              # $ref: '../components/schemas/User.yaml'
+              # $ref: '../../components/schemas/User.yaml'
     '404':
-      $ref: '../components/responses/NotFound.yaml'
+      $ref: '../../components/responses/NotFound.yaml'
 post:
   summary: Create a user
-  operationId: createUser
+  operationId: v1UsersPost
   requestBody:
     description: User object to create
     required: true
@@ -37,7 +37,7 @@ post:
       application/json:
         schema:
           $ref: '#/components/schemas/User'
-          # $ref: '../components/schemas/User.yaml'
+          # $ref: '../../components/schemas/User.yaml'
   responses:
     '201':
       description: User created successfully'
@@ -45,4 +45,4 @@ post:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
-            # $ref: '../components/schemas/User.yaml'
+            # $ref: '../../components/schemas/User.yaml'

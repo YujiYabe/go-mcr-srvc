@@ -1,6 +1,6 @@
 get:
   summary: send to pubsub
-  operationId: toPubsub
+  operationId: v1ToPubsubGet
   responses:
     '200':
       description: test

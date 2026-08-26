@@ -6,7 +6,7 @@ import (
 	"backend/internal/2_adapter/controller"
 )
 
-func PublishTestTopic(
+func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
 ) error {
