@@ -1,8 +1,13 @@
 version: "2"
 linters:
   enable:
-    - gosec
+    - govet
     - staticcheck
+    - errcheck
+    - gosec
+    - ineffassign
+    - gocyclo
+    - unused
   settings:
     gosec:
       excludes:
