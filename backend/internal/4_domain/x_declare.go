@@ -5,18 +5,6 @@ import (
 	serviceObject "backend/internal/4_domain/service_object"
 )
 
-type (
-	domain struct{}
-
-	// ToDomain ...
-	ToDomain interface {
-		EnsurePrimaryEmploymentAssignable(
-			user groupObject.User,
-			userEmployment groupObject.UserEmployment,
-		) error
-	}
-)
-
 // NewDomain ...
 func NewDomain() ToDomain {
 	return &domain{}
@@ -29,3 +17,15 @@ func (receiver *domain) EnsurePrimaryEmploymentAssignable(
 	return serviceObject.NewPrimaryEmploymentAssignmentPolicy().
 		EnsureAssignable(user, userEmployment)
 }
+
+type (
+	domain struct{}
+
+	// ToDomain ...
+	ToDomain interface {
+		EnsurePrimaryEmploymentAssignable(
+			user groupObject.User,
+			userEmployment groupObject.UserEmployment,
+		) error
+	}
+)
