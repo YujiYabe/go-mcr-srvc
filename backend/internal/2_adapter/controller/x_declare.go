@@ -3,44 +3,18 @@ package controller
 import (
 	"context"
 
-	gatewayDB "backend/internal/2_adapter/gateway/db"
-	gatewayExternal "backend/internal/2_adapter/gateway/external"
 	usecase "backend/internal/3_usecase"
 
-	domain "backend/internal/4_domain"
 	groupObject "backend/internal/4_domain/group_object"
 	typeObject "backend/internal/4_domain/type_object"
 )
 
 // NewController ...
 func NewController(
-	ToPostgres gatewayDB.ToPostgres,
-	ToRedis gatewayDB.ToRedis,
-	ToAuth0 gatewayExternal.ToAuth0,
-	ToGRPC gatewayExternal.ToGRPC,
-	ToPubSub gatewayExternal.ToPubSub,
+	useCase usecase.ToUseCase,
 ) (
 	toController ToController,
 ) {
-	toDomain := domain.NewDomain()
-
-	toGatewayDB := gatewayDB.NewGatewayDB(
-		ToPostgres,
-		ToRedis,
-	)
-
-	toGatewayExternal := gatewayExternal.NewGatewayExternal(
-		ToAuth0,
-		ToGRPC,
-		ToPubSub,
-	)
-
-	useCase := usecase.NewUseCase(
-		toDomain,
-		toGatewayDB,
-		toGatewayExternal,
-	)
-
 	toController = &controller{
 		UseCase: useCase,
 	}
