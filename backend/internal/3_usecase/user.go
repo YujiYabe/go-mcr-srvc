@@ -86,7 +86,7 @@ func (receiver *useCase) GetUserListViaGRPC(
 		err = fmt.Errorf("GetUserListViaGRPC: user search condition is required")
 		return
 	}
-	resUserList, err = receiver.ToGatewayExternal.ViaGRPC(
+	resUserList, err = receiver.ToGatewayExternal.GetUserViaGRPC(
 		ctx,
 		reqUser,
 	)

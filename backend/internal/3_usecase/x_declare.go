@@ -83,7 +83,7 @@ type (
 			err error,
 		)
 
-		ViaGRPC(
+		GetUserViaGRPC(
 			ctx context.Context,
 			reqUser groupObject.User,
 		) (
