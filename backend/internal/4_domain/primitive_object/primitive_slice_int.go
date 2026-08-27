@@ -4,10 +4,10 @@ import "fmt"
 
 // ______________________________________
 type PrimitiveSliceInt struct {
-	value     []PrimitiveInt // primitive_object.PrimitiveInt
-	isNil     bool           // nil状態を示すフラグ
-	maxLength *uint          // 最大列長
-	minLength *uint          // 最小列長
+	value     []PrimitiveIntX[int]
+	isNil     bool  // nil状態を示すフラグ
+	maxLength *uint // 最大列長
+	minLength *uint // 最小列長
 }
 
 // ______________________________________
@@ -15,10 +15,10 @@ type PrimitiveSliceIntOption func(*PrimitiveSliceInt)
 
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithValue(
-	value []PrimitiveInt,
+	value []PrimitiveIntX[int],
 ) PrimitiveSliceIntOption {
 	isNil := value == nil
-	var valueIntSlice []PrimitiveInt
+	var valueIntSlice []PrimitiveIntX[int]
 	if value != nil {
 		valueIntSlice = value
 	}
@@ -61,7 +61,7 @@ func NewPrimitiveSliceInt(
 	primitiveSliceInt *PrimitiveSliceInt,
 ) {
 	primitiveSliceInt = &PrimitiveSliceInt{
-		value:     []PrimitiveInt{},
+		value:     []PrimitiveIntX[int]{},
 		isNil:     true,
 		maxLength: nil,
 		minLength: nil,
@@ -163,7 +163,7 @@ func (receiver PrimitiveSliceInt) ValidationMin() error {
 
 // ______________________________________
 // GetValue returns the underlying int slice
-func (receiver PrimitiveSliceInt) GetValue() []PrimitiveInt {
+func (receiver PrimitiveSliceInt) GetValue() []PrimitiveIntX[int] {
 	if receiver.isNil {
 		return nil
 	}

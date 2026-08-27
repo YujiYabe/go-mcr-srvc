@@ -12,7 +12,7 @@ type UIntX interface {
 }
 
 // ______________________________________
-type PrimitiveUIntX[T IntX] struct {
+type PrimitiveUIntX[T UIntX] struct {
 	value    T
 	isNil    bool
 	maxDigit *uint
@@ -20,10 +20,10 @@ type PrimitiveUIntX[T IntX] struct {
 }
 
 // ______________________________________
-type PrimitiveUIntXOption[T IntX] func(*PrimitiveUIntX[T])
+type PrimitiveUIntXOption[T UIntX] func(*PrimitiveUIntX[T])
 
 // ______________________________________
-func NewPrimitiveUIntX[T IntX](
+func NewPrimitiveUIntX[T UIntX](
 	options ...func(*PrimitiveUIntX[T]),
 ) *PrimitiveUIntX[T] {
 	primitive := &PrimitiveUIntX[T]{
@@ -69,12 +69,8 @@ func (receiver PrimitiveUIntX[T]) ValidationMaxDigit() error {
 		return nil
 	}
 
-	strValue := strconv.FormatInt(int64(receiver.value), 10)
+	strValue := strconv.FormatUint(uint64(receiver.value), 10)
 	digitCount := uint(len(strValue))
-
-	if receiver.value < 0 {
-		digitCount--
-	}
 
 	if digitCount > *receiver.maxDigit {
 		return receiver.newErrorString("max limitation")
@@ -110,15 +106,10 @@ func (receiver PrimitiveUIntX[T]) ValidationMinDigit() error {
 		return nil
 	}
 
-	strValue := strconv.FormatInt(int64(receiver.value), 10)
+	strValue := strconv.FormatUint(uint64(receiver.value), 10)
 
 	// 桁数を取得
 	digitCount := uint(len(strValue))
-
-	// 負の値の場合、マイナス記号を除いた桁数を計算
-	if receiver.value < 0 {
-		digitCount-- // マイナス符号を引く
-	}
 
 	if digitCount < *receiver.minDigit {
 		return receiver.newErrorString("min limitation")
