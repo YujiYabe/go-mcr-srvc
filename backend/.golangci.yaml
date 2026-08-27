@@ -11,12 +11,12 @@ linters:
     - unused                    #1 未使用の変数、関数、型、定数などを検出(不要コードの整理)
 
     # #2 有効化推奨
-    # - gocyclo                   #2 関数の循環的複雑度を検出(複雑すぎる処理の目安)
-    # - bidichk                   #2 Unicodeの双方向制御文字を検出(ソース偽装対策)
-    # - bodyclose                 #2 HTTPレスポンスボディのclose漏れを検出(接続リーク防止)
+    - gocyclo                   #2 関数の循環的複雑度を検出(複雑すぎる処理の目安)
+    - bidichk                   #2 Unicodeの双方向制御文字を検出(ソース偽装対策)
+    - bodyclose                 #2 HTTPレスポンスボディのclose漏れを検出(接続リーク防止)
     - contextcheck              #2 context.Contextを継承しない呼び出しを検出(キャンセル伝播漏れ防止)
-    # - copyloopvar               #2 ループ変数の不要コピーを検出(Go 1.22以降では用途限定)
-    # - dupword                   #2 コメントや文字列内の重複単語を検出(文書品質向上)
+    - copyloopvar               #2 ループ変数の不要コピーを検出(Go 1.22以降では用途限定)
+    - dupword                   #2 コメントや文字列内の重複単語を検出(文書品質向上)
     # - durationcheck             #2 time.Duration同士の不自然な乗算を検出(時間計算ミス防止)
     # - errchkjson                #2 JSONエンコード/デコード時のerror未確認を検出
     # - errorlint                 #2 errors.Is/As/%wの使い方を検査(error wrapping品質向上)
