@@ -88,6 +88,40 @@ func (receiver PrimitiveSliceString) GetValue() []PrimitiveString {
 }
 
 // ______________________________________
+func (receiver PrimitiveSliceString) GetIsNil() bool {
+	return receiver.isNil
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceString) Count() int {
+	if receiver.GetIsNil() {
+		return 0
+	}
+
+	return len(receiver.value)
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceString) IsEmpty() bool {
+	return receiver.Count() == 0
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceString) HasValue(value string) bool {
+	if receiver.GetIsNil() {
+		return false
+	}
+
+	for _, content := range receiver.value {
+		if content.Equal(value) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// ______________________________________
 func (receiver *PrimitiveSliceString) SortAsc() {
 	sort.Slice(receiver.value, func(i, j int) bool {
 		return receiver.value[i].value < receiver.value[j].value
@@ -130,7 +164,7 @@ func (receiver PrimitiveSliceString) ValidationMaxLength() error {
 		return nil
 	}
 
-	if uint(len(receiver.value)) > *receiver.MaxLength {
+	if uint(receiver.Count()) > *receiver.MaxLength {
 		return fmt.Errorf(
 			"PrimitiveSliceString: length exceeds maximum allowed (%d)",
 			*receiver.MaxLength,
@@ -146,7 +180,7 @@ func (receiver PrimitiveSliceString) ValidationMinLength() error {
 		return nil
 	}
 
-	if uint(len(receiver.value)) < *receiver.MinLength {
+	if uint(receiver.Count()) < *receiver.MinLength {
 		return fmt.Errorf(
 			"PrimitiveSliceString: length is less than minimum required (%d)",
 			*receiver.MinLength,

@@ -48,6 +48,36 @@ func (receiver PrimitiveIntX[T]) GetValue() T {
 	return receiver.value
 }
 
+// ______________________________________
+func (receiver PrimitiveIntX[T]) IsZero() bool {
+	return receiver.GetValue() == 0
+}
+
+// ______________________________________
+func (receiver PrimitiveIntX[T]) HasValue() bool {
+	return !receiver.GetIsNil()
+}
+
+// ______________________________________
+func (receiver PrimitiveIntX[T]) Equal(value T) bool {
+	return !receiver.GetIsNil() && receiver.value == value
+}
+
+// ______________________________________
+func (receiver PrimitiveIntX[T]) DigitCount() uint {
+	if receiver.GetIsNil() {
+		return 0
+	}
+
+	strValue := strconv.FormatInt(int64(receiver.value), 10)
+	digitCount := uint(len(strValue))
+	if receiver.value < 0 {
+		digitCount--
+	}
+
+	return digitCount
+}
+
 func (receiver PrimitiveIntX[T]) Validation() error {
 	if receiver.GetIsNil() {
 		return nil
@@ -69,14 +99,7 @@ func (receiver PrimitiveIntX[T]) ValidationMaxDigit() error {
 		return nil
 	}
 
-	strValue := strconv.FormatInt(int64(receiver.value), 10)
-	digitCount := uint(len(strValue))
-
-	if receiver.value < 0 {
-		digitCount--
-	}
-
-	if digitCount > *receiver.maxDigit {
+	if receiver.DigitCount() > *receiver.maxDigit {
 		return receiver.newErrorString("max limitation")
 	}
 
@@ -110,17 +133,7 @@ func (receiver PrimitiveIntX[T]) ValidationMinDigit() error {
 		return nil
 	}
 
-	strValue := strconv.FormatInt(int64(receiver.value), 10)
-
-	// 桁数を取得
-	digitCount := uint(len(strValue))
-
-	// 負の値の場合、マイナス記号を除いた桁数を計算
-	if receiver.value < 0 {
-		digitCount-- // マイナス符号を引く
-	}
-
-	if digitCount < *receiver.minDigit {
+	if receiver.DigitCount() < *receiver.minDigit {
 		return receiver.newErrorString("min limitation")
 	}
 

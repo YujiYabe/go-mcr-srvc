@@ -4,10 +4,10 @@ import "fmt"
 
 // ______________________________________
 type PrimitiveSliceInt struct {
-	value     []PrimitiveInt // primitive_object.PrimitiveInt
-	isNil     bool           // nil状態を示すフラグ
-	maxLength *uint          // 最大列長
-	minLength *uint          // 最小列長
+	value     []PrimitiveIntX[int]
+	isNil     bool  // nil状態を示すフラグ
+	maxLength *uint // 最大列長
+	minLength *uint // 最小列長
 }
 
 // ______________________________________
@@ -15,10 +15,10 @@ type PrimitiveSliceIntOption func(*PrimitiveSliceInt)
 
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithValue(
-	value []PrimitiveInt,
+	value []PrimitiveIntX[int],
 ) PrimitiveSliceIntOption {
 	isNil := value == nil
-	var valueIntSlice []PrimitiveInt
+	var valueIntSlice []PrimitiveIntX[int]
 	if value != nil {
 		valueIntSlice = value
 	}
@@ -61,7 +61,7 @@ func NewPrimitiveSliceInt(
 	primitiveSliceInt *PrimitiveSliceInt,
 ) {
 	primitiveSliceInt = &PrimitiveSliceInt{
-		value:     []PrimitiveInt{},
+		value:     []PrimitiveIntX[int]{},
 		isNil:     true,
 		maxLength: nil,
 		minLength: nil,
@@ -77,6 +77,35 @@ func NewPrimitiveSliceInt(
 // ______________________________________
 func (receiver PrimitiveSliceInt) GetIsNil() bool {
 	return receiver.isNil
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceInt) Count() int {
+	if receiver.GetIsNil() {
+		return 0
+	}
+
+	return len(receiver.value)
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceInt) IsEmpty() bool {
+	return receiver.Count() == 0
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceInt) HasValue(value int) bool {
+	if receiver.GetIsNil() {
+		return false
+	}
+
+	for _, content := range receiver.value {
+		if content.Equal(value) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // ______________________________________
@@ -137,7 +166,7 @@ func (receiver PrimitiveSliceInt) ValidationMax() error {
 		return nil
 	}
 
-	if len(receiver.value) > int(*receiver.maxLength) {
+	if receiver.Count() > int(*receiver.maxLength) {
 		return receiver.newErrorString("max limitation")
 	}
 
@@ -154,7 +183,7 @@ func (receiver PrimitiveSliceInt) ValidationMin() error {
 		return nil
 	}
 
-	if len(receiver.value) < int(*receiver.minLength) {
+	if receiver.Count() < int(*receiver.minLength) {
 		return receiver.newErrorString("min limitation")
 	}
 
@@ -163,7 +192,7 @@ func (receiver PrimitiveSliceInt) ValidationMin() error {
 
 // ______________________________________
 // GetValue returns the underlying int slice
-func (receiver PrimitiveSliceInt) GetValue() []PrimitiveInt {
+func (receiver PrimitiveSliceInt) GetValue() []PrimitiveIntX[int] {
 	if receiver.isNil {
 		return nil
 	}

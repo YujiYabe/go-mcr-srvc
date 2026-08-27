@@ -7,9 +7,8 @@
 
 ## 実装されている型
 
-- PrimitiveInt - 整数型
-- PrimitiveInt64 - 64bit整数型
-- PrimitiveUint - 符号なし整数型
+- PrimitiveIntX - 整数型
+- PrimitiveUIntX - 符号なし整数型
 - PrimitiveString - 文字列型
 - PrimitiveSliceInt - 整数配列型
 - PrimitiveSliceString - 文字列配列型
