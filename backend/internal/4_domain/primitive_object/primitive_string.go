@@ -128,6 +128,29 @@ func (receiver PrimitiveString) GetValue() string {
 }
 
 // ______________________________________
+func (receiver PrimitiveString) Length() uint {
+	if receiver.GetIsNil() {
+		return 0
+	}
+
+	return uint(utf8.RuneCountInString(receiver.value))
+}
+
+// ______________________________________
+func (receiver PrimitiveString) IsEmpty() bool {
+	return receiver.Length() == 0
+}
+
+// ______________________________________
+func (receiver PrimitiveString) HasValue() bool {
+	return !receiver.GetIsNil() && !receiver.IsEmpty()
+}
+
+// ______________________________________
+func (receiver PrimitiveString) Equal(value string) bool {
+	return !receiver.GetIsNil() && receiver.value == value
+}
+
 // ______________________________________
 func (receiver PrimitiveString) Validation() error {
 	if receiver.GetIsNil() {
@@ -156,7 +179,7 @@ func (receiver PrimitiveString) ValidationMax() error {
 		return nil
 	}
 
-	if utf8.RuneCountInString(receiver.value) > int(*receiver.maxLength) {
+	if receiver.Length() > *receiver.maxLength {
 		return receiver.newErrorString("max limitation")
 	}
 
@@ -174,7 +197,7 @@ func (receiver PrimitiveString) ValidationMin() error {
 		return nil
 	}
 
-	if utf8.RuneCountInString(receiver.value) < int(*receiver.minLength) {
+	if receiver.Length() < *receiver.minLength {
 		return receiver.newErrorString("min limitation")
 	}
 

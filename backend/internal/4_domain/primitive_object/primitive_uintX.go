@@ -48,6 +48,30 @@ func (receiver PrimitiveUIntX[T]) GetValue() T {
 	return receiver.value
 }
 
+// ______________________________________
+func (receiver PrimitiveUIntX[T]) IsZero() bool {
+	return receiver.GetValue() == 0
+}
+
+// ______________________________________
+func (receiver PrimitiveUIntX[T]) HasValue() bool {
+	return !receiver.GetIsNil()
+}
+
+// ______________________________________
+func (receiver PrimitiveUIntX[T]) Equal(value T) bool {
+	return !receiver.GetIsNil() && receiver.value == value
+}
+
+// ______________________________________
+func (receiver PrimitiveUIntX[T]) DigitCount() uint {
+	if receiver.GetIsNil() {
+		return 0
+	}
+
+	return uint(len(strconv.FormatUint(uint64(receiver.value), 10)))
+}
+
 func (receiver PrimitiveUIntX[T]) Validation() error {
 	if receiver.GetIsNil() {
 		return nil
@@ -69,10 +93,7 @@ func (receiver PrimitiveUIntX[T]) ValidationMaxDigit() error {
 		return nil
 	}
 
-	strValue := strconv.FormatUint(uint64(receiver.value), 10)
-	digitCount := uint(len(strValue))
-
-	if digitCount > *receiver.maxDigit {
+	if receiver.DigitCount() > *receiver.maxDigit {
 		return receiver.newErrorString("max limitation")
 	}
 
@@ -106,12 +127,7 @@ func (receiver PrimitiveUIntX[T]) ValidationMinDigit() error {
 		return nil
 	}
 
-	strValue := strconv.FormatUint(uint64(receiver.value), 10)
-
-	// 桁数を取得
-	digitCount := uint(len(strValue))
-
-	if digitCount < *receiver.minDigit {
+	if receiver.DigitCount() < *receiver.minDigit {
 		return receiver.newErrorString("min limitation")
 	}
 

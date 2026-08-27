@@ -80,6 +80,35 @@ func (receiver PrimitiveSliceInt) GetIsNil() bool {
 }
 
 // ______________________________________
+func (receiver PrimitiveSliceInt) Count() int {
+	if receiver.GetIsNil() {
+		return 0
+	}
+
+	return len(receiver.value)
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceInt) IsEmpty() bool {
+	return receiver.Count() == 0
+}
+
+// ______________________________________
+func (receiver PrimitiveSliceInt) HasValue(value int) bool {
+	if receiver.GetIsNil() {
+		return false
+	}
+
+	for _, content := range receiver.value {
+		if content.Equal(value) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// ______________________________________
 func (receiver *PrimitiveSliceInt) CheckNil(
 	value *int,
 ) (
@@ -137,7 +166,7 @@ func (receiver PrimitiveSliceInt) ValidationMax() error {
 		return nil
 	}
 
-	if len(receiver.value) > int(*receiver.maxLength) {
+	if receiver.Count() > int(*receiver.maxLength) {
 		return receiver.newErrorString("max limitation")
 	}
 
@@ -154,7 +183,7 @@ func (receiver PrimitiveSliceInt) ValidationMin() error {
 		return nil
 	}
 
-	if len(receiver.value) < int(*receiver.minLength) {
+	if receiver.Count() < int(*receiver.minLength) {
 		return receiver.newErrorString("min limitation")
 	}
 
