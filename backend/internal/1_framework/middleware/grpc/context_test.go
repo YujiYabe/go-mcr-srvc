@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc/metadata"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	typeObject "backend/internal/4_domain/type_object"
 )
 
@@ -33,7 +33,7 @@ func TestMetadataToContextRestoresPermissionList(t *testing.T) {
 	)
 	ctx := MetadataToContext(incomingCtx)
 
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		t.Fatal("expected request context")
 	}
@@ -75,8 +75,8 @@ func newContextForTest(t *testing.T) context.Context {
 	locale := "ja-JP"
 	timeZone := "AsiaTokyo"
 
-	requestContext, err := requestContextMiddleware.NewRequestContext(
-		&requestContextMiddleware.NewRequestContextArgs{
+	requestContext, err := middlewareRequestContext.NewRequestContext(
+		&middlewareRequestContext.NewRequestContextArgs{
 			TraceID:     &traceID,
 			ClientIP:    &clientIP,
 			UserAgent:   &userAgent,
@@ -97,7 +97,7 @@ func newContextForTest(t *testing.T) context.Context {
 
 	return context.WithValue(
 		context.Background(),
-		requestContextMiddleware.RequestContextContextName,
+		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
 }
@@ -105,7 +105,7 @@ func newContextForTest(t *testing.T) context.Context {
 func assertRequestContextForTest(t *testing.T, ctx context.Context) {
 	t.Helper()
 
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		t.Fatal("expected request context")
 	}

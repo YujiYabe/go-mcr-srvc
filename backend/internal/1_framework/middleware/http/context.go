@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
@@ -38,14 +38,14 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			// 		Origin - CORSリクエストの送信元
 			// 		Referer - リクエスト元のURL
 
-			newRequestContextArgs := &requestContextMiddleware.NewRequestContextArgs{
+			newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{
 				ClientIP:  &clientIP,
 				UserAgent: &userAgent,
 				Locale:    &locale,
 				TimeZone:  &timeZone,
 			}
 
-			requestContext, err := requestContextMiddleware.NewRequestContext(
+			requestContext, err := middlewareRequestContext.NewRequestContext(
 				newRequestContextArgs,
 			)
 			if err != nil {
@@ -54,7 +54,7 @@ func ContextMiddleware() echo.MiddlewareFunc {
 			}
 			ctx := context.WithValue(
 				c.Request().Context(),
-				requestContextMiddleware.RequestContextContextName,
+				middlewareRequestContext.RequestContextContextName,
 				*requestContext,
 			)
 

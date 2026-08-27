@@ -6,7 +6,7 @@ import (
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	typeObject "backend/internal/4_domain/type_object"
 )
 
@@ -14,7 +14,7 @@ func TestContextToHeaderAndHeaderToContextRoundTrip(t *testing.T) {
 	requestContext := newRequestContextForTest(t)
 	ctx := context.WithValue(
 		context.Background(),
-		requestContextMiddleware.RequestContextContextName,
+		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
 
@@ -27,7 +27,7 @@ func TestContextToHeaderIncludesPermissionList(t *testing.T) {
 	requestContext := newRequestContextForTest(t)
 	ctx := context.WithValue(
 		context.Background(),
-		requestContextMiddleware.RequestContextContextName,
+		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
 
@@ -49,7 +49,7 @@ func TestHeaderToContextRestoresPermissionList(t *testing.T) {
 		},
 	})
 
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		t.Fatal("expected request context")
 	}
@@ -74,7 +74,7 @@ func TestContextToHeaderWithoutRequestContextReturnsEmptyHeaders(t *testing.T) {
 	}
 }
 
-func newRequestContextForTest(t *testing.T) *requestContextMiddleware.RequestContext {
+func newRequestContextForTest(t *testing.T) *middlewareRequestContext.RequestContext {
 	t.Helper()
 
 	traceID := "123e4567-e89b-12d3-a456-426614174000"
@@ -86,8 +86,8 @@ func newRequestContextForTest(t *testing.T) *requestContextMiddleware.RequestCon
 	locale := "ja-JP"
 	timeZone := "AsiaTokyo"
 
-	requestContext, err := requestContextMiddleware.NewRequestContext(
-		&requestContextMiddleware.NewRequestContextArgs{
+	requestContext, err := middlewareRequestContext.NewRequestContext(
+		&middlewareRequestContext.NewRequestContextArgs{
 			TraceID:     &traceID,
 			ClientIP:    &clientIP,
 			UserAgent:   &userAgent,
@@ -112,7 +112,7 @@ func newRequestContextForTest(t *testing.T) *requestContextMiddleware.RequestCon
 func assertRequestContextForTest(t *testing.T, ctx context.Context) {
 	t.Helper()
 
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		t.Fatal("expected request context")
 	}

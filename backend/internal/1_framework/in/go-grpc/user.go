@@ -5,7 +5,7 @@ import (
 	"time"
 
 	grpcMiddleware "backend/internal/1_framework/middleware/grpc"
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	"backend/internal/logger"
 )
@@ -24,7 +24,7 @@ func (receiver *Server) GetUserListByCondition(
 	v1GetUserListByConditionResponse *grpcParameter.GetUserListByConditionResponse,
 	err error,
 ) {
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		return nil, ctx.Err()
 	}

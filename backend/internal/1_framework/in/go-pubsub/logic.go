@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	"backend/internal/logger"
 )
 
@@ -43,7 +43,7 @@ func (receiver *GoPubSub) subscribeTestTopic(
 			logger.Logging(ctx, fmt.Sprintf("%s received message: %s", topicName, string(msg.Value)))
 			// RequestContextを生成してコントローラーに渡す
 			messageCtx := pubsubMiddleware.HeaderToContext(msg.Headers)
-			requestContext := requestContextMiddleware.GetRequestContext(messageCtx)
+			requestContext := middlewareRequestContext.GetRequestContext(messageCtx)
 			logger.Logging(messageCtx, map[string]interface{}{
 				"traceID":          requestContext.TraceID().GetValue(),
 				"requestStartTime": requestContext.RequestStartTime().GetValue(),
