@@ -53,7 +53,7 @@ type (
 			err error,
 		)
 
-		ViaGRPC(
+		GetUserListViaGRPC(
 			ctx context.Context,
 			reqUser groupObject.User,
 		) (

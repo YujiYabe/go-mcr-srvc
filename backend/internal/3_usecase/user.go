@@ -7,42 +7,6 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
-type (
-
-	// ToGatewayDB ...
-	ToGatewayDB interface {
-		RunInTransaction(
-			ctx context.Context,
-			fn func(context.Context) error,
-		) error
-
-		GetUserList(
-			ctx context.Context,
-		) (
-			userList groupObject.UserList,
-			err error,
-		)
-
-		GetUserListByCondition(
-			ctx context.Context,
-			reqUser groupObject.User,
-		) (
-			resUserList groupObject.UserList,
-			err error,
-		)
-
-		UpdateUser(
-			ctx context.Context,
-			newUser groupObject.User,
-		) error
-
-		UpdateUserEmployment(
-			ctx context.Context,
-			userEmployment groupObject.UserEmployment,
-		) error
-	}
-)
-
 func (receiver *useCase) GetUserList(
 	ctx context.Context,
 ) (
@@ -56,6 +20,7 @@ func (receiver *useCase) GetUserList(
 	if err != nil {
 		err = fmt.Errorf("GetUserList: %w", err)
 	}
+
 	return
 }
 
@@ -105,6 +70,30 @@ func (receiver *useCase) UpdateUser(
 	}
 
 	return nil
+}
+
+func (receiver *useCase) GetUserListViaGRPC(
+	ctx context.Context,
+	reqUser groupObject.User,
+) (
+	resUserList groupObject.UserList,
+	err error,
+) {
+	if err = ensureContextReady(ctx, "GetUserListViaGRPC"); err != nil {
+		return
+	}
+	if !reqUser.CanBeUsedAsSearchCondition() {
+		err = fmt.Errorf("GetUserListViaGRPC: user search condition is required")
+		return
+	}
+	resUserList, err = receiver.ToGatewayExternal.ViaGRPC(
+		ctx,
+		reqUser,
+	)
+	if err != nil {
+		err = fmt.Errorf("GetUserListViaGRPC: %w", err)
+	}
+	return
 }
 
 func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
