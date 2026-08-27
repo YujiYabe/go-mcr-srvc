@@ -7,8 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
-	httpParameter "backend/internal/1_framework/parameter/http"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	groupObject "backend/internal/4_domain/group_object"
 
 	"backend/internal/1_framework/in/go-echo/openapi"
@@ -22,7 +21,7 @@ func Get(
 	getUsersParams openapi.V1UsersGetParams,
 ) error {
 	ctx := echoContext.Request().Context()
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 
 	timeoutMillSecond := requestContext.TimeOutMillSecond().GetValue()
 
@@ -33,7 +32,7 @@ func Get(
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
 	done := make(chan struct{})
 
-	responseList := []httpParameter.V1User{}
+	responseList := []openapi.User{}
 	var requestErr error
 
 	// 通常の GET request であれば handler 内で同期的に処理してもよいが、
@@ -49,14 +48,9 @@ func Get(
 	// request context の期限を超えた場合は HTTP request として明示的に
 	// StatusRequestTimeout を返せるようにしている。
 	go func() {
-		user := httpParameter.V1User{
-			Name:  getUsersParams.Name,
-			Email: getUsersParams.Email,
-		}
-
 		responseList, requestErr = handleUsersRequest(
 			ctxWithTimeout,
-			user,
+			getUsersParams,
 			toController,
 		)
 		if requestErr != nil {
@@ -90,19 +84,18 @@ func Get(
 
 func handleUsersRequest(
 	ctx context.Context,
-	user httpParameter.V1User,
+	getUsersParams openapi.V1UsersGetParams,
 	toController controller.ToController,
 ) (
-	responseList []httpParameter.V1User,
+	responseList []openapi.User,
 	err error,
 ) {
-	responseList = []httpParameter.V1User{}
+	responseList = []openapi.User{}
 
 	reqUser, err := groupObject.NewUser(
 		&groupObject.NewUserArgs{
-			ID:    user.ID,
-			Name:  user.Name,
-			Email: user.Email,
+			Name:  getUsersParams.Name,
+			Email: getUsersParams.Email,
 		},
 	)
 	if err != nil {
@@ -125,10 +118,10 @@ func handleUsersRequest(
 		email := user.Email().GetValue()
 		responseList = append(
 			responseList,
-			httpParameter.V1User{
-				ID:    &id,
-				Name:  &name,
-				Email: &email,
+			openapi.User{
+				Id:    id,
+				Name:  name,
+				Email: email,
 			},
 		)
 	}
