@@ -32,11 +32,11 @@ linters:
     - nolintlint                #2 nolintコメントの形式/不要指定を検査(抑制の健全性維持)
     - nosprintfhostport         #2 host:port生成でfmt.Sprintfを使う危険を検出(IPv6対応漏れ防止)
     - revive                    #2 golint後継のスタイル/品質チェック(設定調整で有用)
-    # - rowserrcheck              #2 database/sqlのRows.Err確認漏れを検出(DB読み取りエラー防止)
-    # - sqlclosecheck             #2 database/sqlのRows/Stmt close漏れを検出(リソースリーク防止)
-    # - thelper                   #2 テストヘルパーのt.Helper()漏れを検出(失敗位置を見やすくする)
-    # - unconvert                 #2 不要な型変換を検出(コード簡素化)
-    # - wastedassign              #2 代入値が後で上書きされるケースを検出(バグ/不要処理の発見)
+    - rowserrcheck              #2 database/sqlのRows.Err確認漏れを検出(DB読み取りエラー防止)
+    - sqlclosecheck             #2 database/sqlのRows/Stmt close漏れを検出(リソースリーク防止)
+    - thelper                   #2 テストヘルパーのt.Helper()漏れを検出(失敗位置を見やすくする)
+    - unconvert                 #2 不要な型変換を検出(コード簡素化)
+    - wastedassign              #2 代入値が後で上書きされるケースを検出(バグ/不要処理の発見)
 
     # #3 設定調整して検討
     # - asasalint                 #3 pass-anything系APIへの[]any渡しを検出(テスト/モック品質向け)

@@ -28,13 +28,10 @@ func (receiver *ClientSecret) setValue(
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
-	minLength := uint(clientSecretMinLength)
-	maxLength := uint(clientSecretMaxLength)
-
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
-		primitiveString.WithMaxLength(&maxLength),
-		primitiveString.WithMinLength(&minLength),
+		primitiveString.WithMaxLength(&clientSecretMaxLength),
+		primitiveString.WithMinLength(&clientSecretMinLength),
 	)
 	if err := receiver.content.Validation(); err != nil {
 		return err
