@@ -131,7 +131,7 @@ func (receiver PrimitiveInt) Validation() error {
 
 // ______________________________________
 func (receiver PrimitiveInt) ValidationMaxDigit() error {
-	if receiver.maxDigit == nil { //上限値なし
+	if receiver.maxDigit == nil { // 上限値なし
 		return nil
 	}
 

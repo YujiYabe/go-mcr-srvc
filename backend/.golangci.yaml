@@ -17,14 +17,14 @@ linters:
     - contextcheck              #2 context.Contextを継承しない呼び出しを検出(キャンセル伝播漏れ防止)
     - copyloopvar               #2 ループ変数の不要コピーを検出(Go 1.22以降では用途限定)
     - dupword                   #2 コメントや文字列内の重複単語を検出(文書品質向上)
-    # - durationcheck             #2 time.Duration同士の不自然な乗算を検出(時間計算ミス防止)
-    # - errchkjson                #2 JSONエンコード/デコード時のerror未確認を検出
-    # - errorlint                 #2 errors.Is/As/%wの使い方を検査(error wrapping品質向上)
-    # - forcetypeassert           #2 uncheckedな型アサーションを検出(panic防止)
-    # - gocheckcompilerdirectives #2 //go:buildなどコンパイラ指示の誤用を検出
-    # - gocritic                  #2 多数のコード品質/バグ候補を検出(設定調整前提で有用)
-    # - makezero                  #2 makeで長さ非ゼロsliceを作ってappendするミスを検出
-    # - misspell                  #2 コメント/文字列の英単語スペルミスを検出
+    - durationcheck             #2 time.Duration同士の不自然な乗算を検出(時間計算ミス防止)
+    - errchkjson                #2 JSONエンコード/デコード時のerror未確認を検出
+    - errorlint                 #2 errors.Is/As/%wの使い方を検査(error wrapping品質向上)
+    - forcetypeassert           #2 uncheckedな型アサーションを検出(panic防止)
+    - gocheckcompilerdirectives #2 //go:buildなどコンパイラ指示の誤用を検出
+    - gocritic                  #2 多数のコード品質/バグ候補を検出(設定調整前提で有用)
+    - makezero                  #2 makeで長さ非ゼロsliceを作ってappendするミスを検出
+    - misspell                  #2 コメント/文字列の英単語スペルミスを検出
     # - nilerr                    #2 errorがあるのにnilを返す不自然な処理を検出
     # - nilnesserr                #2 nilness解析でnil誤用を検出(実験的なバグ検出)
     # - nilnil                    #2 nil,nil返却を検出(曖昧な正常/異常判定を防ぐ)

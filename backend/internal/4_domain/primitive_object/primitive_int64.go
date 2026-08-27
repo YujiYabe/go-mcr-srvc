@@ -125,7 +125,7 @@ func (receiver PrimitiveInt64) Validation() error {
 
 // ______________________________________
 func (receiver PrimitiveInt64) ValidationMaxDigit() error {
-	if receiver.maxDigit == nil { //上限値なし
+	if receiver.maxDigit == nil { // 上限値なし
 		return nil
 	}
 
@@ -154,7 +154,7 @@ func (receiver PrimitiveInt64) ValidationMaxDigit() error {
 
 // ______________________________________
 func (receiver PrimitiveInt64) ValidationMinDigit() error {
-	if receiver.minDigit == nil { //上限値なし
+	if receiver.minDigit == nil { // 上限値なし
 		return nil
 	}
 
