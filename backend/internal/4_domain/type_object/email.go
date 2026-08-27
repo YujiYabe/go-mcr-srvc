@@ -14,6 +14,10 @@ var (
 
 var emailCheckSpell = []string{}
 
+const emailPattern = `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+
+var emailRegexp = regexp.MustCompile(emailPattern)
+
 type Email struct {
 	content *primitiveObject.PrimitiveString
 }
@@ -66,18 +70,7 @@ func (receiver Email) Validation() error {
 		return nil
 	}
 
-	// メールアドレスの正規表現パターン
-	emailPattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
-
-	matched, err := regexp.MatchString(
-		emailPattern,
-		receiver.GetValue(),
-	)
-	if err != nil {
-		return fmt.Errorf("failed to validate email format: %w", err)
-	}
-
-	if !matched {
+	if !emailRegexp.MatchString(receiver.GetValue()) {
 		return fmt.Errorf("invalid email format: %s", receiver.GetValue())
 	}
 	return nil

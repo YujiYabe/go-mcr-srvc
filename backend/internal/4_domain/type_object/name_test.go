@@ -22,8 +22,6 @@ func TestNewNameRejectsInvalidValues(t *testing.T) {
 	values := []string{
 		"",
 		"1234567890123456789012345678901",
-		"盗む",
-		"暴力",
 	}
 
 	for _, value := range values {
@@ -35,5 +33,20 @@ func TestNewNameRejectsInvalidValues(t *testing.T) {
 				t.Fatal("expected invalid name to return an error")
 			}
 		})
+	}
+}
+
+func TestNewNameRejectsConfiguredCheckSpell(t *testing.T) {
+	t.Parallel()
+
+	value := "暴力"
+	checkSpell := []string{
+		"盗む",
+		"暴力",
+	}
+
+	_, err := NewName(&value, checkSpell)
+	if err == nil {
+		t.Fatal("expected configured check spell to return an error")
 	}
 }

@@ -7,37 +7,38 @@ var (
 	nameMinLength uint = 1
 )
 
-var nameCheckSpell = []string{
-	"盗む",
-	"暴力",
-}
-
 type Name struct {
 	content *primitiveObject.PrimitiveString
 }
 
 func NewName(
 	value *string,
+	checkSpell ...[]string,
 ) (
 	name Name,
 	err error,
 ) {
 	name = Name{}
-	err = name.setValue(value)
+	err = name.setValue(value, checkSpell...)
 
 	return
 }
 
 func (receiver *Name) setValue(
 	value *string,
+	checkSpell ...[]string,
 ) error {
 	primitiveString := &primitiveObject.PrimitiveString{}
+	spellList := []string{}
+	if len(checkSpell) > 0 {
+		spellList = checkSpell[0]
+	}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
 		primitiveString.WithValue(value),
 		primitiveString.WithMaxLength(&nameMaxLength),
 		primitiveString.WithMinLength(&nameMinLength),
-		primitiveString.WithCheckSpell(nameCheckSpell),
+		primitiveString.WithCheckSpell(spellList),
 	)
 	if err := receiver.content.Validation(); err != nil {
 		return err
