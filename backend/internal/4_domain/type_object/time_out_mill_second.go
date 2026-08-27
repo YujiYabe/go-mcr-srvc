@@ -13,7 +13,7 @@ const (
 
 var (
 	timeOutMillSecondMaxDigit uint = 10
-	timeOutMillSecondMinDigit uint = 0
+	timeOutMillSecondMinDigit uint
 )
 
 type TimeOutMillSecond struct {

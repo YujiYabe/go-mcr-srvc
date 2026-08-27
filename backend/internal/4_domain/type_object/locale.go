@@ -9,7 +9,7 @@ const (
 
 var (
 	localeMaxLength uint = 20
-	localeMinLength uint = 0
+	localeMinLength uint
 )
 
 type Locale struct {

@@ -13,7 +13,7 @@ const (
 
 var (
 	requestStartTimeMaxDigit uint = 20
-	requestStartTimeMinDigit uint = 0
+	requestStartTimeMinDigit uint
 )
 
 type RequestStartTime struct {

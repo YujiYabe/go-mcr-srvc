@@ -9,7 +9,7 @@ const (
 
 var (
 	userAgentMaxLength uint = 50
-	userAgentMinLength uint = 0
+	userAgentMinLength uint
 )
 
 type UserAgent struct {

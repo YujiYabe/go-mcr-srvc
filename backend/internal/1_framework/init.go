@@ -26,7 +26,7 @@ import (
 )
 
 type (
-	app struct {
+	App struct {
 		goEcho   *goEcho.GoEcho
 		goGRPC   *goGRPC.GoGRPC
 		goPubSub *goPubSub.GoPubSub
@@ -35,7 +35,7 @@ type (
 
 // NewApp ...
 func NewApp() (
-	*app,
+	*App,
 	error,
 ) {
 	ctx := context.Background()
@@ -92,7 +92,7 @@ func NewApp() (
 
 	ctrl := controller.NewController(useCase)
 
-	a := &app{
+	a := &App{
 		goGRPC: goGRPC.NewGoGRPC(
 			ctrl,
 			config.Server.GRPCAddress,
@@ -116,15 +116,15 @@ func NewApp() (
 }
 
 // Start ...
-func (receiver *app) Start() error {
+func (receiver *App) Start() error {
 	ctx := context.Background()
 	if false {
 		go func() {
-			logger.Logging(ctx, receiver.goPubSub.Start())
+			logger.Logging(ctx, receiver.goPubSub.Start(ctx))
 		}()
 	}
 	go func() {
-		if err := receiver.goGRPC.Start(); err != nil {
+		if err := receiver.goGRPC.Start(ctx); err != nil {
 			logger.Logging(ctx, err)
 		}
 	}()

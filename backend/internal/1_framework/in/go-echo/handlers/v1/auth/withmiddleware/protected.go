@@ -16,8 +16,15 @@ func protected(
 ) (
 	err error,
 ) {
-	claims := c.Get("user").(jwt.MapClaims)
-	username := claims["sub"].(string) // Example: "sub" from the token claims
+	claims, ok := c.Get("user").(jwt.MapClaims)
+	if !ok {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token claims"})
+	}
+
+	username, ok := claims["sub"].(string)
+	if !ok {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token subject"})
+	}
 
 	return c.String(
 		http.StatusOK,

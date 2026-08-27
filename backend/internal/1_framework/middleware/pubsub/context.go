@@ -7,19 +7,19 @@ import (
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	primitiveObject "backend/internal/4_domain/primitive_object"
 	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
 
 func HeaderToContext(
+	ctx context.Context,
 	headers []kafka.Header,
 ) (
-	ctx context.Context,
+	messageCtx context.Context,
 ) {
-	ctx = context.Background()
-	newRequestContextArgs := &requestContextMiddleware.NewRequestContextArgs{}
+	newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{}
 
 	// ________________________________
 	// pubsubのheaderから、traceIDを取得する
@@ -62,17 +62,17 @@ func HeaderToContext(
 		}
 	}
 
-	requestContext, err := requestContextMiddleware.NewRequestContext(
+	requestContext, err := middlewareRequestContext.NewRequestContext(
 		newRequestContextArgs,
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return
+		return ctx
 	}
 
-	ctx = context.WithValue(
+	messageCtx = context.WithValue(
 		ctx,
-		requestContextMiddleware.RequestContextContextName,
+		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
 
@@ -85,7 +85,7 @@ func ContextToHeader(
 ) (
 	headers []kafka.Header,
 ) {
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		return headers
 	}
@@ -175,5 +175,4 @@ func ContextToHeader(
 	)
 
 	return
-
 }

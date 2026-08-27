@@ -35,12 +35,12 @@ func NewGoGRPC(
 }
 
 // Start ....
-func (receiver *GoGRPC) Start() error {
-	logger.Logging(context.Background(), "start GRPC")
-	listen, err := net.Listen(
-		"tcp",
-		receiver.address,
-	)
+func (receiver *GoGRPC) Start(
+	ctx context.Context,
+) error {
+	logger.Logging(ctx, "start GRPC")
+	listenConfig := &net.ListenConfig{}
+	listen, err := listenConfig.Listen(ctx, "tcp", receiver.address)
 	if err != nil {
 		return fmt.Errorf("listen grpc: %w", err)
 	}

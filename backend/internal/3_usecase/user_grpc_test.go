@@ -26,6 +26,8 @@ func TestGetUserListViaGRPCCases(t *testing.T) {
 			wantErrText:     "user search condition is required",
 			wantGatewayCall: false,
 			buildUserInsideCase: func(t *testing.T) groupObject.User {
+				t.Helper()
+
 				return newTestUser(t, nil, nil, nil)
 			},
 		},
@@ -33,6 +35,8 @@ func TestGetUserListViaGRPCCases(t *testing.T) {
 			name:            "success",
 			wantGatewayCall: true,
 			buildUserInsideCase: func(t *testing.T) groupObject.User {
+				t.Helper()
+
 				return newTestUser(t, nil, nil, stringPointer("alice@example.com"))
 			},
 		},
@@ -43,13 +47,14 @@ func TestGetUserListViaGRPCCases(t *testing.T) {
 			wantErrText:     "GetUserListViaGRPC",
 			wantGatewayCall: true,
 			buildUserInsideCase: func(t *testing.T) groupObject.User {
+				t.Helper()
+
 				return newTestUser(t, nil, stringPointer("alice"), nil)
 			},
 		},
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 

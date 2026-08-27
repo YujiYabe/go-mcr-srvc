@@ -4,7 +4,7 @@ import primitiveObject "backend/internal/4_domain/primitive_object"
 
 var (
 	clientIDMaxLength uint = 99
-	clientIDMinLength uint = 0
+	clientIDMinLength uint
 )
 
 type ClientID struct {

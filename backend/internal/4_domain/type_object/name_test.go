@@ -27,7 +27,6 @@ func TestNewNameRejectsInvalidValues(t *testing.T) {
 	}
 
 	for _, value := range values {
-		value := value
 		t.Run(value, func(t *testing.T) {
 			t.Parallel()
 

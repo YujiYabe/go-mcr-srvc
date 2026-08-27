@@ -22,7 +22,8 @@
 		"go.mod",
 		"go.sum",
 		"Dockerfile",
-		"docker-compose.yml"
+		"docker-compose.yml",
+		".golangci.yaml"
 	],
 	"words": [
 		"confluentinc",

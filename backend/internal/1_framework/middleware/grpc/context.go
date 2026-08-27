@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	typeObject "backend/internal/4_domain/type_object"
 	"backend/internal/logger"
 )
@@ -17,7 +17,7 @@ import (
 func ContextToMetadata(
 	ctx context.Context,
 ) context.Context {
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		return ctx
 	}
@@ -60,7 +60,7 @@ func MetadataToContext(
 		return ctx
 	}
 
-	newRequestContextArgs := &requestContextMiddleware.NewRequestContextArgs{}
+	newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{}
 
 	// ________________________________
 	if len(md.Get(string(typeObject.RequestStartTimeHeaderName))) != 0 {
@@ -133,7 +133,7 @@ func MetadataToContext(
 		newRequestContextArgs.TimeZone = &value
 	}
 
-	requestContext, err := requestContextMiddleware.NewRequestContext(
+	requestContext, err := middlewareRequestContext.NewRequestContext(
 		newRequestContextArgs,
 	)
 	if err != nil {
@@ -143,7 +143,7 @@ func MetadataToContext(
 
 	ctx = context.WithValue(
 		ctx,
-		requestContextMiddleware.RequestContextContextName,
+		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
 
@@ -162,7 +162,7 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context,
 		req interface{},
-		info *grpc.UnaryServerInfo,
+		_ *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
 	) (
 		interface{},

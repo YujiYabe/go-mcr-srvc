@@ -9,7 +9,7 @@ import (
 )
 
 func NewRoute(
-	EchoEcho *echo.Echo,
+	echoEcho *echo.Echo,
 	toController controller.ToController,
 	parent *echo.Group,
 	authConfig httpMiddleware.AuthConfig,
@@ -19,7 +19,7 @@ func NewRoute(
 	)
 
 	withmiddleware.NewRoute(
-		EchoEcho,
+		echoEcho,
 		toController,
 		group,
 		authConfig,

@@ -163,7 +163,7 @@ func (receiver *PostgresClient) GetUserListByCondition(
 ) {
 	// logger.Logging(
 	// 	ctx,
-	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
+	// 	middlewareRequestContext.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
 	users := []userRecord{} // SQL結果保存用
@@ -197,7 +197,7 @@ func (receiver *PostgresClient) GetUserListByCondition(
 
 	// logger.Logging(
 	// 	ctx,
-	// 	requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue(),
+	// 	middlewareRequestContext.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
 	resUserList, err = groupObject.ReconstructUserList(&groupObject.NewUserListArgs{

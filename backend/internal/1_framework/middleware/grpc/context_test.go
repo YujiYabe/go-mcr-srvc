@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc/metadata"
 
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	typeObject "backend/internal/4_domain/type_object"
 )
 
@@ -20,7 +20,7 @@ func TestContextToMetadataAndMetadataToContextRoundTrip(t *testing.T) {
 	incomingCtx := metadata.NewIncomingContext(context.Background(), md)
 	ctx := MetadataToContext(incomingCtx)
 
-	assertRequestContextForTest(t, ctx)
+	assertRequestContextForTest(ctx, t)
 }
 
 func TestMetadataToContextRestoresPermissionList(t *testing.T) {
@@ -33,7 +33,7 @@ func TestMetadataToContextRestoresPermissionList(t *testing.T) {
 	)
 	ctx := MetadataToContext(incomingCtx)
 
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		t.Fatal("expected request context")
 	}
@@ -75,8 +75,8 @@ func newContextForTest(t *testing.T) context.Context {
 	locale := "ja-JP"
 	timeZone := "AsiaTokyo"
 
-	requestContext, err := requestContextMiddleware.NewRequestContext(
-		&requestContextMiddleware.NewRequestContextArgs{
+	requestContext, err := middlewareRequestContext.NewRequestContext(
+		&middlewareRequestContext.NewRequestContextArgs{
 			TraceID:     &traceID,
 			ClientIP:    &clientIP,
 			UserAgent:   &userAgent,
@@ -97,15 +97,15 @@ func newContextForTest(t *testing.T) context.Context {
 
 	return context.WithValue(
 		context.Background(),
-		requestContextMiddleware.RequestContextContextName,
+		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
 }
 
-func assertRequestContextForTest(t *testing.T, ctx context.Context) {
+func assertRequestContextForTest(ctx context.Context, t *testing.T) {
 	t.Helper()
 
-	requestContext := requestContextMiddleware.GetRequestContext(ctx)
+	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		t.Fatal("expected request context")
 	}

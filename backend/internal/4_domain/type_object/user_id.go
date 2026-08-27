@@ -9,7 +9,7 @@ const (
 
 var (
 	userIDMaxLength uint = 9
-	userIDMinLength uint = 0
+	userIDMinLength uint
 )
 
 type UserID struct {

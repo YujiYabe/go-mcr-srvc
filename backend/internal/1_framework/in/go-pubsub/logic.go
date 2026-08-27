@@ -5,13 +5,14 @@ import (
 	"fmt"
 
 	pubsubMiddleware "backend/internal/1_framework/middleware/pubsub"
-	requestContextMiddleware "backend/internal/1_framework/middleware/request_context"
+	middlewareRequestContext "backend/internal/1_framework/middleware/request_context"
 	"backend/internal/logger"
 )
 
 // Start ....
-func (receiver *GoPubSub) Start() error {
-	ctx := context.Background()
+func (receiver *GoPubSub) Start(
+	ctx context.Context,
+) error {
 	go receiver.subscribeOtherTopic(ctx)
 
 	return receiver.subscribeTestTopic(ctx)
@@ -42,8 +43,8 @@ func (receiver *GoPubSub) subscribeTestTopic(
 		if err == nil {
 			logger.Logging(ctx, fmt.Sprintf("%s received message: %s", topicName, string(msg.Value)))
 			// RequestContextを生成してコントローラーに渡す
-			messageCtx := pubsubMiddleware.HeaderToContext(msg.Headers)
-			requestContext := requestContextMiddleware.GetRequestContext(messageCtx)
+			messageCtx := pubsubMiddleware.HeaderToContext(ctx, msg.Headers)
+			requestContext := middlewareRequestContext.GetRequestContext(messageCtx)
 			logger.Logging(messageCtx, map[string]interface{}{
 				"traceID":          requestContext.TraceID().GetValue(),
 				"requestStartTime": requestContext.RequestStartTime().GetValue(),
