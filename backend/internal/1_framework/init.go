@@ -120,11 +120,11 @@ func (receiver *app) Start() error {
 	ctx := context.Background()
 	if false {
 		go func() {
-			logger.Logging(ctx, receiver.goPubSub.Start())
+			logger.Logging(ctx, receiver.goPubSub.Start(ctx))
 		}()
 	}
 	go func() {
-		if err := receiver.goGRPC.Start(); err != nil {
+		if err := receiver.goGRPC.Start(ctx); err != nil {
 			logger.Logging(ctx, err)
 		}
 	}()

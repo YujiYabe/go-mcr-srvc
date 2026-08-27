@@ -14,11 +14,11 @@ import (
 )
 
 func HeaderToContext(
+	ctx context.Context,
 	headers []kafka.Header,
 ) (
-	ctx context.Context,
+	messageCtx context.Context,
 ) {
-	ctx = context.Background()
 	newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{}
 
 	// ________________________________
@@ -67,10 +67,10 @@ func HeaderToContext(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return
+		return ctx
 	}
 
-	ctx = context.WithValue(
+	messageCtx = context.WithValue(
 		ctx,
 		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
@@ -175,5 +175,4 @@ func ContextToHeader(
 	)
 
 	return
-
 }

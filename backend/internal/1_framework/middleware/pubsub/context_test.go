@@ -18,9 +18,9 @@ func TestContextToHeaderAndHeaderToContextRoundTrip(t *testing.T) {
 		*requestContext,
 	)
 
-	roundTripCtx := HeaderToContext(ContextToHeader(ctx))
+	roundTripCtx := HeaderToContext(context.Background(), ContextToHeader(ctx))
 
-	assertRequestContextForTest(t, roundTripCtx)
+	assertRequestContextForTest(roundTripCtx, t)
 }
 
 func TestContextToHeaderIncludesPermissionList(t *testing.T) {
@@ -40,7 +40,7 @@ func TestContextToHeaderIncludesPermissionList(t *testing.T) {
 }
 
 func TestHeaderToContextRestoresPermissionList(t *testing.T) {
-	ctx := HeaderToContext([]kafka.Header{
+	ctx := HeaderToContext(context.Background(), []kafka.Header{
 		{
 			Key: string(typeObject.PermissionListHeaderName),
 			Value: []byte(
@@ -109,7 +109,7 @@ func newRequestContextForTest(t *testing.T) *middlewareRequestContext.RequestCon
 	return requestContext
 }
 
-func assertRequestContextForTest(t *testing.T, ctx context.Context) {
+func assertRequestContextForTest(ctx context.Context, t *testing.T) {
 	t.Helper()
 
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)

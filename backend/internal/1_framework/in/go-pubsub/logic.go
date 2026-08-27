@@ -10,8 +10,9 @@ import (
 )
 
 // Start ....
-func (receiver *GoPubSub) Start() error {
-	ctx := context.Background()
+func (receiver *GoPubSub) Start(
+	ctx context.Context,
+) error {
 	go receiver.subscribeOtherTopic(ctx)
 
 	return receiver.subscribeTestTopic(ctx)
@@ -42,7 +43,7 @@ func (receiver *GoPubSub) subscribeTestTopic(
 		if err == nil {
 			logger.Logging(ctx, fmt.Sprintf("%s received message: %s", topicName, string(msg.Value)))
 			// RequestContextを生成してコントローラーに渡す
-			messageCtx := pubsubMiddleware.HeaderToContext(msg.Headers)
+			messageCtx := pubsubMiddleware.HeaderToContext(ctx, msg.Headers)
 			requestContext := middlewareRequestContext.GetRequestContext(messageCtx)
 			logger.Logging(messageCtx, map[string]interface{}{
 				"traceID":          requestContext.TraceID().GetValue(),
