@@ -30,8 +30,6 @@ type (
 
 	// ToController ...
 	ToController interface {
-		Start()
-
 		GetUserList(
 			ctx context.Context,
 		) (
@@ -55,7 +53,7 @@ type (
 			err error,
 		)
 
-		ViaGRPC(
+		GetUserListViaGRPC(
 			ctx context.Context,
 			reqUser groupObject.User,
 		) (

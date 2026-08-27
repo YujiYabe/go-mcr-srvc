@@ -92,7 +92,7 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 	return typeObject.NewAccessToken(stringPointer("access-token"))
 }
 
-func (receiver *fakeGatewayExternal) ViaGRPC(
+func (receiver *fakeGatewayExternal) GetUserViaGRPC(
 	ctx context.Context,
 	reqUser groupObject.User,
 ) (

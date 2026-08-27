@@ -9,8 +9,8 @@ import (
 )
 
 // ...
-// ViaGRPC ...
-func (receiver *GRPCClient) ViaGRPC(
+// GetUserViaGRPC ...
+func (receiver *GRPCClient) GetUserViaGRPC(
 	ctx context.Context,
 	reqUser groupObject.User,
 ) (

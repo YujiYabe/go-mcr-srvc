@@ -6,15 +6,15 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
-// ViaGRPC ...
-func (receiver *GatewayExternal) ViaGRPC(
+// GetUserViaGRPC ...
+func (receiver *GatewayExternal) GetUserViaGRPC(
 	ctx context.Context,
 	reqUser groupObject.User,
 ) (
 	resUserList groupObject.UserList,
 	err error,
 ) {
-	resUserList, err = receiver.ToGRPC.ViaGRPC(
+	resUserList, err = receiver.ToGRPC.GetUserViaGRPC(
 		ctx,
 		reqUser,
 	)

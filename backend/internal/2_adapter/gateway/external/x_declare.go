@@ -41,7 +41,7 @@ type (
 
 	// ToGRPC ...
 	ToGRPC interface {
-		ViaGRPC(
+		GetUserViaGRPC(
 			ctx context.Context,
 			reqUser groupObject.User,
 		) (

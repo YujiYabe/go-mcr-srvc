@@ -111,7 +111,6 @@ func handleUsersRequest(
 	}
 
 	userList, err := toController.GetUserListByCondition(
-		// userList := toController.ViaGRPC(
 		ctx,
 		*reqUser,
 	)

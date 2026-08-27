@@ -7,8 +7,6 @@ import (
 	typeObject "backend/internal/4_domain/type_object"
 )
 
-func (receiver *controller) Start() {}
-
 func (receiver *controller) GetUserList(
 	ctx context.Context,
 ) (
@@ -47,14 +45,14 @@ func (receiver *controller) FetchAccessToken(
 	return
 }
 
-func (receiver *controller) ViaGRPC(
+func (receiver *controller) GetUserListViaGRPC(
 	ctx context.Context,
 	reqUser groupObject.User,
 ) (
 	resUserList groupObject.UserList,
 	err error,
 ) {
-	resUserList, err = receiver.UseCase.ViaGRPC(
+	resUserList, err = receiver.UseCase.GetUserListViaGRPC(
 		ctx,
 		reqUser,
 	)

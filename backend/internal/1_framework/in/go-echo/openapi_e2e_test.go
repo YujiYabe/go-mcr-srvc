@@ -157,8 +157,6 @@ func TestOpenAPIE2E_V1ToPubsubGet(t *testing.T) {
 	}
 }
 
-func (receiver *fakeController) Start() {}
-
 func (receiver *fakeController) GetUserList(
 	ctx context.Context,
 ) (
@@ -191,7 +189,7 @@ func (receiver *fakeController) FetchAccessToken(
 	return typeObject.AccessToken{}, nil
 }
 
-func (receiver *fakeController) ViaGRPC(
+func (receiver *fakeController) GetUserListViaGRPC(
 	ctx context.Context,
 	reqUser groupObject.User,
 ) (
