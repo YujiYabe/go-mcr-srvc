@@ -8,7 +8,7 @@ import (
 )
 
 func RefillUserGRPCToDomain(
-	ctx context.Context,
+	_ context.Context,
 	request *grpcParameter.V1UserParameter,
 ) (
 	reqUser *groupObject.User,
@@ -42,7 +42,7 @@ func RefillUserGRPCToDomain(
 }
 
 func RefillUserDomainToGRPC(
-	ctx context.Context,
+	_ context.Context,
 	userList groupObject.UserList,
 ) (
 	v1UserParameterList []*grpcParameter.V1UserParameter,

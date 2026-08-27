@@ -4,7 +4,7 @@ import primitiveObject "backend/internal/4_domain/primitive_object"
 
 var (
 	clientSecretMaxLength uint = 999
-	clientSecretMinLength uint = 0
+	clientSecretMinLength uint
 )
 
 type ClientSecret struct {

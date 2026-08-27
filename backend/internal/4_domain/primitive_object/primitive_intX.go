@@ -172,7 +172,7 @@ func (receiver *PrimitiveIntX[T]) WithValue(
 	value *T,
 ) PrimitiveIntXOption[T] {
 	isNil := receiver.CheckNil(value)
-	var valueIntX T = 0
+	var valueIntX T
 	if !isNil {
 		valueIntX = *value
 	}

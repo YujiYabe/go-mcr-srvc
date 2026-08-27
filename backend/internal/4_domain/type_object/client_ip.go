@@ -9,7 +9,7 @@ const (
 
 var (
 	clientIPMaxLength uint = 30
-	clientIPMinLength uint = 0
+	clientIPMinLength uint
 )
 
 type ClientIP struct {

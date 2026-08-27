@@ -13,7 +13,7 @@ const (
 
 var (
 	accessTokenMaxLength uint = 9999
-	accessTokenMinLength uint = 0
+	accessTokenMinLength uint
 )
 
 type AccessToken struct {

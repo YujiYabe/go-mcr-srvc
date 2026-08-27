@@ -9,7 +9,7 @@ const (
 
 var (
 	timeZoneMaxLength uint = 9
-	timeZoneMinLength uint = 0
+	timeZoneMinLength uint
 )
 
 type TimeZone struct {

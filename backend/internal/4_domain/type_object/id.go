@@ -4,7 +4,7 @@ import primitiveObject "backend/internal/4_domain/primitive_object"
 
 var (
 	idMaxDigit uint = 9 // 9桁 = 9999999999まで可
-	idMinDigit uint = 0
+	idMinDigit uint
 )
 
 type ID struct {

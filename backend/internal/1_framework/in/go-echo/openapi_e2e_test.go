@@ -60,7 +60,12 @@ func TestOpenAPIE2E_V1UsersGet(t *testing.T) {
 	}
 	echoEcho := newE2ETestEcho(t, controller)
 
-	req := httptest.NewRequest(http.MethodGet, "/v1/users?name=Alice&email=alice@example.com", nil)
+	req := httptest.NewRequestWithContext(
+		context.Background(),
+		http.MethodGet,
+		"/v1/users?name=Alice&email=alice@example.com",
+		nil,
+	)
 	req.Header.Set(echo.HeaderAccept, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 
@@ -100,7 +105,12 @@ func TestOpenAPIE2E_V1UsersPost(t *testing.T) {
 	echoEcho := newE2ETestEcho(t, controller)
 
 	reqBody := bytes.NewBufferString(`{"name":"Bob","email":"bob@example.com"}`)
-	req := httptest.NewRequest(http.MethodPost, "/v1/users", reqBody)
+	req := httptest.NewRequestWithContext(
+		context.Background(),
+		http.MethodPost,
+		"/v1/users",
+		reqBody,
+	)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 
@@ -127,7 +137,12 @@ func TestOpenAPIE2E_V1HealthGet(t *testing.T) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
-	req := httptest.NewRequest(http.MethodGet, "/v1/health", nil)
+	req := httptest.NewRequestWithContext(
+		context.Background(),
+		http.MethodGet,
+		"/v1/health",
+		nil,
+	)
 	rec := httptest.NewRecorder()
 
 	echoEcho.ServeHTTP(rec, req)
@@ -144,7 +159,12 @@ func TestOpenAPIE2E_V1ToPubsubGet(t *testing.T) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
-	req := httptest.NewRequest(http.MethodGet, "/v1/to-pubsub", nil)
+	req := httptest.NewRequestWithContext(
+		context.Background(),
+		http.MethodGet,
+		"/v1/to-pubsub",
+		nil,
+	)
 	rec := httptest.NewRecorder()
 
 	echoEcho.ServeHTTP(rec, req)
@@ -158,7 +178,7 @@ func TestOpenAPIE2E_V1ToPubsubGet(t *testing.T) {
 }
 
 func (receiver *fakeController) GetUserList(
-	ctx context.Context,
+	_ context.Context,
 ) (
 	userList groupObject.UserList,
 	err error,
@@ -167,7 +187,7 @@ func (receiver *fakeController) GetUserList(
 }
 
 func (receiver *fakeController) GetUserListByCondition(
-	ctx context.Context,
+	_ context.Context,
 	reqUser groupObject.User,
 ) (
 	resUserList groupObject.UserList,
@@ -180,8 +200,8 @@ func (receiver *fakeController) GetUserListByCondition(
 }
 
 func (receiver *fakeController) FetchAccessToken(
-	ctx context.Context,
-	credential groupObject.Credential,
+	_ context.Context,
+	_ groupObject.Credential,
 ) (
 	accessToken typeObject.AccessToken,
 	err error,
@@ -190,8 +210,8 @@ func (receiver *fakeController) FetchAccessToken(
 }
 
 func (receiver *fakeController) GetUserListViaGRPC(
-	ctx context.Context,
-	reqUser groupObject.User,
+	_ context.Context,
+	_ groupObject.User,
 ) (
 	resUserList groupObject.UserList,
 	err error,
@@ -200,22 +220,22 @@ func (receiver *fakeController) GetUserListViaGRPC(
 }
 
 func (receiver *fakeController) UpdateUser(
-	ctx context.Context,
-	newUser groupObject.User,
+	_ context.Context,
+	_ groupObject.User,
 ) error {
 	return nil
 }
 
 func (receiver *fakeController) UpdateUserProfileWithPrimaryEmployment(
-	ctx context.Context,
-	newUser groupObject.User,
-	userEmployment groupObject.UserEmployment,
+	_ context.Context,
+	_ groupObject.User,
+	_ groupObject.UserEmployment,
 ) error {
 	return nil
 }
 
 func (receiver *fakeController) PublishTestTopic(
-	ctx context.Context,
+	_ context.Context,
 ) error {
 	receiver.publishTestTopicCalled = true
 

@@ -171,7 +171,7 @@ func (receiver *PrimitiveUIntX[T]) WithValue(
 	value *T,
 ) PrimitiveUIntXOption[T] {
 	isNil := receiver.CheckNil(value)
-	var valueIntX T = 0
+	var valueIntX T
 	if !isNil {
 		valueIntX = *value
 	}

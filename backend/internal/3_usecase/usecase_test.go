@@ -31,7 +31,7 @@ func (receiver *fakeGatewayDB) RunInTransaction(
 }
 
 func (receiver *fakeGatewayDB) GetUserList(
-	ctx context.Context,
+	_ context.Context,
 ) (
 	groupObject.UserList,
 	error,
@@ -41,8 +41,8 @@ func (receiver *fakeGatewayDB) GetUserList(
 }
 
 func (receiver *fakeGatewayDB) GetUserListByCondition(
-	ctx context.Context,
-	reqUser groupObject.User,
+	_ context.Context,
+	_ groupObject.User,
 ) (
 	groupObject.UserList,
 	error,
@@ -52,8 +52,8 @@ func (receiver *fakeGatewayDB) GetUserListByCondition(
 }
 
 func (receiver *fakeGatewayDB) UpdateUser(
-	ctx context.Context,
-	newUser groupObject.User,
+	_ context.Context,
+	_ groupObject.User,
 ) error {
 	receiver.updateUserCalled = true
 	receiver.calls = append(receiver.calls, "update_user")
@@ -61,8 +61,8 @@ func (receiver *fakeGatewayDB) UpdateUser(
 }
 
 func (receiver *fakeGatewayDB) UpdateUserEmployment(
-	ctx context.Context,
-	userEmployment groupObject.UserEmployment,
+	_ context.Context,
+	_ groupObject.UserEmployment,
 ) error {
 	receiver.updateEmploymentCalled = true
 	receiver.calls = append(receiver.calls, "update_user_employment")
@@ -79,8 +79,8 @@ type fakeGatewayExternal struct {
 }
 
 func (receiver *fakeGatewayExternal) FetchAccessToken(
-	ctx context.Context,
-	credential groupObject.Credential,
+	_ context.Context,
+	_ groupObject.Credential,
 ) (
 	typeObject.AccessToken,
 	error,
@@ -93,8 +93,8 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 }
 
 func (receiver *fakeGatewayExternal) GetUserViaGRPC(
-	ctx context.Context,
-	reqUser groupObject.User,
+	_ context.Context,
+	_ groupObject.User,
 ) (
 	groupObject.UserList,
 	error,
@@ -104,7 +104,7 @@ func (receiver *fakeGatewayExternal) GetUserViaGRPC(
 }
 
 func (receiver *fakeGatewayExternal) PublishTestTopic(
-	ctx context.Context,
+	_ context.Context,
 ) error {
 	receiver.publishTestTopicCalled = true
 	return receiver.publishTestTopicErr

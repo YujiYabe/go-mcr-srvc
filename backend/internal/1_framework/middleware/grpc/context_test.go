@@ -20,7 +20,7 @@ func TestContextToMetadataAndMetadataToContextRoundTrip(t *testing.T) {
 	incomingCtx := metadata.NewIncomingContext(context.Background(), md)
 	ctx := MetadataToContext(incomingCtx)
 
-	assertRequestContextForTest(t, ctx)
+	assertRequestContextForTest(ctx, t)
 }
 
 func TestMetadataToContextRestoresPermissionList(t *testing.T) {
@@ -102,7 +102,7 @@ func newContextForTest(t *testing.T) context.Context {
 	)
 }
 
-func assertRequestContextForTest(t *testing.T, ctx context.Context) {
+func assertRequestContextForTest(ctx context.Context, t *testing.T) {
 	t.Helper()
 
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
