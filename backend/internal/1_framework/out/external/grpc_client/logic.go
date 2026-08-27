@@ -17,8 +17,6 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 	resUserList groupObject.UserList,
 	err error,
 ) {
-	// traceID := requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
-	// logger.Logging(ctx, traceID)
 
 	// クライアントの作成
 	client := grpcParameter.NewUserServiceClient(receiver.Conn)
@@ -59,9 +57,6 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 			Email: &email,
 		})
 	}
-
-	// traceID = requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
-	// logger.Logging(ctx, traceID)
 
 	return groupObject.NewUserList(&groupObject.NewUserListArgs{
 		Content: userArgs,

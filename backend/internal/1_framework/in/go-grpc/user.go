@@ -70,9 +70,6 @@ func (receiver *Server) getUserListByCondition(
 ) {
 	getUserListByConditionResponse = &grpcParameter.GetUserListByConditionResponse{}
 
-	// traceID := requestContextMiddleware.GetRequestContext(ctx).TraceID.GetValue()
-	// logger.Logging(ctx, traceID)
-
 	reqUser, err := grpcMiddleware.RefillUserGRPCToDomain(
 		ctx,
 		getUserListByConditionRequest.GetV1UserParameter(),
