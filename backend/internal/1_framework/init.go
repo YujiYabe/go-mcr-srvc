@@ -34,7 +34,10 @@ type (
 )
 
 // NewApp ...
-func NewApp() (*app, error) {
+func NewApp() (
+	*app,
+	error,
+) {
 	ctx := context.Background()
 	config, err := env.Load()
 	if err != nil {
