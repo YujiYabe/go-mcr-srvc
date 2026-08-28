@@ -45,3 +45,8 @@ INSERT INTO user_employments (
 INSERT INTO user_roles (user_id, role_id) VALUES 
 (3, 2),  -- ユーザー3にロール "user" を割り当て
 (4, 1);  -- ユーザー4にロール "admin" を割り当て
+
+INSERT INTO validation_word_rules (target_type, is_blacklist, word, match_type, enabled) VALUES
+('name', true, 'root', 'contains', true),
+('name', true, '禁止語', 'contains', true),
+('name', false, 'Admin User', 'exact', true);

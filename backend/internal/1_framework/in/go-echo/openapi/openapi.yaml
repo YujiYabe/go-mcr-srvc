@@ -13,6 +13,8 @@ paths:
     $ref: './paths/v1/health.yaml'
   /v1/to-pubsub:
     $ref: './paths/v1/to-pubsub.yaml'
+  /v1/validation-word-rules:
+    $ref: './paths/v1/validation-word-rules.yaml'
 
 components:
   schemas:
@@ -20,6 +22,14 @@ components:
       $ref: './components/schemas/User.yaml'
     Error:
       $ref: './components/schemas/Error.yaml'
+    ValidationWordRule:
+      $ref: './components/schemas/ValidationWordRule.yaml'
+    ValidationWordRuleCreate:
+      $ref: './components/schemas/ValidationWordRuleCreate.yaml'
+    ValidationWordRuleUpdate:
+      $ref: './components/schemas/ValidationWordRuleUpdate.yaml'
+    ValidationWordRuleDelete:
+      $ref: './components/schemas/ValidationWordRuleDelete.yaml'
 
   responses:
     NotFound:

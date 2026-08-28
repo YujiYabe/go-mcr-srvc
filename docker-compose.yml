@@ -29,7 +29,7 @@ services:
       context: ./db/engine/redis
       dockerfile: Dockerfile
     ports:
-      - '6739:6739'
+      - '6739:6379'
     volumes:
       - ./db/engine/redis/data:/data
     healthcheck:

@@ -63,7 +63,10 @@ func (receiver *controller) UpdateUser(
 	ctx context.Context,
 	newUser groupObject.User,
 ) error {
-	return receiver.UseCase.UpdateUser(ctx, newUser)
+	return receiver.UseCase.UpdateUser(
+		ctx,
+		newUser,
+	)
 }
 
 func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
@@ -71,11 +74,72 @@ func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
 	newUser groupObject.User,
 	userEmployment groupObject.UserEmployment,
 ) error {
-	return receiver.UseCase.UpdateUserProfileWithPrimaryEmployment(ctx, newUser, userEmployment)
+	return receiver.UseCase.UpdateUserProfileWithPrimaryEmployment(
+		ctx,
+		newUser, userEmployment,
+	)
 }
 
 func (receiver *controller) PublishTestTopic(
 	ctx context.Context,
 ) error {
 	return receiver.UseCase.PublishTestTopic(ctx)
+}
+
+func (receiver *controller) GetValidationWords(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+) (
+	words []string,
+	err error,
+) {
+	return receiver.UseCase.GetValidationWords(
+		ctx,
+		targetType, isBlacklist,
+	)
+}
+
+func (receiver *controller) AddValidationWord(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	word string,
+) error {
+	return receiver.UseCase.AddValidationWord(
+		ctx,
+		targetType,
+		isBlacklist,
+		word,
+	)
+}
+
+func (receiver *controller) UpdateValidationWord(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	oldWord string,
+	newWord string,
+) error {
+	return receiver.UseCase.UpdateValidationWord(
+		ctx,
+		targetType,
+		isBlacklist,
+		oldWord,
+		newWord,
+	)
+}
+
+func (receiver *controller) DeleteValidationWord(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	word string,
+) error {
+	return receiver.UseCase.DeleteValidationWord(
+		ctx,
+		targetType,
+		isBlacklist,
+		word,
+	)
 }

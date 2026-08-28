@@ -105,6 +105,9 @@ func TestUpdateUserRunsInTransaction(t *testing.T) {
 	if !gatewayDB.updateUserCalled {
 		t.Fatal("update gateway was not called")
 	}
+	if !gatewayDB.getValidationWordsCalled {
+		t.Fatal("validation words should be fetched")
+	}
 }
 
 func TestUpdateUserRequiresIdentity(t *testing.T) {
@@ -122,8 +125,46 @@ func TestUpdateUserRequiresIdentity(t *testing.T) {
 	if gatewayDB.runInTransactionCalled {
 		t.Fatal("transaction should not run when user lifecycle state is invalid")
 	}
+	if gatewayDB.getValidationWordsCalled {
+		t.Fatal("validation words should not be fetched when user lifecycle state is invalid")
+	}
 	if gatewayDB.updateUserCalled {
 		t.Fatal("gateway should not be called when user lifecycle state is invalid")
+	}
+}
+
+func TestUpdateUserRejectsBlacklistedName(t *testing.T) {
+	gatewayDB := &fakeGatewayDB{validationWords: []string{"root"}}
+	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("root user"), stringPointer("test@example.com"))
+
+	err := useCase.UpdateUser(context.Background(), user)
+	if err == nil {
+		t.Fatal("expected blacklist validation error")
+	}
+	if !strings.Contains(err.Error(), "detect target spell") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gatewayDB.runInTransactionCalled {
+		t.Fatal("transaction should not run when name is blacklisted")
+	}
+	if gatewayDB.updateUserCalled {
+		t.Fatal("gateway should not be called when name is blacklisted")
+	}
+}
+
+func TestUpdateUserWrapsValidationWordFetchError(t *testing.T) {
+	validationErr := errors.New("validation word query failed")
+	gatewayDB := &fakeGatewayDB{getValidationWordsErr: validationErr}
+	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
+	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
+
+	err := useCase.UpdateUser(context.Background(), user)
+	if !errors.Is(err, validationErr) {
+		t.Fatalf("expected wrapped validation word error, got: %v", err)
+	}
+	if gatewayDB.runInTransactionCalled {
+		t.Fatal("transaction should not run when validation words cannot be fetched")
 	}
 }
 
@@ -167,6 +208,9 @@ func TestUpdateUserProfileWithPrimaryEmploymentRunsMultipleUpdatesInTransaction(
 	}
 	if !gatewayDB.updateEmploymentCalled {
 		t.Fatal("employment update gateway was not called")
+	}
+	if !gatewayDB.getValidationWordsCalled {
+		t.Fatal("validation words should be fetched")
 	}
 	if strings.Join(gatewayDB.calls, ",") != "update_user,update_user_employment" {
 		t.Fatalf("unexpected call order: %v", gatewayDB.calls)

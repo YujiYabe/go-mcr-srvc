@@ -1,0 +1,83 @@
+get:
+  summary: Get validation word rules
+  operationId: v1ValidationWordRulesGet
+  parameters:
+  - name: targetType
+    in: query
+    required: true
+    schema:
+      type: string
+  - name: isBlacklist
+    in: query
+    required: true
+    schema:
+      type: boolean
+  responses:
+    '200':
+      description: Validation word rules
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ValidationWordRule'
+    '400':
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+post:
+  summary: Add validation word rule
+  operationId: v1ValidationWordRulesPost
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/ValidationWordRuleCreate'
+  responses:
+    '204':
+      description: Validation word rule added
+    '400':
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+put:
+  summary: Update validation word rule
+  operationId: v1ValidationWordRulesPut
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/ValidationWordRuleUpdate'
+  responses:
+    '204':
+      description: Validation word rule updated
+    '400':
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+delete:
+  summary: Delete validation word rule
+  operationId: v1ValidationWordRulesDelete
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/ValidationWordRuleDelete'
+  responses:
+    '204':
+      description: Validation word rule deleted
+    '400':
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

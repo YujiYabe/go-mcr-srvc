@@ -4,6 +4,7 @@ import (
 	"context"
 
 	groupObject "backend/internal/4_domain/group_object"
+	"backend/internal/logger"
 )
 
 func (receiver *GatewayDB) RunInTransaction(
@@ -58,4 +59,93 @@ func (receiver *GatewayDB) UpdateUserEmployment(
 	err error,
 ) {
 	return receiver.ToPostgres.UpdateUserEmployment(ctx, userEmployment)
+}
+
+func (receiver *GatewayDB) GetValidationWords(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+) (
+	words []string,
+	err error,
+) {
+	if receiver.ToRedis != nil {
+		words, hit, redisErr := receiver.ToRedis.GetValidationWords(ctx, targetType, isBlacklist)
+		if redisErr != nil {
+			logger.Logging(ctx, redisErr)
+		}
+		if redisErr == nil && hit {
+			return words, nil
+		}
+	}
+
+	words, err = receiver.ToPostgres.GetValidationWords(ctx, targetType, isBlacklist)
+	if err != nil {
+		return nil, err
+	}
+
+	if receiver.ToRedis != nil {
+		if redisErr := receiver.ToRedis.SetValidationWords(ctx, targetType, isBlacklist, words); redisErr != nil {
+			logger.Logging(ctx, redisErr)
+		}
+	}
+
+	return words, nil
+}
+
+func (receiver *GatewayDB) AddValidationWord(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	word string,
+) error {
+	if err := receiver.ToPostgres.AddValidationWord(ctx, targetType, isBlacklist, word); err != nil {
+		return err
+	}
+
+	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
+	return nil
+}
+
+func (receiver *GatewayDB) UpdateValidationWord(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	oldWord string,
+	newWord string,
+) error {
+	if err := receiver.ToPostgres.UpdateValidationWord(ctx, targetType, isBlacklist, oldWord, newWord); err != nil {
+		return err
+	}
+
+	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
+	return nil
+}
+
+func (receiver *GatewayDB) DeleteValidationWord(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	word string,
+) error {
+	if err := receiver.ToPostgres.DeleteValidationWord(ctx, targetType, isBlacklist, word); err != nil {
+		return err
+	}
+
+	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
+	return nil
+}
+
+func (receiver *GatewayDB) deleteValidationWordsCache(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+) {
+	if receiver.ToRedis == nil {
+		return
+	}
+
+	if err := receiver.ToRedis.DeleteValidationWordsCache(ctx, targetType, isBlacklist); err != nil {
+		logger.Logging(ctx, err)
+	}
 }

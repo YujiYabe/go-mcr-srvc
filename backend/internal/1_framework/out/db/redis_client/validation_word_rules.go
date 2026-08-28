@@ -1,0 +1,76 @@
+package redis_client
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+)
+
+const validationWordsCacheTTL = 60 * time.Second
+
+func (receiver *RedisClient) GetValidationWords(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+) (
+	words []string,
+	hit bool,
+	err error,
+) {
+	result, err := receiver.Conn.Get(ctx, validationWordsCacheKey(targetType, isBlacklist)).Result()
+	if errors.Is(err, redis.Nil) {
+		return nil, false, nil
+	}
+	if err != nil {
+		return nil, false, err
+	}
+
+	if err := json.Unmarshal([]byte(result), &words); err != nil {
+		return nil, false, err
+	}
+
+	return words, true, nil
+}
+
+func (receiver *RedisClient) SetValidationWords(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+	words []string,
+) error {
+	value, err := json.Marshal(words)
+	if err != nil {
+		return err
+	}
+
+	return receiver.Conn.Set(
+		ctx,
+		validationWordsCacheKey(targetType, isBlacklist),
+		value,
+		validationWordsCacheTTL,
+	).Err()
+}
+
+func (receiver *RedisClient) DeleteValidationWordsCache(
+	ctx context.Context,
+	targetType string,
+	isBlacklist bool,
+) error {
+	return receiver.Conn.Del(ctx, validationWordsCacheKey(targetType, isBlacklist)).Err()
+}
+
+func validationWordsCacheKey(
+	targetType string,
+	isBlacklist bool,
+) string {
+	ruleType := "whitelist"
+	if isBlacklist {
+		ruleType = "blacklist"
+	}
+
+	return fmt.Sprintf("validation:word_rules:%s:%s", targetType, ruleType)
+}

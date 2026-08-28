@@ -11,11 +11,46 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Error defines model for Error.
+type Error struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
 // User defines model for User.
 type User struct {
 	Email string `json:"email"`
 	Id    int    `json:"id"`
 	Name  string `json:"name"`
+}
+
+// ValidationWordRule defines model for ValidationWordRule.
+type ValidationWordRule struct {
+	IsBlacklist bool   `json:"isBlacklist"`
+	TargetType  string `json:"targetType"`
+	Word        string `json:"word"`
+}
+
+// ValidationWordRuleCreate defines model for ValidationWordRuleCreate.
+type ValidationWordRuleCreate struct {
+	IsBlacklist bool   `json:"isBlacklist"`
+	TargetType  string `json:"targetType"`
+	Word        string `json:"word"`
+}
+
+// ValidationWordRuleDelete defines model for ValidationWordRuleDelete.
+type ValidationWordRuleDelete struct {
+	IsBlacklist bool   `json:"isBlacklist"`
+	TargetType  string `json:"targetType"`
+	Word        string `json:"word"`
+}
+
+// ValidationWordRuleUpdate defines model for ValidationWordRuleUpdate.
+type ValidationWordRuleUpdate struct {
+	IsBlacklist bool   `json:"isBlacklist"`
+	NewWord     string `json:"newWord"`
+	OldWord     string `json:"oldWord"`
+	TargetType  string `json:"targetType"`
 }
 
 // V1UsersGetParams defines parameters for V1UsersGet.
@@ -24,8 +59,23 @@ type V1UsersGetParams struct {
 	Email *string `form:"email,omitempty" json:"email,omitempty"`
 }
 
+// V1ValidationWordRulesGetParams defines parameters for V1ValidationWordRulesGet.
+type V1ValidationWordRulesGetParams struct {
+	TargetType  string `form:"targetType" json:"targetType"`
+	IsBlacklist bool   `form:"isBlacklist" json:"isBlacklist"`
+}
+
 // V1UsersPostJSONRequestBody defines body for V1UsersPost for application/json ContentType.
 type V1UsersPostJSONRequestBody = User
+
+// V1ValidationWordRulesDeleteJSONRequestBody defines body for V1ValidationWordRulesDelete for application/json ContentType.
+type V1ValidationWordRulesDeleteJSONRequestBody = ValidationWordRuleDelete
+
+// V1ValidationWordRulesPostJSONRequestBody defines body for V1ValidationWordRulesPost for application/json ContentType.
+type V1ValidationWordRulesPostJSONRequestBody = ValidationWordRuleCreate
+
+// V1ValidationWordRulesPutJSONRequestBody defines body for V1ValidationWordRulesPut for application/json ContentType.
+type V1ValidationWordRulesPutJSONRequestBody = ValidationWordRuleUpdate
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -41,6 +91,18 @@ type ServerInterface interface {
 	// Create a user
 	// (POST /v1/users)
 	V1UsersPost(ctx echo.Context) error
+	// Delete validation word rule
+	// (DELETE /v1/validation-word-rules)
+	V1ValidationWordRulesDelete(ctx echo.Context) error
+	// Get validation word rules
+	// (GET /v1/validation-word-rules)
+	V1ValidationWordRulesGet(ctx echo.Context, params V1ValidationWordRulesGetParams) error
+	// Add validation word rule
+	// (POST /v1/validation-word-rules)
+	V1ValidationWordRulesPost(ctx echo.Context) error
+	// Update validation word rule
+	// (PUT /v1/validation-word-rules)
+	V1ValidationWordRulesPut(ctx echo.Context) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -100,6 +162,58 @@ func (w *ServerInterfaceWrapper) V1UsersPost(ctx echo.Context) error {
 	return err
 }
 
+// V1ValidationWordRulesDelete converts echo context to params.
+func (w *ServerInterfaceWrapper) V1ValidationWordRulesDelete(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.V1ValidationWordRulesDelete(ctx)
+	return err
+}
+
+// V1ValidationWordRulesGet converts echo context to params.
+func (w *ServerInterfaceWrapper) V1ValidationWordRulesGet(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params V1ValidationWordRulesGetParams
+	// ------------- Required query parameter "targetType" -------------
+
+	err = runtime.BindQueryParameter("form", true, true, "targetType", ctx.QueryParams(), &params.TargetType)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter targetType: %s", err))
+	}
+
+	// ------------- Required query parameter "isBlacklist" -------------
+
+	err = runtime.BindQueryParameter("form", true, true, "isBlacklist", ctx.QueryParams(), &params.IsBlacklist)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter isBlacklist: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.V1ValidationWordRulesGet(ctx, params)
+	return err
+}
+
+// V1ValidationWordRulesPost converts echo context to params.
+func (w *ServerInterfaceWrapper) V1ValidationWordRulesPost(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.V1ValidationWordRulesPost(ctx)
+	return err
+}
+
+// V1ValidationWordRulesPut converts echo context to params.
+func (w *ServerInterfaceWrapper) V1ValidationWordRulesPut(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.V1ValidationWordRulesPut(ctx)
+	return err
+}
+
 // This is a simple interface which specifies echo.Route addition functions which
 // are present on both echo.Echo and echo.Group, since we want to allow using
 // either of them for path registration
@@ -132,5 +246,9 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.GET(baseURL+"/v1/to-pubsub", wrapper.V1ToPubsubGet)
 	router.GET(baseURL+"/v1/users", wrapper.V1UsersGet)
 	router.POST(baseURL+"/v1/users", wrapper.V1UsersPost)
+	router.DELETE(baseURL+"/v1/validation-word-rules", wrapper.V1ValidationWordRulesDelete)
+	router.GET(baseURL+"/v1/validation-word-rules", wrapper.V1ValidationWordRulesGet)
+	router.POST(baseURL+"/v1/validation-word-rules", wrapper.V1ValidationWordRulesPost)
+	router.PUT(baseURL+"/v1/validation-word-rules", wrapper.V1ValidationWordRulesPut)
 
 }
