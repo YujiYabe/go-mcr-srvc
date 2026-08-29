@@ -1,5 +1,6 @@
-@baseUrl = http://localhost:53234
+@baseUrl = http://localhost:{{goEchoPort}}
 
+### --------------------------------
 GET {{baseUrl}}/v1/users?name=a
 Accept: application/json
 
