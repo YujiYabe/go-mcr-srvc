@@ -5,11 +5,10 @@ import (
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
-)
 
-type validationWordRuleRecord struct {
-	Word string
-}
+	"backend/internal/1_framework/out/db/postgres_client/models"
+	domain "backend/internal/4_domain"
+)
 
 func (receiver *PostgresClient) GetValidationWords(
 	ctx context.Context,
@@ -19,15 +18,16 @@ func (receiver *PostgresClient) GetValidationWords(
 	words []string,
 	err error,
 ) {
-	records := []validationWordRuleRecord{}
+	records := []models.ValidationWordRule{}
 
 	result := receiver.conn(ctx).
-		Table("validation_word_rules").
+		Model(&models.ValidationWordRule{}).
 		Select("word").
-		Where("target_type = ?", targetType).
-		Where("is_blacklist = ?", isBlacklist).
-		Where("enabled = ?", true).
-		Where("match_type = ?", "contains").
+		Scopes(validationWordRuleScope(targetType, isBlacklist)).
+		Where(&models.ValidationWordRule{
+			Enabled:   true,
+			MatchType: domain.ValidationWordRuleMatchTypeContains,
+		}).
 		Order("word ASC").
 		Find(&records)
 	if result.Error != nil {
@@ -48,8 +48,15 @@ func (receiver *PostgresClient) AddValidationWord(
 	isBlacklist bool,
 	word string,
 ) error {
+	record := models.ValidationWordRule{
+		TargetType:  targetType,
+		IsBlacklist: isBlacklist,
+		Word:        word,
+		MatchType:   domain.ValidationWordRuleMatchTypeContains,
+		Enabled:     true,
+	}
+
 	return receiver.conn(ctx).
-		Table("validation_word_rules").
 		Clauses(clause.OnConflict{
 			Columns: []clause.Column{
 				{Name: "target_type"},
@@ -57,18 +64,14 @@ func (receiver *PostgresClient) AddValidationWord(
 				{Name: "word"},
 			},
 			DoUpdates: clause.Assignments(map[string]interface{}{
-				"match_type": "contains",
+				"match_type": domain.ValidationWordRuleMatchTypeContains,
 				"enabled":    true,
 				"updated_at": gorm.Expr("CURRENT_TIMESTAMP"),
 			}),
 		}).
-		Create(map[string]interface{}{
-			"target_type":  targetType,
-			"is_blacklist": isBlacklist,
-			"word":         word,
-			"match_type":   "contains",
-			"enabled":      true,
-		}).Error
+		Omit("CreatedAt", "UpdatedAt").
+		Create(&record).
+		Error
 }
 
 func (receiver *PostgresClient) UpdateValidationWord(
@@ -79,13 +82,12 @@ func (receiver *PostgresClient) UpdateValidationWord(
 	newWord string,
 ) error {
 	result := receiver.conn(ctx).
-		Table("validation_word_rules").
-		Where("target_type = ?", targetType).
-		Where("is_blacklist = ?", isBlacklist).
-		Where("word = ?", oldWord).
+		Model(&models.ValidationWordRule{}).
+		Scopes(validationWordRuleScope(targetType, isBlacklist)).
+		Where(&models.ValidationWordRule{Word: oldWord}).
 		Updates(map[string]interface{}{
 			"word":       newWord,
-			"match_type": "contains",
+			"match_type": domain.ValidationWordRuleMatchTypeContains,
 			"enabled":    true,
 			"updated_at": gorm.Expr("CURRENT_TIMESTAMP"),
 		})
@@ -106,11 +108,9 @@ func (receiver *PostgresClient) DeleteValidationWord(
 	word string,
 ) error {
 	result := receiver.conn(ctx).
-		Table("validation_word_rules").
-		Where("target_type = ?", targetType).
-		Where("is_blacklist = ?", isBlacklist).
-		Where("word = ?", word).
-		Delete(map[string]interface{}{})
+		Scopes(validationWordRuleScope(targetType, isBlacklist)).
+		Where(&models.ValidationWordRule{Word: word}).
+		Delete(&models.ValidationWordRule{})
 	if result.Error != nil {
 		return result.Error
 	}
@@ -119,4 +119,15 @@ func (receiver *PostgresClient) DeleteValidationWord(
 	}
 
 	return nil
+}
+
+func validationWordRuleScope(
+	targetType string,
+	isBlacklist bool,
+) func(*gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.
+			Where(&models.ValidationWordRule{TargetType: targetType}).
+			Where("is_blacklist = ?", isBlacklist)
+	}
 }

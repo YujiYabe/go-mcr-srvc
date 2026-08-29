@@ -1,8 +1,9 @@
 package domain
 
 const (
-	ValidationWordRuleTypeWhitelist = "whitelist"
-	ValidationWordRuleTypeBlacklist = "blacklist"
+	ValidationWordRuleTypeWhitelist     = "whitelist"
+	ValidationWordRuleTypeBlacklist     = "blacklist"
+	ValidationWordRuleMatchTypeContains = "contains"
 )
 
 func ValidationWordRuleTypeFromBlacklistFlag(isBlacklist bool) string {

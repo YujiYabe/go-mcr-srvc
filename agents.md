@@ -96,6 +96,7 @@ domain に置くもの:
 - トランザクションなどテーブル横断の処理は共通ファイルへ分ける。
 - PostgreSQL / GORM 固有の処理は framework 層に閉じ込める。
 - usecase / domain に GORM や SQL の型を漏らさない。
+- GORM の DB model はテーブル表現に専念させ、`json` タグは付けない。HTTP/API の JSON 表現は DTO 側で定義する。
 
 ## Redis キャッシュ
 

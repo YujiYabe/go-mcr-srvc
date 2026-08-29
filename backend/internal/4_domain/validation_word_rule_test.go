@@ -29,3 +29,9 @@ func TestValidationWordRuleTypeFromBlacklistFlag(t *testing.T) {
 		})
 	}
 }
+
+func TestValidationWordRuleMatchTypeContains(t *testing.T) {
+	if ValidationWordRuleMatchTypeContains != "contains" {
+		t.Fatalf("unexpected contains match type: %s", ValidationWordRuleMatchTypeContains)
+	}
+}

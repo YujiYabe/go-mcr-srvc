@@ -30,9 +30,9 @@ func TestGetValidationWordsQueriesEnabledContainsRules(t *testing.T) {
 		AddRow("admin").
 		AddRow("root")
 	mock.ExpectQuery(regexp.QuoteMeta(
-		`SELECT "word" FROM "validation_word_rules" WHERE target_type = $1 AND is_blacklist = $2 AND enabled = $3 AND match_type = $4 ORDER BY word ASC`,
+		`SELECT "word" FROM "validation_word_rules" WHERE ("validation_word_rules"."match_type" = $1 AND "validation_word_rules"."enabled" = $2) AND "validation_word_rules"."target_type" = $3 AND is_blacklist = $4 ORDER BY word ASC`,
 	)).
-		WithArgs("name", true, true, "contains").
+		WithArgs("contains", true, "name", true).
 		WillReturnRows(rows)
 
 	client := &PostgresClient{Conn: gormDB}
@@ -53,8 +53,9 @@ func TestAddValidationWordUpsertsContainsRule(t *testing.T) {
 	defer closeDB()
 
 	mock.ExpectBegin()
-	mock.ExpectExec(`INSERT INTO "validation_word_rules".*ON CONFLICT .* DO UPDATE`).
-		WillReturnResult(sqlmock.NewResult(0, 1))
+	mock.ExpectQuery(`INSERT INTO "validation_word_rules".*ON CONFLICT .* DO UPDATE.*RETURNING "id"`).
+		WithArgs("name", true, "root", "contains", true, true, "contains").
+		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 	mock.ExpectCommit()
 
 	if err := client.AddValidationWord(context.Background(), "name", true, "root"); err != nil {

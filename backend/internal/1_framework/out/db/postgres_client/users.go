@@ -12,12 +12,6 @@ import (
 	"backend/internal/logger"
 )
 
-type userRecord struct {
-	ID       int
-	Email    string
-	FullName sql.NullString
-}
-
 func (receiver *PostgresClient) ReplaceUser(
 	ctx context.Context,
 	name string,
@@ -45,10 +39,15 @@ func (receiver *PostgresClient) AddUser(
 	name string,
 	email string,
 ) error {
-	return tx.Table("users").Create(map[string]interface{}{
-		"full_name": sql.NullString{String: name, Valid: name != ""},
-		"email":     email,
-	}).Error
+	record := models.User{
+		FullName: sql.NullString{String: name, Valid: name != ""},
+		Email:    email,
+	}
+
+	return tx.
+		Omit("Auth0UserID", "CreatedAt", "UpdatedAt").
+		Create(&record).
+		Error
 }
 
 func (receiver *PostgresClient) DeleteUser(
@@ -64,10 +63,10 @@ func (receiver *PostgresClient) GetUserList(
 	userList groupObject.UserList,
 	err error,
 ) {
-	users := []userRecord{} // SQL結果保存用
+	users := []models.User{} // SQL結果保存用
 
 	result := receiver.conn(ctx).
-		Table("users").
+		Model(&models.User{}).
 		Select("id", "email", "full_name").
 		Find(&users)
 
@@ -101,13 +100,13 @@ func (receiver *PostgresClient) GetUser(
 	user groupObject.User,
 	err error,
 ) {
-	user = groupObject.User{}  // ドメインロジック用
-	resultUser := userRecord{} // SQL結果保存用
+	user = groupObject.User{}   // ドメインロジック用
+	resultUser := models.User{} // SQL結果保存用
 
 	result := receiver.conn(ctx).
-		Table("users").
+		Model(&models.User{}).
 		Select("id", "email", "full_name").
-		Where("id = ?", id.GetValue()).
+		Where(&models.User{ID: id.GetValue()}).
 		Take(&resultUser)
 
 	if result.Error != nil {
@@ -136,13 +135,19 @@ func (receiver *PostgresClient) UpdateUser(
 		return err
 	}
 
+	record := models.User{
+		FullName: sql.NullString{
+			String: newUser.Name().GetValue(),
+			Valid:  true,
+		},
+		Email: newUser.Email().GetValue(),
+	}
+
 	result := receiver.conn(ctx).
-		Table("users").
-		Where("id = ?", newUser.Identity().GetValue()).
-		Updates(map[string]interface{}{
-			"full_name": newUser.Name().GetValue(),
-			"email":     newUser.Email().GetValue(),
-		})
+		Model(&models.User{}).
+		Where(&models.User{ID: newUser.Identity().GetValue()}).
+		Select("full_name", "email").
+		Updates(&record)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -166,10 +171,10 @@ func (receiver *PostgresClient) GetUserListByCondition(
 	// 	middlewareRequestContext.GetRequestContext(ctx).TraceID.GetValue(),
 	// )
 
-	users := []userRecord{} // SQL結果保存用
+	users := []models.User{} // SQL結果保存用
 
 	conn := receiver.conn(ctx).
-		Table("users").
+		Model(&models.User{}).
 		Select("id", "email", "full_name")
 
 	if !reqUser.Email().GetIsNil() && reqUser.Email().GetValue() != "" {
