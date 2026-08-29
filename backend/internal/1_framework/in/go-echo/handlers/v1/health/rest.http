@@ -1,0 +1,8 @@
+@baseUrl = http://localhost:53234
+
+GET {{baseUrl}}/v1/health
+Accept: text/plain
+
+### --------------------------------
+GET {{baseUrl}}/v1/nonexistent
+Accept: application/json

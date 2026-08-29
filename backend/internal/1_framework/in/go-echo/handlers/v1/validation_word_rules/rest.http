@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:53234
+
+GET {{baseUrl}}/v1/validation-word-rules?targetType=name&isBlacklist=true
+Accept: application/json
+
+### --------------------------------
+POST {{baseUrl}}/v1/validation-word-rules
+Content-Type: application/json
+
+{
+	"targetType": "name",
+	"isBlacklist": true,
+	"word": "悪魔"
+}
+
+### --------------------------------
+PUT {{baseUrl}}/v1/validation-word-rules
+Content-Type: application/json
+
+{
+	"targetType": "name",
+	"isBlacklist": true,
+	"oldWord": "root",
+	"newWord": "admin"
+}
+
+### --------------------------------
+DELETE {{baseUrl}}/v1/validation-word-rules
+Content-Type: application/json
+
+{
+	"targetType": "name",
+	"isBlacklist": true,
+	"word": "禁止語"
+}

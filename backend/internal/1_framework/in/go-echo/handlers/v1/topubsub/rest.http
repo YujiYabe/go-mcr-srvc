@@ -1,0 +1,4 @@
+@baseUrl = http://localhost:53234
+
+GET {{baseUrl}}/v1/to-pubsub
+Accept: application/json
