@@ -7,6 +7,8 @@ import (
 	"fmt"
 
 	"github.com/redis/go-redis/v9"
+
+	domain "backend/internal/4_domain"
 )
 
 func (receiver *RedisClient) GetValidationWords(
@@ -64,10 +66,9 @@ func validationWordsCacheKey(
 	targetType string,
 	isBlacklist bool,
 ) string {
-	ruleType := "whitelist"
-	if isBlacklist {
-		ruleType = "blacklist"
-	}
-
-	return fmt.Sprintf("validation:word_rules:%s:%s", targetType, ruleType)
+	return fmt.Sprintf(
+		"validation:word_rules:%s:%s",
+		targetType,
+		domain.ValidationWordRuleTypeFromBlacklistFlag(isBlacklist),
+	)
 }
