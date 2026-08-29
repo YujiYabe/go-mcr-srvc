@@ -6,24 +6,29 @@ Clean Architecture のアダプターレイヤーにおけるデータベース�
 
 ## 主な役割
 
-- データベースとの通信処理
-- エンティティとドメインモデルの変換
-- トランザクション制御
-- クエリの実行
+- usecase から見た永続化の入口
+- PostgreSQL と Redis cache-aside の組み合わせ
+- トランザクション境界の委譲
+- cache hit / miss と cache invalidation の制御
 
 ## 特徴
 
-- データベース技術非依存
-- ドメインモデルへの変換ロジック
-- リポジトリパターンの実装
+- usecase へ PostgreSQL / Redis の詳細を漏らさない
+- 永続化先を正とし、Redis はキャッシュとして扱う
 - 永続化の詳細の隠蔽
 
 ## 実装内容
 
-- SQL データベースアクセス
-- NoSQL データベースアクセス
+- PostgreSQL gateway への委譲
 - キャッシュ制御
+- validation_word_rules の cache-aside
+- validation_word_rules 更新後の Redis key 削除
+
+## 未実装
+
+- MongoDB などの NoSQL gateway
 - マイグレーション管理
+- 分散トランザクション
 
 ## 使用方法
 
