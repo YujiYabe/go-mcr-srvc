@@ -1,0 +1,5 @@
+@baseUrl = http://localhost:{{goEchoPort}}
+
+### --------------------------------
+GET {{baseUrl}}/v1/to-pubsub
+Accept: application/json

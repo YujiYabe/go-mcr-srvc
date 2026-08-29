@@ -17,4 +17,9 @@
         }
     ],
     "favorites.sortDirection": "ASC",
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "goEchoPort": 53234
+        }
+    },
 }
