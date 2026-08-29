@@ -113,13 +113,13 @@ func handleUsersRequest(
 	}
 
 	for _, user := range userList.Content() {
-		id := user.ID().GetValue()
+		userID := user.ID().GetValue()
 		name := user.Name().GetValue()
 		email := user.Email().GetValue()
 		responseList = append(
 			responseList,
 			openapi.User{
-				Id:    id,
+				Id:    userID,
 				Name:  name,
 				Email: email,
 			},

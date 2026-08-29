@@ -12,12 +12,12 @@ import (
 
 func TestContextToMetadataAndMetadataToContextRoundTrip(t *testing.T) {
 	outgoingCtx := ContextToMetadata(newContextForTest(t))
-	md, ok := metadata.FromOutgoingContext(outgoingCtx)
+	metadataCollection, ok := metadata.FromOutgoingContext(outgoingCtx)
 	if !ok {
 		t.Fatal("expected outgoing metadata")
 	}
 
-	incomingCtx := metadata.NewIncomingContext(context.Background(), md)
+	incomingCtx := metadata.NewIncomingContext(context.Background(), metadataCollection)
 	ctx := MetadataToContext(incomingCtx)
 
 	assertRequestContextForTest(ctx, t)

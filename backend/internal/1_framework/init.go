@@ -92,7 +92,7 @@ func NewApp() (
 
 	ctrl := controller.NewController(useCase)
 
-	a := &App{
+	app := &App{
 		goGRPC: goGRPC.NewGoGRPC(
 			ctrl,
 			config.Server.GRPCAddress,
@@ -112,7 +112,7 @@ func NewApp() (
 		),
 	}
 
-	return a, nil
+	return app, nil
 }
 
 // Start ...

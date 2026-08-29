@@ -123,15 +123,15 @@ func (receiver PrimitiveSliceString) HasValue(value string) bool {
 
 // ______________________________________
 func (receiver *PrimitiveSliceString) SortAsc() {
-	sort.Slice(receiver.value, func(i, j int) bool {
-		return receiver.value[i].value < receiver.value[j].value
+	sort.Slice(receiver.value, func(leftIndex, rightIndex int) bool {
+		return receiver.value[leftIndex].value < receiver.value[rightIndex].value
 	})
 }
 
 // ______________________________________
 func (receiver *PrimitiveSliceString) SortDesc() {
-	sort.Slice(receiver.value, func(i, j int) bool {
-		return receiver.value[i].value > receiver.value[j].value
+	sort.Slice(receiver.value, func(leftIndex, rightIndex int) bool {
+		return receiver.value[leftIndex].value > receiver.value[rightIndex].value
 	})
 }
 
@@ -194,8 +194,8 @@ func (receiver PrimitiveSliceString) ValidationMinLength() error {
 // []PrimitiveString を []string に変換して出力する関数
 func (receiver *PrimitiveSliceString) ToSliceString() []string {
 	result := make([]string, len(receiver.value))
-	for i, v := range receiver.value {
-		result[i] = v.GetValue()
+	for index, value := range receiver.value {
+		result[index] = value.GetValue()
 	}
 	return result
 }

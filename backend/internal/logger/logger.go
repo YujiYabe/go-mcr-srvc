@@ -47,9 +47,9 @@ func Logging(
 
 	event := logger.Logger()
 
-	switch v := data.(type) {
+	switch typedData := data.(type) {
 	case error:
-		event.Error().Msg(v.Error())
+		event.Error().Msg(typedData.Error())
 	default:
 		event.Info().Interface("data", data).Msg("")
 	}

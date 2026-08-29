@@ -16,14 +16,14 @@ func (receiver *PostgresClient) ReplaceUser(
 	ctx context.Context,
 	name string,
 	email string,
-	id string,
+	userID string,
 ) error {
 	err := receiver.conn(ctx).Transaction(func(tx *gorm.DB) error {
 		err := receiver.AddUser(tx, name, email)
 		if err != nil {
 			return err
 		}
-		err = receiver.DeleteUser(tx, id)
+		err = receiver.DeleteUser(tx, userID)
 		if err != nil {
 			return err
 		}
@@ -52,9 +52,9 @@ func (receiver *PostgresClient) AddUser(
 
 func (receiver *PostgresClient) DeleteUser(
 	tx *gorm.DB,
-	id string,
+	userID string,
 ) error {
-	return tx.Delete(&models.User{}, id).Error
+	return tx.Delete(&models.User{}, userID).Error
 }
 
 func (receiver *PostgresClient) GetUserList(

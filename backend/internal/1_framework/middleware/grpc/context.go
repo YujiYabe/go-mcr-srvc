@@ -43,11 +43,11 @@ func ContextToMetadata(
 		",",
 	)
 
-	md := metadata.New(
+	metadataCollection := metadata.New(
 		metaDataMap,
 	)
 
-	ctx = metadata.NewOutgoingContext(ctx, md)
+	ctx = metadata.NewOutgoingContext(ctx, metadataCollection)
 
 	return ctx
 }
@@ -55,7 +55,7 @@ func ContextToMetadata(
 func MetadataToContext(
 	ctx context.Context,
 ) context.Context {
-	md, ok := metadata.FromIncomingContext(ctx)
+	metadataCollection, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return ctx
 	}
@@ -63,17 +63,17 @@ func MetadataToContext(
 	newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.RequestStartTimeHeaderName))) != 0 {
+	if len(metadataCollection.Get(string(typeObject.RequestStartTimeHeaderName))) != 0 {
 		requestStartTime, _ := strconv.ParseInt(
-			md.Get(string(typeObject.RequestStartTimeHeaderName))[0], 10, 64,
+			metadataCollection.Get(string(typeObject.RequestStartTimeHeaderName))[0], 10, 64,
 		)
 		newRequestContextArgs.RequestStartTime = &requestStartTime
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.PermissionListHeaderName))) != 0 {
+	if len(metadataCollection.Get(string(typeObject.PermissionListHeaderName))) != 0 {
 		permissionList := []string{}
-		for _, permissionHeader := range md.Get(string(typeObject.PermissionListHeaderName)) {
+		for _, permissionHeader := range metadataCollection.Get(string(typeObject.PermissionListHeaderName)) {
 			for _, permission := range strings.Split(permissionHeader, ",") {
 				if permission == "" {
 					continue
@@ -86,50 +86,50 @@ func MetadataToContext(
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.TraceIDHeaderName))) != 0 {
-		value := md.Get(string(typeObject.TraceIDHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.TraceIDHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.TraceIDHeaderName))[0]
 		newRequestContextArgs.TraceID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.ClientIPHeaderName))) != 0 {
-		value := md.Get(string(typeObject.ClientIPHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.ClientIPHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.ClientIPHeaderName))[0]
 		newRequestContextArgs.ClientIP = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.UserAgentHeaderName))) != 0 {
-		value := md.Get(string(typeObject.UserAgentHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.UserAgentHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.UserAgentHeaderName))[0]
 		newRequestContextArgs.UserAgent = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.UserIDHeaderName))) != 0 {
-		value := md.Get(string(typeObject.UserIDHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.UserIDHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.UserIDHeaderName))[0]
 		newRequestContextArgs.UserID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.AccessTokenHeaderName))) != 0 {
-		value := md.Get(string(typeObject.AccessTokenHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.AccessTokenHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.AccessTokenHeaderName))[0]
 		newRequestContextArgs.AccessToken = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.TenantIDHeaderName))) != 0 {
-		value := md.Get(string(typeObject.TenantIDHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.TenantIDHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.TenantIDHeaderName))[0]
 		newRequestContextArgs.TenantID = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.LocaleHeaderName))) != 0 {
-		value := md.Get(string(typeObject.LocaleHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.LocaleHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.LocaleHeaderName))[0]
 		newRequestContextArgs.Locale = &value
 	}
 
 	// ________________________________
-	if len(md.Get(string(typeObject.TimeZoneHeaderName))) != 0 {
-		value := md.Get(string(typeObject.TimeZoneHeaderName))[0]
+	if len(metadataCollection.Get(string(typeObject.TimeZoneHeaderName))) != 0 {
+		value := metadataCollection.Get(string(typeObject.TimeZoneHeaderName))[0]
 		newRequestContextArgs.TimeZone = &value
 	}
 

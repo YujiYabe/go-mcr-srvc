@@ -91,11 +91,11 @@ func Load() (Config, error) {
 }
 
 func initViper() *viper.Viper {
-	v := viper.New()
-	v.AutomaticEnv()
-	v.AddConfigPath("internal/env")
-	v.SetConfigType("env")
-	return v
+	viperConfig := viper.New()
+	viperConfig.AutomaticEnv()
+	viperConfig.AddConfigPath("internal/env")
+	viperConfig.SetConfigType("env")
+	return viperConfig
 }
 
 func setupLocalstack(

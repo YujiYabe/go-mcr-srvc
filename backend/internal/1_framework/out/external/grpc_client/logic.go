@@ -48,11 +48,11 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 	}
 	userArgs := make([]groupObject.NewUserArgs, 0, len(grpcUserList.V1UserParameterArray.Users))
 	for _, grpcUser := range grpcUserList.V1UserParameterArray.Users {
-		id := int(grpcUser.GetId())
+		userID := int(grpcUser.GetId())
 		name := grpcUser.GetName()
 		email := grpcUser.GetEmail()
 		userArgs = append(userArgs, groupObject.NewUserArgs{
-			ID:    &id,
+			ID:    &userID,
 			Name:  &name,
 			Email: &email,
 		})

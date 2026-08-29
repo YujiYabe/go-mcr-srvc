@@ -16,9 +16,9 @@ func TestNewPermissionListReturnsValuesInOrder(t *testing.T) {
 	if len(actual) != len(values) {
 		t.Fatalf("expected %d values, got %d", len(values), len(actual))
 	}
-	for i := range values {
-		if actual[i] != values[i] {
-			t.Fatalf("expected value at %d to be %q, got %q", i, values[i], actual[i])
+	for index := range values {
+		if actual[index] != values[index] {
+			t.Fatalf("expected value at %d to be %q, got %q", index, values[index], actual[index])
 		}
 	}
 }

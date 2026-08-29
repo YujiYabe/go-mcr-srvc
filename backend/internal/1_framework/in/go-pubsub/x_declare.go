@@ -50,7 +50,7 @@ func NewKafkaConsumer(
 	consumer = &kafka.Consumer{}
 	maxRetries := 20
 
-	for i := 0; i < maxRetries; i++ {
+	for retryIndex := 0; retryIndex < maxRetries; retryIndex++ {
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
@@ -68,7 +68,7 @@ func NewKafkaConsumer(
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
-		case <-time.After(retryBackoff(uint(i))):
+		case <-time.After(retryBackoff(uint(retryIndex))):
 		}
 	}
 	if err != nil {

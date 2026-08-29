@@ -208,11 +208,11 @@ func (receiver *PrimitiveSliceInt) SortDesc() {
 	}
 
 	// Using bubble sort for demonstration
-	n := len(receiver.value)
-	for i := 0; i < n-1; i++ {
-		for j := 0; j < n-i-1; j++ {
-			if receiver.value[j].GetValue() < receiver.value[j+1].GetValue() {
-				receiver.value[j], receiver.value[j+1] = receiver.value[j+1], receiver.value[j]
+	valueCount := len(receiver.value)
+	for outerIndex := 0; outerIndex < valueCount-1; outerIndex++ {
+		for innerIndex := 0; innerIndex < valueCount-outerIndex-1; innerIndex++ {
+			if receiver.value[innerIndex].GetValue() < receiver.value[innerIndex+1].GetValue() {
+				receiver.value[innerIndex], receiver.value[innerIndex+1] = receiver.value[innerIndex+1], receiver.value[innerIndex]
 			}
 		}
 	}
@@ -225,11 +225,11 @@ func (receiver *PrimitiveSliceInt) SortAsc() {
 		return
 	}
 
-	n := len(receiver.value)
-	for i := 0; i < n-1; i++ {
-		for j := 0; j < n-i-1; j++ {
-			if receiver.value[j].GetValue() > receiver.value[j+1].GetValue() {
-				receiver.value[j], receiver.value[j+1] = receiver.value[j+1], receiver.value[j]
+	valueCount := len(receiver.value)
+	for outerIndex := 0; outerIndex < valueCount-1; outerIndex++ {
+		for innerIndex := 0; innerIndex < valueCount-outerIndex-1; innerIndex++ {
+			if receiver.value[innerIndex].GetValue() > receiver.value[innerIndex+1].GetValue() {
+				receiver.value[innerIndex], receiver.value[innerIndex+1] = receiver.value[innerIndex+1], receiver.value[innerIndex]
 			}
 		}
 	}
@@ -242,8 +242,8 @@ func (receiver *PrimitiveSliceInt) ToSliceInt() []int {
 	}
 
 	result := make([]int, len(receiver.value))
-	for i, v := range receiver.value {
-		result[i] = v.GetValue()
+	for index, value := range receiver.value {
+		result[index] = value.GetValue()
 	}
 	return result
 

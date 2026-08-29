@@ -49,12 +49,12 @@ func newE2ETestEcho(t *testing.T, controller *fakeController) *echo.Echo {
 func TestOpenAPIE2E_V1UsersGet(t *testing.T) {
 	name := "Alice"
 	email := "alice@example.com"
-	id := 1
+	userID := 1
 	userList, err := groupObject.NewUserList(
 		&groupObject.NewUserListArgs{
 			Content: []groupObject.NewUserArgs{
 				{
-					ID:    &id,
+					ID:    &userID,
 					Name:  &name,
 					Email: &email,
 				},
@@ -105,7 +105,7 @@ func TestOpenAPIE2E_V1UsersGet(t *testing.T) {
 	if len(body) != 1 {
 		t.Fatalf("expected 1 user, got %d", len(body))
 	}
-	if body[0].ID != id || body[0].Name != name || body[0].Email != email {
+	if body[0].ID != userID || body[0].Name != name || body[0].Email != email {
 		t.Fatalf("unexpected response body: %+v", body[0])
 	}
 }
