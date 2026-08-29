@@ -66,7 +66,7 @@ func TestSetAndDeleteValidationWords(t *testing.T) {
 	db, mock := redismock.NewClientMock()
 	client := &RedisClient{Conn: db}
 	key := "validation:word_rules:name:blacklist"
-	mock.ExpectSet(key, []byte(`["admin","root"]`), validationWordsCacheTTL).SetVal("OK")
+	mock.ExpectSet(key, []byte(`["admin","root"]`), 0).SetVal("OK")
 	mock.ExpectDel(key).SetVal(1)
 
 	if err := client.SetValidationWords(context.Background(), "name", true, []string{"admin", "root"}); err != nil {

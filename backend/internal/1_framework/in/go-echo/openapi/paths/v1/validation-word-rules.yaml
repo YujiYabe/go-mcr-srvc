@@ -37,8 +37,12 @@ post:
         schema:
           $ref: '#/components/schemas/ValidationWordRuleCreate'
   responses:
-    '204':
-      description: Validation word rule added
+    '201':
+      description: Validation word rule created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationWordRule'
     '400':
       description: Invalid request
       content:

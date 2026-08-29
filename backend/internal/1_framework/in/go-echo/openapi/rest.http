@@ -39,7 +39,7 @@ Content-Type: application/json
 {
 	"targetType": "name",
 	"isBlacklist": true,
-	"word": "root"
+	"word": "rｓdgああっっｃfsｄddot"
 }
 
 ### --------------------------------
@@ -60,5 +60,5 @@ Content-Type: application/json
 {
 	"targetType": "name",
 	"isBlacklist": true,
-	"word": "admin"
+	"word": "禁止語"
 }

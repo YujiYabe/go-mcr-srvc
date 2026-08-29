@@ -235,8 +235,15 @@ func TestOpenAPIE2E_V1ValidationWordRulesPost(t *testing.T) {
 
 	echoEcho.ServeHTTP(rec, req)
 
-	if rec.Code != http.StatusNoContent {
-		t.Fatalf("expected status %d, got %d: %s", http.StatusNoContent, rec.Code, rec.Body.String())
+	if rec.Code != http.StatusCreated {
+		t.Fatalf("expected status %d, got %d: %s", http.StatusCreated, rec.Code, rec.Body.String())
+	}
+	var body openapi.ValidationWordRule
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("failed to decode response body: %v", err)
+	}
+	if body.TargetType != "name" || !body.IsBlacklist || body.Word != "root" {
+		t.Fatalf("unexpected response body: %+v", body)
 	}
 	if !controller.addValidationWordCalled {
 		t.Fatal("expected AddValidationWord to be called")

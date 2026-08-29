@@ -5,12 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/redis/go-redis/v9"
 )
-
-const validationWordsCacheTTL = 60 * time.Second
 
 func (receiver *RedisClient) GetValidationWords(
 	ctx context.Context,
@@ -51,7 +48,7 @@ func (receiver *RedisClient) SetValidationWords(
 		ctx,
 		validationWordsCacheKey(targetType, isBlacklist),
 		value,
-		validationWordsCacheTTL,
+		0,
 	).Err()
 }
 

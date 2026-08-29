@@ -33,5 +33,8 @@ func Post(
 		return errorJSON(echoContext, http.StatusBadRequest, err)
 	}
 
-	return echoContext.NoContent(http.StatusNoContent)
+	return echoContext.JSON(
+		http.StatusCreated,
+		openapi.ValidationWordRule(request),
+	)
 }

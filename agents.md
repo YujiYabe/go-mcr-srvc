@@ -97,6 +97,15 @@ domain に置くもの:
 - PostgreSQL / GORM 固有の処理は framework 層に閉じ込める。
 - usecase / domain に GORM や SQL の型を漏らさない。
 
+## Redis キャッシュ
+
+- PostgreSQL などの永続化先を正とし、Redis は cache-aside 方式のキャッシュとして扱う。
+- キャッシュの TTL は原則として無期限にする。
+- POST / PUT / DELETE などでデータが変化する場合は、先に永続化先へ反映し、成功後に関連する Redis キーを削除する。
+- 永続化に失敗した場合は Redis キーを削除しない。
+- キャッシュ削除後の次回読み込みでは、永続化先から最新版を取得して Redis に保存する。
+- 更新処理内でキャッシュ値を直接書き換えず、キー削除による無効化を基本とする。
+
 ## トランザクション
 
 - 複数テーブルを同時更新する場合は usecase で transaction 境界を張る。
