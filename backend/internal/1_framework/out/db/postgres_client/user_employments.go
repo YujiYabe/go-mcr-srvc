@@ -4,19 +4,9 @@ import (
 	"context"
 	"database/sql"
 
+	"backend/internal/1_framework/out/db/postgres_client/models"
 	groupObject "backend/internal/4_domain/group_object"
 )
-
-type userEmploymentRecord struct {
-	UserID           int
-	CompanyID        int
-	DepartmentID     int
-	PositionID       int
-	OfficeLocationID sql.NullInt64
-	EmployeeCode     sql.NullString
-	EmploymentType   sql.NullString
-	IsPrimary        bool
-}
 
 func (receiver *PostgresClient) UpdateUserEmployment(
 	ctx context.Context,
@@ -26,7 +16,7 @@ func (receiver *PostgresClient) UpdateUserEmployment(
 		return err
 	}
 
-	record := userEmploymentRecord{
+	record := models.UserEmployment{
 		UserID:         userEmployment.UserID().GetValue(),
 		CompanyID:      userEmployment.CompanyID().GetValue(),
 		DepartmentID:   userEmployment.DepartmentID().GetValue(),
@@ -43,18 +33,19 @@ func (receiver *PostgresClient) UpdateUserEmployment(
 	}
 
 	result := receiver.conn(ctx).
-		Table("user_employments").
+		Model(&models.UserEmployment{}).
 		Where("user_id = ? AND is_primary = ?", record.UserID, record.IsPrimary).
-		Updates(map[string]interface{}{
-			"company_id":          record.CompanyID,
-			"department_id":       record.DepartmentID,
-			"position_id":         record.PositionID,
-			"office_location_id":  record.OfficeLocationID,
-			"employee_code":       record.EmployeeCode,
-			"employment_type":     record.EmploymentType,
-			"is_primary":          record.IsPrimary,
-			"employment_end_date": nil,
-		})
+		Select(
+			"company_id",
+			"department_id",
+			"position_id",
+			"office_location_id",
+			"employee_code",
+			"employment_type",
+			"is_primary",
+			"left_on",
+		).
+		Updates(&record)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -63,7 +54,7 @@ func (receiver *PostgresClient) UpdateUserEmployment(
 	}
 
 	return receiver.conn(ctx).
-		Table("user_employments").
-		Create(record).
+		Omit("JoinedOn", "LeftOn", "CreatedAt", "UpdatedAt").
+		Create(&record).
 		Error
 }

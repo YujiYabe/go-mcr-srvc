@@ -61,6 +61,35 @@ func TestUserCanChangeNameAndEmail(t *testing.T) {
 	}
 }
 
+func TestNewUserRejectsNameBlacklist(t *testing.T) {
+	_, err := NewUser(&NewUserArgs{
+		Name:          stringPointer("root user"),
+		Email:         stringPointer("root@example.com"),
+		NameBlacklist: []string{"root"},
+	})
+	if err == nil {
+		t.Fatal("expected blacklist validation error")
+	}
+}
+
+func TestUserRenameRejectsNameBlacklist(t *testing.T) {
+	user, err := ReconstructUser(&NewUserArgs{
+		ID:    intPointer(1),
+		Name:  stringPointer("alice"),
+		Email: stringPointer("alice@example.com"),
+	})
+	if err != nil {
+		t.Fatalf("failed to reconstruct user: %v", err)
+	}
+
+	if err := user.Rename(stringPointer("root user"), []string{"root"}); err == nil {
+		t.Fatal("expected blacklist validation error")
+	}
+	if user.Name().GetValue() != "alice" {
+		t.Fatalf("name should not change after failed rename, got: %s", user.Name().GetValue())
+	}
+}
+
 func TestUserEnsureReadyToUpdateRequiresLifecycleState(t *testing.T) {
 	user, err := NewUser(&NewUserArgs{
 		Name:  stringPointer("alice"),

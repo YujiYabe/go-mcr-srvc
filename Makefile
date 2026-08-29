@@ -81,13 +81,6 @@ security: govulncheck
 golint: lint
 
 
-# ----------------------------
-.PHONY: xo
-xo:
-	cd backend/internal/1_framework/out/db/postgres_client && \
-	xo schema postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_FRONT_PORT}/${POSTGRES_DB}?sslmode=disable
-
-
 # 指定ディレクトリ配下を再帰的に探してコンパイル ----------------------------
 .PHONY: gen-grpc
 gen-grpc:

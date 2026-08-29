@@ -27,3 +27,38 @@ Accept: application/json
 ### --------------------------------
 GET http://localhost:53234/v1/to-pubsub
 Accept: application/json
+
+### --------------------------------
+GET http://localhost:53234/v1/validation-word-rules?targetType=name&isBlacklist=true
+Accept: application/json
+
+### --------------------------------
+POST http://localhost:53234/v1/validation-word-rules
+Content-Type: application/json
+
+{
+	"targetType": "name",
+	"isBlacklist": true,
+	"word": "rｓdgああっっｃfsｄddot"
+}
+
+### --------------------------------
+PUT http://localhost:53234/v1/validation-word-rules
+Content-Type: application/json
+
+{
+	"targetType": "name",
+	"isBlacklist": true,
+	"oldWord": "root",
+	"newWord": "admin"
+}
+
+### --------------------------------
+DELETE http://localhost:53234/v1/validation-word-rules
+Content-Type: application/json
+
+{
+	"targetType": "name",
+	"isBlacklist": true,
+	"word": "禁止語"
+}

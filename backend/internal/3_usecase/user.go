@@ -7,6 +7,8 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
+const validationWordRuleTargetName = "name"
+
 func (receiver *useCase) GetUserList(
 	ctx context.Context,
 ) (
@@ -59,6 +61,17 @@ func (receiver *useCase) UpdateUser(
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
 		return fmt.Errorf("UpdateUser: %w", err)
 	}
+	nameBlacklist, err := receiver.ToGatewayDB.GetValidationWords(
+		ctx,
+		validationWordRuleTargetName,
+		true,
+	)
+	if err != nil {
+		return fmt.Errorf("UpdateUser: %w", err)
+	}
+	if err := newUser.ValidateNameBlacklist(nameBlacklist); err != nil {
+		return fmt.Errorf("UpdateUser: %w", err)
+	}
 
 	if err := receiver.ToGatewayDB.RunInTransaction(
 		ctx,
@@ -105,6 +118,17 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 		return err
 	}
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
+		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
+	}
+	nameBlacklist, err := receiver.ToGatewayDB.GetValidationWords(
+		ctx,
+		validationWordRuleTargetName,
+		true,
+	)
+	if err != nil {
+		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
+	}
+	if err := newUser.ValidateNameBlacklist(nameBlacklist); err != nil {
 		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
 	}
 	if err := receiver.ToDomain.EnsurePrimaryEmploymentAssignable(newUser, userEmployment); err != nil {

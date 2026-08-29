@@ -10,16 +10,23 @@ import (
 )
 
 type fakeGatewayDB struct {
-	runInTransactionCalled  bool
-	updateUserCalled        bool
-	updateEmploymentCalled  bool
-	getListCalled           bool
-	getByConditionCalled    bool
-	calls                   []string
-	getListErr              error
-	getByConditionErr       error
-	updateUserErr           error
-	updateUserEmploymentErr error
+	runInTransactionCalled     bool
+	updateUserCalled           bool
+	updateEmploymentCalled     bool
+	getListCalled              bool
+	getByConditionCalled       bool
+	getValidationWordsCalled   bool
+	addValidationWordCalled    bool
+	updateValidationWordCalled bool
+	deleteValidationWordCalled bool
+	calls                      []string
+	getListErr                 error
+	getByConditionErr          error
+	updateUserErr              error
+	updateUserEmploymentErr    error
+	getValidationWordsErr      error
+	validationWordUpdateErr    error
+	validationWords            []string
 }
 
 func (receiver *fakeGatewayDB) RunInTransaction(
@@ -67,6 +74,49 @@ func (receiver *fakeGatewayDB) UpdateUserEmployment(
 	receiver.updateEmploymentCalled = true
 	receiver.calls = append(receiver.calls, "update_user_employment")
 	return receiver.updateUserEmploymentErr
+}
+
+func (receiver *fakeGatewayDB) GetValidationWords(
+	_ context.Context,
+	_ string,
+	_ bool,
+) (
+	[]string,
+	error,
+) {
+	receiver.getValidationWordsCalled = true
+	return receiver.validationWords, receiver.getValidationWordsErr
+}
+
+func (receiver *fakeGatewayDB) AddValidationWord(
+	_ context.Context,
+	_ string,
+	_ bool,
+	_ string,
+) error {
+	receiver.addValidationWordCalled = true
+	return receiver.validationWordUpdateErr
+}
+
+func (receiver *fakeGatewayDB) UpdateValidationWord(
+	_ context.Context,
+	_ string,
+	_ bool,
+	_ string,
+	_ string,
+) error {
+	receiver.updateValidationWordCalled = true
+	return receiver.validationWordUpdateErr
+}
+
+func (receiver *fakeGatewayDB) DeleteValidationWord(
+	_ context.Context,
+	_ string,
+	_ bool,
+	_ string,
+) error {
+	receiver.deleteValidationWordCalled = true
+	return receiver.validationWordUpdateErr
 }
 
 type fakeGatewayExternal struct {

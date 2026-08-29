@@ -13,9 +13,10 @@ type User struct {
 }
 
 type NewUserArgs struct {
-	ID    *int
-	Name  *string
-	Email *string
+	ID            *int
+	Name          *string
+	Email         *string
+	NameBlacklist []string
 }
 
 func NewUser(
@@ -34,7 +35,7 @@ func NewUser(
 		return nil, err
 	}
 
-	user.name, err = typeObject.NewName(args.Name)
+	user.name, err = typeObject.NewName(args.Name, args.NameBlacklist)
 	if err != nil {
 		return nil, err
 	}
@@ -129,14 +130,32 @@ func (receiver User) EnsureReadyToUpdate() error {
 
 func (receiver *User) Rename(
 	value *string,
+	nameBlacklist ...[]string,
 ) error {
-	name, err := typeObject.NewName(value)
+	blacklist := []string{}
+	if len(nameBlacklist) > 0 {
+		blacklist = nameBlacklist[0]
+	}
+
+	name, err := typeObject.NewName(value, blacklist)
 	if err != nil {
 		return err
 	}
 	receiver.name = name
 
 	return nil
+}
+
+func (receiver User) ValidateNameBlacklist(
+	nameBlacklist []string,
+) error {
+	value := receiver.name.GetValue()
+	if receiver.name.GetIsNil() {
+		return nil
+	}
+
+	_, err := typeObject.NewName(&value, nameBlacklist)
+	return err
 }
 
 func (receiver *User) ChangeEmail(

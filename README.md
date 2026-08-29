@@ -13,10 +13,6 @@ make build
 make up
 ```
 
-# xo
-
-brew install xo/xo/xo
-
 # ディレクトリ構成
 
 [go standard project layout](https://github.com/golang-standards/project-layout/blob/master/README_ja.md)

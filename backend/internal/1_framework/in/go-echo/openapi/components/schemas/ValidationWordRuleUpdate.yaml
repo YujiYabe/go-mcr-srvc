@@ -1,0 +1,15 @@
+type: object
+required:
+- targetType
+- isBlacklist
+- oldWord
+- newWord
+properties:
+  targetType:
+    type: string
+  isBlacklist:
+    type: boolean
+  oldWord:
+    type: string
+  newWord:
+    type: string

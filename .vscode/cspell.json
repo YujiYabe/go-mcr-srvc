@@ -32,8 +32,11 @@
 		"keyfunc",
 		"Localstack",
 		"logrus",
+		"redismock",
 		"sirupsen",
+		"sqlmock",
 		"sslmode",
+		"VARCHAR",
 		"withmiddleware"
 	]
 }

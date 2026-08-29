@@ -64,12 +64,66 @@ type (
 			ctx context.Context,
 			userEmployment groupObject.UserEmployment,
 		) error
+
+		GetValidationWords(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
+		) (
+			words []string,
+			err error,
+		)
+
+		AddValidationWord(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
+			word string,
+		) error
+
+		UpdateValidationWord(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
+			oldWord string,
+			newWord string,
+		) error
+
+		DeleteValidationWord(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
+			word string,
+		) error
 	}
 
 	// ToRedis ...
 	ToRedis interface {
 		ResetPlaceListInRedis(
 			ctx context.Context,
+		) error
+
+		GetValidationWords(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
+		) (
+			words []string,
+			hit bool,
+			err error,
+		)
+
+		SetValidationWords(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
+			words []string,
+		) error
+
+		DeleteValidationWordsCache(
+			ctx context.Context,
+			targetType string,
+			isBlacklist bool,
 		) error
 	}
 )

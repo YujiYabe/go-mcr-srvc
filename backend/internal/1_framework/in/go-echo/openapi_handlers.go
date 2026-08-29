@@ -7,6 +7,7 @@ import (
 
 	v1ToPubsub "backend/internal/1_framework/in/go-echo/handlers/v1/topubsub"
 	v1users "backend/internal/1_framework/in/go-echo/handlers/v1/users"
+	v1ValidationWordRules "backend/internal/1_framework/in/go-echo/handlers/v1/validation_word_rules"
 	"backend/internal/1_framework/in/go-echo/openapi"
 	"backend/internal/2_adapter/controller"
 )
@@ -51,6 +52,44 @@ func (receiver *ServerInterfaceImpl) V1ToPubsubGet(
 	echoContext echo.Context,
 ) error {
 	return v1ToPubsub.Get(
+		echoContext,
+		receiver.Controller,
+	)
+}
+
+func (receiver *ServerInterfaceImpl) V1ValidationWordRulesGet(
+	echoContext echo.Context,
+	params openapi.V1ValidationWordRulesGetParams,
+) error {
+	return v1ValidationWordRules.Get(
+		echoContext,
+		receiver.Controller,
+		params,
+	)
+}
+
+func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPost(
+	echoContext echo.Context,
+) error {
+	return v1ValidationWordRules.Post(
+		echoContext,
+		receiver.Controller,
+	)
+}
+
+func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPut(
+	echoContext echo.Context,
+) error {
+	return v1ValidationWordRules.Put(
+		echoContext,
+		receiver.Controller,
+	)
+}
+
+func (receiver *ServerInterfaceImpl) V1ValidationWordRulesDelete(
+	echoContext echo.Context,
+) error {
+	return v1ValidationWordRules.Delete(
 		echoContext,
 		receiver.Controller,
 	)

@@ -82,3 +82,15 @@ CREATE TABLE user_roles (
     user_id INT REFERENCES users(id) ON DELETE CASCADE, -- ユーザーID
     role_id INT REFERENCES roles(id) ON DELETE CASCADE  -- ロールID
 );
+
+CREATE TABLE validation_word_rules (
+    id SERIAL PRIMARY KEY,
+    target_type VARCHAR(50) NOT NULL,
+    is_blacklist BOOLEAN NOT NULL,
+    word VARCHAR(255) NOT NULL,
+    match_type VARCHAR(20) DEFAULT 'contains' NOT NULL CHECK (match_type IN ('contains', 'exact')),
+    enabled BOOLEAN DEFAULT true NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (target_type, is_blacklist, word)
+);
