@@ -6,24 +6,31 @@ PostgreSQL データベースとの接続を管理するパッケージです。
 ## 主な機能
 
 - データベース接続の確立
-- コネクションプールの管理
 - トランザクション制御
 - クエリの実行
+- ドメインモデルと DB model の変換
 
 ## 特徴
 
 - 設定の外部化
-- コネクション管理の最適化
+- 接続確立時のリトライ
 - エラーハンドリング
-- メトリクスの収集
+- PostgreSQL / GORM 固有処理の隠蔽
 
 ## 実装内容
 
 - データベース接続設定
-- コネクションプールの設定
-- トランザクション境界の制御
-- クエリタイムアウトの設定
-- リトライロジック
+- GORM によるクエリ実行
+- context 経由での transaction 伝搬
+- users / user_employments / validation_word_rules の永続化
+- validation_word_rules の upsert / update / delete
+
+## 未実装
+
+- クエリ単位のリトライ
+- クエリ単位のタイムアウト設定
+- メトリクス収集
+- Transactional Outbox
 
 ## 使用方法
 

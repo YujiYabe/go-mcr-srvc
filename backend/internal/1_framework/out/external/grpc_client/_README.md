@@ -7,24 +7,30 @@ gRPC マイクロサービス間通信を管理するパッケージです。
 
 - gRPC サービスとの通信
 - コネクション管理
-- ストリーミング処理
-- サーキットブレーカー
+- request context の metadata 伝搬
+- gRPC message と domain model の変換
 
 ## 特徴
 
-- 双方向ストリーミング対応
-- コネクションプールの最適化
-- 負荷分散
-- タイムアウト制御
-- リトライロジック
+- adapter layer の external gateway から利用される
+- gRPC の具体実装を framework layer に閉じ込める
+- unary RPC を利用する
 
 ## 実装内容
 
 - gRPC 接続設定
 - プロトコルバッファの実装
-- インターセプター
-- メトリクス収集
+- `GetUserListByCondition` の呼び出し
+- metadata への RequestContext 変換
 - エラーハンドリング
+
+## 未実装
+
+- streaming RPC
+- サーキットブレーカー
+- client side load balancing
+- クライアント側リトライ
+- メトリクス収集
 
 ## 使用方法
 

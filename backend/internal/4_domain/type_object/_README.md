@@ -1,6 +1,6 @@
 [<-戻る](../../../../README.md#ドメインロジックの凝集)
 
-# Domain Object
+# Type Object
 
 - primitive_object を利用して、ドメイン固有の値オブジェクトを定義するパッケージです。
 - type_object は、group_object でより大きなドメインモデルを構築する際の構成要素として使用されます。
@@ -14,26 +14,32 @@
 
 ## 実装例
 
-### メールアドレス
+### 実装されている主な値
 
-- フォーマットチェック
-- ドメイン固有のバリデーションルール
+- `Email`
+- `Name`
+- `ID`
+- `UserID`
+- `TenantID`
+- `Permission`
+- `PermissionList`
+- `AccessToken`
+- `ClientID`
+- `ClientSecret`
+- `ClientIP`
+- `UserAgent`
+- `Locale`
+- `TimeZone`
+- `TraceID`
+- `RequestStartTime`
+- `TimeOutMillSecond`
 
-### パスワード
+### 例
 
-- 文字数制限
-- 文字種別チェック
-- ハッシュ化
-
-### 電話番号
-
-- 国際電話番号フォーマット
-- 地域ごとのバリデーション
-
-### 郵便番号
-
-- 国/地域ごとのフォーマット
-- チェックデジット検証
+- `Email` はメールアドレス形式を検証します。
+- `Name` は文字列長と blacklist を検証します。
+- `TraceID` は未指定時に UUID を生成します。
+- `RequestStartTime` と `TimeOutMillSecond` はリクエスト伝搬時の timeout 計算に使います。
 
 
 [<-戻る](../../../../README.md#ドメインロジックの凝集)

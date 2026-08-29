@@ -5,30 +5,34 @@ HTTP サーバーのミドルウェアを管理するパッケージです。
 
 ## 主な機能
 
-- リクエスト/レスポンスの加工
-- 認証・認可
-- ロギング
-- メトリクス収集
-- トレーシング
-- レート制限
-- CORS 制御
+- RequestContext の作成
+- HTTP request からの ClientIP / UserAgent / Locale / TimeZone 取得
+- TraceID の context 設定
+- JWT 検証
 
 ## 特徴
 
 - チェーン可能なミドルウェア
-- パフォーマンス最適化
 - エラーハンドリング
-- セッション管理
-- リカバリー処理
+- Auth0 JWKS を使った JWT 検証に対応
+- HMAC secret を使った JWT 検証に対応
 
 ## 実装内容
 
-- ミドルウェアチェーン
-- セキュリティチェック
-- パフォーマンスモニタリング
-- 分散トレーシング
-- タイムアウト制御
-- リクエスト ID 生成
+- `ContextMiddleware`
+- `JWTMiddleware`
+- `JWTMiddlewareAuth0`
+- RequestContext を request context に保存
+
+## 未実装
+
+- 認可
+- メトリクス収集
+- レート制限
+- CORS 制御
+- セッション管理
+- リカバリー処理
+- OpenTelemetry などの分散トレーシング
 
 ## 使用方法
 

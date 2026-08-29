@@ -8,25 +8,15 @@
 - 複数の type_object を論理的にグループ化
 - DDDのentityとaggregateに相当
 - ドメインモデルの整合性を保証
-- マイクロサービス間の一貫したデータ構造を提供
 - ビジネスルールの集約
 
+## 実装されている型
 
-### RequestContext(micro service 間でのみ使用)
+- `User`
+- `UserEmployment`
+- `UserList`
+- `Credential`
 
-マイクロサービス間で共有される重要なコンテキスト情報を管理:
-
-- リクエスト開始時間
-- トレース ID
-- クライアント IP
-- UserAgent
-- ユーザー ID
-- アクセストークン
-- テナント ID
-- ロケール
-- タイムゾーン
-- 権限リスト
-
-
+RequestContext は `backend/internal/1_framework/middleware/request_context` で管理します。group_object には置きません。
 
 [<-戻る](../../../../README.md#ドメインロジックの凝集)

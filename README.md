@@ -114,11 +114,6 @@ DB テーブル名や transport の DTO 名ではなく、業務上の言葉を�
 
 #### [grpc client](backend/internal/1_framework/out/external/grpc_client/logic.go)
 
-# http server
-
-#### [http server](backend/internal/1_framework/in/go-echo/handlers/v1/users/get.go)
-
-http request を grpc に変換して grpc サーバーにリクエストを送信。
 
 # auth0 client
 
@@ -128,10 +123,10 @@ http request を grpc に変換して grpc サーバーにリクエストを送�
 
 #### [マイクロサービス間の共通データ項目](backend/internal/1_framework/middleware/request_context/model.go)
 
-マイクロサービス間の共通データ項目を定義。
+マイクロサービス間で伝搬する共通データ項目を定義。
 
 ```
-RequestStartTime  httpかgrpcのリクエスト開始時間を格納
+RequestStartTime  リクエスト開始時間を格納
 TraceID           uuidを格納
 ClientIP          httpアクセス元のIPを格納
 UserAgent         httpアクセス元のUserAgentを格納
@@ -143,16 +138,11 @@ TimeZone          タイムゾーンを格納
 PermissionList    ユーザー権限を格納
 ```
 
-RequestStartTime を利用して、マイクロサービスは timeout を設定する。
+上記の項目は gRPC metadata / PubSub header で伝搬する。
+HTTP middleware では ClientIP / UserAgent / Locale / TimeZone を HTTP request から取得し、RequestStartTime / TraceID は RequestContext 作成時に設定する。
+
+RequestContext は RequestStartTime から TimeOutMillSecond を内部計算する。
+TimeOutMillSecond は timeout 判定用の内部項目であり、現在は gRPC metadata / PubSub header では伝搬しない。
 
 RequestContext はリクエスト伝搬や timeout 計算など transport / application 寄りの関心を含むため、業務ドメインそのものではなく middleware 側で管理します。
 ただし、各項目の値制約は `type_object` を利用します。
-
-# dev environment
-
-hot reload
-debug mode
-
-```
-
-```
