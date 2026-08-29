@@ -109,7 +109,7 @@ linters:
     # - tagliatelle               #4 struct tagの命名規約を検査(JSON等のケース統一向け)
     # - testableexamples          #4 Exampleテストの出力コメント不足を検出(例示テスト向け)
     # - testpackage               #4 テストを別パッケージに強制(設計思想が合う場合のみ)
-    # - varnamelen                #4 変数名の長さを検査(このリポジトリ方針とは設定調整が必要)
+    # - varnamelen                #4 変数名の長さを検査(実態に合う短い変数名を許容する方針のため無効)
     # - whitespace                #4 if/forなどの前後空行を検査(文体規約向け)
     # - zerologlint               #4 zerologの使い方を検査(利用時のみ有効)
 
