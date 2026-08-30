@@ -35,8 +35,8 @@ type (
 
 // NewApp ...
 func NewApp() (
-	*App,
-	error,
+	app *App,
+	err error,
 ) {
 	ctx := context.Background()
 	config, err := env.Load()
@@ -92,7 +92,7 @@ func NewApp() (
 
 	ctrl := controller.NewController(useCase)
 
-	a := &App{
+	app = &App{
 		goGRPC: goGRPC.NewGoGRPC(
 			ctrl,
 			config.Server.GRPCAddress,
@@ -112,11 +112,13 @@ func NewApp() (
 		),
 	}
 
-	return a, nil
+	return app, nil
 }
 
 // Start ...
-func (receiver *App) Start() error {
+func (receiver *App) Start() (
+	err error,
+) {
 	ctx := context.Background()
 	if false {
 		go func() {

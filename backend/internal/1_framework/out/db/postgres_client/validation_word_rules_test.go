@@ -12,7 +12,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestGetValidationWordsQueriesEnabledContainsRules(t *testing.T) {
+func TestGetValidationWordsQueriesEnabledContainsRules(
+	t *testing.T,
+) {
 	sqlDB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to create sql mock: %v", err)
@@ -48,7 +50,9 @@ func TestGetValidationWordsQueriesEnabledContainsRules(t *testing.T) {
 	}
 }
 
-func TestAddValidationWordUpsertsContainsRule(t *testing.T) {
+func TestAddValidationWordUpsertsContainsRule(
+	t *testing.T,
+) {
 	client, mock, closeDB := newValidationWordRuleTestClient(t)
 	defer closeDB()
 
@@ -66,7 +70,9 @@ func TestAddValidationWordUpsertsContainsRule(t *testing.T) {
 	}
 }
 
-func TestUpdateValidationWordUpdatesContainsRule(t *testing.T) {
+func TestUpdateValidationWordUpdatesContainsRule(
+	t *testing.T,
+) {
 	client, mock, closeDB := newValidationWordRuleTestClient(t)
 	defer closeDB()
 
@@ -83,7 +89,9 @@ func TestUpdateValidationWordUpdatesContainsRule(t *testing.T) {
 	}
 }
 
-func TestUpdateValidationWordReturnsNotFound(t *testing.T) {
+func TestUpdateValidationWordReturnsNotFound(
+	t *testing.T,
+) {
 	client, mock, closeDB := newValidationWordRuleTestClient(t)
 	defer closeDB()
 
@@ -97,7 +105,9 @@ func TestUpdateValidationWordReturnsNotFound(t *testing.T) {
 	}
 }
 
-func TestDeleteValidationWordDeletesRule(t *testing.T) {
+func TestDeleteValidationWordDeletesRule(
+	t *testing.T,
+) {
 	client, mock, closeDB := newValidationWordRuleTestClient(t)
 	defer closeDB()
 
@@ -114,7 +124,9 @@ func TestDeleteValidationWordDeletesRule(t *testing.T) {
 	}
 }
 
-func TestDeleteValidationWordReturnsNotFound(t *testing.T) {
+func TestDeleteValidationWordReturnsNotFound(
+	t *testing.T,
+) {
 	client, mock, closeDB := newValidationWordRuleTestClient(t)
 	defer closeDB()
 
@@ -131,9 +143,9 @@ func TestDeleteValidationWordReturnsNotFound(t *testing.T) {
 func newValidationWordRuleTestClient(
 	t *testing.T,
 ) (
-	*PostgresClient,
-	sqlmock.Sqlmock,
-	func(),
+	postgresClient *PostgresClient,
+	mock sqlmock.Sqlmock,
+	fn func(),
 ) {
 	t.Helper()
 

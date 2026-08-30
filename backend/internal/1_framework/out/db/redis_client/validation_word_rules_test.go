@@ -8,7 +8,9 @@ import (
 	"github.com/go-redis/redismock/v9"
 )
 
-func TestGetValidationWordsReturnsCachedWords(t *testing.T) {
+func TestGetValidationWordsReturnsCachedWords(
+	t *testing.T,
+) {
 	db, mock := redismock.NewClientMock()
 	client := &RedisClient{Conn: db}
 	mock.ExpectGet("validation:word_rules:name:blacklist").SetVal(`["admin","root"]`)
@@ -28,7 +30,9 @@ func TestGetValidationWordsReturnsCachedWords(t *testing.T) {
 	}
 }
 
-func TestGetValidationWordsReturnsMiss(t *testing.T) {
+func TestGetValidationWordsReturnsMiss(
+	t *testing.T,
+) {
 	db, mock := redismock.NewClientMock()
 	client := &RedisClient{Conn: db}
 	mock.ExpectGet("validation:word_rules:name:blacklist").RedisNil()
@@ -48,7 +52,9 @@ func TestGetValidationWordsReturnsMiss(t *testing.T) {
 	}
 }
 
-func TestGetValidationWordsReturnsDecodeError(t *testing.T) {
+func TestGetValidationWordsReturnsDecodeError(
+	t *testing.T,
+) {
 	db, mock := redismock.NewClientMock()
 	client := &RedisClient{Conn: db}
 	mock.ExpectGet("validation:word_rules:name:blacklist").SetVal(`not-json`)
@@ -62,7 +68,9 @@ func TestGetValidationWordsReturnsDecodeError(t *testing.T) {
 	}
 }
 
-func TestSetAndDeleteValidationWords(t *testing.T) {
+func TestSetAndDeleteValidationWords(
+	t *testing.T,
+) {
 	db, mock := redismock.NewClientMock()
 	client := &RedisClient{Conn: db}
 	key := "validation:word_rules:name:blacklist"

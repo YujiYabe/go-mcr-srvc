@@ -14,7 +14,9 @@ func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
 	params openapi.V1ValidationWordRulesGetParams,
-) error {
+) (
+	err error,
+) {
 	if err := validateTargetType(params.TargetType); err != nil {
 		return errorJSON(echoContext, http.StatusBadRequest, err)
 	}

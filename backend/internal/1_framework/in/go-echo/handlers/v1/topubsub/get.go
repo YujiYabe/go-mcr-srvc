@@ -9,9 +9,10 @@ import (
 func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
-) error {
+) (
+	err error,
+) {
 	ctx := echoContext.Request().Context()
 
 	return toController.PublishTestTopic(ctx)
-
 }

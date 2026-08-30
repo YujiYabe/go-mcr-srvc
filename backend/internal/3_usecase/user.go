@@ -54,7 +54,9 @@ func (receiver *useCase) GetUserListByCondition(
 func (receiver *useCase) UpdateUser(
 	ctx context.Context,
 	newUser groupObject.User,
-) error {
+) (
+	err error,
+) {
 	if err := ensureContextReady(ctx, "UpdateUser"); err != nil {
 		return err
 	}
@@ -113,7 +115,9 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 	ctx context.Context,
 	newUser groupObject.User,
 	userEmployment groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	if err := ensureContextReady(ctx, "UpdateUserProfileWithPrimaryEmployment"); err != nil {
 		return err
 	}

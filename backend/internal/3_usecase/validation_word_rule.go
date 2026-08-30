@@ -10,14 +10,14 @@ func (receiver *useCase) GetValidationWords(
 	targetType string,
 	isBlacklist bool,
 ) (
-	[]string,
-	error,
+	words []string,
+	err error,
 ) {
 	if err := ensureContextReady(ctx, "GetValidationWords"); err != nil {
 		return nil, err
 	}
 
-	words, err := receiver.ToGatewayDB.GetValidationWords(ctx, targetType, isBlacklist)
+	words, err = receiver.ToGatewayDB.GetValidationWords(ctx, targetType, isBlacklist)
 	if err != nil {
 		return nil, fmt.Errorf("GetValidationWords: %w", err)
 	}
@@ -30,7 +30,9 @@ func (receiver *useCase) AddValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	if err := ensureContextReady(ctx, "AddValidationWord"); err != nil {
 		return err
 	}
@@ -53,7 +55,9 @@ func (receiver *useCase) UpdateValidationWord(
 	isBlacklist bool,
 	oldWord string,
 	newWord string,
-) error {
+) (
+	err error,
+) {
 	if err := ensureContextReady(ctx, "UpdateValidationWord"); err != nil {
 		return err
 	}
@@ -76,7 +80,9 @@ func (receiver *useCase) DeleteValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	if err := ensureContextReady(ctx, "DeleteValidationWord"); err != nil {
 		return err
 	}

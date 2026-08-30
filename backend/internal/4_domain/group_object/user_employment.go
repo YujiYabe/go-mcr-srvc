@@ -77,39 +77,57 @@ func NewUserEmployment(
 	return userEmployment, nil
 }
 
-func (receiver UserEmployment) UserID() typeObject.ID {
+func (receiver UserEmployment) UserID() (
+	iD typeObject.ID,
+) {
 	return receiver.userID
 }
 
-func (receiver UserEmployment) CompanyID() typeObject.ID {
+func (receiver UserEmployment) CompanyID() (
+	iD typeObject.ID,
+) {
 	return receiver.companyID
 }
 
-func (receiver UserEmployment) DepartmentID() typeObject.ID {
+func (receiver UserEmployment) DepartmentID() (
+	iD typeObject.ID,
+) {
 	return receiver.departmentID
 }
 
-func (receiver UserEmployment) PositionID() typeObject.ID {
+func (receiver UserEmployment) PositionID() (
+	iD typeObject.ID,
+) {
 	return receiver.positionID
 }
 
-func (receiver UserEmployment) OfficeLocationID() typeObject.ID {
+func (receiver UserEmployment) OfficeLocationID() (
+	iD typeObject.ID,
+) {
 	return receiver.officeLocationID
 }
 
-func (receiver UserEmployment) EmployeeCode() string {
+func (receiver UserEmployment) EmployeeCode() (
+	value string,
+) {
 	return receiver.employeeCode
 }
 
-func (receiver UserEmployment) EmploymentType() string {
+func (receiver UserEmployment) EmploymentType() (
+	value string,
+) {
 	return receiver.employmentType
 }
 
-func (receiver UserEmployment) IsPrimary() bool {
+func (receiver UserEmployment) IsPrimary() (
+	isPrimary bool,
+) {
 	return receiver.isPrimary
 }
 
-func (receiver UserEmployment) EnsureReadyToAssign() error {
+func (receiver UserEmployment) EnsureReadyToAssign() (
+	err error,
+) {
 	if receiver.userID.GetValue() <= 0 {
 		return fmt.Errorf("user employment user identity is required")
 	}

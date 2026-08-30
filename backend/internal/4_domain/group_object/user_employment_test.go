@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestUserEmploymentRequiresAssignmentIdentities(t *testing.T) {
+func TestUserEmploymentRequiresAssignmentIdentities(
+	t *testing.T,
+) {
 	employment, err := NewUserEmployment(&NewUserEmploymentArgs{
 		UserID:       intPointer(1),
 		DepartmentID: intPointer(1),
@@ -24,7 +26,9 @@ func TestUserEmploymentRequiresAssignmentIdentities(t *testing.T) {
 	}
 }
 
-func TestUserEmploymentExposesAssignmentValues(t *testing.T) {
+func TestUserEmploymentExposesAssignmentValues(
+	t *testing.T,
+) {
 	employment := newTestUserEmployment(t, 1)
 
 	if employment.UserID().GetValue() != 1 {
@@ -41,7 +45,9 @@ func TestUserEmploymentExposesAssignmentValues(t *testing.T) {
 func newTestUserEmployment(
 	t *testing.T,
 	userID int,
-) UserEmployment {
+) (
+	value UserEmployment,
+) {
 	t.Helper()
 
 	employeeCode := "EMP001"

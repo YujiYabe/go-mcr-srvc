@@ -16,19 +16,27 @@ type NewCredentialArgs struct {
 	ClientSecret *string
 }
 
-func (receiver Credential) ClientID() typeObject.ClientID {
+func (receiver Credential) ClientID() (
+	clientID typeObject.ClientID,
+) {
 	return receiver.clientID
 }
 
-func (receiver Credential) ClientSecret() typeObject.ClientSecret {
+func (receiver Credential) ClientSecret() (
+	clientSecret typeObject.ClientSecret,
+) {
 	return receiver.clientSecret
 }
 
-func (receiver Credential) CanAuthenticate() bool {
+func (receiver Credential) CanAuthenticate() (
+	canAuthenticate bool,
+) {
 	return receiver.ClientID().GetValue() != "" && receiver.ClientSecret().GetValue() != ""
 }
 
-func (receiver Credential) EnsureReadyToAuthenticate() error {
+func (receiver Credential) EnsureReadyToAuthenticate() (
+	err error,
+) {
 	if receiver.ClientID().GetValue() == "" {
 		return fmt.Errorf("client id is required")
 	}
@@ -41,7 +49,9 @@ func (receiver Credential) EnsureReadyToAuthenticate() error {
 
 func (receiver *Credential) RotateSecret(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	clientSecret, err := typeObject.NewClientSecret(value)
 	if err != nil {
 		return err

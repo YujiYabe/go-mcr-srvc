@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewLocaleAcceptsValidValue(t *testing.T) {
+func TestNewLocaleAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "ja-JP"
@@ -19,7 +21,9 @@ func TestNewLocaleAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewLocaleRejectsTooLongValue(t *testing.T) {
+func TestNewLocaleRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := strings.Repeat("a", 21)

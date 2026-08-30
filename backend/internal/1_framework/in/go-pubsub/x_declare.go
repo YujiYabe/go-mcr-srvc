@@ -27,7 +27,9 @@ func NewGoPubSub(
 	consumerGroupID string,
 	testTopic string,
 	otherTopic string,
-) *GoPubSub {
+) (
+	goPubSub *GoPubSub,
+) {
 	return &GoPubSub{
 		Controller:       controller,
 		bootstrapServers: bootstrapServers,
@@ -50,7 +52,7 @@ func NewKafkaConsumer(
 	consumer = &kafka.Consumer{}
 	maxRetries := 20
 
-	for i := 0; i < maxRetries; i++ {
+	for retryIndex := 0; retryIndex < maxRetries; retryIndex++ {
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
@@ -68,7 +70,7 @@ func NewKafkaConsumer(
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
-		case <-time.After(retryBackoff(uint(i))):
+		case <-time.After(retryBackoff(uint(retryIndex))):
 		}
 	}
 	if err != nil {
@@ -78,7 +80,11 @@ func NewKafkaConsumer(
 	return consumer, nil
 }
 
-func retryBackoff(attempt uint) time.Duration {
+func retryBackoff(
+	attempt uint,
+) (
+	duration time.Duration,
+) {
 	backoff := time.Duration(attempt+1) * time.Second
 	if backoff > 5*time.Second {
 		return 5 * time.Second

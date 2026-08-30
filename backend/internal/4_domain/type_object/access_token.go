@@ -34,7 +34,9 @@ func NewAccessToken(
 
 func (receiver *AccessToken) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -50,10 +52,14 @@ func (receiver *AccessToken) setValue(
 
 func (receiver *AccessToken) ErrorString(
 	errString string,
-) error {
+) (
+	err error,
+) {
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver AccessToken) GetValue() string {
+func (receiver AccessToken) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

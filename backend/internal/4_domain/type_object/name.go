@@ -27,7 +27,9 @@ func NewName(
 func (receiver *Name) setValue(
 	value *string,
 	checkSpell ...[]string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 	spellList := []string{}
 	if len(checkSpell) > 0 {
@@ -46,10 +48,14 @@ func (receiver *Name) setValue(
 	return nil
 }
 
-func (receiver Name) GetValue() string {
+func (receiver Name) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }
 
-func (receiver Name) GetIsNil() bool {
+func (receiver Name) GetIsNil() (
+	ok bool,
+) {
 	return receiver.content.GetIsNil()
 }

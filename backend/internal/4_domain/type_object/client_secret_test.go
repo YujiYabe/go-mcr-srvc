@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewClientSecretAcceptsValidValue(t *testing.T) {
+func TestNewClientSecretAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "client-secret"
@@ -19,7 +21,9 @@ func TestNewClientSecretAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewClientSecretRejectsTooLongValue(t *testing.T) {
+func TestNewClientSecretRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := strings.Repeat("a", 1000)

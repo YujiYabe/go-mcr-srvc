@@ -40,7 +40,9 @@ func (receiver *RedisClient) SetValidationWords(
 	targetType string,
 	isBlacklist bool,
 	words []string,
-) error {
+) (
+	err error,
+) {
 	value, err := json.Marshal(words)
 	if err != nil {
 		return err
@@ -58,14 +60,18 @@ func (receiver *RedisClient) DeleteValidationWordsCache(
 	ctx context.Context,
 	targetType string,
 	isBlacklist bool,
-) error {
+) (
+	err error,
+) {
 	return receiver.Conn.Del(ctx, validationWordsCacheKey(targetType, isBlacklist)).Err()
 }
 
 func validationWordsCacheKey(
 	targetType string,
 	isBlacklist bool,
-) string {
+) (
+	key string,
+) {
 	return fmt.Sprintf(
 		"validation:word_rules:%s:%s",
 		targetType,

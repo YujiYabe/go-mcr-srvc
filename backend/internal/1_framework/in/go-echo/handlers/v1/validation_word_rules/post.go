@@ -14,7 +14,9 @@ import (
 func Post(
 	echoContext echo.Context,
 	toController controller.ToController,
-) error {
+) (
+	err error,
+) {
 	var request openapi.ValidationWordRuleCreate
 	if err := echoContext.Bind(&request); err != nil {
 		return errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))

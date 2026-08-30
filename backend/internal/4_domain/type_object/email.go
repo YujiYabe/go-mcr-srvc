@@ -36,7 +36,9 @@ func NewEmail(
 
 func (receiver *Email) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -51,21 +53,29 @@ func (receiver *Email) setValue(
 
 	return receiver.Validation()
 }
-func (receiver Email) GetValue() string {
+func (receiver Email) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }
 
 func (receiver *Email) ErrorString(
 	errString string,
-) error {
+) (
+	err error,
+) {
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver Email) GetIsNil() bool {
+func (receiver Email) GetIsNil() (
+	ok bool,
+) {
 	return receiver.content.GetIsNil()
 }
 
-func (receiver Email) Validation() error {
+func (receiver Email) Validation() (
+	err error,
+) {
 	if receiver.GetIsNil() {
 		return nil
 	}

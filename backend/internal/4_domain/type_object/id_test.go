@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewIDAcceptsValidDigitRange(t *testing.T) {
+func TestNewIDAcceptsValidDigitRange(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := 123456789
@@ -16,7 +18,9 @@ func TestNewIDAcceptsValidDigitRange(t *testing.T) {
 	}
 }
 
-func TestNewIDRejectsTooManyDigits(t *testing.T) {
+func TestNewIDRejectsTooManyDigits(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := 1234567890

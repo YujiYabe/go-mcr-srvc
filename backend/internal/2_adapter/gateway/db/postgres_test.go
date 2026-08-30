@@ -10,7 +10,9 @@ import (
 	typeObject "backend/internal/4_domain/type_object"
 )
 
-func TestGatewayDBGetValidationWordsReturnsRedisCacheHit(t *testing.T) {
+func TestGatewayDBGetValidationWordsReturnsRedisCacheHit(
+	t *testing.T,
+) {
 	postgres := &fakePostgres{}
 	redis := &fakeRedis{
 		words: []string{"root"},
@@ -33,7 +35,9 @@ func TestGatewayDBGetValidationWordsReturnsRedisCacheHit(t *testing.T) {
 	}
 }
 
-func TestGatewayDBGetValidationWordsFillsRedisOnCacheMiss(t *testing.T) {
+func TestGatewayDBGetValidationWordsFillsRedisOnCacheMiss(
+	t *testing.T,
+) {
 	postgres := &fakePostgres{words: []string{"admin", "root"}}
 	redis := &fakeRedis{}
 	gateway := NewGatewayDB(postgres, redis)
@@ -53,7 +57,9 @@ func TestGatewayDBGetValidationWordsFillsRedisOnCacheMiss(t *testing.T) {
 	}
 }
 
-func TestGatewayDBGetValidationWordsFallsBackWhenRedisFails(t *testing.T) {
+func TestGatewayDBGetValidationWordsFallsBackWhenRedisFails(
+	t *testing.T,
+) {
 	redisErr := errors.New("redis unavailable")
 	postgres := &fakePostgres{words: []string{"root"}}
 	redis := &fakeRedis{getErr: redisErr}
@@ -71,7 +77,9 @@ func TestGatewayDBGetValidationWordsFallsBackWhenRedisFails(t *testing.T) {
 	}
 }
 
-func TestGatewayDBGetValidationWordsReturnsPostgresError(t *testing.T) {
+func TestGatewayDBGetValidationWordsReturnsPostgresError(
+	t *testing.T,
+) {
 	postgresErr := errors.New("postgres unavailable")
 	postgres := &fakePostgres{err: postgresErr}
 	redis := &fakeRedis{}
@@ -86,7 +94,9 @@ func TestGatewayDBGetValidationWordsReturnsPostgresError(t *testing.T) {
 	}
 }
 
-func TestGatewayDBAddValidationWordDeletesCacheAfterPostgresSuccess(t *testing.T) {
+func TestGatewayDBAddValidationWordDeletesCacheAfterPostgresSuccess(
+	t *testing.T,
+) {
 	postgres := &fakePostgres{}
 	redis := &fakeRedis{}
 	gateway := NewGatewayDB(postgres, redis)
@@ -102,7 +112,9 @@ func TestGatewayDBAddValidationWordDeletesCacheAfterPostgresSuccess(t *testing.T
 	}
 }
 
-func TestGatewayDBUpdateValidationWordDeletesCacheAfterPostgresSuccess(t *testing.T) {
+func TestGatewayDBUpdateValidationWordDeletesCacheAfterPostgresSuccess(
+	t *testing.T,
+) {
 	postgres := &fakePostgres{}
 	redis := &fakeRedis{}
 	gateway := NewGatewayDB(postgres, redis)
@@ -118,7 +130,9 @@ func TestGatewayDBUpdateValidationWordDeletesCacheAfterPostgresSuccess(t *testin
 	}
 }
 
-func TestGatewayDBDeleteValidationWordDeletesCacheAfterPostgresSuccess(t *testing.T) {
+func TestGatewayDBDeleteValidationWordDeletesCacheAfterPostgresSuccess(
+	t *testing.T,
+) {
 	postgres := &fakePostgres{}
 	redis := &fakeRedis{}
 	gateway := NewGatewayDB(postgres, redis)
@@ -134,7 +148,9 @@ func TestGatewayDBDeleteValidationWordDeletesCacheAfterPostgresSuccess(t *testin
 	}
 }
 
-func TestGatewayDBValidationWordUpdateDoesNotDeleteCacheAfterPostgresError(t *testing.T) {
+func TestGatewayDBValidationWordUpdateDoesNotDeleteCacheAfterPostgresError(
+	t *testing.T,
+) {
 	postgresErr := errors.New("postgres update failed")
 	postgres := &fakePostgres{err: postgresErr}
 	redis := &fakeRedis{}
@@ -149,7 +165,9 @@ func TestGatewayDBValidationWordUpdateDoesNotDeleteCacheAfterPostgresError(t *te
 	}
 }
 
-func TestGatewayDBValidationWordUpdateIgnoresCacheDeleteError(t *testing.T) {
+func TestGatewayDBValidationWordUpdateIgnoresCacheDeleteError(
+	t *testing.T,
+) {
 	postgres := &fakePostgres{}
 	redis := &fakeRedis{deleteErr: errors.New("redis delete failed")}
 	gateway := NewGatewayDB(postgres, redis)
@@ -174,7 +192,9 @@ type fakePostgres struct {
 func (receiver *fakePostgres) RunInTransaction(
 	ctx context.Context,
 	fn func(context.Context) error,
-) error {
+) (
+	err error,
+) {
 	return fn(ctx)
 }
 
@@ -182,8 +202,8 @@ func (receiver *fakePostgres) GetUser(
 	_ context.Context,
 	_ typeObject.ID,
 ) (
-	groupObject.User,
-	error,
+	user groupObject.User,
+	err error,
 ) {
 	return groupObject.User{}, nil
 }
@@ -191,8 +211,8 @@ func (receiver *fakePostgres) GetUser(
 func (receiver *fakePostgres) GetUserList(
 	_ context.Context,
 ) (
-	groupObject.UserList,
-	error,
+	userList groupObject.UserList,
+	err error,
 ) {
 	return groupObject.UserList{}, nil
 }
@@ -201,8 +221,8 @@ func (receiver *fakePostgres) GetUserListByCondition(
 	_ context.Context,
 	_ groupObject.User,
 ) (
-	groupObject.UserList,
-	error,
+	userList groupObject.UserList,
+	err error,
 ) {
 	return groupObject.UserList{}, nil
 }
@@ -210,14 +230,18 @@ func (receiver *fakePostgres) GetUserListByCondition(
 func (receiver *fakePostgres) UpdateUser(
 	_ context.Context,
 	_ groupObject.User,
-) error {
+) (
+	err error,
+) {
 	return nil
 }
 
 func (receiver *fakePostgres) UpdateUserEmployment(
 	_ context.Context,
 	_ groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	return nil
 }
 
@@ -226,8 +250,8 @@ func (receiver *fakePostgres) GetValidationWords(
 	_ string,
 	_ bool,
 ) (
-	[]string,
-	error,
+	words []string,
+	err error,
 ) {
 	receiver.getValidationWordsCalled = true
 	return receiver.words, receiver.err
@@ -238,7 +262,9 @@ func (receiver *fakePostgres) AddValidationWord(
 	_ string,
 	_ bool,
 	_ string,
-) error {
+) (
+	err error,
+) {
 	receiver.addValidationWordCalled = true
 	return receiver.err
 }
@@ -249,7 +275,9 @@ func (receiver *fakePostgres) UpdateValidationWord(
 	_ bool,
 	_ string,
 	_ string,
-) error {
+) (
+	err error,
+) {
 	receiver.updateValidationWordCalled = true
 	return receiver.err
 }
@@ -259,7 +287,9 @@ func (receiver *fakePostgres) DeleteValidationWord(
 	_ string,
 	_ bool,
 	_ string,
-) error {
+) (
+	err error,
+) {
 	receiver.deleteValidationWordCalled = true
 	return receiver.err
 }
@@ -276,7 +306,9 @@ type fakeRedis struct {
 
 func (receiver *fakeRedis) ResetPlaceListInRedis(
 	_ context.Context,
-) error {
+) (
+	err error,
+) {
 	return nil
 }
 
@@ -285,9 +317,9 @@ func (receiver *fakeRedis) GetValidationWords(
 	_ string,
 	_ bool,
 ) (
-	[]string,
-	bool,
-	error,
+	words []string,
+	ok bool,
+	err error,
 ) {
 	return receiver.words, receiver.hit, receiver.getErr
 }
@@ -297,7 +329,9 @@ func (receiver *fakeRedis) SetValidationWords(
 	_ string,
 	_ bool,
 	_ []string,
-) error {
+) (
+	err error,
+) {
 	receiver.setValidationWordsCalled = true
 	return receiver.setErr
 }
@@ -306,7 +340,9 @@ func (receiver *fakeRedis) DeleteValidationWordsCache(
 	_ context.Context,
 	_ string,
 	_ bool,
-) error {
+) (
+	err error,
+) {
 	receiver.deleteValidationWordsCacheCalled = true
 	return receiver.deleteErr
 }

@@ -14,21 +14,29 @@ type NewUserListArgs struct {
 	Content []NewUserArgs
 }
 
-func (receiver UserList) Content() []User {
+func (receiver UserList) Content() (
+	users []User,
+) {
 	return receiver.content
 }
 
-func (receiver UserList) IsEmpty() bool {
+func (receiver UserList) IsEmpty() (
+	isEmpty bool,
+) {
 	return len(receiver.content) == 0
 }
 
-func (receiver UserList) Count() int {
+func (receiver UserList) Count() (
+	value int,
+) {
 	return len(receiver.content)
 }
 
 func (receiver UserList) ContainsIdentity(
 	id typeObject.ID,
-) bool {
+) (
+	ok bool,
+) {
 	if id.GetValue() <= 0 {
 		return false
 	}
@@ -44,7 +52,9 @@ func (receiver UserList) ContainsIdentity(
 
 func (receiver UserList) ContainsEmail(
 	email typeObject.Email,
-) bool {
+) (
+	ok bool,
+) {
 	if email.GetIsNil() || email.GetValue() == "" {
 		return false
 	}
@@ -60,7 +70,9 @@ func (receiver UserList) ContainsEmail(
 
 func (receiver *UserList) Append(
 	user User,
-) error {
+) (
+	err error,
+) {
 	if user.HasIdentity() && receiver.ContainsIdentity(user.Identity()) {
 		return fmt.Errorf("user identity is duplicated")
 	}
@@ -73,7 +85,9 @@ func (receiver *UserList) Append(
 	return nil
 }
 
-func (receiver UserList) EnsureNoDuplicateEmail() error {
+func (receiver UserList) EnsureNoDuplicateEmail() (
+	err error,
+) {
 	known := map[string]struct{}{}
 	for _, user := range receiver.content {
 		if !user.HasEmail() {

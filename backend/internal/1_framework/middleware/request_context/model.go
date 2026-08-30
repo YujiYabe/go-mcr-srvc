@@ -137,46 +137,68 @@ func NewRequestContext(
 	return
 }
 
-func (receiver RequestContext) TimeOutMillSecond() typeObject.TimeOutMillSecond {
+func (receiver RequestContext) TimeOutMillSecond() (
+	timeOutMillSecond typeObject.TimeOutMillSecond,
+) {
 	return receiver.timeOutMillSecond
 }
 
-func (receiver RequestContext) RequestStartTime() typeObject.RequestStartTime {
+func (receiver RequestContext) RequestStartTime() (
+	requestStartTime typeObject.RequestStartTime,
+) {
 	return receiver.requestStartTime
 }
 
-func (receiver RequestContext) TraceID() typeObject.TraceID {
+func (receiver RequestContext) TraceID() (
+	traceID typeObject.TraceID,
+) {
 	return receiver.traceID
 }
 
-func (receiver RequestContext) ClientIP() typeObject.ClientIP {
+func (receiver RequestContext) ClientIP() (
+	clientIP typeObject.ClientIP,
+) {
 	return receiver.clientIP
 }
 
-func (receiver RequestContext) UserAgent() typeObject.UserAgent {
+func (receiver RequestContext) UserAgent() (
+	userAgent typeObject.UserAgent,
+) {
 	return receiver.userAgent
 }
 
-func (receiver RequestContext) UserID() typeObject.UserID {
+func (receiver RequestContext) UserID() (
+	userID typeObject.UserID,
+) {
 	return receiver.userID
 }
 
-func (receiver RequestContext) AccessToken() typeObject.AccessToken {
+func (receiver RequestContext) AccessToken() (
+	accessToken typeObject.AccessToken,
+) {
 	return receiver.accessToken
 }
 
-func (receiver RequestContext) TenantID() typeObject.TenantID {
+func (receiver RequestContext) TenantID() (
+	tenantID typeObject.TenantID,
+) {
 	return receiver.tenantID
 }
 
-func (receiver RequestContext) Locale() typeObject.Locale {
+func (receiver RequestContext) Locale() (
+	locale typeObject.Locale,
+) {
 	return receiver.locale
 }
 
-func (receiver RequestContext) TimeZone() typeObject.TimeZone {
+func (receiver RequestContext) TimeZone() (
+	timeZone typeObject.TimeZone,
+) {
 	return receiver.timeZone
 }
 
-func (receiver RequestContext) PermissionList() typeObject.PermissionList {
+func (receiver RequestContext) PermissionList() (
+	permissionList typeObject.PermissionList,
+) {
 	return receiver.permissionList
 }

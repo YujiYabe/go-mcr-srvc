@@ -12,7 +12,9 @@ import (
 // Start ....
 func (receiver *GoPubSub) Start(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	go receiver.subscribeOtherTopic(ctx)
 
 	return receiver.subscribeTestTopic(ctx)
@@ -21,7 +23,9 @@ func (receiver *GoPubSub) Start(
 // subscribeTestTopic ....
 func (receiver *GoPubSub) subscribeTestTopic(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	topicName := receiver.testTopic
 	consumer, err := NewKafkaConsumer(
 		ctx,

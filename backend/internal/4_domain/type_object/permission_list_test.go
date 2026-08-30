@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewPermissionListReturnsValuesInOrder(t *testing.T) {
+func TestNewPermissionListReturnsValuesInOrder(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	values := []string{"user:read", "user:write"}
@@ -16,14 +18,16 @@ func TestNewPermissionListReturnsValuesInOrder(t *testing.T) {
 	if len(actual) != len(values) {
 		t.Fatalf("expected %d values, got %d", len(values), len(actual))
 	}
-	for i := range values {
-		if actual[i] != values[i] {
-			t.Fatalf("expected value at %d to be %q, got %q", i, values[i], actual[i])
+	for index := range values {
+		if actual[index] != values[index] {
+			t.Fatalf("expected value at %d to be %q, got %q", index, values[index], actual[index])
 		}
 	}
 }
 
-func TestNewPermissionListRejectsInvalidPermission(t *testing.T) {
+func TestNewPermissionListRejectsInvalidPermission(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	values := []string{"user:read", ""}
@@ -34,7 +38,9 @@ func TestNewPermissionListRejectsInvalidPermission(t *testing.T) {
 	}
 }
 
-func TestPermissionListCanJudgeUserPermissions(t *testing.T) {
+func TestPermissionListCanJudgeUserPermissions(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	permissionList, err := NewPermissionList([]string{

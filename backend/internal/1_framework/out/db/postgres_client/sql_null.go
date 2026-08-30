@@ -2,7 +2,11 @@ package postgres_client
 
 import "database/sql"
 
-func stringFromNullString(value sql.NullString) *string {
+func stringFromNullString(
+	value sql.NullString,
+) (
+	valuePointer *string,
+) {
 	if !value.Valid {
 		return nil
 	}
@@ -10,7 +14,11 @@ func stringFromNullString(value sql.NullString) *string {
 	return &value.String
 }
 
-func stringToNullString(value string) sql.NullString {
+func stringToNullString(
+	value string,
+) (
+	nullString sql.NullString,
+) {
 	return sql.NullString{
 		String: value,
 		Valid:  value != "",

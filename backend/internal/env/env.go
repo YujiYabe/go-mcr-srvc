@@ -55,7 +55,10 @@ type Config struct {
 	Redis    redisConfig
 }
 
-func Load() (Config, error) {
+func Load() (
+	config Config,
+	err error,
+) {
 	// OS環境変数で環境を切り替える
 	// 機密情報以外はXXX.envに記載。secret managerのキーはgithub secretsに保存?
 	// 機密情報はsecret managerに保存
@@ -90,17 +93,21 @@ func Load() (Config, error) {
 	}, nil
 }
 
-func initViper() *viper.Viper {
-	v := viper.New()
-	v.AutomaticEnv()
-	v.AddConfigPath("internal/env")
-	v.SetConfigType("env")
-	return v
+func initViper() (
+	viperConfig *viper.Viper,
+) {
+	viperConfig = viper.New()
+	viperConfig.AutomaticEnv()
+	viperConfig.AddConfigPath("internal/env")
+	viperConfig.SetConfigType("env")
+	return viperConfig
 }
 
 func setupLocalstack(
 	viperViper *viper.Viper,
-) error {
+) (
+	err error,
+) {
 
 	creds := credentials.NewStaticCredentialsProvider(
 		viperViper.GetString("AWS_STATIC_CREDENTIAL_KEY"),
@@ -166,7 +173,9 @@ type SecretString struct {
 
 func newServerConfig(
 	viperViper *viper.Viper,
-) serverConfig {
+) (
+	config serverConfig,
+) {
 	return serverConfig{
 		BackendHost: viperViper.GetString("BACKEND_HOST"),
 		GoEchoPort:  viperViper.GetString("GO_ECHO_PORT"),
@@ -181,7 +190,9 @@ func newServerConfig(
 
 func newDatabaseConfig(
 	viperViper *viper.Viper,
-) databaseConfig {
+) (
+	config databaseConfig,
+) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s port=%s TimeZone=%s dbname=%s sslmode=disable",
 		viperViper.GetString("POSTGRES_HOST"),
@@ -199,7 +210,9 @@ func newDatabaseConfig(
 
 func newAuth0Config(
 	viperViper *viper.Viper,
-) auth0Config {
+) (
+	config auth0Config,
+) {
 	domain := viperViper.GetString("AUTH0_DOMAIN")
 	tokenURL := viperViper.GetString("AUTH0_TOKEN_URL")
 	if tokenURL == "" && domain != "" {
@@ -217,7 +230,9 @@ func newAuth0Config(
 
 func newPubSubConfig(
 	viperViper *viper.Viper,
-) pubSubConfig {
+) (
+	config pubSubConfig,
+) {
 	return pubSubConfig{
 		BootstrapServers: viperViper.GetString("KAFKA_BOOTSTRAP_SERVERS"),
 		ConsumerGroupID:  viperViper.GetString("KAFKA_CONSUMER_GROUP_ID"),
@@ -230,7 +245,9 @@ func newPubSubConfig(
 
 func newRedisConfig(
 	viperViper *viper.Viper,
-) redisConfig {
+) (
+	config redisConfig,
+) {
 	return redisConfig{
 		Addr:     viperViper.GetString("REDIS_ADDR"),
 		Password: viperViper.GetString("REDIS_PASSWORD"),

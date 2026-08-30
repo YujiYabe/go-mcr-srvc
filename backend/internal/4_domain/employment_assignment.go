@@ -8,7 +8,9 @@ import (
 func (receiver *domain) EnsurePrimaryEmploymentAssignable(
 	user groupObject.User,
 	userEmployment groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	return serviceObject.NewPrimaryEmploymentAssignmentPolicy().
 		EnsureAssignable(user, userEmployment)
 }

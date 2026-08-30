@@ -10,7 +10,9 @@ import (
 	typeObject "backend/internal/4_domain/type_object"
 )
 
-func TestContextToHeaderAndHeaderToContextRoundTrip(t *testing.T) {
+func TestContextToHeaderAndHeaderToContextRoundTrip(
+	t *testing.T,
+) {
 	requestContext := newRequestContextForTest(t)
 	ctx := context.WithValue(
 		context.Background(),
@@ -23,7 +25,9 @@ func TestContextToHeaderAndHeaderToContextRoundTrip(t *testing.T) {
 	assertRequestContextForTest(roundTripCtx, t)
 }
 
-func TestContextToHeaderIncludesPermissionList(t *testing.T) {
+func TestContextToHeaderIncludesPermissionList(
+	t *testing.T,
+) {
 	requestContext := newRequestContextForTest(t)
 	ctx := context.WithValue(
 		context.Background(),
@@ -39,7 +43,9 @@ func TestContextToHeaderIncludesPermissionList(t *testing.T) {
 	}
 }
 
-func TestHeaderToContextRestoresPermissionList(t *testing.T) {
+func TestHeaderToContextRestoresPermissionList(
+	t *testing.T,
+) {
 	ctx := HeaderToContext(context.Background(), []kafka.Header{
 		{
 			Key: string(typeObject.PermissionListHeaderName),
@@ -66,7 +72,9 @@ func TestHeaderToContextRestoresPermissionList(t *testing.T) {
 	}
 }
 
-func TestContextToHeaderWithoutRequestContextReturnsEmptyHeaders(t *testing.T) {
+func TestContextToHeaderWithoutRequestContextReturnsEmptyHeaders(
+	t *testing.T,
+) {
 	headers := ContextToHeader(context.Background())
 
 	if len(headers) != 0 {
@@ -74,7 +82,11 @@ func TestContextToHeaderWithoutRequestContextReturnsEmptyHeaders(t *testing.T) {
 	}
 }
 
-func newRequestContextForTest(t *testing.T) *middlewareRequestContext.RequestContext {
+func newRequestContextForTest(
+	t *testing.T,
+) (
+	requestContext *middlewareRequestContext.RequestContext,
+) {
 	t.Helper()
 
 	traceID := "123e4567-e89b-12d3-a456-426614174000"
@@ -109,7 +121,10 @@ func newRequestContextForTest(t *testing.T) *middlewareRequestContext.RequestCon
 	return requestContext
 }
 
-func assertRequestContextForTest(ctx context.Context, t *testing.T) {
+func assertRequestContextForTest(
+	ctx context.Context,
+	t *testing.T,
+) {
 	t.Helper()
 
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
@@ -142,7 +157,12 @@ func assertRequestContextForTest(ctx context.Context, t *testing.T) {
 	}
 }
 
-func findHeaderValue(headers []kafka.Header, key string) string {
+func findHeaderValue(
+	headers []kafka.Header,
+	key string,
+) (
+	value string,
+) {
 	for _, header := range headers {
 		if header.Key == key {
 			return string(header.Value)

@@ -11,7 +11,9 @@ import (
 func (receiver *PostgresClient) UpdateUserEmployment(
 	ctx context.Context,
 	userEmployment groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	if err := userEmployment.EnsureReadyToAssign(); err != nil {
 		return err
 	}

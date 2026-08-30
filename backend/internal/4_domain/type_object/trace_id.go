@@ -33,7 +33,9 @@ func NewTraceID(
 }
 func (receiver *TraceID) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 	if value == nil {
 		// デフォルト値を設定
@@ -51,6 +53,8 @@ func (receiver *TraceID) setValue(
 	}
 	return nil
 }
-func (receiver TraceID) GetValue() string {
+func (receiver TraceID) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

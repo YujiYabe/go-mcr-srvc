@@ -25,7 +25,9 @@ func NewID(
 
 func (receiver *ID) setValue(
 	value *int,
-) error {
+) (
+	err error,
+) {
 	primitiveIntX := &primitiveObject.PrimitiveIntX[int]{}
 
 	receiver.content = primitiveObject.NewPrimitiveIntX(
@@ -39,6 +41,8 @@ func (receiver *ID) setValue(
 	return nil
 }
 
-func (receiver ID) GetValue() int {
+func (receiver ID) GetValue() (
+	value int,
+) {
 	return receiver.content.GetValue()
 }

@@ -18,7 +18,9 @@ type AuthConfig struct {
 
 func JWTMiddleware(
 	config AuthConfig,
-) echo.MiddlewareFunc {
+) (
+	middlewareFunc echo.MiddlewareFunc,
+) {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			authHeader := c.Request().Header.Get("Authorization")
@@ -73,7 +75,9 @@ func JWTMiddleware(
 // JWTMiddleware validates the JWT token from the Authorization header
 func JWTMiddlewareAuth0(
 	config AuthConfig,
-) echo.MiddlewareFunc {
+) (
+	middlewareFunc echo.MiddlewareFunc,
+) {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			authHeader := c.Request().Header.Get("Authorization")
@@ -124,8 +128,8 @@ func validateAndGetKey(
 	token *jwt.Token,
 	jwksURL string,
 ) (
-	interface{},
-	error,
+	value interface{},
+	err error,
 ) {
 	// Tokenの署名方式を確認
 	if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
@@ -152,8 +156,8 @@ func getRSAPublicKey(
 	jwksURL string,
 	token *jwt.Token,
 ) (
-	*rsa.PublicKey,
-	error,
+	publicKey *rsa.PublicKey,
+	err error,
 ) {
 	// Fetch JWKS from the URL
 	jwks, err := keyfunc.Get(

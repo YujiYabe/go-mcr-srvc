@@ -30,7 +30,9 @@ func NewLocale(
 
 func (receiver *Locale) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -44,6 +46,8 @@ func (receiver *Locale) setValue(
 	return nil
 }
 
-func (receiver Locale) GetValue() string {
+func (receiver Locale) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

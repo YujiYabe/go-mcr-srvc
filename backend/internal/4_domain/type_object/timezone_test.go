@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewTimeZoneAcceptsValidValue(t *testing.T) {
+func TestNewTimeZoneAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "UTC"
@@ -16,7 +18,9 @@ func TestNewTimeZoneAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewTimeZoneRejectsTooLongValue(t *testing.T) {
+func TestNewTimeZoneRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "America/New_York"

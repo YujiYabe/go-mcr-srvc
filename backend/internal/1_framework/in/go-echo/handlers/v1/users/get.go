@@ -19,7 +19,9 @@ func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
 	getUsersParams openapi.V1UsersGetParams,
-) error {
+) (
+	err error,
+) {
 	ctx := echoContext.Request().Context()
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 
@@ -113,13 +115,13 @@ func handleUsersRequest(
 	}
 
 	for _, user := range userList.Content() {
-		id := user.ID().GetValue()
+		userID := user.ID().GetValue()
 		name := user.Name().GetValue()
 		email := user.Email().GetValue()
 		responseList = append(
 			responseList,
 			openapi.User{
-				Id:    id,
+				Id:    userID,
 				Name:  name,
 				Email: email,
 			},

@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewPermissionAcceptsValidValue(t *testing.T) {
+func TestNewPermissionAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "user:read"
@@ -19,7 +21,9 @@ func TestNewPermissionAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewPermissionRejectsInvalidValues(t *testing.T) {
+func TestNewPermissionRejectsInvalidValues(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	values := []string{

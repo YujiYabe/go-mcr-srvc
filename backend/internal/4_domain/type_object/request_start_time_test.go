@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewRequestStartTimeAcceptsProvidedValue(t *testing.T) {
+func TestNewRequestStartTimeAcceptsProvidedValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := int64(1700000000000)
@@ -19,7 +21,9 @@ func TestNewRequestStartTimeAcceptsProvidedValue(t *testing.T) {
 	}
 }
 
-func TestNewRequestStartTimeUsesDefaultWhenNil(t *testing.T) {
+func TestNewRequestStartTimeUsesDefaultWhenNil(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	requestStartTime, err := NewRequestStartTime(nil)

@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewTimeOutMillSecondReturnsStringValue(t *testing.T) {
+func TestNewTimeOutMillSecondReturnsStringValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := int64(1500)
@@ -19,7 +21,9 @@ func TestNewTimeOutMillSecondReturnsStringValue(t *testing.T) {
 	}
 }
 
-func TestNewTimeOutMillSecondRejectsTooManyDigits(t *testing.T) {
+func TestNewTimeOutMillSecondRejectsTooManyDigits(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := int64(10000000000)

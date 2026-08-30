@@ -36,6 +36,23 @@ DDD の標準用語をそのまま package 名にするのではなく、以下�
 | `group_object` | Entity / Aggregate | 複数の `type_object` をまとめ、識別子・ライフサイクル・状態変更を扱う |
 | `service_object` | Domain Service | Entity や Value Object 単体に収まらない、複数オブジェクト間の業務ルールを扱う |
 
+# あえて実装していない DDD の設計
+
+このプロジェクトでは、DDD の考え方をすべて形式どおりに実装するのではなく、Go、クリーンアーキテクチャ、マイクロサービス構成で扱いやすい範囲に絞って採用します。
+そのため、以下の DDD 設計は現時点ではあえて実装していません。
+
+| あえて実装していない設計 | 理由 | このプロジェクトでの扱い |
+| --- | --- | --- |
+| `entity` / `aggregate` / `value_object` という標準 package 名 | DDD 用語をそのまま package 名にすると、Go の package として責務が細かく分かれすぎ、読み手が実装上の分類を追いにくくなるため | `type_object` / `group_object` / `service_object` として、プロジェクト内での役割が分かる名前に寄せる |
+| Repository を domain 層に置く設計 | 永続化は DB や外部 I/O の都合を含みやすく、domain を純粋な業務ルールから遠ざけるため | usecase が `ToGatewayDB` / `ToGatewayExternal` に依存し、adapter / framework 側で実装する |
+| Unit of Work を domain 層に置く設計 | transaction 境界は業務概念というより application の処理順序と永続化都合に近いため | usecase が `RunInTransaction` を呼び出して制御する |
+| Domain Event / Event Sourcing | 現在の要件では状態変更の履歴をドメインイベントとして再構築する必要がなく、複雑さが先行するため | PubSub 連携は application / framework の関心として扱い、必要になった時点でイベント設計を追加する |
+| Bounded Context ごとの domain package 分割 | 現時点の規模では context ごとに package を分けるより、`4_domain` 配下に集約した方が依存関係と配置を追いやすいため | マイクロサービス境界や業務領域が明確に増えた時点で分割を検討する |
+| Aggregate Root の基底型や共通 interface | Go では継承前提の抽象化より、具体型と小さな interface の方が扱いやすいため | `group_object` の具体型が不変条件と状態変更メソッドを持つ |
+| Domain Service の状態管理 | Domain Service が状態を持つと、業務判断と application state / external state の境界が曖昧になるため | `service_object` は stateless にし、必要な値は引数で受け取る |
+
+将来的に業務ルールが増え、マイクロサービス境界や集約の整合性管理が複雑になった場合は、上記のうち必要な設計だけを段階的に導入します。
+
 # ドメインロジックの凝集
 
 ドメインロジックは `backend/internal/4_domain` に凝集します。
@@ -92,6 +109,20 @@ domain は純粋な業務ルールを担当します。
 - `UpdateUserProfileWithPrimaryEmployment`
 
 DB テーブル名や transport の DTO 名ではなく、業務上の言葉を中心に命名します。
+
+# 変数名の命名規約
+
+変数名は長さではなく、スコープ内で表す実態が読み取れるかを基準にします。
+`err`、`ok` など、Go の慣習や狭いスコープで実態に合う短い変数名は許容します。
+index を表す変数は `i` ではなく `index` と書きます。複数の index や比較対象がある場合も、役割が伝わる名前を使います。
+一方で、意味が曖昧になる場合は短縮せず、業務語彙や役割が伝わる名前を使います。
+
+# 戻り値の命名規約
+
+関数とメソッドの戻り値は、原則として名前付き戻り値にします。
+戻り値名は呼び出し側の意味ではなく、関数内で扱う実態に合わせます。
+`error` は `err`、結果の有無を表す `bool` は `ok` など、Go の慣習に合う短い戻り値名は許容します。
+関数とメソッドの引数と戻り値は、1項目ずつ改行して表示します。
 
 # interface の命名規約
 

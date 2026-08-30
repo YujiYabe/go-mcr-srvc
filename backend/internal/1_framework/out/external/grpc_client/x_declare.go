@@ -41,7 +41,10 @@ func open(
 	ctx context.Context,
 	address string,
 	count uint,
-) (*GRPCClient, error) {
+) (
+	gRPCClient *GRPCClient,
+	err error,
+) {
 	var lastErr error
 	for attempt := uint(0); attempt <= count; attempt++ {
 		if err := ctx.Err(); err != nil {
@@ -77,7 +80,11 @@ func open(
 	return nil, fmt.Errorf("retry count over: %w", lastErr)
 }
 
-func retryBackoff(attempt uint) time.Duration {
+func retryBackoff(
+	attempt uint,
+) (
+	duration time.Duration,
+) {
 	backoff := time.Duration(attempt+1) * time.Second
 	if backoff > 5*time.Second {
 		return 5 * time.Second

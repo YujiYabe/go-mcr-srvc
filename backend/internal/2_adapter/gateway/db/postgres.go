@@ -10,7 +10,9 @@ import (
 func (receiver *GatewayDB) RunInTransaction(
 	ctx context.Context,
 	fn func(context.Context) error,
-) error {
+) (
+	err error,
+) {
 	return receiver.ToPostgres.RunInTransaction(ctx, fn)
 }
 
@@ -98,7 +100,9 @@ func (receiver *GatewayDB) AddValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	if err := receiver.ToPostgres.AddValidationWord(ctx, targetType, isBlacklist, word); err != nil {
 		return err
 	}
@@ -113,7 +117,9 @@ func (receiver *GatewayDB) UpdateValidationWord(
 	isBlacklist bool,
 	oldWord string,
 	newWord string,
-) error {
+) (
+	err error,
+) {
 	if err := receiver.ToPostgres.UpdateValidationWord(ctx, targetType, isBlacklist, oldWord, newWord); err != nil {
 		return err
 	}
@@ -127,7 +133,9 @@ func (receiver *GatewayDB) DeleteValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	if err := receiver.ToPostgres.DeleteValidationWord(ctx, targetType, isBlacklist, word); err != nil {
 		return err
 	}

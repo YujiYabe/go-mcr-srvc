@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewEmailRejectsInvalidFormat(t *testing.T) {
+func TestNewEmailRejectsInvalidFormat(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	values := []string{
@@ -23,7 +25,9 @@ func TestNewEmailRejectsInvalidFormat(t *testing.T) {
 	}
 }
 
-func TestNewEmailAcceptsValidFormat(t *testing.T) {
+func TestNewEmailAcceptsValidFormat(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "user@example.com"

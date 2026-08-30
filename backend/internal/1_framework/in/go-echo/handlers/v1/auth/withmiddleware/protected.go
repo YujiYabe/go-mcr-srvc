@@ -11,22 +11,22 @@ import (
 )
 
 func protected(
-	c echo.Context,
+	echoContext echo.Context,
 	_ controller.ToController,
 ) (
 	err error,
 ) {
-	claims, ok := c.Get("user").(jwt.MapClaims)
+	claims, ok := echoContext.Get("user").(jwt.MapClaims)
 	if !ok {
-		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token claims"})
+		return echoContext.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token claims"})
 	}
 
 	username, ok := claims["sub"].(string)
 	if !ok {
-		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token subject"})
+		return echoContext.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token subject"})
 	}
 
-	return c.String(
+	return echoContext.String(
 		http.StatusOK,
 		fmt.Sprintf(
 			"Welcome to the protected endpoint, %s   !",
