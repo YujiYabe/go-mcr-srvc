@@ -46,7 +46,6 @@ func RefillUserDomainToGRPC(
 	userList groupObject.UserList,
 ) (
 	v1UserParameterList []*grpcParameter.V1UserParameter,
-
 ) {
 	v1UserParameterList = []*grpcParameter.V1UserParameter{}
 

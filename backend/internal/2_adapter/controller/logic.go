@@ -62,7 +62,9 @@ func (receiver *controller) GetUserListViaGRPC(
 func (receiver *controller) UpdateUser(
 	ctx context.Context,
 	newUser groupObject.User,
-) error {
+) (
+	err error,
+) {
 	return receiver.UseCase.UpdateUser(
 		ctx,
 		newUser,
@@ -73,7 +75,9 @@ func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
 	ctx context.Context,
 	newUser groupObject.User,
 	userEmployment groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	return receiver.UseCase.UpdateUserProfileWithPrimaryEmployment(
 		ctx,
 		newUser, userEmployment,
@@ -82,7 +86,9 @@ func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
 
 func (receiver *controller) PublishTestTopic(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	return receiver.UseCase.PublishTestTopic(ctx)
 }
 
@@ -105,7 +111,9 @@ func (receiver *controller) AddValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	return receiver.UseCase.AddValidationWord(
 		ctx,
 		targetType,
@@ -120,7 +128,9 @@ func (receiver *controller) UpdateValidationWord(
 	isBlacklist bool,
 	oldWord string,
 	newWord string,
-) error {
+) (
+	err error,
+) {
 	return receiver.UseCase.UpdateValidationWord(
 		ctx,
 		targetType,
@@ -135,7 +145,9 @@ func (receiver *controller) DeleteValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	return receiver.UseCase.DeleteValidationWord(
 		ctx,
 		targetType,

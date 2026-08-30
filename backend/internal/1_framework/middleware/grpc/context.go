@@ -16,7 +16,9 @@ import (
 // ------------
 func ContextToMetadata(
 	ctx context.Context,
-) context.Context {
+) (
+	ctxResult context.Context,
+) {
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		return ctx
@@ -54,7 +56,9 @@ func ContextToMetadata(
 
 func MetadataToContext(
 	ctx context.Context,
-) context.Context {
+) (
+	ctxResult context.Context,
+) {
 	metadataCollection, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return ctx
@@ -158,7 +162,9 @@ func MetadataToContext(
 	return ctx
 }
 
-func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+func UnaryServerInterceptor() (
+	unaryServerInterceptor grpc.UnaryServerInterceptor,
+) {
 	return func(
 		ctx context.Context,
 		req interface{},

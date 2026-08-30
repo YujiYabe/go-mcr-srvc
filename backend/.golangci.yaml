@@ -101,7 +101,7 @@ linters:
     # - nakedret                  #4 長い関数の裸returnを検出(このリポジトリ方針とは要調整)
     # - nlreturn                  #4 return前の空行を検査(文体規約向け)
     # - noinlineerr               #4 if err := ... のインライン宣言を検出(文体規約向け)
-    # - nonamedreturns            #4 名前付き戻り値を検出(このリポジトリ方針とは不向き)
+    # - nonamedreturns            #4 名前付き戻り値を検出(名前付き戻り値を基本にする方針のため無効)
     # - prealloc                  #4 事前容量確保できるsliceを検出(性能要件がある箇所向け)
     # - promlinter                #4 Prometheusメトリクス命名を検査(利用時のみ有効)
     # - protogetter               #4 protobufフィールド直接参照を検出(利用時のみ有効)

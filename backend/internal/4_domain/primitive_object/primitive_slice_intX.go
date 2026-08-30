@@ -16,7 +16,9 @@ type PrimitiveSliceIntOption func(*PrimitiveSliceInt)
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithValue(
 	value []PrimitiveIntX[int],
-) PrimitiveSliceIntOption {
+) (
+	option PrimitiveSliceIntOption,
+) {
 	isNil := value == nil
 	var valueIntSlice []PrimitiveIntX[int]
 	if value != nil {
@@ -31,7 +33,9 @@ func (receiver *PrimitiveSliceInt) WithValue(
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithIsNil(
 	isNil bool,
-) PrimitiveSliceIntOption {
+) (
+	value PrimitiveSliceIntOption,
+) {
 	return func(s *PrimitiveSliceInt) {
 		s.isNil = isNil
 	}
@@ -40,7 +44,9 @@ func (receiver *PrimitiveSliceInt) WithIsNil(
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithMaxLength(
 	value *uint,
-) PrimitiveSliceIntOption {
+) (
+	option PrimitiveSliceIntOption,
+) {
 	return func(s *PrimitiveSliceInt) {
 		s.maxLength = value
 	}
@@ -49,7 +55,9 @@ func (receiver *PrimitiveSliceInt) WithMaxLength(
 // ______________________________________
 func (receiver *PrimitiveSliceInt) WithMinLength(
 	value *uint,
-) PrimitiveSliceIntOption {
+) (
+	option PrimitiveSliceIntOption,
+) {
 	return func(s *PrimitiveSliceInt) {
 		s.minLength = value
 	}
@@ -75,12 +83,16 @@ func NewPrimitiveSliceInt(
 }
 
 // ______________________________________
-func (receiver PrimitiveSliceInt) GetIsNil() bool {
+func (receiver PrimitiveSliceInt) GetIsNil() (
+	ok bool,
+) {
 	return receiver.isNil
 }
 
 // ______________________________________
-func (receiver PrimitiveSliceInt) Count() int {
+func (receiver PrimitiveSliceInt) Count() (
+	value int,
+) {
 	if receiver.GetIsNil() {
 		return 0
 	}
@@ -89,12 +101,18 @@ func (receiver PrimitiveSliceInt) Count() int {
 }
 
 // ______________________________________
-func (receiver PrimitiveSliceInt) IsEmpty() bool {
+func (receiver PrimitiveSliceInt) IsEmpty() (
+	isEmpty bool,
+) {
 	return receiver.Count() == 0
 }
 
 // ______________________________________
-func (receiver PrimitiveSliceInt) HasValue(value int) bool {
+func (receiver PrimitiveSliceInt) HasValue(
+	value int,
+) (
+	hasValue bool,
+) {
 	if receiver.GetIsNil() {
 		return false
 	}
@@ -124,7 +142,9 @@ func (receiver *PrimitiveSliceInt) CheckNil(
 // ______________________________________
 func (receiver PrimitiveSliceInt) newErrorString(
 	errString string,
-) error {
+) (
+	err error,
+) {
 	return fmt.Errorf(
 		"error: %s",
 		errString,
@@ -133,7 +153,9 @@ func (receiver PrimitiveSliceInt) newErrorString(
 
 // ______________________________________
 // Validate validates the PrimitiveSliceInt
-func (receiver PrimitiveSliceInt) Validation() error {
+func (receiver PrimitiveSliceInt) Validation() (
+	err error,
+) {
 	if receiver.isNil {
 		return nil
 	}
@@ -157,7 +179,9 @@ func (receiver PrimitiveSliceInt) Validation() error {
 
 // ______________________________________
 // ValidationMax は最大文字列長のチェックを行います
-func (receiver PrimitiveSliceInt) ValidationMax() error {
+func (receiver PrimitiveSliceInt) ValidationMax() (
+	err error,
+) {
 	if receiver.maxLength == nil {
 		return nil
 	}
@@ -174,7 +198,9 @@ func (receiver PrimitiveSliceInt) ValidationMax() error {
 }
 
 // ______________________________________
-func (receiver PrimitiveSliceInt) ValidationMin() error {
+func (receiver PrimitiveSliceInt) ValidationMin() (
+	err error,
+) {
 	if receiver.minLength == nil {
 		return nil
 	}
@@ -192,7 +218,9 @@ func (receiver PrimitiveSliceInt) ValidationMin() error {
 
 // ______________________________________
 // GetValue returns the underlying int slice
-func (receiver PrimitiveSliceInt) GetValue() []PrimitiveIntX[int] {
+func (receiver PrimitiveSliceInt) GetValue() (
+	primitiveIntXs []PrimitiveIntX[int],
+) {
 	if receiver.isNil {
 		return nil
 	}
@@ -236,7 +264,9 @@ func (receiver *PrimitiveSliceInt) SortAsc() {
 }
 
 // PrimitiveSliceInt を []int に変換して出力する関数
-func (receiver *PrimitiveSliceInt) ToSliceInt() []int {
+func (receiver *PrimitiveSliceInt) ToSliceInt() (
+	values []int,
+) {
 	if receiver.isNil {
 		return nil
 	}

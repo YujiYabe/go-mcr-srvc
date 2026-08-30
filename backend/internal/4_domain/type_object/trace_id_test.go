@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewTraceIDAcceptsValidValue(t *testing.T) {
+func TestNewTraceIDAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "550e8400-e29b-41d4-a716-446655440000"
@@ -16,7 +18,9 @@ func TestNewTraceIDAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewTraceIDRejectsInvalidLength(t *testing.T) {
+func TestNewTraceIDRejectsInvalidLength(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "short-trace-id"
@@ -27,7 +31,9 @@ func TestNewTraceIDRejectsInvalidLength(t *testing.T) {
 	}
 }
 
-func TestNewTraceIDUsesDefaultWhenNil(t *testing.T) {
+func TestNewTraceIDUsesDefaultWhenNil(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	traceID, err := NewTraceID(nil)

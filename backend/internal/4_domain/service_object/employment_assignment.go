@@ -8,14 +8,18 @@ import (
 
 type PrimaryEmploymentAssignmentPolicy struct{}
 
-func NewPrimaryEmploymentAssignmentPolicy() *PrimaryEmploymentAssignmentPolicy {
+func NewPrimaryEmploymentAssignmentPolicy() (
+	primaryEmploymentAssignmentPolicy *PrimaryEmploymentAssignmentPolicy,
+) {
 	return &PrimaryEmploymentAssignmentPolicy{}
 }
 
 func (receiver *PrimaryEmploymentAssignmentPolicy) EnsureAssignable(
 	user groupObject.User,
 	userEmployment groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	if !user.HasIdentity() {
 		return fmt.Errorf("user identity is required")
 	}

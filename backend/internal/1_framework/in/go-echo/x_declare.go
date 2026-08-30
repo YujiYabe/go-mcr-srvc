@@ -42,8 +42,10 @@ func NewGoEcho(
 }
 
 // NewEcho ...
-func NewEcho() *echo.Echo {
-	echoEcho := echo.New()
+func NewEcho() (
+	echoEcho *echo.Echo,
+) {
+	echoEcho = echo.New()
 	echoEcho.HideBanner = true
 
 	echoEcho.Use(
@@ -73,7 +75,9 @@ func NewEcho() *echo.Echo {
 }
 
 // Start ...
-func (receiver *GoEcho) Start() error {
+func (receiver *GoEcho) Start() (
+	err error,
+) {
 	server := &ServerInterfaceImpl{
 		Controller: receiver.Controller,
 	}

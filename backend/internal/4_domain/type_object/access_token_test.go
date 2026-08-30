@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewAccessTokenAcceptsValidValue(t *testing.T) {
+func TestNewAccessTokenAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "access-token"
@@ -19,7 +21,9 @@ func TestNewAccessTokenAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewAccessTokenRejectsTooLongValue(t *testing.T) {
+func TestNewAccessTokenRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := strings.Repeat("a", 10000)

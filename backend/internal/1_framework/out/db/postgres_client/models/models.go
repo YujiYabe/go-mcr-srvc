@@ -11,7 +11,9 @@ type User struct {
 	UpdatedAt   sql.NullTime   `gorm:"column:updated_at"`
 }
 
-func (User) TableName() string {
+func (User) TableName() (
+	tableName string,
+) {
 	return "users"
 }
 
@@ -21,7 +23,9 @@ type Role struct {
 	Description sql.NullString `gorm:"column:description"`
 }
 
-func (Role) TableName() string {
+func (Role) TableName() (
+	tableName string,
+) {
 	return "roles"
 }
 
@@ -31,7 +35,9 @@ type UserRole struct {
 	RoleID sql.NullInt64 `gorm:"column:role_id"`
 }
 
-func (UserRole) TableName() string {
+func (UserRole) TableName() (
+	tableName string,
+) {
 	return "user_roles"
 }
 
@@ -51,7 +57,9 @@ type UserEmployment struct {
 	UpdatedAt        sql.NullTime   `gorm:"column:updated_at"`
 }
 
-func (UserEmployment) TableName() string {
+func (UserEmployment) TableName() (
+	tableName string,
+) {
 	return "user_employments"
 }
 
@@ -66,6 +74,8 @@ type ValidationWordRule struct {
 	UpdatedAt   sql.NullTime `gorm:"column:updated_at"`
 }
 
-func (ValidationWordRule) TableName() string {
+func (ValidationWordRule) TableName() (
+	tableName string,
+) {
 	return "validation_word_rules"
 }

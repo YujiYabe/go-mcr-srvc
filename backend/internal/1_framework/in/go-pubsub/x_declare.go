@@ -27,7 +27,9 @@ func NewGoPubSub(
 	consumerGroupID string,
 	testTopic string,
 	otherTopic string,
-) *GoPubSub {
+) (
+	goPubSub *GoPubSub,
+) {
 	return &GoPubSub{
 		Controller:       controller,
 		bootstrapServers: bootstrapServers,
@@ -78,7 +80,11 @@ func NewKafkaConsumer(
 	return consumer, nil
 }
 
-func retryBackoff(attempt uint) time.Duration {
+func retryBackoff(
+	attempt uint,
+) (
+	duration time.Duration,
+) {
 	backoff := time.Duration(attempt+1) * time.Second
 	if backoff > 5*time.Second {
 		return 5 * time.Second

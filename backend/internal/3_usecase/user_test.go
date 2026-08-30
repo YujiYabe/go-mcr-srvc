@@ -9,7 +9,9 @@ import (
 	domain "backend/internal/4_domain"
 )
 
-func TestGetUserListWrapsGatewayError(t *testing.T) {
+func TestGetUserListWrapsGatewayError(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	gatewayErr := errors.New("db unavailable")
@@ -28,7 +30,9 @@ func TestGetUserListWrapsGatewayError(t *testing.T) {
 	}
 }
 
-func TestGetUserListByConditionRequiresCondition(t *testing.T) {
+func TestGetUserListByConditionRequiresCondition(
+	t *testing.T,
+) {
 	gatewayDB := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
 	user := newTestUser(t, nil, nil, nil)
@@ -45,7 +49,9 @@ func TestGetUserListByConditionRequiresCondition(t *testing.T) {
 	}
 }
 
-func TestGetUserListByConditionGatewayCases(t *testing.T) {
+func TestGetUserListByConditionGatewayCases(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	gatewayErr := errors.New("query failed")
@@ -91,7 +97,9 @@ func TestGetUserListByConditionGatewayCases(t *testing.T) {
 	}
 }
 
-func TestUpdateUserRunsInTransaction(t *testing.T) {
+func TestUpdateUserRunsInTransaction(
+	t *testing.T,
+) {
 	gatewayDB := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
 	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
@@ -110,7 +118,9 @@ func TestUpdateUserRunsInTransaction(t *testing.T) {
 	}
 }
 
-func TestUpdateUserRequiresIdentity(t *testing.T) {
+func TestUpdateUserRequiresIdentity(
+	t *testing.T,
+) {
 	gatewayDB := &fakeGatewayDB{}
 	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
 	user := newTestUser(t, nil, stringPointer("name"), stringPointer("test@example.com"))
@@ -133,7 +143,9 @@ func TestUpdateUserRequiresIdentity(t *testing.T) {
 	}
 }
 
-func TestUpdateUserRejectsBlacklistedName(t *testing.T) {
+func TestUpdateUserRejectsBlacklistedName(
+	t *testing.T,
+) {
 	gatewayDB := &fakeGatewayDB{validationWords: []string{"root"}}
 	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
 	user := newTestUser(t, intPointer(1), stringPointer("root user"), stringPointer("test@example.com"))
@@ -153,7 +165,9 @@ func TestUpdateUserRejectsBlacklistedName(t *testing.T) {
 	}
 }
 
-func TestUpdateUserWrapsValidationWordFetchError(t *testing.T) {
+func TestUpdateUserWrapsValidationWordFetchError(
+	t *testing.T,
+) {
 	validationErr := errors.New("validation word query failed")
 	gatewayDB := &fakeGatewayDB{getValidationWordsErr: validationErr}
 	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})
@@ -168,7 +182,9 @@ func TestUpdateUserWrapsValidationWordFetchError(t *testing.T) {
 	}
 }
 
-func TestUpdateUserWrapsGatewayError(t *testing.T) {
+func TestUpdateUserWrapsGatewayError(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	gatewayErr := errors.New("update failed")
@@ -191,7 +207,9 @@ func TestUpdateUserWrapsGatewayError(t *testing.T) {
 	}
 }
 
-func TestUpdateUserProfileWithPrimaryEmploymentRunsMultipleUpdatesInTransaction(t *testing.T) {
+func TestUpdateUserProfileWithPrimaryEmploymentRunsMultipleUpdatesInTransaction(
+	t *testing.T,
+) {
 	gatewayDB := &fakeGatewayDB{}
 	useCase := NewUseCase(domain.NewDomain(), gatewayDB, &fakeGatewayExternal{})
 	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
@@ -217,7 +235,9 @@ func TestUpdateUserProfileWithPrimaryEmploymentRunsMultipleUpdatesInTransaction(
 	}
 }
 
-func TestUpdateUserProfileWithPrimaryEmploymentRejectsDifferentUser(t *testing.T) {
+func TestUpdateUserProfileWithPrimaryEmploymentRejectsDifferentUser(
+	t *testing.T,
+) {
 	gatewayDB := &fakeGatewayDB{}
 	useCase := NewUseCase(domain.NewDomain(), gatewayDB, &fakeGatewayExternal{})
 	user := newTestUser(t, intPointer(1), stringPointer("name"), stringPointer("test@example.com"))
@@ -238,7 +258,9 @@ func TestUpdateUserProfileWithPrimaryEmploymentRejectsDifferentUser(t *testing.T
 	}
 }
 
-func TestUpdateUserProfileWithPrimaryEmploymentGatewayErrors(t *testing.T) {
+func TestUpdateUserProfileWithPrimaryEmploymentGatewayErrors(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	updateUserErr := errors.New("user update failed")

@@ -14,7 +14,9 @@ import (
 func Delete(
 	echoContext echo.Context,
 	toController controller.ToController,
-) error {
+) (
+	err error,
+) {
 	var request openapi.ValidationWordRuleDelete
 	if err := echoContext.Bind(&request); err != nil {
 		return errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))

@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewUserAgentAcceptsValidValue(t *testing.T) {
+func TestNewUserAgentAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "Mozilla/5.0"
@@ -19,7 +21,9 @@ func TestNewUserAgentAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewUserAgentRejectsTooLongValue(t *testing.T) {
+func TestNewUserAgentRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := strings.Repeat("a", 51)

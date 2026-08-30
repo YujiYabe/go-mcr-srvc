@@ -7,7 +7,9 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
-func TestPrimaryEmploymentAssignmentPolicyAllowsPrimaryEmployment(t *testing.T) {
+func TestPrimaryEmploymentAssignmentPolicyAllowsPrimaryEmployment(
+	t *testing.T,
+) {
 	policy := NewPrimaryEmploymentAssignmentPolicy()
 	user := newTestUser(t, 1)
 	employment := newTestUserEmployment(t, 1, true)
@@ -17,7 +19,9 @@ func TestPrimaryEmploymentAssignmentPolicyAllowsPrimaryEmployment(t *testing.T) 
 	}
 }
 
-func TestPrimaryEmploymentAssignmentPolicyRejectsDifferentUser(t *testing.T) {
+func TestPrimaryEmploymentAssignmentPolicyRejectsDifferentUser(
+	t *testing.T,
+) {
 	policy := NewPrimaryEmploymentAssignmentPolicy()
 	user := newTestUser(t, 1)
 	employment := newTestUserEmployment(t, 2, true)
@@ -31,7 +35,9 @@ func TestPrimaryEmploymentAssignmentPolicyRejectsDifferentUser(t *testing.T) {
 	}
 }
 
-func TestPrimaryEmploymentAssignmentPolicyRejectsNonPrimaryEmployment(t *testing.T) {
+func TestPrimaryEmploymentAssignmentPolicyRejectsNonPrimaryEmployment(
+	t *testing.T,
+) {
 	policy := NewPrimaryEmploymentAssignmentPolicy()
 	user := newTestUser(t, 1)
 	employment := newTestUserEmployment(t, 1, false)
@@ -48,12 +54,14 @@ func TestPrimaryEmploymentAssignmentPolicyRejectsNonPrimaryEmployment(t *testing
 func newTestUser(
 	t *testing.T,
 	id int,
-) groupObject.User {
+) (
+	user groupObject.User,
+) {
 	t.Helper()
 
 	name := "alice"
 	email := "alice@example.com"
-	user, err := groupObject.ReconstructUser(&groupObject.NewUserArgs{
+	reconstructedUser, err := groupObject.ReconstructUser(&groupObject.NewUserArgs{
 		ID:    &id,
 		Name:  &name,
 		Email: &email,
@@ -62,14 +70,16 @@ func newTestUser(
 		t.Fatalf("failed to reconstruct user: %v", err)
 	}
 
-	return *user
+	return *reconstructedUser
 }
 
 func newTestUserEmployment(
 	t *testing.T,
 	userID int,
 	isPrimary bool,
-) groupObject.UserEmployment {
+) (
+	userEmployment groupObject.UserEmployment,
+) {
 	t.Helper()
 
 	companyID := 1
@@ -77,7 +87,7 @@ func newTestUserEmployment(
 	positionID := 3
 	employeeCode := "EMP001"
 	employmentType := "full_time"
-	userEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
+	newUserEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
 		UserID:         &userID,
 		CompanyID:      &companyID,
 		DepartmentID:   &departmentID,
@@ -90,5 +100,5 @@ func newTestUserEmployment(
 		t.Fatalf("failed to create user employment: %v", err)
 	}
 
-	return *userEmployment
+	return *newUserEmployment
 }

@@ -6,7 +6,11 @@ const (
 	ValidationWordRuleMatchTypeContains = "contains"
 )
 
-func ValidationWordRuleTypeFromBlacklistFlag(isBlacklist bool) string {
+func ValidationWordRuleTypeFromBlacklistFlag(
+	isBlacklist bool,
+) (
+	value string,
+) {
 	if isBlacklist {
 		return ValidationWordRuleTypeBlacklist
 	}

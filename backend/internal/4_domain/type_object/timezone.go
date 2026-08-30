@@ -30,7 +30,9 @@ func NewTimeZone(
 
 func (receiver *TimeZone) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -45,6 +47,8 @@ func (receiver *TimeZone) setValue(
 	return nil
 }
 
-func (receiver TimeZone) GetValue() string {
+func (receiver TimeZone) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

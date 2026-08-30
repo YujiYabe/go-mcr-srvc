@@ -30,7 +30,9 @@ func NewUserAgent(
 
 func (receiver *UserAgent) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -44,6 +46,8 @@ func (receiver *UserAgent) setValue(
 	return nil
 }
 
-func (receiver UserAgent) GetValue() string {
+func (receiver UserAgent) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

@@ -25,7 +25,9 @@ type PrimitiveIntXOption[T IntX] func(*PrimitiveIntX[T])
 // ______________________________________
 func NewPrimitiveIntX[T IntX](
 	options ...func(*PrimitiveIntX[T]),
-) *PrimitiveIntX[T] {
+) (
+	primitiveIntX *PrimitiveIntX[T],
+) {
 	primitive := &PrimitiveIntX[T]{
 		value:    0,
 		isNil:    true,
@@ -41,7 +43,9 @@ func NewPrimitiveIntX[T IntX](
 }
 
 // 共通メソッド
-func (receiver PrimitiveIntX[T]) GetValue() T {
+func (receiver PrimitiveIntX[T]) GetValue() (
+	value T,
+) {
 	if receiver.GetIsNil() {
 		return 0
 	}
@@ -49,22 +53,32 @@ func (receiver PrimitiveIntX[T]) GetValue() T {
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) IsZero() bool {
+func (receiver PrimitiveIntX[T]) IsZero() (
+	isZero bool,
+) {
 	return receiver.GetValue() == 0
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) HasValue() bool {
+func (receiver PrimitiveIntX[T]) HasValue() (
+	hasValue bool,
+) {
 	return !receiver.GetIsNil()
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) Equal(value T) bool {
+func (receiver PrimitiveIntX[T]) Equal(
+	value T,
+) (
+	ok bool,
+) {
 	return !receiver.GetIsNil() && receiver.value == value
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) DigitCount() uint {
+func (receiver PrimitiveIntX[T]) DigitCount() (
+	value uint,
+) {
 	if receiver.GetIsNil() {
 		return 0
 	}
@@ -78,7 +92,9 @@ func (receiver PrimitiveIntX[T]) DigitCount() uint {
 	return digitCount
 }
 
-func (receiver PrimitiveIntX[T]) Validation() error {
+func (receiver PrimitiveIntX[T]) Validation() (
+	err error,
+) {
 	if receiver.GetIsNil() {
 		return nil
 	}
@@ -90,7 +106,9 @@ func (receiver PrimitiveIntX[T]) Validation() error {
 	return receiver.ValidationMinDigit()
 }
 
-func (receiver PrimitiveIntX[T]) ValidationMaxDigit() error {
+func (receiver PrimitiveIntX[T]) ValidationMaxDigit() (
+	err error,
+) {
 	if receiver.maxDigit == nil {
 		return nil
 	}
@@ -107,14 +125,18 @@ func (receiver PrimitiveIntX[T]) ValidationMaxDigit() error {
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) GetIsNil() bool {
+func (receiver PrimitiveIntX[T]) GetIsNil() (
+	ok bool,
+) {
 	return receiver.isNil
 }
 
 // ______________________________________
 func (receiver PrimitiveIntX[T]) newErrorString(
 	errString string,
-) error {
+) (
+	err error,
+) {
 	return fmt.Errorf(
 		"error: %s",
 		errString,
@@ -122,7 +144,9 @@ func (receiver PrimitiveIntX[T]) newErrorString(
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) ValidationMinDigit() error {
+func (receiver PrimitiveIntX[T]) ValidationMinDigit() (
+	err error,
+) {
 	if receiver.minDigit == nil { // 下限値なし
 		return nil
 	}
@@ -156,7 +180,9 @@ func (receiver PrimitiveIntX[T]) CheckNil(
 // ______________________________________
 func (receiver *PrimitiveIntX[T]) WithIsNil(
 	isNil bool,
-) PrimitiveIntXOption[T] {
+) (
+	value PrimitiveIntXOption[T],
+) {
 	return func(s *PrimitiveIntX[T]) {
 		s.isNil = isNil
 	}
@@ -165,7 +191,9 @@ func (receiver *PrimitiveIntX[T]) WithIsNil(
 // ______________________________________
 func (receiver *PrimitiveIntX[T]) WithMaxDigit(
 	value *uint,
-) PrimitiveIntXOption[T] {
+) (
+	option PrimitiveIntXOption[T],
+) {
 	return func(s *PrimitiveIntX[T]) {
 		s.maxDigit = value
 	}
@@ -174,7 +202,9 @@ func (receiver *PrimitiveIntX[T]) WithMaxDigit(
 // ______________________________________
 func (receiver *PrimitiveIntX[T]) WithMinDigit(
 	value *uint,
-) PrimitiveIntXOption[T] {
+) (
+	option PrimitiveIntXOption[T],
+) {
 	return func(s *PrimitiveIntX[T]) {
 		s.minDigit = value
 	}
@@ -183,7 +213,9 @@ func (receiver *PrimitiveIntX[T]) WithMinDigit(
 // ______________________________________
 func (receiver *PrimitiveIntX[T]) WithValue(
 	value *T,
-) PrimitiveIntXOption[T] {
+) (
+	option PrimitiveIntXOption[T],
+) {
 	isNil := receiver.CheckNil(value)
 	var valueIntX T
 	if !isNil {
@@ -197,7 +229,9 @@ func (receiver *PrimitiveIntX[T]) WithValue(
 }
 
 // ______________________________________
-func (receiver PrimitiveIntX[T]) GetString() string {
+func (receiver PrimitiveIntX[T]) GetString() (
+	value string,
+) {
 	if receiver.GetIsNil() {
 		return ""
 	}

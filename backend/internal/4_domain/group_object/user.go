@@ -82,39 +82,57 @@ func ReconstructUser(
 	return user, nil
 }
 
-func (receiver User) ID() typeObject.ID {
+func (receiver User) ID() (
+	iD typeObject.ID,
+) {
 	return receiver.id
 }
 
-func (receiver User) Identity() typeObject.ID {
+func (receiver User) Identity() (
+	iD typeObject.ID,
+) {
 	return receiver.id
 }
 
-func (receiver User) Name() typeObject.Name {
+func (receiver User) Name() (
+	name typeObject.Name,
+) {
 	return receiver.name
 }
 
-func (receiver User) Email() typeObject.Email {
+func (receiver User) Email() (
+	email typeObject.Email,
+) {
 	return receiver.email
 }
 
-func (receiver User) HasIdentity() bool {
+func (receiver User) HasIdentity() (
+	hasIdentity bool,
+) {
 	return receiver.id.GetValue() > 0
 }
 
-func (receiver User) HasName() bool {
+func (receiver User) HasName() (
+	hasName bool,
+) {
 	return !receiver.name.GetIsNil() && receiver.name.GetValue() != ""
 }
 
-func (receiver User) HasEmail() bool {
+func (receiver User) HasEmail() (
+	hasEmail bool,
+) {
 	return !receiver.email.GetIsNil() && receiver.email.GetValue() != ""
 }
 
-func (receiver User) CanBeUsedAsSearchCondition() bool {
+func (receiver User) CanBeUsedAsSearchCondition() (
+	canBeUsedAsSearchCondition bool,
+) {
 	return receiver.HasName() || receiver.HasEmail()
 }
 
-func (receiver User) EnsureReadyToUpdate() error {
+func (receiver User) EnsureReadyToUpdate() (
+	err error,
+) {
 	if !receiver.HasIdentity() {
 		return fmt.Errorf("user identity is required")
 	}
@@ -131,7 +149,9 @@ func (receiver User) EnsureReadyToUpdate() error {
 func (receiver *User) Rename(
 	value *string,
 	nameBlacklist ...[]string,
-) error {
+) (
+	err error,
+) {
 	blacklist := []string{}
 	if len(nameBlacklist) > 0 {
 		blacklist = nameBlacklist[0]
@@ -148,19 +168,23 @@ func (receiver *User) Rename(
 
 func (receiver User) ValidateNameBlacklist(
 	nameBlacklist []string,
-) error {
+) (
+	err error,
+) {
 	value := receiver.name.GetValue()
 	if receiver.name.GetIsNil() {
 		return nil
 	}
 
-	_, err := typeObject.NewName(&value, nameBlacklist)
+	_, err = typeObject.NewName(&value, nameBlacklist)
 	return err
 }
 
 func (receiver *User) ChangeEmail(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	email, err := typeObject.NewEmail(value)
 	if err != nil {
 		return err

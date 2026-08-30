@@ -30,8 +30,8 @@ func NewToPubSub(
 	flushTimeoutMS int,
 	sampleUserName string,
 ) (
-	gatewayExternal.ToPubSub,
-	error,
+	toPubSub gatewayExternal.ToPubSub,
+	err error,
 ) {
 
 	pubsubPublisher := &PubsubPublisher{
@@ -56,7 +56,10 @@ func open(
 	ctx context.Context,
 	bootstrapServers string,
 	count uint,
-) (*kafka.Producer, error) {
+) (
+	producer *kafka.Producer,
+	err error,
+) {
 	var lastErr error
 	for attempt := uint(0); attempt <= count; attempt++ {
 		if err := ctx.Err(); err != nil {
@@ -89,7 +92,11 @@ func open(
 	return nil, fmt.Errorf("retry count over: %w", lastErr)
 }
 
-func retryBackoff(attempt uint) time.Duration {
+func retryBackoff(
+	attempt uint,
+) (
+	duration time.Duration,
+) {
 	backoff := time.Duration(attempt+1) * time.Second
 	if backoff > 5*time.Second {
 		return 5 * time.Second

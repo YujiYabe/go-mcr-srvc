@@ -2,7 +2,9 @@ package type_object
 
 import "testing"
 
-func TestNewNameAcceptsValidValue(t *testing.T) {
+func TestNewNameAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "Alice"
@@ -16,7 +18,9 @@ func TestNewNameAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewNameRejectsInvalidValues(t *testing.T) {
+func TestNewNameRejectsInvalidValues(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	values := []string{
@@ -36,7 +40,9 @@ func TestNewNameRejectsInvalidValues(t *testing.T) {
 	}
 }
 
-func TestNewNameRejectsConfiguredCheckSpell(t *testing.T) {
+func TestNewNameRejectsConfiguredCheckSpell(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "暴力"

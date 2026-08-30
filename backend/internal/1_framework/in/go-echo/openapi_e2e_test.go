@@ -32,7 +32,12 @@ type fakeController struct {
 	validationWords              []string
 }
 
-func newE2ETestEcho(t *testing.T, controller *fakeController) *echo.Echo {
+func newE2ETestEcho(
+	t *testing.T,
+	controller *fakeController,
+) (
+	echo *echo.Echo,
+) {
 	t.Helper()
 
 	echoEcho := NewEcho()
@@ -46,7 +51,9 @@ func newE2ETestEcho(t *testing.T, controller *fakeController) *echo.Echo {
 	return echoEcho
 }
 
-func TestOpenAPIE2E_V1UsersGet(t *testing.T) {
+func TestOpenAPIE2E_V1UsersGet(
+	t *testing.T,
+) {
 	name := "Alice"
 	email := "alice@example.com"
 	userID := 1
@@ -110,7 +117,9 @@ func TestOpenAPIE2E_V1UsersGet(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1UsersPost(t *testing.T) {
+func TestOpenAPIE2E_V1UsersPost(
+	t *testing.T,
+) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -143,7 +152,9 @@ func TestOpenAPIE2E_V1UsersPost(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1HealthGet(t *testing.T) {
+func TestOpenAPIE2E_V1HealthGet(
+	t *testing.T,
+) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -165,7 +176,9 @@ func TestOpenAPIE2E_V1HealthGet(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1ToPubsubGet(t *testing.T) {
+func TestOpenAPIE2E_V1ToPubsubGet(
+	t *testing.T,
+) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -187,7 +200,9 @@ func TestOpenAPIE2E_V1ToPubsubGet(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1ValidationWordRulesGet(t *testing.T) {
+func TestOpenAPIE2E_V1ValidationWordRulesGet(
+	t *testing.T,
+) {
 	controller := &fakeController{validationWords: []string{"root", "禁止語"}}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -220,7 +235,9 @@ func TestOpenAPIE2E_V1ValidationWordRulesGet(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1ValidationWordRulesPost(t *testing.T) {
+func TestOpenAPIE2E_V1ValidationWordRulesPost(
+	t *testing.T,
+) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -253,7 +270,9 @@ func TestOpenAPIE2E_V1ValidationWordRulesPost(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1ValidationWordRulesPut(t *testing.T) {
+func TestOpenAPIE2E_V1ValidationWordRulesPut(
+	t *testing.T,
+) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -279,7 +298,9 @@ func TestOpenAPIE2E_V1ValidationWordRulesPut(t *testing.T) {
 	}
 }
 
-func TestOpenAPIE2E_V1ValidationWordRulesDelete(t *testing.T) {
+func TestOpenAPIE2E_V1ValidationWordRulesDelete(
+	t *testing.T,
+) {
 	controller := &fakeController{}
 	echoEcho := newE2ETestEcho(t, controller)
 
@@ -350,7 +371,9 @@ func (receiver *fakeController) GetUserListViaGRPC(
 func (receiver *fakeController) UpdateUser(
 	_ context.Context,
 	_ groupObject.User,
-) error {
+) (
+	err error,
+) {
 	return nil
 }
 
@@ -358,13 +381,17 @@ func (receiver *fakeController) UpdateUserProfileWithPrimaryEmployment(
 	_ context.Context,
 	_ groupObject.User,
 	_ groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	return nil
 }
 
 func (receiver *fakeController) PublishTestTopic(
 	_ context.Context,
-) error {
+) (
+	err error,
+) {
 	receiver.publishTestTopicCalled = true
 
 	return nil
@@ -375,8 +402,8 @@ func (receiver *fakeController) GetValidationWords(
 	targetType string,
 	isBlacklist bool,
 ) (
-	[]string,
-	error,
+	words []string,
+	err error,
 ) {
 	receiver.getValidationWordsCalled = true
 	receiver.lastTargetType = targetType
@@ -390,7 +417,9 @@ func (receiver *fakeController) AddValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	receiver.addValidationWordCalled = true
 	receiver.lastTargetType = targetType
 	receiver.lastIsBlacklist = isBlacklist
@@ -405,7 +434,9 @@ func (receiver *fakeController) UpdateValidationWord(
 	isBlacklist bool,
 	oldWord string,
 	newWord string,
-) error {
+) (
+	err error,
+) {
 	receiver.updateValidationWordCalled = true
 	receiver.lastTargetType = targetType
 	receiver.lastIsBlacklist = isBlacklist
@@ -420,7 +451,9 @@ func (receiver *fakeController) DeleteValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	receiver.deleteValidationWordCalled = true
 	receiver.lastTargetType = targetType
 	receiver.lastIsBlacklist = isBlacklist

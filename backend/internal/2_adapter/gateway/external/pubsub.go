@@ -7,7 +7,9 @@ import (
 // ToPubSub ...
 func (receiver *GatewayExternal) PublishTestTopic(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	return receiver.ToPubSub.PublishTestTopic(
 		ctx,
 	)

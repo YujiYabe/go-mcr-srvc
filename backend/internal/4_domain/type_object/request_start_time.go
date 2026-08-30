@@ -35,7 +35,9 @@ func NewRequestStartTime(
 
 func (receiver *RequestStartTime) setValue(
 	value *int64,
-) error {
+) (
+	err error,
+) {
 	primitiveIntX := &primitiveObject.PrimitiveIntX[int64]{}
 
 	if value == nil {
@@ -55,10 +57,14 @@ func (receiver *RequestStartTime) setValue(
 	return nil
 }
 
-func (receiver RequestStartTime) GetValue() int64 {
+func (receiver RequestStartTime) GetValue() (
+	value int64,
+) {
 	return receiver.content.GetValue()
 }
 
-func (receiver RequestStartTime) GetString() string {
+func (receiver RequestStartTime) GetString() (
+	value string,
+) {
 	return receiver.content.GetString()
 }

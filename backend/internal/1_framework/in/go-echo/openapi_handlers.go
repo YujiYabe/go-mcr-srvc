@@ -21,7 +21,9 @@ type ServerInterfaceImpl struct {
 func (receiver *ServerInterfaceImpl) V1UsersGet(
 	echoContext echo.Context,
 	getUsersParams openapi.V1UsersGetParams,
-) error {
+) (
+	err error,
+) {
 	return v1users.Get(
 		echoContext,
 		receiver.Controller,
@@ -30,7 +32,11 @@ func (receiver *ServerInterfaceImpl) V1UsersGet(
 }
 
 // V1UsersPost は /v1/users POST エンドポイントの実装
-func (receiver *ServerInterfaceImpl) V1UsersPost(ctx echo.Context) error {
+func (receiver *ServerInterfaceImpl) V1UsersPost(
+	ctx echo.Context,
+) (
+	err error,
+) {
 	var user openapi.User
 	if err := ctx.Bind(&user); err != nil {
 		return ctx.JSON(
@@ -43,14 +49,20 @@ func (receiver *ServerInterfaceImpl) V1UsersPost(ctx echo.Context) error {
 }
 
 // V1HealthGet は /v1/health GET エンドポイントの実装
-func (receiver *ServerInterfaceImpl) V1HealthGet(ctx echo.Context) error {
+func (receiver *ServerInterfaceImpl) V1HealthGet(
+	ctx echo.Context,
+) (
+	err error,
+) {
 	return ctx.String(http.StatusOK, "OK")
 }
 
 // V1ToPubsubGet は /v1/to-pubsub GET エンドポイントの実装
 func (receiver *ServerInterfaceImpl) V1ToPubsubGet(
 	echoContext echo.Context,
-) error {
+) (
+	err error,
+) {
 	return v1ToPubsub.Get(
 		echoContext,
 		receiver.Controller,
@@ -60,7 +72,9 @@ func (receiver *ServerInterfaceImpl) V1ToPubsubGet(
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesGet(
 	echoContext echo.Context,
 	params openapi.V1ValidationWordRulesGetParams,
-) error {
+) (
+	err error,
+) {
 	return v1ValidationWordRules.Get(
 		echoContext,
 		receiver.Controller,
@@ -70,7 +84,9 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesGet(
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPost(
 	echoContext echo.Context,
-) error {
+) (
+	err error,
+) {
 	return v1ValidationWordRules.Post(
 		echoContext,
 		receiver.Controller,
@@ -79,7 +95,9 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPost(
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPut(
 	echoContext echo.Context,
-) error {
+) (
+	err error,
+) {
 	return v1ValidationWordRules.Put(
 		echoContext,
 		receiver.Controller,
@@ -88,7 +106,9 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPut(
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesDelete(
 	echoContext echo.Context,
-) error {
+) (
+	err error,
+) {
 	return v1ValidationWordRules.Delete(
 		echoContext,
 		receiver.Controller,

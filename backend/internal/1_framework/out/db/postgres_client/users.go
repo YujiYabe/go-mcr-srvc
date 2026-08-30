@@ -17,8 +17,10 @@ func (receiver *PostgresClient) ReplaceUser(
 	name string,
 	email string,
 	userID string,
-) error {
-	err := receiver.conn(ctx).Transaction(func(tx *gorm.DB) error {
+) (
+	err error,
+) {
+	err = receiver.conn(ctx).Transaction(func(tx *gorm.DB) error {
 		err := receiver.AddUser(tx, name, email)
 		if err != nil {
 			return err
@@ -38,7 +40,9 @@ func (receiver *PostgresClient) AddUser(
 	tx *gorm.DB,
 	name string,
 	email string,
-) error {
+) (
+	err error,
+) {
 	record := models.User{
 		FullName: sql.NullString{String: name, Valid: name != ""},
 		Email:    email,
@@ -53,7 +57,9 @@ func (receiver *PostgresClient) AddUser(
 func (receiver *PostgresClient) DeleteUser(
 	tx *gorm.DB,
 	userID string,
-) error {
+) (
+	err error,
+) {
 	return tx.Delete(&models.User{}, userID).Error
 }
 
@@ -130,7 +136,9 @@ func (receiver *PostgresClient) GetUser(
 func (receiver *PostgresClient) UpdateUser(
 	ctx context.Context,
 	newUser groupObject.User,
-) error {
+) (
+	err error,
+) {
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
 		return err
 	}

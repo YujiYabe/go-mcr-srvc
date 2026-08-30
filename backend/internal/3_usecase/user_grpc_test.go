@@ -9,7 +9,9 @@ import (
 	groupObject "backend/internal/4_domain/group_object"
 )
 
-func TestGetUserListViaGRPCCases(t *testing.T) {
+func TestGetUserListViaGRPCCases(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	gatewayErr := errors.New("grpc unavailable")

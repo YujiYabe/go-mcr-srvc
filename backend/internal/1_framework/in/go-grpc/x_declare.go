@@ -24,8 +24,10 @@ type Server struct {
 func NewGoGRPC(
 	controller controller.ToController,
 	address string,
-) *GoGRPC {
-	goGRPC := &GoGRPC{
+) (
+	goGRPC *GoGRPC,
+) {
+	goGRPC = &GoGRPC{
 		Server: Server{
 			Controller: controller,
 		},
@@ -37,7 +39,9 @@ func NewGoGRPC(
 // Start ....
 func (receiver *GoGRPC) Start(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	logger.Logging(ctx, "start GRPC")
 	listenConfig := &net.ListenConfig{}
 	listen, err := listenConfig.Listen(ctx, "tcp", receiver.address)

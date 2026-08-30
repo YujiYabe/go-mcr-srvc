@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewUserIDAcceptsValidValue(t *testing.T) {
+func TestNewUserIDAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "user-123"
@@ -19,7 +21,9 @@ func TestNewUserIDAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewUserIDRejectsTooLongValue(t *testing.T) {
+func TestNewUserIDRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := strings.Repeat("a", 10)

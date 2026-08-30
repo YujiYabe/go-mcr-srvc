@@ -31,7 +31,9 @@ func NewPermission(
 
 func (receiver *Permission) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -46,16 +48,22 @@ func (receiver *Permission) setValue(
 	return nil
 }
 
-func (receiver Permission) GetValue() string {
+func (receiver Permission) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }
 
 func (receiver *Permission) ErrorString(
 	errString string,
-) error {
+) (
+	err error,
+) {
 	return fmt.Errorf("error: %s", errString)
 }
 
-func (receiver Permission) GetIsNil() bool {
+func (receiver Permission) GetIsNil() (
+	ok bool,
+) {
 	return receiver.content.GetIsNil()
 }

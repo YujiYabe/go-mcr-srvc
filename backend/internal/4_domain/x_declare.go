@@ -3,7 +3,9 @@ package domain
 import groupObject "backend/internal/4_domain/group_object"
 
 // NewDomain ...
-func NewDomain() ToDomain {
+func NewDomain() (
+	toDomain ToDomain,
+) {
 	return &domain{}
 }
 
@@ -15,6 +17,8 @@ type (
 		EnsurePrimaryEmploymentAssignable(
 			user groupObject.User,
 			userEmployment groupObject.UserEmployment,
-		) error
+		) (
+			err error,
+		)
 	}
 )

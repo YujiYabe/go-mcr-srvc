@@ -2,7 +2,9 @@ package group_object
 
 import "testing"
 
-func TestNewUserAllowsDraftWithoutIdentity(t *testing.T) {
+func TestNewUserAllowsDraftWithoutIdentity(
+	t *testing.T,
+) {
 	user, err := NewUser(&NewUserArgs{
 		Name:  stringPointer("alice"),
 		Email: stringPointer("alice@example.com"),
@@ -19,7 +21,9 @@ func TestNewUserAllowsDraftWithoutIdentity(t *testing.T) {
 	}
 }
 
-func TestReconstructUserRequiresIdentity(t *testing.T) {
+func TestReconstructUserRequiresIdentity(
+	t *testing.T,
+) {
 	_, err := ReconstructUser(&NewUserArgs{
 		Name:  stringPointer("alice"),
 		Email: stringPointer("alice@example.com"),
@@ -29,14 +33,18 @@ func TestReconstructUserRequiresIdentity(t *testing.T) {
 	}
 }
 
-func TestNewUserSearchConditionRequiresCondition(t *testing.T) {
+func TestNewUserSearchConditionRequiresCondition(
+	t *testing.T,
+) {
 	_, err := NewUserSearchCondition(&NewUserArgs{})
 	if err == nil {
 		t.Fatal("expected search condition error")
 	}
 }
 
-func TestUserCanChangeNameAndEmail(t *testing.T) {
+func TestUserCanChangeNameAndEmail(
+	t *testing.T,
+) {
 	user, err := ReconstructUser(&NewUserArgs{
 		ID:    intPointer(1),
 		Name:  stringPointer("alice"),
@@ -61,7 +69,9 @@ func TestUserCanChangeNameAndEmail(t *testing.T) {
 	}
 }
 
-func TestNewUserRejectsNameBlacklist(t *testing.T) {
+func TestNewUserRejectsNameBlacklist(
+	t *testing.T,
+) {
 	_, err := NewUser(&NewUserArgs{
 		Name:          stringPointer("root user"),
 		Email:         stringPointer("root@example.com"),
@@ -72,7 +82,9 @@ func TestNewUserRejectsNameBlacklist(t *testing.T) {
 	}
 }
 
-func TestUserRenameRejectsNameBlacklist(t *testing.T) {
+func TestUserRenameRejectsNameBlacklist(
+	t *testing.T,
+) {
 	user, err := ReconstructUser(&NewUserArgs{
 		ID:    intPointer(1),
 		Name:  stringPointer("alice"),
@@ -90,7 +102,9 @@ func TestUserRenameRejectsNameBlacklist(t *testing.T) {
 	}
 }
 
-func TestUserEnsureReadyToUpdateRequiresLifecycleState(t *testing.T) {
+func TestUserEnsureReadyToUpdateRequiresLifecycleState(
+	t *testing.T,
+) {
 	user, err := NewUser(&NewUserArgs{
 		Name:  stringPointer("alice"),
 		Email: stringPointer("alice@example.com"),
@@ -104,7 +118,9 @@ func TestUserEnsureReadyToUpdateRequiresLifecycleState(t *testing.T) {
 	}
 }
 
-func TestReconstructUserListRequiresIdentityForEachUser(t *testing.T) {
+func TestReconstructUserListRequiresIdentityForEachUser(
+	t *testing.T,
+) {
 	_, err := ReconstructUserList(&NewUserListArgs{
 		Content: []NewUserArgs{
 			{
@@ -123,7 +139,9 @@ func TestReconstructUserListRequiresIdentityForEachUser(t *testing.T) {
 	}
 }
 
-func TestUserListCanManageCollectionRules(t *testing.T) {
+func TestUserListCanManageCollectionRules(
+	t *testing.T,
+) {
 	user, err := ReconstructUser(&NewUserArgs{
 		ID:    intPointer(1),
 		Name:  stringPointer("alice"),
@@ -166,10 +184,18 @@ func TestUserListCanManageCollectionRules(t *testing.T) {
 	}
 }
 
-func intPointer(value int) *int {
+func intPointer(
+	value int,
+) (
+	valuePointer *int,
+) {
 	return &value
 }
 
-func stringPointer(value string) *string {
+func stringPointer(
+	value string,
+) (
+	valuePointer *string,
+) {
 	return &value
 }

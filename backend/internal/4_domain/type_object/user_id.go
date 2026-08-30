@@ -30,7 +30,9 @@ func NewUserID(
 
 func (receiver *UserID) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -44,6 +46,8 @@ func (receiver *UserID) setValue(
 	return nil
 }
 
-func (receiver UserID) GetValue() string {
+func (receiver UserID) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

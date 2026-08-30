@@ -2,7 +2,9 @@ package group_object
 
 import "testing"
 
-func TestCredentialCanAuthenticate(t *testing.T) {
+func TestCredentialCanAuthenticate(
+	t *testing.T,
+) {
 	credential, err := NewCredential(&NewCredentialArgs{
 		ClientID:     stringPointer("client-id"),
 		ClientSecret: stringPointer("client-secret"),
@@ -19,7 +21,9 @@ func TestCredentialCanAuthenticate(t *testing.T) {
 	}
 }
 
-func TestCredentialRequiresClientSecret(t *testing.T) {
+func TestCredentialRequiresClientSecret(
+	t *testing.T,
+) {
 	credential, err := NewCredential(&NewCredentialArgs{
 		ClientID: stringPointer("client-id"),
 	})
@@ -35,7 +39,9 @@ func TestCredentialRequiresClientSecret(t *testing.T) {
 	}
 }
 
-func TestCredentialCanRotateSecret(t *testing.T) {
+func TestCredentialCanRotateSecret(
+	t *testing.T,
+) {
 	credential, err := NewCredential(&NewCredentialArgs{
 		ClientID:     stringPointer("client-id"),
 		ClientSecret: stringPointer("old-secret"),

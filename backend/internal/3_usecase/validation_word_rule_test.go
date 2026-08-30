@@ -7,7 +7,9 @@ import (
 	"testing"
 )
 
-func TestValidationWordRuleUpdatesCallGateway(t *testing.T) {
+func TestValidationWordRuleUpdatesCallGateway(
+	t *testing.T,
+) {
 	tests := []struct {
 		name       string
 		run        func(ToUseCase) error
@@ -57,7 +59,9 @@ func TestValidationWordRuleUpdatesCallGateway(t *testing.T) {
 	}
 }
 
-func TestValidationWordRuleUpdatesWrapGatewayError(t *testing.T) {
+func TestValidationWordRuleUpdatesWrapGatewayError(
+	t *testing.T,
+) {
 	gatewayErr := errors.New("gateway failed")
 	gatewayDB := &fakeGatewayDB{validationWordUpdateErr: gatewayErr}
 	useCase := NewUseCase(nil, gatewayDB, &fakeGatewayExternal{})

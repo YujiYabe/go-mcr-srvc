@@ -2,7 +2,9 @@ package domain
 
 import "testing"
 
-func TestValidationWordRuleTypeFromBlacklistFlag(t *testing.T) {
+func TestValidationWordRuleTypeFromBlacklistFlag(
+	t *testing.T,
+) {
 	tests := []struct {
 		name        string
 		isBlacklist bool
@@ -30,7 +32,9 @@ func TestValidationWordRuleTypeFromBlacklistFlag(t *testing.T) {
 	}
 }
 
-func TestValidationWordRuleMatchTypeContains(t *testing.T) {
+func TestValidationWordRuleMatchTypeContains(
+	t *testing.T,
+) {
 	if ValidationWordRuleMatchTypeContains != "contains" {
 		t.Fatalf("unexpected contains match type: %s", ValidationWordRuleMatchTypeContains)
 	}

@@ -25,7 +25,9 @@ func NewClientSecret(
 
 func (receiver *ClientSecret) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -39,6 +41,8 @@ func (receiver *ClientSecret) setValue(
 	return nil
 }
 
-func (receiver ClientSecret) GetValue() string {
+func (receiver ClientSecret) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

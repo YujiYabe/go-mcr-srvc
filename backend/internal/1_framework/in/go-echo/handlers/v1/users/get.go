@@ -19,7 +19,9 @@ func Get(
 	echoContext echo.Context,
 	toController controller.ToController,
 	getUsersParams openapi.V1UsersGetParams,
-) error {
+) (
+	err error,
+) {
 	ctx := echoContext.Request().Context()
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 

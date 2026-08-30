@@ -20,7 +20,9 @@ type UserMessage struct {
 // PublishTestTopic ...
 func (receiver *PubsubPublisher) PublishTestTopic(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	if receiver.Conn == nil {
 		return fmt.Errorf("pubsub producer is not initialized")
 	}

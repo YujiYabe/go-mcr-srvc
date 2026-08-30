@@ -32,7 +32,9 @@ type fakeGatewayDB struct {
 func (receiver *fakeGatewayDB) RunInTransaction(
 	ctx context.Context,
 	fn func(context.Context) error,
-) error {
+) (
+	err error,
+) {
 	receiver.runInTransactionCalled = true
 	return fn(ctx)
 }
@@ -40,8 +42,8 @@ func (receiver *fakeGatewayDB) RunInTransaction(
 func (receiver *fakeGatewayDB) GetUserList(
 	_ context.Context,
 ) (
-	groupObject.UserList,
-	error,
+	userList groupObject.UserList,
+	err error,
 ) {
 	receiver.getListCalled = true
 	return groupObject.UserList{}, receiver.getListErr
@@ -51,8 +53,8 @@ func (receiver *fakeGatewayDB) GetUserListByCondition(
 	_ context.Context,
 	_ groupObject.User,
 ) (
-	groupObject.UserList,
-	error,
+	userList groupObject.UserList,
+	err error,
 ) {
 	receiver.getByConditionCalled = true
 	return groupObject.UserList{}, receiver.getByConditionErr
@@ -61,7 +63,9 @@ func (receiver *fakeGatewayDB) GetUserListByCondition(
 func (receiver *fakeGatewayDB) UpdateUser(
 	_ context.Context,
 	_ groupObject.User,
-) error {
+) (
+	err error,
+) {
 	receiver.updateUserCalled = true
 	receiver.calls = append(receiver.calls, "update_user")
 	return receiver.updateUserErr
@@ -70,7 +74,9 @@ func (receiver *fakeGatewayDB) UpdateUser(
 func (receiver *fakeGatewayDB) UpdateUserEmployment(
 	_ context.Context,
 	_ groupObject.UserEmployment,
-) error {
+) (
+	err error,
+) {
 	receiver.updateEmploymentCalled = true
 	receiver.calls = append(receiver.calls, "update_user_employment")
 	return receiver.updateUserEmploymentErr
@@ -81,8 +87,8 @@ func (receiver *fakeGatewayDB) GetValidationWords(
 	_ string,
 	_ bool,
 ) (
-	[]string,
-	error,
+	words []string,
+	err error,
 ) {
 	receiver.getValidationWordsCalled = true
 	return receiver.validationWords, receiver.getValidationWordsErr
@@ -93,7 +99,9 @@ func (receiver *fakeGatewayDB) AddValidationWord(
 	_ string,
 	_ bool,
 	_ string,
-) error {
+) (
+	err error,
+) {
 	receiver.addValidationWordCalled = true
 	return receiver.validationWordUpdateErr
 }
@@ -104,7 +112,9 @@ func (receiver *fakeGatewayDB) UpdateValidationWord(
 	_ bool,
 	_ string,
 	_ string,
-) error {
+) (
+	err error,
+) {
 	receiver.updateValidationWordCalled = true
 	return receiver.validationWordUpdateErr
 }
@@ -114,7 +124,9 @@ func (receiver *fakeGatewayDB) DeleteValidationWord(
 	_ string,
 	_ bool,
 	_ string,
-) error {
+) (
+	err error,
+) {
 	receiver.deleteValidationWordCalled = true
 	return receiver.validationWordUpdateErr
 }
@@ -132,8 +144,8 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 	_ context.Context,
 	_ groupObject.Credential,
 ) (
-	typeObject.AccessToken,
-	error,
+	accessToken typeObject.AccessToken,
+	err error,
 ) {
 	receiver.fetchAccessTokenCalled = true
 	if receiver.fetchAccessTokenErr != nil {
@@ -146,8 +158,8 @@ func (receiver *fakeGatewayExternal) GetUserViaGRPC(
 	_ context.Context,
 	_ groupObject.User,
 ) (
-	groupObject.UserList,
-	error,
+	userList groupObject.UserList,
+	err error,
 ) {
 	receiver.viaGRPCCalled = true
 	return groupObject.UserList{}, receiver.viaGRPCErr
@@ -155,12 +167,16 @@ func (receiver *fakeGatewayExternal) GetUserViaGRPC(
 
 func (receiver *fakeGatewayExternal) PublishTestTopic(
 	_ context.Context,
-) error {
+) (
+	err error,
+) {
 	receiver.publishTestTopicCalled = true
 	return receiver.publishTestTopicErr
 }
 
-func TestEnsureContextReadyReturnsCanceledError(t *testing.T) {
+func TestEnsureContextReadyReturnsCanceledError(
+	t *testing.T,
+) {
 	useCase := NewUseCase(nil, &fakeGatewayDB{}, &fakeGatewayExternal{})
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -176,10 +192,12 @@ func newTestUser(
 	id *int,
 	name *string,
 	email *string,
-) groupObject.User {
+) (
+	user groupObject.User,
+) {
 	t.Helper()
 
-	user, err := groupObject.NewUser(&groupObject.NewUserArgs{
+	newUser, err := groupObject.NewUser(&groupObject.NewUserArgs{
 		ID:    id,
 		Name:  name,
 		Email: email,
@@ -188,17 +206,19 @@ func newTestUser(
 		t.Fatalf("failed to create user: %v", err)
 	}
 
-	return *user
+	return *newUser
 }
 
 func newTestCredential(
 	t *testing.T,
 	clientID string,
 	clientSecret string,
-) groupObject.Credential {
+) (
+	credential groupObject.Credential,
+) {
 	t.Helper()
 
-	credential, err := groupObject.NewCredential(&groupObject.NewCredentialArgs{
+	newCredential, err := groupObject.NewCredential(&groupObject.NewCredentialArgs{
 		ClientID:     &clientID,
 		ClientSecret: &clientSecret,
 	})
@@ -206,19 +226,21 @@ func newTestCredential(
 		t.Fatalf("failed to create credential: %v", err)
 	}
 
-	return *credential
+	return *newCredential
 }
 
 func newTestUserEmployment(
 	t *testing.T,
 	userID int,
 	isPrimary bool,
-) groupObject.UserEmployment {
+) (
+	userEmployment groupObject.UserEmployment,
+) {
 	t.Helper()
 
 	employeeCode := "EMP001"
 	employmentType := "full_time"
-	userEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
+	newUserEmployment, err := groupObject.NewUserEmployment(&groupObject.NewUserEmploymentArgs{
 		UserID:         intPointer(userID),
 		CompanyID:      intPointer(1),
 		DepartmentID:   intPointer(2),
@@ -231,13 +253,21 @@ func newTestUserEmployment(
 		t.Fatalf("failed to create user employment: %v", err)
 	}
 
-	return *userEmployment
+	return *newUserEmployment
 }
 
-func intPointer(value int) *int {
+func intPointer(
+	value int,
+) (
+	valuePointer *int,
+) {
 	return &value
 }
 
-func stringPointer(value string) *string {
+func stringPointer(
+	value string,
+) (
+	valuePointer *string,
+) {
 	return &value
 }

@@ -2,7 +2,9 @@ package primitive_object
 
 import "testing"
 
-func TestPrimitiveStringConvenienceMethods(t *testing.T) {
+func TestPrimitiveStringConvenienceMethods(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "東京"
@@ -25,7 +27,9 @@ func TestPrimitiveStringConvenienceMethods(t *testing.T) {
 	}
 }
 
-func TestPrimitiveStringNilConvenienceMethods(t *testing.T) {
+func TestPrimitiveStringNilConvenienceMethods(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	content := NewPrimitiveString()
@@ -44,7 +48,9 @@ func TestPrimitiveStringNilConvenienceMethods(t *testing.T) {
 	}
 }
 
-func TestPrimitiveIntXConvenienceMethods(t *testing.T) {
+func TestPrimitiveIntXConvenienceMethods(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := -123
@@ -67,7 +73,9 @@ func TestPrimitiveIntXConvenienceMethods(t *testing.T) {
 	}
 }
 
-func TestPrimitiveUIntXConvenienceMethods(t *testing.T) {
+func TestPrimitiveUIntXConvenienceMethods(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := uint64(123)
@@ -90,7 +98,9 @@ func TestPrimitiveUIntXConvenienceMethods(t *testing.T) {
 	}
 }
 
-func TestPrimitiveSliceIntConvenienceMethods(t *testing.T) {
+func TestPrimitiveSliceIntConvenienceMethods(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	firstValue := 1
@@ -115,7 +125,9 @@ func TestPrimitiveSliceIntConvenienceMethods(t *testing.T) {
 	}
 }
 
-func TestPrimitiveSliceStringConvenienceMethods(t *testing.T) {
+func TestPrimitiveSliceStringConvenienceMethods(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	firstValue := "read"

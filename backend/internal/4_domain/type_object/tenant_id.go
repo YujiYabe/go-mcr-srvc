@@ -30,7 +30,9 @@ func NewTenantID(
 
 func (receiver *TenantID) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -44,6 +46,8 @@ func (receiver *TenantID) setValue(
 	return nil
 }
 
-func (receiver TenantID) GetValue() string {
+func (receiver TenantID) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

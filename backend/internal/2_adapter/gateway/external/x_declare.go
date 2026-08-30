@@ -18,7 +18,9 @@ func NewGatewayExternal(
 	toAuth0 ToAuth0,
 	toGRPC ToGRPC,
 	toPubSub ToPubSub,
-) *GatewayExternal {
+) (
+	gatewayExternal *GatewayExternal,
+) {
 	return &GatewayExternal{
 		ToAuth0:  toAuth0,
 		ToGRPC:   toGRPC,
@@ -54,6 +56,8 @@ type (
 	ToPubSub interface {
 		PublishTestTopic(
 			ctx context.Context,
-		) error
+		) (
+			err error,
+		)
 	}
 )

@@ -7,7 +7,9 @@ import (
 	"testing"
 )
 
-func TestPublishTestTopicCases(t *testing.T) {
+func TestPublishTestTopicCases(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	gatewayErr := errors.New("publish failed")

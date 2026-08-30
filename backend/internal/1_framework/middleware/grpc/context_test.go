@@ -10,7 +10,9 @@ import (
 	typeObject "backend/internal/4_domain/type_object"
 )
 
-func TestContextToMetadataAndMetadataToContextRoundTrip(t *testing.T) {
+func TestContextToMetadataAndMetadataToContextRoundTrip(
+	t *testing.T,
+) {
 	outgoingCtx := ContextToMetadata(newContextForTest(t))
 	metadataCollection, ok := metadata.FromOutgoingContext(outgoingCtx)
 	if !ok {
@@ -23,7 +25,9 @@ func TestContextToMetadataAndMetadataToContextRoundTrip(t *testing.T) {
 	assertRequestContextForTest(ctx, t)
 }
 
-func TestMetadataToContextRestoresPermissionList(t *testing.T) {
+func TestMetadataToContextRestoresPermissionList(
+	t *testing.T,
+) {
 	incomingCtx := metadata.NewIncomingContext(
 		context.Background(),
 		metadata.Pairs(
@@ -50,7 +54,9 @@ func TestMetadataToContextRestoresPermissionList(t *testing.T) {
 	}
 }
 
-func TestContextToMetadataWithoutRequestContextReturnsOriginalContext(t *testing.T) {
+func TestContextToMetadataWithoutRequestContextReturnsOriginalContext(
+	t *testing.T,
+) {
 	ctx := context.Background()
 
 	got := ContextToMetadata(ctx)
@@ -63,7 +69,11 @@ func TestContextToMetadataWithoutRequestContextReturnsOriginalContext(t *testing
 	}
 }
 
-func newContextForTest(t *testing.T) context.Context {
+func newContextForTest(
+	t *testing.T,
+) (
+	ctx context.Context,
+) {
 	t.Helper()
 
 	traceID := "123e4567-e89b-12d3-a456-426614174000"
@@ -102,7 +112,10 @@ func newContextForTest(t *testing.T) context.Context {
 	)
 }
 
-func assertRequestContextForTest(ctx context.Context, t *testing.T) {
+func assertRequestContextForTest(
+	ctx context.Context,
+	t *testing.T,
+) {
 	t.Helper()
 
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)

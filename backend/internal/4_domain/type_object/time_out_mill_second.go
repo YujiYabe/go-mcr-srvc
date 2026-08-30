@@ -34,7 +34,9 @@ func NewTimeOutMillSecond(
 
 func (receiver *TimeOutMillSecond) setValue(
 	value *int64,
-) error {
+) (
+	err error,
+) {
 	primitiveIntX := &primitiveObject.PrimitiveIntX[int64]{}
 
 	receiver.content = primitiveObject.NewPrimitiveIntX(
@@ -48,10 +50,14 @@ func (receiver *TimeOutMillSecond) setValue(
 	return nil
 }
 
-func (receiver TimeOutMillSecond) GetValue() int64 {
+func (receiver TimeOutMillSecond) GetValue() (
+	value int64,
+) {
 	return receiver.content.GetValue()
 }
 
-func (receiver TimeOutMillSecond) GetString() string {
+func (receiver TimeOutMillSecond) GetString() (
+	value string,
+) {
 	return receiver.content.GetString()
 }

@@ -47,7 +47,9 @@ func (receiver *PostgresClient) AddValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	record := models.ValidationWordRule{
 		TargetType:  targetType,
 		IsBlacklist: isBlacklist,
@@ -80,7 +82,9 @@ func (receiver *PostgresClient) UpdateValidationWord(
 	isBlacklist bool,
 	oldWord string,
 	newWord string,
-) error {
+) (
+	err error,
+) {
 	result := receiver.conn(ctx).
 		Model(&models.ValidationWordRule{}).
 		Scopes(validationWordRuleScope(targetType, isBlacklist)).
@@ -106,7 +110,9 @@ func (receiver *PostgresClient) DeleteValidationWord(
 	targetType string,
 	isBlacklist bool,
 	word string,
-) error {
+) (
+	err error,
+) {
 	result := receiver.conn(ctx).
 		Scopes(validationWordRuleScope(targetType, isBlacklist)).
 		Where(&models.ValidationWordRule{Word: word}).
@@ -124,7 +130,9 @@ func (receiver *PostgresClient) DeleteValidationWord(
 func validationWordRuleScope(
 	targetType string,
 	isBlacklist bool,
-) func(*gorm.DB) *gorm.DB {
+) (
+	fn func(*gorm.DB) *gorm.DB,
+) {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.
 			Where(&models.ValidationWordRule{TargetType: targetType}).

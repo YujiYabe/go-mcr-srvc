@@ -16,7 +16,9 @@ type GatewayDB struct {
 func NewGatewayDB(
 	toPostgres ToPostgres,
 	toRedis ToRedis,
-) *GatewayDB {
+) (
+	gatewayDB *GatewayDB,
+) {
 	return &GatewayDB{
 		ToPostgres: toPostgres,
 		ToRedis:    toRedis,
@@ -30,7 +32,9 @@ type (
 		RunInTransaction(
 			ctx context.Context,
 			fn func(context.Context) error,
-		) error
+		) (
+			err error,
+		)
 
 		GetUser(
 			ctx context.Context,
@@ -58,12 +62,16 @@ type (
 		UpdateUser(
 			ctx context.Context,
 			newUser groupObject.User,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateUserEmployment(
 			ctx context.Context,
 			userEmployment groupObject.UserEmployment,
-		) error
+		) (
+			err error,
+		)
 
 		GetValidationWords(
 			ctx context.Context,
@@ -79,7 +87,9 @@ type (
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateValidationWord(
 			ctx context.Context,
@@ -87,21 +97,27 @@ type (
 			isBlacklist bool,
 			oldWord string,
 			newWord string,
-		) error
+		) (
+			err error,
+		)
 
 		DeleteValidationWord(
 			ctx context.Context,
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 	}
 
 	// ToRedis ...
 	ToRedis interface {
 		ResetPlaceListInRedis(
 			ctx context.Context,
-		) error
+		) (
+			err error,
+		)
 
 		GetValidationWords(
 			ctx context.Context,
@@ -118,12 +134,16 @@ type (
 			targetType string,
 			isBlacklist bool,
 			words []string,
-		) error
+		) (
+			err error,
+		)
 
 		DeleteValidationWordsCache(
 			ctx context.Context,
 			targetType string,
 			isBlacklist bool,
-		) error
+		) (
+			err error,
+		)
 	}
 )

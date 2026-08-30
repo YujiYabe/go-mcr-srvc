@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewClientIPAcceptsValidValue(t *testing.T) {
+func TestNewClientIPAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "192.168.0.1"
@@ -19,7 +21,9 @@ func TestNewClientIPAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewClientIPRejectsTooLongValue(t *testing.T) {
+func TestNewClientIPRejectsTooLongValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := strings.Repeat("1", 31)

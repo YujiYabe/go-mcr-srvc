@@ -30,7 +30,9 @@ func NewClientIP(
 
 func (receiver *ClientIP) setValue(
 	value *string,
-) error {
+) (
+	err error,
+) {
 	primitiveString := &primitiveObject.PrimitiveString{}
 
 	receiver.content = primitiveObject.NewPrimitiveString(
@@ -44,6 +46,8 @@ func (receiver *ClientIP) setValue(
 	return nil
 }
 
-func (receiver ClientIP) GetValue() string {
+func (receiver ClientIP) GetValue() (
+	value string,
+) {
 	return receiver.content.GetValue()
 }

@@ -7,7 +7,9 @@ import (
 	"testing"
 )
 
-func TestFetchAccessTokenRequiresCredential(t *testing.T) {
+func TestFetchAccessTokenRequiresCredential(
+	t *testing.T,
+) {
 	gatewayExternal := &fakeGatewayExternal{}
 	useCase := NewUseCase(nil, &fakeGatewayDB{}, gatewayExternal)
 	credential := newTestCredential(t, "", "secret")
@@ -24,7 +26,9 @@ func TestFetchAccessTokenRequiresCredential(t *testing.T) {
 	}
 }
 
-func TestFetchAccessTokenGatewayCases(t *testing.T) {
+func TestFetchAccessTokenGatewayCases(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	gatewayErr := errors.New("auth service unavailable")

@@ -12,7 +12,9 @@ func NewUseCase(
 	toDomain ToDomain,
 	toGatewayDB ToGatewayDB,
 	toGatewayExternal ToGatewayExternal,
-) ToUseCase {
+) (
+	toUseCase ToUseCase,
+) {
 	return &useCase{
 		ToDomain:          toDomain,
 		ToGatewayDB:       toGatewayDB,
@@ -35,7 +37,9 @@ type (
 		EnsurePrimaryEmploymentAssignable(
 			user groupObject.User,
 			userEmployment groupObject.UserEmployment,
-		) error
+		) (
+			err error,
+		)
 	}
 )
 
@@ -45,7 +49,9 @@ type (
 		RunInTransaction(
 			ctx context.Context,
 			fn func(context.Context) error,
-		) error
+		) (
+			err error,
+		)
 
 		GetUserList(
 			ctx context.Context,
@@ -65,12 +71,16 @@ type (
 		UpdateUser(
 			ctx context.Context,
 			newUser groupObject.User,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateUserEmployment(
 			ctx context.Context,
 			userEmployment groupObject.UserEmployment,
-		) error
+		) (
+			err error,
+		)
 
 		GetValidationWords(
 			ctx context.Context,
@@ -86,7 +96,9 @@ type (
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateValidationWord(
 			ctx context.Context,
@@ -94,14 +106,18 @@ type (
 			isBlacklist bool,
 			oldWord string,
 			newWord string,
-		) error
+		) (
+			err error,
+		)
 
 		DeleteValidationWord(
 			ctx context.Context,
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 	}
 
 	// ToGatewayExternal ...
@@ -124,7 +140,9 @@ type (
 
 		PublishTestTopic(
 			ctx context.Context,
-		) error
+		) (
+			err error,
+		)
 	}
 )
 
@@ -166,17 +184,23 @@ type (
 		UpdateUser(
 			ctx context.Context,
 			newUser groupObject.User,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateUserProfileWithPrimaryEmployment(
 			ctx context.Context,
 			newUser groupObject.User,
 			userEmployment groupObject.UserEmployment,
-		) error
+		) (
+			err error,
+		)
 
 		PublishTestTopic(
 			ctx context.Context,
-		) error
+		) (
+			err error,
+		)
 
 		GetValidationWords(
 			ctx context.Context,
@@ -192,7 +216,9 @@ type (
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateValidationWord(
 			ctx context.Context,
@@ -200,13 +226,17 @@ type (
 			isBlacklist bool,
 			oldWord string,
 			newWord string,
-		) error
+		) (
+			err error,
+		)
 
 		DeleteValidationWord(
 			ctx context.Context,
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 	}
 )

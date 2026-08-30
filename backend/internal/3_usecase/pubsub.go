@@ -7,7 +7,9 @@ import (
 
 func (receiver *useCase) PublishTestTopic(
 	ctx context.Context,
-) error {
+) (
+	err error,
+) {
 	if err := ensureContextReady(ctx, "PublishTestTopic"); err != nil {
 		return err
 	}

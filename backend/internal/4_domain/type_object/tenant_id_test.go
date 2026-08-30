@@ -5,7 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewTenantIDAcceptsValidValue(t *testing.T) {
+func TestNewTenantIDAcceptsValidValue(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	value := "tenant-1"
@@ -19,7 +21,9 @@ func TestNewTenantIDAcceptsValidValue(t *testing.T) {
 	}
 }
 
-func TestNewTenantIDRejectsInvalidValues(t *testing.T) {
+func TestNewTenantIDRejectsInvalidValues(
+	t *testing.T,
+) {
 	t.Parallel()
 
 	values := []string{

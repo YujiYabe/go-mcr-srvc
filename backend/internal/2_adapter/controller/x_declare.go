@@ -64,17 +64,23 @@ type (
 		UpdateUser(
 			ctx context.Context,
 			newUser groupObject.User,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateUserProfileWithPrimaryEmployment(
 			ctx context.Context,
 			newUser groupObject.User,
 			userEmployment groupObject.UserEmployment,
-		) error
+		) (
+			err error,
+		)
 
 		PublishTestTopic(
 			ctx context.Context,
-		) error
+		) (
+			err error,
+		)
 
 		GetValidationWords(
 			ctx context.Context,
@@ -90,7 +96,9 @@ type (
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 
 		UpdateValidationWord(
 			ctx context.Context,
@@ -98,13 +106,17 @@ type (
 			isBlacklist bool,
 			oldWord string,
 			newWord string,
-		) error
+		) (
+			err error,
+		)
 
 		DeleteValidationWord(
 			ctx context.Context,
 			targetType string,
 			isBlacklist bool,
 			word string,
-		) error
+		) (
+			err error,
+		)
 	}
 )
