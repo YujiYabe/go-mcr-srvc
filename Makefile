@@ -1,8 +1,10 @@
 -include ./backend/internal/env/local.env
+include ./backend/tool-versions.env
 
 GO_TOOLCHAIN ?= go1.27.0
-GOLANGCI_LINT ?= github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
-GOVULNCHECK ?= golang.org/x/vuln/cmd/govulncheck@latest
+GOLANGCI_LINT ?= github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION)
+GOVULNCHECK ?= golang.org/x/vuln/cmd/govulncheck@$(GOVULNCHECK_VERSION)
+AIR ?= github.com/air-verse/air@$(AIR_VERSION)
 OAPI_CODEGEN ?= github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.16.3
 override PROJECT_ROOT := $(abspath $(dir $(firstword $(MAKEFILE_LIST))))
 override POSTGRES_DATA_DIR := $(PROJECT_ROOT)/db/engine/postgres/data
@@ -156,5 +158,5 @@ install-tools:
 	# Install other tools
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(GOLANGCI_LINT)
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(GOVULNCHECK)
-	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install github.com/air-verse/air@latest
+	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(AIR)
 	GOTOOLCHAIN=$(GO_TOOLCHAIN) GOBIN=$(PWD)/backend/bin go install $(OAPI_CODEGEN)

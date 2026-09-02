@@ -3,8 +3,10 @@ WORKDIR /go/src/backend
 
 SHELL ["/bin/bash", "-c"]
 
-# RUN go get -u github.com/cosmtrek/air
-RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s
+COPY tool-versions.env /tmp/tool-versions.env
+RUN source /tmp/tool-versions.env \
+    && go install github.com/air-verse/air@"${AIR_VERSION}" \
+    && rm /tmp/tool-versions.env
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 # change timezone
@@ -17,5 +19,4 @@ RUN \
 COPY config/.bashrc /root/.bashrc
 
 ENTRYPOINT ["./script/entrypoint.sh"]
-
 
