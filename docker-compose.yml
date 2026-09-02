@@ -50,7 +50,6 @@ services:
   #     - SERVICES=secretsmanager
   #     - DEBUG=1
   #     - DOCKER_HOST=unix:///var/run/docker.sock
-  #     - LOCALSTACK_API_KEY=ls-VAMIViHe-zEKo-5850-6884-CiYOzatE1c9b
   #     - PERSISTENCE=1
   #   ports:
   #     - '4566:4566' # LocalStack API Gateway
