@@ -38,7 +38,7 @@ func NewGoEcho(
 		},
 	}
 
-	return goEcho
+	return
 }
 
 // NewEcho ...
@@ -71,7 +71,7 @@ func NewEcho() (
 	// echoEcho.Use(middleware.RequestID())
 	echoEcho.Use(httpMiddleware.ContextMiddleware())
 
-	return echoEcho
+	return
 }
 
 // Start ...
@@ -86,5 +86,6 @@ func (receiver *GoEcho) Start() (
 		server,
 	)
 
-	return receiver.EchoEcho.Start(":" + receiver.port)
+	err = receiver.EchoEcho.Start(":" + receiver.port)
+	return
 }

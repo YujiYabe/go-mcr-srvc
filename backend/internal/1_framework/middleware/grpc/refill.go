@@ -39,7 +39,7 @@ func RefillUserGRPCToDomain(
 		},
 	)
 
-	return
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func RefillUserDomainToGRPC(
@@ -49,6 +49,7 @@ func RefillUserDomainToGRPC(
 	v1UserParameterList []*grpcParameter.V1UserParameter,
 	err error,
 ) {
+	err = nil
 	v1UserParameterList = []*grpcParameter.V1UserParameter{}
 
 	for _, response := range userList.Content() {

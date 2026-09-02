@@ -33,7 +33,7 @@ func NewGoGRPC(
 		},
 		address: address,
 	}
-	return goGRPC
+	return
 }
 
 // Start ....
@@ -46,7 +46,8 @@ func (receiver *GoGRPC) Start(
 	listenConfig := &net.ListenConfig{}
 	listen, err := listenConfig.Listen(ctx, "tcp", receiver.address)
 	if err != nil {
-		return fmt.Errorf("listen grpc: %w", err)
+		err = fmt.Errorf("listen grpc: %w", err)
+		return
 	}
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(
@@ -61,5 +62,6 @@ func (receiver *GoGRPC) Start(
 		return fmt.Errorf("serve grpc: %w", err)
 	}
 
-	return nil
+	err = nil
+	return
 }

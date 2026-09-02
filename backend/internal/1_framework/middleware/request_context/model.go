@@ -77,52 +77,62 @@ func NewRequestContext(
 
 	requestContext.requestStartTime, err = typeObject.NewRequestStartTime(args.RequestStartTime)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.traceID, err = typeObject.NewTraceID(args.TraceID)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.clientIP, err = typeObject.NewClientIP(args.ClientIP)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.userAgent, err = typeObject.NewUserAgent(args.UserAgent)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.locale, err = typeObject.NewLocale(args.Locale)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.timeZone, err = typeObject.NewTimeZone(args.TimeZone)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.userID, err = typeObject.NewUserID(args.UserID)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.accessToken, err = typeObject.NewAccessToken(args.AccessToken)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.tenantID, err = typeObject.NewTenantID(args.TenantID)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestContext.permissionList, err = typeObject.NewPermissionList(args.PermissionList)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	requestStartTime := requestContext.requestStartTime
@@ -131,74 +141,86 @@ func NewRequestContext(
 
 	requestContext.timeOutMillSecond, err = typeObject.NewTimeOutMillSecond(&timeoutMillSecond)
 	if err != nil {
-		return nil, err
+		requestContext = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
-	return
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func (receiver RequestContext) TimeOutMillSecond() (
 	timeOutMillSecond typeObject.TimeOutMillSecond,
 ) {
-	return receiver.timeOutMillSecond
+	timeOutMillSecond = receiver.timeOutMillSecond
+	return
 }
 
 func (receiver RequestContext) RequestStartTime() (
 	requestStartTime typeObject.RequestStartTime,
 ) {
-	return receiver.requestStartTime
+	requestStartTime = receiver.requestStartTime
+	return
 }
 
 func (receiver RequestContext) TraceID() (
 	traceID typeObject.TraceID,
 ) {
-	return receiver.traceID
+	traceID = receiver.traceID
+	return
 }
 
 func (receiver RequestContext) ClientIP() (
 	clientIP typeObject.ClientIP,
 ) {
-	return receiver.clientIP
+	clientIP = receiver.clientIP
+	return
 }
 
 func (receiver RequestContext) UserAgent() (
 	userAgent typeObject.UserAgent,
 ) {
-	return receiver.userAgent
+	userAgent = receiver.userAgent
+	return
 }
 
 func (receiver RequestContext) UserID() (
 	userID typeObject.UserID,
 ) {
-	return receiver.userID
+	userID = receiver.userID
+	return
 }
 
 func (receiver RequestContext) AccessToken() (
 	accessToken typeObject.AccessToken,
 ) {
-	return receiver.accessToken
+	accessToken = receiver.accessToken
+	return
 }
 
 func (receiver RequestContext) TenantID() (
 	tenantID typeObject.TenantID,
 ) {
-	return receiver.tenantID
+	tenantID = receiver.tenantID
+	return
 }
 
 func (receiver RequestContext) Locale() (
 	locale typeObject.Locale,
 ) {
-	return receiver.locale
+	locale = receiver.locale
+	return
 }
 
 func (receiver RequestContext) TimeZone() (
 	timeZone typeObject.TimeZone,
 ) {
-	return receiver.timeZone
+	timeZone = receiver.timeZone
+	return
 }
 
 func (receiver RequestContext) PermissionList() (
 	permissionList typeObject.PermissionList,
 ) {
-	return receiver.permissionList
+	permissionList = receiver.permissionList
+	return
 }

@@ -112,6 +112,12 @@ linters:
     # - varnamelen                #4 変数名の長さを検査(実態に合う短い変数名を許容する方針のため無効)
     # - whitespace                #4 if/forなどの前後空行を検査(文体規約向け)
     # - zerologlint               #4 zerologの使い方を検査(利用時のみ有効)
+  # settings:
+    # gosec:
+    #   excludes:
+    #     - G115
+    # nakedret:
+    #   max-func-lines: 50 # ✨ 15行を超える関数での Naked Return を禁止
 
   exclusions:
     generated: lax

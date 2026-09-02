@@ -11,6 +11,7 @@ func (receiver *domain) EnsurePrimaryEmploymentAssignable(
 ) (
 	err error,
 ) {
-	return serviceObject.NewPrimaryEmploymentAssignmentPolicy().
+	err = serviceObject.NewPrimaryEmploymentAssignmentPolicy().
 		EnsureAssignable(user, userEmployment)
+	return
 }

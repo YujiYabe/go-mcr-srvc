@@ -21,7 +21,8 @@ func ContextToMetadata(
 ) {
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
-		return ctx
+		ctxResult = ctx
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	metaDataMap := map[string]string{}
@@ -51,7 +52,8 @@ func ContextToMetadata(
 
 	ctx = metadata.NewOutgoingContext(ctx, metadataCollection)
 
-	return ctx
+	ctxResult = ctx
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func MetadataToContext(
@@ -61,7 +63,8 @@ func MetadataToContext(
 ) {
 	metadataCollection, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return ctx
+		ctxResult = ctx
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{}
@@ -142,7 +145,8 @@ func MetadataToContext(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return ctx
+		ctxResult = ctx
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	ctx = context.WithValue(
@@ -159,13 +163,14 @@ func MetadataToContext(
 		requestContext.TraceID().GetValue(),
 	)
 
-	return ctx
+	ctxResult = ctx
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func UnaryServerInterceptor() (
 	unaryServerInterceptor grpc.UnaryServerInterceptor,
 ) {
-	return func(
+	unaryServerInterceptor = func(
 		ctx context.Context,
 		req interface{},
 		_ *grpc.UnaryServerInfo,
@@ -178,4 +183,5 @@ func UnaryServerInterceptor() (
 
 		return handler(ctx, req)
 	}
+	return
 }

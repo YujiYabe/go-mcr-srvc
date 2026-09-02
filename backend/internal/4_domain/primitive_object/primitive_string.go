@@ -37,10 +37,11 @@ func (receiver *PrimitiveString) WithValue(
 		valueString = *value
 	}
 
-	return func(s *PrimitiveString) {
+	option = func(s *PrimitiveString) {
 		s.value = valueString
 		s.isNil = isNil
 	}
+	return
 }
 
 // ______________________________________
@@ -50,9 +51,10 @@ func (receiver *PrimitiveString) WithIsNil(
 ) (
 	value PrimitiveStringOption,
 ) {
-	return func(s *PrimitiveString) {
+	value = func(s *PrimitiveString) {
 		s.isNil = isNil
 	}
+	return
 }
 
 // ______________________________________
@@ -62,9 +64,10 @@ func (receiver *PrimitiveString) WithMaxLength(
 ) (
 	value PrimitiveStringOption,
 ) {
-	return func(s *PrimitiveString) {
+	value = func(s *PrimitiveString) {
 		s.maxLength = length
 	}
+	return
 }
 
 // ______________________________________
@@ -74,9 +77,10 @@ func (receiver *PrimitiveString) WithMinLength(
 ) (
 	value PrimitiveStringOption,
 ) {
-	return func(s *PrimitiveString) {
+	value = func(s *PrimitiveString) {
 		s.minLength = length
 	}
+	return
 }
 
 // ______________________________________
@@ -86,9 +90,10 @@ func (receiver *PrimitiveString) WithCheckSpell(
 ) (
 	value PrimitiveStringOption,
 ) {
-	return func(s *PrimitiveString) {
+	value = func(s *PrimitiveString) {
 		s.spellList = spellList
 	}
+	return
 }
 
 // ______________________________________
@@ -119,7 +124,8 @@ func NewPrimitiveString(
 func (receiver PrimitiveString) GetIsNil() (
 	ok bool,
 ) {
-	return receiver.isNil
+	ok = receiver.isNil
+	return
 }
 
 // ______________________________________
@@ -128,10 +134,11 @@ func (receiver PrimitiveString) newErrorString(
 ) (
 	err error,
 ) {
-	return fmt.Errorf(
+	err = fmt.Errorf(
 		"error: %s",
 		errString,
 	)
+	return
 }
 
 // ______________________________________
@@ -139,15 +146,19 @@ func (receiver PrimitiveString) GetValue() (
 	value string,
 ) {
 	if receiver.GetIsNil() {
-		return ""
+		value = ""
+		return
 	}
-	return receiver.value
+	value = receiver.value
+	return
 }
 
 func (receiver PrimitiveString) ToInt() (
 	value int,
 	err error,
 ) {
+	value = 0
+	err = nil
 	intValue, parseErr := strconv.ParseInt(receiver.GetValue(), 10, strconv.IntSize)
 	if parseErr != nil {
 		err = parseErr
@@ -161,6 +172,8 @@ func (receiver PrimitiveString) ToInt32() (
 	value int32,
 	err error,
 ) {
+	value = 0
+	err = nil
 	intValue, parseErr := strconv.ParseInt(receiver.GetValue(), 10, 32)
 	if parseErr != nil {
 		err = parseErr
@@ -182,6 +195,8 @@ func (receiver PrimitiveString) ToUint() (
 	value uint,
 	err error,
 ) {
+	value = 0
+	err = nil
 	uintValue, parseErr := strconv.ParseUint(receiver.GetValue(), 10, strconv.IntSize)
 	if parseErr != nil {
 		err = parseErr
@@ -195,6 +210,8 @@ func (receiver PrimitiveString) ToUint32() (
 	value uint32,
 	err error,
 ) {
+	value = 0
+	err = nil
 	uintValue, parseErr := strconv.ParseUint(receiver.GetValue(), 10, 32)
 	if parseErr != nil {
 		err = parseErr
@@ -217,24 +234,28 @@ func (receiver PrimitiveString) Length() (
 	value uint,
 ) {
 	if receiver.GetIsNil() {
-		return 0
+		value = 0
+		return
 	}
 
-	return uint(utf8.RuneCountInString(receiver.value))
+	value = uint(utf8.RuneCountInString(receiver.value))
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveString) IsEmpty() (
 	isEmpty bool,
 ) {
-	return receiver.Length() == 0
+	isEmpty = receiver.Length() == 0
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveString) HasValue() (
 	hasValue bool,
 ) {
-	return !receiver.GetIsNil() && !receiver.IsEmpty()
+	hasValue = !receiver.GetIsNil() && !receiver.IsEmpty()
+	return
 }
 
 // ______________________________________
@@ -243,7 +264,8 @@ func (receiver PrimitiveString) Equal(
 ) (
 	ok bool,
 ) {
-	return !receiver.GetIsNil() && receiver.value == value
+	ok = !receiver.GetIsNil() && receiver.value == value
+	return
 }
 
 // ______________________________________
@@ -251,18 +273,22 @@ func (receiver PrimitiveString) Validation() (
 	err error,
 ) {
 	if receiver.GetIsNil() {
-		return nil
+		err = nil
+		return
 	}
 
-	if err := receiver.ValidationMax(); err != nil {
-		return err
+	if returnedErr := receiver.ValidationMax(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 
-	if err := receiver.ValidationMin(); err != nil {
-		return err
+	if returnedErr := receiver.ValidationMin(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 
-	return receiver.ValidationSpell()
+	err = receiver.ValidationSpell()
+	return
 }
 
 // ValidationMax は最大文字列長のチェックを行います
@@ -271,18 +297,22 @@ func (receiver PrimitiveString) ValidationMax() (
 	err error,
 ) {
 	if receiver.GetIsNil() {
-		return nil
+		err = nil
+		return
 	}
 
 	if receiver.maxLength == nil {
-		return nil
+		err = nil
+		return
 	}
 
 	if receiver.Length() > *receiver.maxLength {
-		return receiver.newErrorString("max limitation")
+		err = receiver.newErrorString("max limitation")
+		return
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 // ValidationMin は最小文字列長のチェックを行います
@@ -291,18 +321,22 @@ func (receiver PrimitiveString) ValidationMin() (
 	err error,
 ) {
 	if receiver.GetIsNil() {
-		return nil
+		err = nil
+		return
 	}
 
 	if receiver.minLength == nil {
-		return nil
+		err = nil
+		return
 	}
 
 	if receiver.Length() < *receiver.minLength {
-		return receiver.newErrorString("min limitation")
+		err = receiver.newErrorString("min limitation")
+		return
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 // ValidationSpell は禁止文字列のチェックを行います
@@ -311,15 +345,18 @@ func (receiver PrimitiveString) ValidationSpell() (
 	err error,
 ) {
 	if len(receiver.spellList) == 0 {
-		return nil
+		err = nil
+		return
 	}
 	for _, spell := range receiver.spellList {
 		if strings.Contains(receiver.value, spell) {
-			return receiver.newErrorString("detect target spell : " + spell)
+			err = receiver.newErrorString("detect target spell : " + spell)
+			return
 		}
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 // CheckNil は文字列ポインタのnilチェックを行い、適切な値を返します

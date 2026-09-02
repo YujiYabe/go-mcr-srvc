@@ -12,8 +12,10 @@ func ValidationWordRuleTypeFromBlacklistFlag(
 	value string,
 ) {
 	if isBlacklist {
-		return ValidationWordRuleTypeBlacklist
+		value = ValidationWordRuleTypeBlacklist
+		return
 	}
 
-	return ValidationWordRuleTypeWhitelist
+	value = ValidationWordRuleTypeWhitelist
+	return
 }

@@ -19,32 +19,38 @@ type NewCredentialArgs struct {
 func (receiver Credential) ClientID() (
 	clientID typeObject.ClientID,
 ) {
-	return receiver.clientID
+	clientID = receiver.clientID
+	return
 }
 
 func (receiver Credential) ClientSecret() (
 	clientSecret typeObject.ClientSecret,
 ) {
-	return receiver.clientSecret
+	clientSecret = receiver.clientSecret
+	return
 }
 
 func (receiver Credential) CanAuthenticate() (
 	canAuthenticate bool,
 ) {
-	return receiver.ClientID().GetValue() != "" && receiver.ClientSecret().GetValue() != ""
+	canAuthenticate = receiver.ClientID().GetValue() != "" && receiver.ClientSecret().GetValue() != ""
+	return
 }
 
 func (receiver Credential) EnsureReadyToAuthenticate() (
 	err error,
 ) {
 	if receiver.ClientID().GetValue() == "" {
-		return fmt.Errorf("client id is required")
+		err = fmt.Errorf("client id is required")
+		return
 	}
 	if receiver.ClientSecret().GetValue() == "" {
-		return fmt.Errorf("client secret is required")
+		err = fmt.Errorf("client secret is required")
+		return
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *Credential) RotateSecret(
@@ -54,12 +60,13 @@ func (receiver *Credential) RotateSecret(
 ) {
 	clientSecret, err := typeObject.NewClientSecret(value)
 	if err != nil {
-		return err
+		return
 	}
 
 	receiver.clientSecret = clientSecret
 
-	return nil
+	err = nil
+	return
 }
 
 func NewCredential(
@@ -77,12 +84,14 @@ func NewCredential(
 		args.ClientID,
 	)
 	if err != nil {
-		return nil, err
+		credential = nil
+		return
 	}
 
 	credential.clientSecret, err = typeObject.NewClientSecret(args.ClientSecret)
 	if err != nil {
-		return nil, err
+		credential = nil
+		return
 	}
 
 	return

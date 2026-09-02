@@ -41,14 +41,17 @@ func (receiver *TimeZone) setValue(
 		primitiveString.WithMaxLength(&timeZoneMaxLength),
 		primitiveString.WithMinLength(&timeZoneMinLength),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
-	return nil
+	err = nil
+	return
 }
 
 func (receiver TimeZone) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+	return
 }

@@ -27,6 +27,7 @@ func NewToGRPC(
 	toGRPC gatewayExternal.ToGRPC,
 	err error,
 ) {
+	toGRPC = gatewayExternal.ToGRPC(nil)
 	conn, err := open(ctx, address, 30)
 	if err != nil {
 		return
@@ -51,20 +52,20 @@ func open(
 			return nil, err
 		}
 
-		conn, err := grpc.NewClient(
+		conn, returnedErr := grpc.NewClient(
 			address,
 			grpc.WithTransportCredentials(
 				insecure.NewCredentials(),
 			),
 		)
-		if err == nil {
+		if returnedErr == nil {
 			return &GRPCClient{
 				Conn: conn,
 			}, nil
 		}
 
-		lastErr = err
-		logger.Logging(ctx, err)
+		lastErr = returnedErr
+		logger.Logging(ctx, returnedErr)
 
 		if attempt == count {
 			break
@@ -72,12 +73,14 @@ func open(
 
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			gRPCClient, err = nil, ctx.Err()
+			return //nolint:nakedret // Use the project-wide named return convention.
 		case <-time.After(retryBackoff(attempt)):
 		}
 	}
 
-	return nil, fmt.Errorf("retry count over: %w", lastErr)
+	gRPCClient, err = nil, fmt.Errorf("retry count over: %w", lastErr)
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func retryBackoff(
@@ -86,8 +89,10 @@ func retryBackoff(
 	duration time.Duration,
 ) {
 	if attempt >= 4 {
-		return 5 * time.Second
+		duration = 5 * time.Second
+		return
 	}
 
-	return time.Duration(attempt+1) * time.Second
+	duration = time.Duration(attempt+1) * time.Second
+	return
 }

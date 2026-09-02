@@ -17,7 +17,8 @@ func (receiver *GoPubSub) Start(
 ) {
 	go receiver.subscribeOtherTopic(ctx)
 
-	return receiver.subscribeTestTopic(ctx)
+	err = receiver.subscribeTestTopic(ctx)
+	return
 }
 
 // subscribeTestTopic ....
@@ -33,12 +34,13 @@ func (receiver *GoPubSub) subscribeTestTopic(
 		receiver.consumerGroupID,
 	)
 	if err != nil {
-		return err
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	err = consumer.Subscribe(topicName, nil)
 	if err != nil {
-		return fmt.Errorf("subscribe topic %s: %w", topicName, err)
+		err = fmt.Errorf("subscribe topic %s: %w", topicName, err)
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	logger.Logging(ctx, fmt.Sprintf("%s consumer started", topicName))

@@ -70,7 +70,8 @@ func newTestUser(
 		t.Fatalf("failed to reconstruct user: %v", err)
 	}
 
-	return *reconstructedUser
+	user = *reconstructedUser
+	return
 }
 
 func newTestUserEmployment(
@@ -100,5 +101,6 @@ func newTestUserEmployment(
 		t.Fatalf("failed to create user employment: %v", err)
 	}
 
-	return *newUserEmployment
+	userEmployment = *newUserEmployment
+	return
 }

@@ -74,23 +74,26 @@ func Load() (
 	viperViper := initViper()
 
 	viperViper.SetConfigName(configName + ".env")
-	if err := viperViper.ReadInConfig(); err != nil {
-		return Config{}, fmt.Errorf("load environment file: %w", err)
+	if returnedErr := viperViper.ReadInConfig(); returnedErr != nil {
+		config, err = Config{}, fmt.Errorf("load environment file: %w", returnedErr)
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	if env == "lcl" {
-		if err := setupLocalstack(viperViper); err != nil {
-			return Config{}, fmt.Errorf("setup localstack: %w", err)
+		if returnedErr := setupLocalstack(viperViper); returnedErr != nil {
+			config, err = Config{}, fmt.Errorf("setup localstack: %w", returnedErr)
+			return //nolint:nakedret // Use the project-wide named return convention.
 		}
 	}
 
-	return Config{
+	config, err = Config{
 		Server:   newServerConfig(viperViper),
 		Database: newDatabaseConfig(viperViper),
 		Auth0:    newAuth0Config(viperViper),
 		PubSub:   newPubSubConfig(viperViper),
 		Redis:    newRedisConfig(viperViper),
 	}, nil
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func initViper() (
@@ -100,7 +103,7 @@ func initViper() (
 	viperConfig.AutomaticEnv()
 	viperConfig.AddConfigPath("internal/env")
 	viperConfig.SetConfigType("env")
-	return viperConfig
+	return
 }
 
 func setupLocalstack(
@@ -122,7 +125,7 @@ func setupLocalstack(
 		config.WithBaseEndpoint(viperViper.GetString("AWS_ENDPOINT")),
 	)
 	if err != nil {
-		return err
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	// Create Secrets Manager client
@@ -132,32 +135,36 @@ func setupLocalstack(
 		SecretId: aws.String(viperViper.GetString("AWS_SECRET_NAME")),
 	}
 
-	result, err := svc.GetSecretValue(context.TODO(), input)
-	if err != nil {
-		return err
+	result, returnedErr := svc.GetSecretValue(context.TODO(), input)
+	if returnedErr != nil {
+		err = returnedErr
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	resultSecretString := aws.ToString(result.SecretString)
 	localstackSecrets := &LocalstackSecrets{}
-	if err := json.Unmarshal(
+	if returnedErr := json.Unmarshal(
 		[]byte(resultSecretString),
 		localstackSecrets,
-	); err != nil {
-		return err
+	); returnedErr != nil {
+		err = returnedErr
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	var secretString SecretString
-	if err := json.Unmarshal(
+	if returnedErr := json.Unmarshal(
 		[]byte(localstackSecrets.MyLocalSecret.SecretString),
 		&secretString,
-	); err != nil {
-		return err
+	); returnedErr != nil {
+		err = returnedErr
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	viperViper.Set("POSTGRES_USER", secretString.Username)
 	viperViper.Set("POSTGRES_PASSWORD", secretString.Password)
 
-	return nil
+	err = nil
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 type LocalstackSecrets struct {
@@ -176,7 +183,7 @@ func newServerConfig(
 ) (
 	config serverConfig,
 ) {
-	return serverConfig{
+	config = serverConfig{
 		BackendHost: viperViper.GetString("BACKEND_HOST"),
 		GoEchoPort:  viperViper.GetString("GO_ECHO_PORT"),
 		GRPCPort:    viperViper.GetString("GRPC_PORT"),
@@ -186,6 +193,7 @@ func newServerConfig(
 			viperViper.GetString("GRPC_PORT"),
 		),
 	}
+	return
 }
 
 func newDatabaseConfig(
@@ -203,9 +211,10 @@ func newDatabaseConfig(
 		viperViper.GetString("POSTGRES_DB"),
 	)
 
-	return databaseConfig{
+	config = databaseConfig{
 		DSN: dsn,
 	}
+	return
 }
 
 func newAuth0Config(
@@ -219,13 +228,14 @@ func newAuth0Config(
 		tokenURL = fmt.Sprintf("https://%s/oauth/token", domain)
 	}
 
-	return auth0Config{
+	config = auth0Config{
 		Domain:       domain,
 		TokenURL:     tokenURL,
 		Audience:     viperViper.GetString("AUTH0_AUDIENCE"),
 		GrantType:    viperViper.GetString("AUTH0_GRANT_TYPE"),
 		ClientSecret: viperViper.GetString("AUTH0_CLIENT_SECRET"),
 	}
+	return
 }
 
 func newPubSubConfig(
@@ -233,7 +243,7 @@ func newPubSubConfig(
 ) (
 	config pubSubConfig,
 ) {
-	return pubSubConfig{
+	config = pubSubConfig{
 		BootstrapServers: viperViper.GetString("KAFKA_BOOTSTRAP_SERVERS"),
 		ConsumerGroupID:  viperViper.GetString("KAFKA_CONSUMER_GROUP_ID"),
 		TestTopic:        viperViper.GetString("PUBSUB_TEST_TOPIC"),
@@ -241,6 +251,7 @@ func newPubSubConfig(
 		FlushTimeoutMS:   viperViper.GetInt("PUBSUB_FLUSH_TIMEOUT_MS"),
 		SampleUserName:   viperViper.GetString("PUBSUB_SAMPLE_USER_NAME"),
 	}
+	return
 }
 
 func newRedisConfig(
@@ -248,9 +259,10 @@ func newRedisConfig(
 ) (
 	config redisConfig,
 ) {
-	return redisConfig{
+	config = redisConfig{
 		Addr:     viperViper.GetString("REDIS_ADDR"),
 		Password: viperViper.GetString("REDIS_PASSWORD"),
 		DB:       viperViper.GetInt("REDIS_DB"),
 	}
+	return
 }

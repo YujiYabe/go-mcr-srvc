@@ -67,7 +67,8 @@ func HeaderToContext(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return ctx
+		messageCtx = ctx
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	messageCtx = context.WithValue(
@@ -76,7 +77,7 @@ func HeaderToContext(
 		*requestContext,
 	)
 
-	return
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 // contextからpubsubのheaderを生成する。 HeaderToContext と逆の関数
@@ -85,9 +86,10 @@ func ContextToHeader(
 ) (
 	headers []kafka.Header,
 ) {
+	headers = nil
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
-		return headers
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 	headers = []kafka.Header{}
 
@@ -174,5 +176,5 @@ func ContextToHeader(
 		},
 	)
 
-	return
+	return //nolint:nakedret // Use the project-wide named return convention.
 }

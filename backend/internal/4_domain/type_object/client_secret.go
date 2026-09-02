@@ -35,14 +35,17 @@ func (receiver *ClientSecret) setValue(
 		primitiveString.WithMaxLength(&clientSecretMaxLength),
 		primitiveString.WithMinLength(&clientSecretMinLength),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
-	return nil
+	err = nil
+	return
 }
 
 func (receiver ClientSecret) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+	return
 }

@@ -15,6 +15,7 @@ func (receiver *useCase) FetchAccessToken(
 	accessToken typeObject.AccessToken,
 	err error,
 ) {
+	accessToken = typeObject.AccessToken{}
 	if err = ensureContextReady(ctx, "FetchAccessToken"); err != nil {
 		return
 	}

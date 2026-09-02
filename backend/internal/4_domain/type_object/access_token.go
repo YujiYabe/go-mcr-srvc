@@ -44,10 +44,12 @@ func (receiver *AccessToken) setValue(
 		primitiveString.WithMaxLength(&accessTokenMaxLength),
 		primitiveString.WithMinLength(&accessTokenMinLength),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *AccessToken) ErrorString(
@@ -55,11 +57,13 @@ func (receiver *AccessToken) ErrorString(
 ) (
 	err error,
 ) {
-	return fmt.Errorf("error: %s", errString)
+	err = fmt.Errorf("error: %s", errString)
+	return
 }
 
 func (receiver AccessToken) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+	return
 }

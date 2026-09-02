@@ -51,20 +51,24 @@ func (receiver *RequestStartTime) setValue(
 		primitiveIntX.WithMaxDigit(&requestStartTimeMaxDigit),
 		primitiveIntX.WithMinDigit(&requestStartTimeMinDigit),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
-	return nil
+	err = nil
+	return
 }
 
 func (receiver RequestStartTime) GetValue() (
 	value int64,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+	return
 }
 
 func (receiver RequestStartTime) GetString() (
 	value string,
 ) {
-	return receiver.content.GetString()
+	value = receiver.content.GetString()
+	return
 }

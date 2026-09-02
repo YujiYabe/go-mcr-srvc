@@ -40,14 +40,17 @@ func (receiver *UserAgent) setValue(
 		primitiveString.WithMaxLength(&userAgentMaxLength),
 		primitiveString.WithMinLength(&userAgentMinLength),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
-	return nil
+	err = nil
+	return
 }
 
 func (receiver UserAgent) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+	return
 }

@@ -17,6 +17,7 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 	resUserList groupObject.UserList,
 	err error,
 ) {
+	resUserList = groupObject.UserList{}
 
 	// クライアントの作成
 	client := grpcParameter.NewUserServiceClient(receiver.Conn)
@@ -44,7 +45,7 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 		v1GetUserByConditionRequest,
 	)
 	if err != nil {
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 	userArgs := make([]groupObject.NewUserArgs, 0, len(grpcUserList.V1UserParameterArray.Users))
 	for _, grpcUser := range grpcUserList.V1UserParameterArray.Users {
@@ -58,8 +59,9 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 		})
 	}
 
-	return groupObject.NewUserList(&groupObject.NewUserListArgs{
+	resUserList, err = groupObject.NewUserList(&groupObject.NewUserListArgs{
 		Content: userArgs,
 	})
+	return //nolint:nakedret // Use the project-wide named return convention.
 
 }

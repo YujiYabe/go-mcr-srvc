@@ -8,10 +8,12 @@ func stringFromNullString(
 	valuePointer *string,
 ) {
 	if !value.Valid {
-		return nil
+		valuePointer = nil
+		return
 	}
 
-	return &value.String
+	valuePointer = &value.String
+	return
 }
 
 func stringToNullString(
@@ -19,8 +21,9 @@ func stringToNullString(
 ) (
 	nullString sql.NullString,
 ) {
-	return sql.NullString{
+	nullString = sql.NullString{
 		String: value,
 		Valid:  value != "",
 	}
+	return
 }

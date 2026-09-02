@@ -35,16 +35,19 @@ func (receiver *ID) setValue(
 		primitiveIntX.WithMaxDigit(&idMaxDigit),
 		primitiveIntX.WithMinDigit(&idMinDigit),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
-	return nil
+	err = nil
+	return
 }
 
 func (receiver ID) GetValue() (
 	value int,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+	return
 }
 
 func (receiver ID) ToUint32() (

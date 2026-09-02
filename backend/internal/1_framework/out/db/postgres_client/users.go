@@ -33,7 +33,7 @@ func (receiver *PostgresClient) ReplaceUser(
 		return nil
 	})
 
-	return err
+	return
 }
 
 func (receiver *PostgresClient) AddUser(
@@ -48,10 +48,11 @@ func (receiver *PostgresClient) AddUser(
 		Email:    email,
 	}
 
-	return tx.
+	err = tx.
 		Omit("Auth0UserID", "CreatedAt", "UpdatedAt").
 		Create(&record).
 		Error
+	return
 }
 
 func (receiver *PostgresClient) DeleteUser(
@@ -60,7 +61,8 @@ func (receiver *PostgresClient) DeleteUser(
 ) (
 	err error,
 ) {
-	return tx.Delete(&models.User{}, userID).Error
+	err = tx.Delete(&models.User{}, userID).Error
+	return
 }
 
 func (receiver *PostgresClient) GetUserList(
@@ -69,6 +71,8 @@ func (receiver *PostgresClient) GetUserList(
 	userList groupObject.UserList,
 	err error,
 ) {
+	userList = groupObject.UserList{}
+	err = nil
 	users := []models.User{} // SQL結果保存用
 
 	result := receiver.conn(ctx).
@@ -78,11 +82,11 @@ func (receiver *PostgresClient) GetUserList(
 
 	if result.Error != nil {
 		err = result.Error
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	if result.RowsAffected == 0 {
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	userArgs := make([]groupObject.NewUserArgs, 0, len(users))
@@ -94,9 +98,10 @@ func (receiver *PostgresClient) GetUserList(
 		})
 	}
 
-	return groupObject.ReconstructUserList(&groupObject.NewUserListArgs{
+	userList, err = groupObject.ReconstructUserList(&groupObject.NewUserListArgs{
 		Content: userArgs,
 	})
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func (receiver *PostgresClient) GetUser(
@@ -117,7 +122,7 @@ func (receiver *PostgresClient) GetUser(
 
 	if result.Error != nil {
 		err = result.Error
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	args := &groupObject.NewUserArgs{
@@ -127,10 +132,11 @@ func (receiver *PostgresClient) GetUser(
 	}
 	newUser, err := groupObject.ReconstructUser(args)
 	if err != nil {
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
-	return *newUser, nil
+	user, err = *newUser, nil
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func (receiver *PostgresClient) UpdateUser(
@@ -139,8 +145,9 @@ func (receiver *PostgresClient) UpdateUser(
 ) (
 	err error,
 ) {
-	if err := newUser.EnsureReadyToUpdate(); err != nil {
-		return err
+	if returnedErr := newUser.EnsureReadyToUpdate(); returnedErr != nil {
+		err = returnedErr
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	record := models.User{
@@ -157,13 +164,16 @@ func (receiver *PostgresClient) UpdateUser(
 		Select("full_name", "email").
 		Updates(&record)
 	if result.Error != nil {
-		return result.Error
+		err = result.Error
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
+		err = gorm.ErrRecordNotFound
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 // GetUserListByCondition ...
@@ -174,6 +184,7 @@ func (receiver *PostgresClient) GetUserListByCondition(
 	resUserList groupObject.UserList,
 	err error,
 ) {
+	resUserList = groupObject.UserList{}
 	// logger.Logging(
 	// 	ctx,
 	// 	middlewareRequestContext.GetRequestContext(ctx).TraceID.GetValue(),
@@ -196,7 +207,7 @@ func (receiver *PostgresClient) GetUserListByCondition(
 	result := conn.Find(&users)
 	if result.Error != nil {
 		err = result.Error
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	userArgs := make([]groupObject.NewUserArgs, 0, len(users))
@@ -218,8 +229,8 @@ func (receiver *PostgresClient) GetUserListByCondition(
 	})
 	if err != nil {
 		logger.Logging(ctx, err)
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
-	return
+	return //nolint:nakedret // Use the project-wide named return convention.
 }

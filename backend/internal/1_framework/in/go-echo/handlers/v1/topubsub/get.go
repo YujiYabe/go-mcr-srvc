@@ -14,5 +14,6 @@ func Get(
 ) {
 	ctx := echoContext.Request().Context()
 
-	return toController.PublishTestTopic(ctx)
+	err = toController.PublishTestTopic(ctx)
+	return
 }

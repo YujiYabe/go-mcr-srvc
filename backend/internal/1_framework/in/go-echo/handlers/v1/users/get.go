@@ -22,6 +22,7 @@ func Get(
 ) (
 	err error,
 ) {
+	err = nil //nolint:wastedassign // Explicitly initialize the named return value.
 	ctx := echoContext.Request().Context()
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 
@@ -40,20 +41,23 @@ func Get(
 	)
 	if ctxWithTimeout.Err() != nil {
 		logger.Logging(ctxWithTimeout, ctxWithTimeout.Err())
-		return echoContext.JSON(
+		err = echoContext.JSON(
 			http.StatusRequestTimeout,
 			[]openapi.User{},
 		)
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 	if requestErr != nil {
 		logger.Logging(ctxWithTimeout, requestErr)
-		return echoContext.JSON(http.StatusBadRequest, requestErr)
+		err = echoContext.JSON(http.StatusBadRequest, requestErr)
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
-	return echoContext.JSON(
+	err = echoContext.JSON(
 		http.StatusOK,
 		responseList,
 	)
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func handleUsersRequest(
@@ -74,7 +78,8 @@ func handleUsersRequest(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return nil, err
+		responseList = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	userList, err := toController.GetUserListByCondition(
@@ -83,7 +88,7 @@ func handleUsersRequest(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	for _, user := range userList.Content() {
@@ -100,5 +105,5 @@ func handleUsersRequest(
 		)
 	}
 
-	return
+	return //nolint:nakedret // Use the project-wide named return convention.
 }

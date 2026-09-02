@@ -30,13 +30,14 @@ func NewGoPubSub(
 ) (
 	goPubSub *GoPubSub,
 ) {
-	return &GoPubSub{
+	goPubSub = &GoPubSub{
 		Controller:       controller,
 		bootstrapServers: bootstrapServers,
 		consumerGroupID:  consumerGroupID,
 		testTopic:        testTopic,
 		otherTopic:       otherTopic,
 	}
+	return
 }
 
 // NewKafkaConsumer ...
@@ -49,12 +50,14 @@ func NewKafkaConsumer(
 	consumer *kafka.Consumer,
 	err error,
 ) {
+	err = nil
 	consumer = &kafka.Consumer{}
 	maxRetries := 20
 
 	for retryIndex := 0; retryIndex < maxRetries; retryIndex++ {
-		if err := ctx.Err(); err != nil {
-			return nil, err
+		if returnedErr := ctx.Err(); returnedErr != nil {
+			consumer, err = nil, returnedErr
+			return //nolint:nakedret // Use the project-wide named return convention.
 		}
 
 		consumer, err = kafka.NewConsumer(
@@ -69,15 +72,18 @@ func NewKafkaConsumer(
 		}
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			consumer, err = nil, ctx.Err()
+			return //nolint:nakedret // Use the project-wide named return convention.
 		case <-time.After(retryBackoff(uint(retryIndex))):
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("create kafka consumer after retries: %w", err)
+		consumer, err = nil, fmt.Errorf("create kafka consumer after retries: %w", err)
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
-	return consumer, nil
+	err = nil
+	return //nolint:nakedret // Use the project-wide named return convention.
 }
 
 func retryBackoff(
@@ -86,8 +92,10 @@ func retryBackoff(
 	duration time.Duration,
 ) {
 	if attempt >= 4 {
-		return 5 * time.Second
+		duration = 5 * time.Second
+		return
 	}
 
-	return time.Duration(attempt+1) * time.Second
+	duration = time.Duration(attempt+1) * time.Second
+	return
 }

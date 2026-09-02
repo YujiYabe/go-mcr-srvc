@@ -13,7 +13,8 @@ func (receiver *GatewayDB) RunInTransaction(
 ) (
 	err error,
 ) {
-	return receiver.ToPostgres.RunInTransaction(ctx, fn)
+	err = receiver.ToPostgres.RunInTransaction(ctx, fn)
+	return
 }
 
 // GetUserList ...
@@ -23,9 +24,10 @@ func (receiver *GatewayDB) GetUserList(
 	userList groupObject.UserList,
 	err error,
 ) {
-	return receiver.ToPostgres.GetUserList(
+	userList, err = receiver.ToPostgres.GetUserList(
 		ctx,
 	)
+	return
 }
 
 // GetUserListByCondition ...
@@ -51,7 +53,8 @@ func (receiver *GatewayDB) UpdateUser(
 ) (
 	err error,
 ) {
-	return receiver.ToPostgres.UpdateUser(ctx, newUser)
+	err = receiver.ToPostgres.UpdateUser(ctx, newUser)
+	return
 }
 
 func (receiver *GatewayDB) UpdateUserEmployment(
@@ -60,7 +63,8 @@ func (receiver *GatewayDB) UpdateUserEmployment(
 ) (
 	err error,
 ) {
-	return receiver.ToPostgres.UpdateUserEmployment(ctx, userEmployment)
+	err = receiver.ToPostgres.UpdateUserEmployment(ctx, userEmployment)
+	return
 }
 
 func (receiver *GatewayDB) GetValidationWords(
@@ -83,7 +87,8 @@ func (receiver *GatewayDB) GetValidationWords(
 
 	words, err = receiver.ToPostgres.GetValidationWords(ctx, targetType, isBlacklist)
 	if err != nil {
-		return nil, err
+		words = nil
+		return //nolint:nakedret // Use the project-wide named return convention.
 	}
 
 	if receiver.ToRedis != nil {
@@ -92,7 +97,8 @@ func (receiver *GatewayDB) GetValidationWords(
 		}
 	}
 
-	return words, nil
+	err = nil
+	return
 }
 
 func (receiver *GatewayDB) AddValidationWord(
@@ -103,12 +109,14 @@ func (receiver *GatewayDB) AddValidationWord(
 ) (
 	err error,
 ) {
-	if err := receiver.ToPostgres.AddValidationWord(ctx, targetType, isBlacklist, word); err != nil {
-		return err
+	if returnedErr := receiver.ToPostgres.AddValidationWord(ctx, targetType, isBlacklist, word); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 
 	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *GatewayDB) UpdateValidationWord(
@@ -120,12 +128,14 @@ func (receiver *GatewayDB) UpdateValidationWord(
 ) (
 	err error,
 ) {
-	if err := receiver.ToPostgres.UpdateValidationWord(ctx, targetType, isBlacklist, oldWord, newWord); err != nil {
-		return err
+	if returnedErr := receiver.ToPostgres.UpdateValidationWord(ctx, targetType, isBlacklist, oldWord, newWord); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 
 	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *GatewayDB) DeleteValidationWord(
@@ -136,12 +146,14 @@ func (receiver *GatewayDB) DeleteValidationWord(
 ) (
 	err error,
 ) {
-	if err := receiver.ToPostgres.DeleteValidationWord(ctx, targetType, isBlacklist, word); err != nil {
-		return err
+	if returnedErr := receiver.ToPostgres.DeleteValidationWord(ctx, targetType, isBlacklist, word); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 
 	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *GatewayDB) deleteValidationWordsCache(

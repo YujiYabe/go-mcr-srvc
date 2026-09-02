@@ -14,7 +14,8 @@ type User struct {
 func (User) TableName() (
 	tableName string,
 ) {
-	return "users"
+	tableName = "users"
+	return
 }
 
 type Role struct {
@@ -26,7 +27,8 @@ type Role struct {
 func (Role) TableName() (
 	tableName string,
 ) {
-	return "roles"
+	tableName = "roles"
+	return
 }
 
 type UserRole struct {
@@ -38,7 +40,8 @@ type UserRole struct {
 func (UserRole) TableName() (
 	tableName string,
 ) {
-	return "user_roles"
+	tableName = "user_roles"
+	return
 }
 
 type UserEmployment struct {
@@ -60,7 +63,8 @@ type UserEmployment struct {
 func (UserEmployment) TableName() (
 	tableName string,
 ) {
-	return "user_employments"
+	tableName = "user_employments"
+	return
 }
 
 type ValidationWordRule struct {
@@ -77,5 +81,6 @@ type ValidationWordRule struct {
 func (ValidationWordRule) TableName() (
 	tableName string,
 ) {
-	return "validation_word_rules"
+	tableName = "validation_word_rules"
+	return
 }
