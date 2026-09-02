@@ -2,6 +2,7 @@ package primitive_object
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -141,6 +142,74 @@ func (receiver PrimitiveString) GetValue() (
 		return ""
 	}
 	return receiver.value
+}
+
+func (receiver PrimitiveString) ToInt() (
+	value int,
+	err error,
+) {
+	intValue, parseErr := strconv.ParseInt(receiver.GetValue(), 10, strconv.IntSize)
+	if parseErr != nil {
+		err = parseErr
+		return
+	}
+	value = int(intValue)
+	return
+}
+
+func (receiver PrimitiveString) ToInt32() (
+	value int32,
+	err error,
+) {
+	intValue, parseErr := strconv.ParseInt(receiver.GetValue(), 10, 32)
+	if parseErr != nil {
+		err = parseErr
+		return
+	}
+	value = int32(intValue)
+	return
+}
+
+func (receiver PrimitiveString) ToInt64() (
+	value int64,
+	err error,
+) {
+	value, err = strconv.ParseInt(receiver.GetValue(), 10, 64)
+	return
+}
+
+func (receiver PrimitiveString) ToUint() (
+	value uint,
+	err error,
+) {
+	uintValue, parseErr := strconv.ParseUint(receiver.GetValue(), 10, strconv.IntSize)
+	if parseErr != nil {
+		err = parseErr
+		return
+	}
+	value = uint(uintValue)
+	return
+}
+
+func (receiver PrimitiveString) ToUint32() (
+	value uint32,
+	err error,
+) {
+	uintValue, parseErr := strconv.ParseUint(receiver.GetValue(), 10, 32)
+	if parseErr != nil {
+		err = parseErr
+		return
+	}
+	value = uint32(uintValue)
+	return
+}
+
+func (receiver PrimitiveString) ToUint64() (
+	value uint64,
+	err error,
+) {
+	value, err = strconv.ParseUint(receiver.GetValue(), 10, 64)
+	return
 }
 
 // ______________________________________

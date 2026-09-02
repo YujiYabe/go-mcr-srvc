@@ -89,10 +89,14 @@ func (receiver *Server) getUserListByCondition(
 	}
 
 	v1UserParameterArray := &grpcParameter.V1UserParameterArray{}
-	v1UserParameterArray.Users = grpcMiddleware.RefillUserDomainToGRPC(
+	v1UserParameterArray.Users, err = grpcMiddleware.RefillUserDomainToGRPC(
 		ctx,
 		responseList,
 	)
+	if err != nil {
+		logger.Logging(ctx, err)
+		return nil, err
+	}
 
 	getUserListByConditionResponse.V1UserParameterArray = v1UserParameterArray
 

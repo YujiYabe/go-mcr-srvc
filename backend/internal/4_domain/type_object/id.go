@@ -46,3 +46,12 @@ func (receiver ID) GetValue() (
 ) {
 	return receiver.content.GetValue()
 }
+
+func (receiver ID) ToUint32() (
+	value uint32,
+	err error,
+) {
+	value, err = receiver.content.ToUint32()
+
+	return
+}

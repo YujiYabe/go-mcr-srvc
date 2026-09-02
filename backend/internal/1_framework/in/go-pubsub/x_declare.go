@@ -85,9 +85,9 @@ func retryBackoff(
 ) (
 	duration time.Duration,
 ) {
-	backoff := time.Duration(attempt+1) * time.Second
-	if backoff > 5*time.Second {
+	if attempt >= 4 {
 		return 5 * time.Second
 	}
-	return backoff
+
+	return time.Duration(attempt+1) * time.Second
 }

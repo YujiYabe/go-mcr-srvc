@@ -113,10 +113,6 @@ linters:
     # - whitespace                #4 if/forなどの前後空行を検査(文体規約向け)
     # - zerologlint               #4 zerologの使い方を検査(利用時のみ有効)
 
-  settings:
-    gosec:
-      excludes:
-        - G115
   exclusions:
     generated: lax
     presets:

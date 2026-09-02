@@ -2,6 +2,7 @@ package primitive_object
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -50,6 +51,89 @@ func (receiver PrimitiveIntX[T]) GetValue() (
 		return 0
 	}
 	return receiver.value
+}
+
+func (receiver PrimitiveIntX[T]) ToInt() (
+	value int,
+	err error,
+) {
+	intValue := int64(receiver.GetValue())
+	if strconv.IntSize == 32 && (intValue < math.MinInt32 || intValue > math.MaxInt32) {
+		err = newIntegerConversionError("int", intValue)
+		return
+	}
+	value = int(intValue)
+	return
+}
+
+func (receiver PrimitiveIntX[T]) ToInt32() (
+	value int32,
+	err error,
+) {
+	intValue := int64(receiver.GetValue())
+	if intValue < math.MinInt32 || intValue > math.MaxInt32 {
+		err = newIntegerConversionError("int32", intValue)
+		return
+	}
+	value = int32(intValue)
+	return
+}
+
+func (receiver PrimitiveIntX[T]) ToInt64() (
+	value int64,
+	err error,
+) {
+	value = int64(receiver.GetValue())
+	return
+}
+
+func (receiver PrimitiveIntX[T]) ToUint() (
+	value uint,
+	err error,
+) {
+	intValue := int64(receiver.GetValue())
+	if intValue < 0 || (strconv.IntSize == 32 && uint64(intValue) > math.MaxUint32) {
+		err = newIntegerConversionError("uint", intValue)
+		return
+	}
+	value = uint(intValue)
+	return
+}
+
+func (receiver PrimitiveIntX[T]) ToUint32() (
+	value uint32,
+	err error,
+) {
+	intValue := int64(receiver.GetValue())
+	if intValue < 0 || uint64(intValue) > math.MaxUint32 {
+		err = newIntegerConversionError("uint32", intValue)
+		return
+	}
+	value = uint32(intValue)
+	return
+}
+
+func (receiver PrimitiveIntX[T]) ToUint64() (
+	value uint64,
+	err error,
+) {
+	intValue := int64(receiver.GetValue())
+	if intValue < 0 {
+		err = newIntegerConversionError("uint64", intValue)
+		return
+	}
+	value = uint64(intValue)
+	return
+}
+
+func newIntegerConversionError(
+	targetType string,
+	value int64,
+) (
+	err error,
+) {
+	err = fmt.Errorf("value is outside the %s range: %d", targetType, value)
+	return
 }
 
 // ______________________________________
@@ -232,8 +316,16 @@ func (receiver *PrimitiveIntX[T]) WithValue(
 func (receiver PrimitiveIntX[T]) GetString() (
 	value string,
 ) {
+	value = receiver.ToString()
+	return
+}
+
+func (receiver PrimitiveIntX[T]) ToString() (
+	value string,
+) {
 	if receiver.GetIsNil() {
-		return ""
+		return
 	}
-	return fmt.Sprintf("%d", receiver.value)
+	value = strconv.FormatInt(int64(receiver.value), 10)
+	return
 }

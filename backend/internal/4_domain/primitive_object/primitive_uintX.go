@@ -225,8 +225,16 @@ func (receiver *PrimitiveUIntX[T]) WithValue(
 func (receiver PrimitiveUIntX[T]) GetString() (
 	value string,
 ) {
+	value = receiver.ToString()
+	return
+}
+
+func (receiver PrimitiveUIntX[T]) ToString() (
+	value string,
+) {
 	if receiver.GetIsNil() {
-		return ""
+		return
 	}
-	return fmt.Sprintf("%d", receiver.value)
+	value = strconv.FormatUint(uint64(receiver.value), 10)
+	return
 }

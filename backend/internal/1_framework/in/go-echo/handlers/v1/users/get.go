@@ -83,7 +83,7 @@ func handleUsersRequest(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return nil, err
+		return
 	}
 
 	for _, user := range userList.Content() {
@@ -100,5 +100,5 @@ func handleUsersRequest(
 		)
 	}
 
-	return responseList, nil
+	return
 }
