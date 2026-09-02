@@ -29,7 +29,7 @@ func (receiver *Server) GetUserListByCondition(
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		v1GetUserListByConditionResponse, err = nil, ctx.Err()
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	timeoutMillSecond := requestContext.TimeOutMillSecond().GetValue()
@@ -55,13 +55,13 @@ func (receiver *Server) GetUserListByCondition(
 	select {
 	case <-done:
 		// 処理が完了した場合
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 
 	case <-ctx.Done():
 		// タイムアウトした場合
 		logger.Logging(ctx, ctx.Err())
 		v1GetUserListByConditionResponse, err = nil, ctx.Err()
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 }
 
@@ -81,7 +81,7 @@ func (receiver *Server) getUserListByCondition(
 	if err != nil {
 		logger.Logging(ctx, err)
 		getUserListByConditionResponse = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	responseList, err := receiver.Controller.GetUserListByCondition(
@@ -91,7 +91,7 @@ func (receiver *Server) getUserListByCondition(
 	if err != nil {
 		logger.Logging(ctx, err)
 		getUserListByConditionResponse = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	v1UserParameterArray := &grpcParameter.V1UserParameterArray{}
@@ -102,12 +102,12 @@ func (receiver *Server) getUserListByCondition(
 	if err != nil {
 		logger.Logging(ctx, err)
 		getUserListByConditionResponse = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	getUserListByConditionResponse.V1UserParameterArray = v1UserParameterArray
 
 	// logger.Logging(ctx, traceID)
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

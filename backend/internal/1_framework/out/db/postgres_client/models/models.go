@@ -15,6 +15,7 @@ func (User) TableName() (
 	tableName string,
 ) {
 	tableName = "users"
+
 	return
 }
 
@@ -28,6 +29,7 @@ func (Role) TableName() (
 	tableName string,
 ) {
 	tableName = "roles"
+
 	return
 }
 
@@ -41,6 +43,7 @@ func (UserRole) TableName() (
 	tableName string,
 ) {
 	tableName = "user_roles"
+
 	return
 }
 
@@ -64,6 +67,7 @@ func (UserEmployment) TableName() (
 	tableName string,
 ) {
 	tableName = "user_employments"
+
 	return
 }
 
@@ -82,5 +86,6 @@ func (ValidationWordRule) TableName() (
 	tableName string,
 ) {
 	tableName = "validation_word_rules"
+
 	return
 }

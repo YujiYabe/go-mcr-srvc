@@ -45,19 +45,19 @@ func Get(
 			http.StatusRequestTimeout,
 			[]openapi.User{},
 		)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if requestErr != nil {
 		logger.Logging(ctxWithTimeout, requestErr)
 		err = echoContext.JSON(http.StatusBadRequest, requestErr)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	err = echoContext.JSON(
 		http.StatusOK,
 		responseList,
 	)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func handleUsersRequest(
@@ -79,7 +79,7 @@ func handleUsersRequest(
 	if err != nil {
 		logger.Logging(ctx, err)
 		responseList = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	userList, err := toController.GetUserListByCondition(
@@ -88,7 +88,7 @@ func handleUsersRequest(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	for _, user := range userList.Content() {
@@ -105,5 +105,5 @@ func handleUsersRequest(
 		)
 	}
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

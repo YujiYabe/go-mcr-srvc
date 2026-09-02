@@ -84,5 +84,6 @@ func newPrimitiveStringForConversion(
 	primitive = NewPrimitiveString(
 		primitiveString.WithValue(&value),
 	)
+
 	return
 }

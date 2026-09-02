@@ -17,6 +17,7 @@ func (receiver *useCase) GetUserList(
 ) {
 	userList = groupObject.UserList{}
 	if err = ensureContextReady(ctx, "GetUserList"); err != nil {
+
 		return
 	}
 	userList, err = receiver.ToGatewayDB.GetUserList(ctx)
@@ -36,10 +37,12 @@ func (receiver *useCase) GetUserListByCondition(
 ) {
 	resUserList = groupObject.UserList{}
 	if err = ensureContextReady(ctx, "GetUserListByCondition"); err != nil {
+
 		return
 	}
 	if !reqUser.CanBeUsedAsSearchCondition() {
 		err = fmt.Errorf("GetUserListByCondition: user search condition is required")
+
 		return
 	}
 
@@ -50,6 +53,7 @@ func (receiver *useCase) GetUserListByCondition(
 	if err != nil {
 		err = fmt.Errorf("GetUserListByCondition: %w", err)
 	}
+
 	return
 }
 
@@ -61,7 +65,7 @@ func (receiver *useCase) UpdateUser(
 ) {
 	if returnedErr := ensureContextReady(ctx, "UpdateUser"); returnedErr != nil {
 		err = returnedErr
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
 		return fmt.Errorf("UpdateUser: %w", err)
@@ -73,7 +77,7 @@ func (receiver *useCase) UpdateUser(
 	)
 	if err != nil {
 		err = fmt.Errorf("UpdateUser: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if err := newUser.ValidateNameBlacklist(nameBlacklist); err != nil {
 		return fmt.Errorf("UpdateUser: %w", err)
@@ -89,7 +93,7 @@ func (receiver *useCase) UpdateUser(
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func (receiver *useCase) GetUserListViaGRPC(
@@ -101,10 +105,12 @@ func (receiver *useCase) GetUserListViaGRPC(
 ) {
 	resUserList = groupObject.UserList{}
 	if err = ensureContextReady(ctx, "GetUserListViaGRPC"); err != nil {
+
 		return
 	}
 	if !reqUser.CanBeUsedAsSearchCondition() {
 		err = fmt.Errorf("GetUserListViaGRPC: user search condition is required")
+
 		return
 	}
 	resUserList, err = receiver.ToGatewayExternal.GetUserViaGRPC(
@@ -114,6 +120,7 @@ func (receiver *useCase) GetUserListViaGRPC(
 	if err != nil {
 		err = fmt.Errorf("GetUserListViaGRPC: %w", err)
 	}
+
 	return
 }
 
@@ -126,7 +133,7 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 ) {
 	if returnedErr := ensureContextReady(ctx, "UpdateUserProfileWithPrimaryEmployment"); returnedErr != nil {
 		err = returnedErr
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
 		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
@@ -138,7 +145,7 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 	)
 	if err != nil {
 		err = fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if err := newUser.ValidateNameBlacklist(nameBlacklist); err != nil {
 		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
@@ -160,5 +167,5 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

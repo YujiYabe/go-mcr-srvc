@@ -20,10 +20,12 @@ func (receiver *useCase) GetValidationWords(
 	words, err = receiver.ToGatewayDB.GetValidationWords(ctx, targetType, isBlacklist)
 	if err != nil {
 		words, err = nil, fmt.Errorf("GetValidationWords: %w", err)
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -37,6 +39,7 @@ func (receiver *useCase) AddValidationWord(
 ) {
 	if returnedErr := ensureContextReady(ctx, "AddValidationWord"); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
@@ -50,6 +53,7 @@ func (receiver *useCase) AddValidationWord(
 	}
 
 	err = nil
+
 	return
 }
 
@@ -64,6 +68,7 @@ func (receiver *useCase) UpdateValidationWord(
 ) {
 	if returnedErr := ensureContextReady(ctx, "UpdateValidationWord"); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
@@ -78,6 +83,7 @@ func (receiver *useCase) UpdateValidationWord(
 	}
 
 	err = nil
+
 	return
 }
 
@@ -91,6 +97,7 @@ func (receiver *useCase) DeleteValidationWord(
 ) {
 	if returnedErr := ensureContextReady(ctx, "DeleteValidationWord"); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
@@ -104,5 +111,6 @@ func (receiver *useCase) DeleteValidationWord(
 	}
 
 	err = nil
+
 	return
 }

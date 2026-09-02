@@ -45,7 +45,7 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 		v1GetUserByConditionRequest,
 	)
 	if err != nil {
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	userArgs := make([]groupObject.NewUserArgs, 0, len(grpcUserList.V1UserParameterArray.Users))
 	for _, grpcUser := range grpcUserList.V1UserParameterArray.Users {
@@ -62,6 +62,6 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 	resUserList, err = groupObject.NewUserList(&groupObject.NewUserListArgs{
 		Content: userArgs,
 	})
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 
 }

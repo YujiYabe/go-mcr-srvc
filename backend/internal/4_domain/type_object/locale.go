@@ -42,9 +42,11 @@ func (receiver *Locale) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -52,5 +54,6 @@ func (receiver Locale) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }

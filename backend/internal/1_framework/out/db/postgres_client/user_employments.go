@@ -16,7 +16,7 @@ func (receiver *PostgresClient) UpdateUserEmployment(
 ) {
 	if returnedErr := userEmployment.EnsureReadyToAssign(); returnedErr != nil {
 		err = returnedErr
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	record := models.UserEmployment{
@@ -51,16 +51,16 @@ func (receiver *PostgresClient) UpdateUserEmployment(
 		Updates(&record)
 	if result.Error != nil {
 		err = result.Error
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if result.RowsAffected > 0 {
 		err = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	err = receiver.conn(ctx).
 		Omit("JoinedOn", "LeftOn", "CreatedAt", "UpdatedAt").
 		Create(&record).
 		Error
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

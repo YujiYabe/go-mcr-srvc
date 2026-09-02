@@ -71,6 +71,7 @@ func newTestUser(
 	}
 
 	user = *reconstructedUser
+
 	return
 }
 
@@ -102,5 +103,6 @@ func newTestUserEmployment(
 	}
 
 	userEmployment = *newUserEmployment
+
 	return
 }

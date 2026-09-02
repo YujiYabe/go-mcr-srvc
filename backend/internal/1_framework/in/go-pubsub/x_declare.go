@@ -37,6 +37,7 @@ func NewGoPubSub(
 		testTopic:        testTopic,
 		otherTopic:       otherTopic,
 	}
+
 	return
 }
 
@@ -57,7 +58,7 @@ func NewKafkaConsumer(
 	for retryIndex := 0; retryIndex < maxRetries; retryIndex++ {
 		if returnedErr := ctx.Err(); returnedErr != nil {
 			consumer, err = nil, returnedErr
-			return //nolint:nakedret // Use the project-wide named return convention.
+			return
 		}
 
 		consumer, err = kafka.NewConsumer(
@@ -73,17 +74,17 @@ func NewKafkaConsumer(
 		select {
 		case <-ctx.Done():
 			consumer, err = nil, ctx.Err()
-			return //nolint:nakedret // Use the project-wide named return convention.
+			return
 		case <-time.After(retryBackoff(uint(retryIndex))):
 		}
 	}
 	if err != nil {
 		consumer, err = nil, fmt.Errorf("create kafka consumer after retries: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func retryBackoff(
@@ -93,9 +94,11 @@ func retryBackoff(
 ) {
 	if attempt >= 4 {
 		duration = 5 * time.Second
+
 		return
 	}
 
 	duration = time.Duration(attempt+1) * time.Second
+
 	return
 }

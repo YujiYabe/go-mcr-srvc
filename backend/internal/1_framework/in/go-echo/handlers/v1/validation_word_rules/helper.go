@@ -17,9 +17,11 @@ func validateTargetTypeAndWord(
 ) {
 	if returnedErr := validateTargetType(targetType); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = validateWord(word)
+
 	return
 }
 
@@ -30,9 +32,11 @@ func validateTargetType(
 ) {
 	if strings.TrimSpace(targetType) == "" {
 		err = fmt.Errorf("targetType is required")
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -43,9 +47,11 @@ func validateWord(
 ) {
 	if strings.TrimSpace(word) == "" {
 		err = fmt.Errorf("word is required")
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -60,5 +66,6 @@ func errorJSON(
 		Code:    status,
 		Message: err.Error(),
 	})
+
 	return
 }

@@ -19,7 +19,7 @@ func Get(
 ) {
 	if returnedErr := validateTargetType(params.TargetType); returnedErr != nil {
 		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	words, returnedErr := toController.GetValidationWords(
@@ -30,7 +30,7 @@ func Get(
 	if returnedErr != nil {
 		logger.Logging(echoContext.Request().Context(), returnedErr)
 		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	response := make([]openapi.ValidationWordRule, 0, len(words))
@@ -43,5 +43,5 @@ func Get(
 	}
 
 	err = echoContext.JSON(http.StatusOK, response)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

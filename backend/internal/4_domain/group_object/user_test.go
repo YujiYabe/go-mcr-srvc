@@ -190,6 +190,7 @@ func intPointer(
 	valuePointer *int,
 ) {
 	valuePointer = &value
+
 	return
 }
 
@@ -199,5 +200,6 @@ func stringPointer(
 	valuePointer *string,
 ) {
 	valuePointer = &value
+
 	return
 }

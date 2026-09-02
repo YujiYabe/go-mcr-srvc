@@ -20,6 +20,7 @@ func NewUseCase(
 		ToGatewayDB:       toGatewayDB,
 		ToGatewayExternal: toGatewayExternal,
 	}
+
 	return
 }
 

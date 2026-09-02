@@ -19,12 +19,14 @@ func protected(
 	claims, ok := echoContext.Get("user").(jwt.MapClaims)
 	if !ok {
 		err = echoContext.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token claims"})
+
 		return
 	}
 
 	username, ok := claims["sub"].(string)
 	if !ok {
 		err = echoContext.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid token subject"})
+
 		return
 	}
 
@@ -35,6 +37,7 @@ func protected(
 			username,
 		),
 	)
+
 	return
 
 }

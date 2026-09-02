@@ -42,31 +42,31 @@ func NewUserEmployment(
 	userEmployment.userID, err = typeObject.NewID(args.UserID)
 	if err != nil {
 		userEmployment = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	userEmployment.companyID, err = typeObject.NewID(args.CompanyID)
 	if err != nil {
 		userEmployment = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	userEmployment.departmentID, err = typeObject.NewID(args.DepartmentID)
 	if err != nil {
 		userEmployment = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	userEmployment.positionID, err = typeObject.NewID(args.PositionID)
 	if err != nil {
 		userEmployment = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	userEmployment.officeLocationID, err = typeObject.NewID(args.OfficeLocationID)
 	if err != nil {
 		userEmployment = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	if args.EmployeeCode != nil {
@@ -80,13 +80,14 @@ func NewUserEmployment(
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func (receiver UserEmployment) UserID() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.userID
+
 	return
 }
 
@@ -94,6 +95,7 @@ func (receiver UserEmployment) CompanyID() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.companyID
+
 	return
 }
 
@@ -101,6 +103,7 @@ func (receiver UserEmployment) DepartmentID() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.departmentID
+
 	return
 }
 
@@ -108,6 +111,7 @@ func (receiver UserEmployment) PositionID() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.positionID
+
 	return
 }
 
@@ -115,6 +119,7 @@ func (receiver UserEmployment) OfficeLocationID() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.officeLocationID
+
 	return
 }
 
@@ -122,6 +127,7 @@ func (receiver UserEmployment) EmployeeCode() (
 	value string,
 ) {
 	value = receiver.employeeCode
+
 	return
 }
 
@@ -129,6 +135,7 @@ func (receiver UserEmployment) EmploymentType() (
 	value string,
 ) {
 	value = receiver.employmentType
+
 	return
 }
 
@@ -136,6 +143,7 @@ func (receiver UserEmployment) IsPrimary() (
 	isPrimary bool,
 ) {
 	isPrimary = receiver.isPrimary
+
 	return
 }
 
@@ -144,21 +152,26 @@ func (receiver UserEmployment) EnsureReadyToAssign() (
 ) {
 	if receiver.userID.GetValue() <= 0 {
 		err = fmt.Errorf("user employment user identity is required")
+
 		return
 	}
 	if receiver.companyID.GetValue() <= 0 {
 		err = fmt.Errorf("user employment company identity is required")
+
 		return
 	}
 	if receiver.departmentID.GetValue() <= 0 {
 		err = fmt.Errorf("user employment department identity is required")
+
 		return
 	}
 	if receiver.positionID.GetValue() <= 0 {
 		err = fmt.Errorf("user employment position identity is required")
+
 		return
 	}
 
 	err = nil
+
 	return
 }

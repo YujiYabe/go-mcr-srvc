@@ -9,10 +9,12 @@ func stringFromNullString(
 ) {
 	if !value.Valid {
 		valuePointer = nil
+
 		return
 	}
 
 	valuePointer = &value.String
+
 	return
 }
 
@@ -25,5 +27,6 @@ func stringToNullString(
 		String: value,
 		Valid:  value != "",
 	}
+
 	return
 }

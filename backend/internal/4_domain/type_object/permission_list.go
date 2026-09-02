@@ -47,6 +47,7 @@ func (receiver *PermissionList) setValue(
 
 		if returnedErr != nil {
 			err = returnedErr
+
 			return
 		}
 		receiver.content = append(
@@ -55,6 +56,7 @@ func (receiver *PermissionList) setValue(
 		)
 	}
 	err = nil
+
 	return
 }
 
@@ -64,6 +66,7 @@ func (receiver *PermissionList) ErrorString(
 	err error,
 ) {
 	err = fmt.Errorf("error: %s", errString)
+
 	return
 }
 
@@ -86,6 +89,7 @@ func (receiver PermissionList) IsEmpty() (
 	isEmpty bool,
 ) {
 	isEmpty = len(receiver.content) == 0
+
 	return
 }
 
@@ -93,6 +97,7 @@ func (receiver PermissionList) Count() (
 	value int,
 ) {
 	value = len(receiver.content)
+
 	return
 }
 
@@ -102,6 +107,7 @@ func (receiver PermissionList) Has(
 	has bool,
 ) {
 	has = slices.Contains(receiver.GetSliceValue(), permission.GetValue())
+
 	return
 }
 
@@ -113,10 +119,12 @@ func (receiver PermissionList) HasValue(
 	permission, err := NewPermission(&value)
 	if err != nil {
 		hasValue = false
+
 		return
 	}
 
 	hasValue = receiver.Has(permission)
+
 	return
 }
 
@@ -124,6 +132,7 @@ func (receiver PermissionList) CanReadUser() (
 	canReadUser bool,
 ) {
 	canReadUser = receiver.HasValue(PermissionUserRead)
+
 	return
 }
 
@@ -131,6 +140,7 @@ func (receiver PermissionList) CanWriteUser() (
 	canWriteUser bool,
 ) {
 	canWriteUser = receiver.HasValue(PermissionUserWrite)
+
 	return
 }
 
@@ -141,9 +151,11 @@ func (receiver PermissionList) EnsureHas(
 ) {
 	if receiver.HasValue(value) {
 		err = nil
+
 		return
 	}
 
 	err = receiver.ErrorString(fmt.Sprintf("permission is required: %s", value))
+
 	return
 }

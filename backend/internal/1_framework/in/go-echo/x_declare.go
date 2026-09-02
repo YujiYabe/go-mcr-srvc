@@ -87,5 +87,6 @@ func (receiver *GoEcho) Start() (
 	)
 
 	err = receiver.EchoEcho.Start(":" + receiver.port)
+
 	return
 }

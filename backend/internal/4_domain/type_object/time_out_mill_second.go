@@ -46,9 +46,11 @@ func (receiver *TimeOutMillSecond) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -56,6 +58,7 @@ func (receiver TimeOutMillSecond) GetValue() (
 	value int64,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }
 
@@ -63,5 +66,6 @@ func (receiver TimeOutMillSecond) GetString() (
 	value string,
 ) {
 	value = receiver.content.GetString()
+
 	return
 }

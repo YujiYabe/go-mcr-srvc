@@ -76,13 +76,13 @@ func Load() (
 	viperViper.SetConfigName(configName + ".env")
 	if returnedErr := viperViper.ReadInConfig(); returnedErr != nil {
 		config, err = Config{}, fmt.Errorf("load environment file: %w", returnedErr)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	if env == "lcl" {
 		if returnedErr := setupLocalstack(viperViper); returnedErr != nil {
 			config, err = Config{}, fmt.Errorf("setup localstack: %w", returnedErr)
-			return //nolint:nakedret // Use the project-wide named return convention.
+			return
 		}
 	}
 
@@ -93,7 +93,7 @@ func Load() (
 		PubSub:   newPubSubConfig(viperViper),
 		Redis:    newRedisConfig(viperViper),
 	}, nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func initViper() (
@@ -103,6 +103,7 @@ func initViper() (
 	viperConfig.AutomaticEnv()
 	viperConfig.AddConfigPath("internal/env")
 	viperConfig.SetConfigType("env")
+
 	return
 }
 
@@ -125,7 +126,7 @@ func setupLocalstack(
 		config.WithBaseEndpoint(viperViper.GetString("AWS_ENDPOINT")),
 	)
 	if err != nil {
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	// Create Secrets Manager client
@@ -138,7 +139,7 @@ func setupLocalstack(
 	result, returnedErr := svc.GetSecretValue(context.TODO(), input)
 	if returnedErr != nil {
 		err = returnedErr
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	resultSecretString := aws.ToString(result.SecretString)
@@ -148,7 +149,7 @@ func setupLocalstack(
 		localstackSecrets,
 	); returnedErr != nil {
 		err = returnedErr
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	var secretString SecretString
@@ -157,14 +158,14 @@ func setupLocalstack(
 		&secretString,
 	); returnedErr != nil {
 		err = returnedErr
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	viperViper.Set("POSTGRES_USER", secretString.Username)
 	viperViper.Set("POSTGRES_PASSWORD", secretString.Password)
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 type LocalstackSecrets struct {
@@ -193,6 +194,7 @@ func newServerConfig(
 			viperViper.GetString("GRPC_PORT"),
 		),
 	}
+
 	return
 }
 
@@ -214,6 +216,7 @@ func newDatabaseConfig(
 	config = databaseConfig{
 		DSN: dsn,
 	}
+
 	return
 }
 
@@ -235,6 +238,7 @@ func newAuth0Config(
 		GrantType:    viperViper.GetString("AUTH0_GRANT_TYPE"),
 		ClientSecret: viperViper.GetString("AUTH0_CLIENT_SECRET"),
 	}
+
 	return
 }
 
@@ -251,6 +255,7 @@ func newPubSubConfig(
 		FlushTimeoutMS:   viperViper.GetInt("PUBSUB_FLUSH_TIMEOUT_MS"),
 		SampleUserName:   viperViper.GetString("PUBSUB_SAMPLE_USER_NAME"),
 	}
+
 	return
 }
 
@@ -264,5 +269,6 @@ func newRedisConfig(
 		Password: viperViper.GetString("REDIS_PASSWORD"),
 		DB:       viperViper.GetInt("REDIS_DB"),
 	}
+
 	return
 }

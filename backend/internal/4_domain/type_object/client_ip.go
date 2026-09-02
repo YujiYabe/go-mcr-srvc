@@ -42,9 +42,11 @@ func (receiver *ClientIP) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -52,5 +54,6 @@ func (receiver ClientIP) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }

@@ -30,12 +30,14 @@ func NewToPostgres(
 	conn, err := open(ctx, dsn, 30)
 	if err != nil {
 		toPostgres = nil
+
 		return
 	}
 
 	postgresClient := new(PostgresClient)
 	postgresClient.Conn = conn
 	toPostgres, err = postgresClient, nil
+
 	return
 }
 
@@ -71,13 +73,13 @@ func open(
 		select {
 		case <-ctx.Done():
 			dB, err = nil, ctx.Err()
-			return //nolint:nakedret // Use the project-wide named return convention.
+			return
 		case <-time.After(retryBackoff(attempt)):
 		}
 	}
 
 	dB, err = nil, fmt.Errorf("retry count over: %w", lastErr)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func retryBackoff(
@@ -87,9 +89,11 @@ func retryBackoff(
 ) {
 	if attempt >= 4 {
 		duration = 5 * time.Second
+
 		return
 	}
 
 	duration = time.Duration(attempt+1) * time.Second
+
 	return
 }

@@ -50,14 +50,17 @@ func (receiver *TraceID) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 func (receiver TraceID) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }

@@ -16,5 +16,6 @@ func ensureContextReady(
 	}
 
 	err = nil
+
 	return
 }

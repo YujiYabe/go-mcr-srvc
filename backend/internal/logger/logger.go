@@ -37,6 +37,7 @@ func Logging(
 	// テスト中であればロギングしない
 	if flag.Lookup("test.v") != nil {
 		log.Println("run under go test")
+
 		return
 	}
 
@@ -72,10 +73,12 @@ func logWriter() (
 			Out:        os.Stdout,
 			TimeFormat: zerolog.TimeFieldFormat,
 		}
+
 		return
 	}
 
 	writer = os.Stdout
+
 	return
 }
 
@@ -85,10 +88,12 @@ func logLevel() (
 	env := normalizedEnv()
 	if env == envProd {
 		level = zerolog.InfoLevel
+
 		return
 	}
 
 	level = zerolog.DebugLevel
+
 	return
 }
 
@@ -102,6 +107,7 @@ func normalizedEnv() (
 	)
 	if env == "" || env == envLCL {
 		env = envDefault
+
 		return
 	}
 
@@ -154,11 +160,11 @@ func appendContextFields(
 			requestContext.TimeZone().GetValue(),
 		)
 
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	updatedLoggerContext = appendContextValueFields(ctx, updatedLoggerContext)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func appendContextValueFields(
@@ -192,7 +198,7 @@ func appendContextValueFields(
 		)
 	}
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func appendStringField(
@@ -204,9 +210,11 @@ func appendStringField(
 ) {
 	if fieldValue == "" {
 		updatedLoggerContext = loggerContext
+
 		return
 	}
 
 	updatedLoggerContext = loggerContext.Str(fieldName, fieldValue)
+
 	return
 }

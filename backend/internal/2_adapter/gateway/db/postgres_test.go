@@ -196,6 +196,7 @@ func (receiver *fakePostgres) RunInTransaction(
 	err error,
 ) {
 	err = fn(ctx)
+
 	return
 }
 
@@ -207,6 +208,7 @@ func (receiver *fakePostgres) GetUser(
 	err error,
 ) {
 	user, err = groupObject.User{}, nil
+
 	return
 }
 
@@ -217,6 +219,7 @@ func (receiver *fakePostgres) GetUserList(
 	err error,
 ) {
 	userList, err = groupObject.UserList{}, nil
+
 	return
 }
 
@@ -228,6 +231,7 @@ func (receiver *fakePostgres) GetUserListByCondition(
 	err error,
 ) {
 	userList, err = groupObject.UserList{}, nil
+
 	return
 }
 
@@ -238,6 +242,7 @@ func (receiver *fakePostgres) UpdateUser(
 	err error,
 ) {
 	err = nil
+
 	return
 }
 
@@ -248,6 +253,7 @@ func (receiver *fakePostgres) UpdateUserEmployment(
 	err error,
 ) {
 	err = nil
+
 	return
 }
 
@@ -261,6 +267,7 @@ func (receiver *fakePostgres) GetValidationWords(
 ) {
 	receiver.getValidationWordsCalled = true
 	words, err = receiver.words, receiver.err
+
 	return
 }
 
@@ -274,6 +281,7 @@ func (receiver *fakePostgres) AddValidationWord(
 ) {
 	receiver.addValidationWordCalled = true
 	err = receiver.err
+
 	return
 }
 
@@ -288,6 +296,7 @@ func (receiver *fakePostgres) UpdateValidationWord(
 ) {
 	receiver.updateValidationWordCalled = true
 	err = receiver.err
+
 	return
 }
 
@@ -301,6 +310,7 @@ func (receiver *fakePostgres) DeleteValidationWord(
 ) {
 	receiver.deleteValidationWordCalled = true
 	err = receiver.err
+
 	return
 }
 
@@ -320,6 +330,7 @@ func (receiver *fakeRedis) ResetPlaceListInRedis(
 	err error,
 ) {
 	err = nil
+
 	return
 }
 
@@ -333,6 +344,7 @@ func (receiver *fakeRedis) GetValidationWords(
 	err error,
 ) {
 	words, ok, err = receiver.words, receiver.hit, receiver.getErr
+
 	return
 }
 
@@ -346,6 +358,7 @@ func (receiver *fakeRedis) SetValidationWords(
 ) {
 	receiver.setValidationWordsCalled = true
 	err = receiver.setErr
+
 	return
 }
 
@@ -358,5 +371,6 @@ func (receiver *fakeRedis) DeleteValidationWordsCache(
 ) {
 	receiver.deleteValidationWordsCacheCalled = true
 	err = receiver.deleteErr
+
 	return
 }

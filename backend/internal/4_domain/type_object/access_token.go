@@ -46,9 +46,11 @@ func (receiver *AccessToken) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -58,6 +60,7 @@ func (receiver *AccessToken) ErrorString(
 	err error,
 ) {
 	err = fmt.Errorf("error: %s", errString)
+
 	return
 }
 
@@ -65,5 +68,6 @@ func (receiver AccessToken) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }

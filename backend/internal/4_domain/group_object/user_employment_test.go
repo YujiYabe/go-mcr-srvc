@@ -67,5 +67,6 @@ func newTestUserEmployment(
 	}
 
 	value = *employment
+
 	return
 }

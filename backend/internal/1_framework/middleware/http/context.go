@@ -73,5 +73,5 @@ func ContextMiddleware() (
 			return next(c)
 		}
 	}
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

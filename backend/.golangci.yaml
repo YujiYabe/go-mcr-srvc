@@ -39,6 +39,9 @@ linters:
     - wastedassign              #2 代入値が後で上書きされるケースを検出(バグ/不要処理の発見)
 
     # #3 設定調整して検討
+    - iface                     #3 interfaceの置き場所や使い方を検査(設計規約向け)
+    - loggercheck               #3 slog/logr/zapなど構造化ログの引数ミスを検出
+    - predeclared               #3 組み込み識別子のシャドーイングを検出(len/errorなど)
     # - asasalint                 #3 pass-anything系APIへの[]any渡しを検出(テスト/モック品質向け)
     # - canonicalheader           #3 HTTPヘッダー名の標準表記を検出(表記ゆれ防止)
     # - containedctx              #3 struct内のcontext.Context保持を検出(ライフサイクル誤用防止)
@@ -56,17 +59,14 @@ linters:
     # - gomoddirectives           #3 go.modのreplace/retract/exclude等を検査(依存管理規約向け)
     # - gomodguard                #3 禁止/許可モジュールを検査(依存ポリシー管理向け)
     # - goprintffuncname          #3 printf風関数の命名を検査(書式指定APIの誤用防止)
-    # - iface                     #3 interfaceの置き場所や使い方を検査(設計規約向け)
     # - interfacebloat            #3 メソッド数が多すぎるinterfaceを検出(責務分割の目安)
     # - intrange                  #3 整数rangeへ置換可能なループを検出(新Go記法への移行向け)
-    # - loggercheck               #3 slog/logr/zapなど構造化ログの引数ミスを検出
     # - maintidx                  #3 保守性指数を検出(複雑なファイルの目安)
     # - mirror                    #3 bytes/strings系の片方に寄せられる処理を検出(簡素化候補)
     # - musttag                   #3 marshal対象structのtag不足を検出(API/JSON品質向け)
     # - nestif                    #3 深いifネストを検出(可読性改善の目安)
     # - paralleltest              #3 t.Parallel未使用を検出(並行テスト方針の徹底向け)
     # - perfsprint                #3 fmt.Sprintf等をより軽い処理へ置換できる箇所を検出
-    # - predeclared               #3 組み込み識別子のシャドーイングを検出(len/errorなど)
     # - reassign                  #3 package変数の再代入を検出(標準出力/エラー等の保護)
     # - recvcheck                 #3 レシーバー名の不統一を検出(命名規約の維持)
     # - sloglint                  #3 slogの使い方を検査(構造化ログの品質向上)

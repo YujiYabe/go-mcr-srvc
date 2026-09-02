@@ -14,6 +14,7 @@ func (receiver *controller) GetUserList(
 	err error,
 ) {
 	userList, err = receiver.UseCase.GetUserList(ctx)
+
 	return
 }
 
@@ -28,6 +29,7 @@ func (receiver *controller) GetUserListByCondition(
 		ctx,
 		reqUser,
 	)
+
 	return
 }
 
@@ -42,6 +44,7 @@ func (receiver *controller) FetchAccessToken(
 		ctx,
 		credential,
 	)
+
 	return
 }
 
@@ -56,6 +59,7 @@ func (receiver *controller) GetUserListViaGRPC(
 		ctx,
 		reqUser,
 	)
+
 	return
 }
 
@@ -69,6 +73,7 @@ func (receiver *controller) UpdateUser(
 		ctx,
 		newUser,
 	)
+
 	return
 }
 
@@ -83,6 +88,7 @@ func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
 		ctx,
 		newUser, userEmployment,
 	)
+
 	return
 }
 
@@ -92,6 +98,7 @@ func (receiver *controller) PublishTestTopic(
 	err error,
 ) {
 	err = receiver.UseCase.PublishTestTopic(ctx)
+
 	return
 }
 
@@ -107,6 +114,7 @@ func (receiver *controller) GetValidationWords(
 		ctx,
 		targetType, isBlacklist,
 	)
+
 	return
 }
 
@@ -124,6 +132,7 @@ func (receiver *controller) AddValidationWord(
 		isBlacklist,
 		word,
 	)
+
 	return
 }
 
@@ -143,6 +152,7 @@ func (receiver *controller) UpdateValidationWord(
 		oldWord,
 		newWord,
 	)
+
 	return
 }
 
@@ -160,5 +170,6 @@ func (receiver *controller) DeleteValidationWord(
 		isBlacklist,
 		word,
 	)
+
 	return
 }

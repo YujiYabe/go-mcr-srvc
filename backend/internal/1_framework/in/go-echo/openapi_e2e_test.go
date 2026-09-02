@@ -49,6 +49,7 @@ func newE2ETestEcho(
 	)
 
 	echo = echoEcho
+
 	return
 }
 
@@ -334,6 +335,7 @@ func (receiver *fakeController) GetUserList(
 	err error,
 ) {
 	userList, err = groupObject.UserList{}, nil
+
 	return
 }
 
@@ -348,6 +350,7 @@ func (receiver *fakeController) GetUserListByCondition(
 	receiver.lastReqUser = reqUser
 
 	resUserList, err = receiver.userList, nil
+
 	return
 }
 
@@ -359,6 +362,7 @@ func (receiver *fakeController) FetchAccessToken(
 	err error,
 ) {
 	accessToken, err = typeObject.AccessToken{}, nil
+
 	return
 }
 
@@ -370,6 +374,7 @@ func (receiver *fakeController) GetUserListViaGRPC(
 	err error,
 ) {
 	resUserList, err = groupObject.UserList{}, nil
+
 	return
 }
 
@@ -380,6 +385,7 @@ func (receiver *fakeController) UpdateUser(
 	err error,
 ) {
 	err = nil
+
 	return
 }
 
@@ -391,6 +397,7 @@ func (receiver *fakeController) UpdateUserProfileWithPrimaryEmployment(
 	err error,
 ) {
 	err = nil
+
 	return
 }
 
@@ -402,6 +409,7 @@ func (receiver *fakeController) PublishTestTopic(
 	receiver.publishTestTopicCalled = true
 
 	err = nil
+
 	return
 }
 
@@ -418,6 +426,7 @@ func (receiver *fakeController) GetValidationWords(
 	receiver.lastIsBlacklist = isBlacklist
 
 	words, err = receiver.validationWords, nil
+
 	return
 }
 
@@ -435,6 +444,7 @@ func (receiver *fakeController) AddValidationWord(
 	receiver.lastWord = word
 
 	err = nil
+
 	return
 }
 
@@ -454,6 +464,7 @@ func (receiver *fakeController) UpdateValidationWord(
 	receiver.lastNewWord = newWord
 
 	err = nil
+
 	return
 }
 
@@ -471,5 +482,6 @@ func (receiver *fakeController) DeleteValidationWord(
 	receiver.lastWord = word
 
 	err = nil
+
 	return
 }

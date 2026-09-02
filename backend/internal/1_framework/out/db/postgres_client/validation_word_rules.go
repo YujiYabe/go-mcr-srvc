@@ -32,7 +32,7 @@ func (receiver *PostgresClient) GetValidationWords(
 		Find(&records)
 	if result.Error != nil {
 		words, err = nil, result.Error
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	words = make([]string, 0, len(records))
@@ -41,7 +41,7 @@ func (receiver *PostgresClient) GetValidationWords(
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func (receiver *PostgresClient) AddValidationWord(
@@ -76,7 +76,7 @@ func (receiver *PostgresClient) AddValidationWord(
 		Omit("CreatedAt", "UpdatedAt").
 		Create(&record).
 		Error
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func (receiver *PostgresClient) UpdateValidationWord(
@@ -100,15 +100,15 @@ func (receiver *PostgresClient) UpdateValidationWord(
 		})
 	if result.Error != nil {
 		err = result.Error
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if result.RowsAffected == 0 {
 		err = gorm.ErrRecordNotFound
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func (receiver *PostgresClient) DeleteValidationWord(
@@ -125,14 +125,17 @@ func (receiver *PostgresClient) DeleteValidationWord(
 		Delete(&models.ValidationWordRule{})
 	if result.Error != nil {
 		err = result.Error
+
 		return
 	}
 	if result.RowsAffected == 0 {
 		err = gorm.ErrRecordNotFound
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -147,5 +150,6 @@ func validationWordRuleScope(
 			Where(&models.ValidationWordRule{TargetType: targetType}).
 			Where("is_blacklist = ?", isBlacklist)
 	}
+
 	return
 }

@@ -33,19 +33,19 @@ func NewUser(
 	user.id, err = typeObject.NewID(args.ID)
 	if err != nil {
 		user = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	user.name, err = typeObject.NewName(args.Name, args.NameBlacklist)
 	if err != nil {
 		user = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	user.email, err = typeObject.NewEmail(args.Email)
 	if err != nil {
 		user = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	return
@@ -60,14 +60,17 @@ func NewUserSearchCondition(
 	user, err = NewUser(args)
 	if err != nil {
 		user = nil
+
 		return
 	}
 	if !user.CanBeUsedAsSearchCondition() {
 		user, err = nil, fmt.Errorf("user search condition is required")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -80,14 +83,17 @@ func ReconstructUser(
 	user, err = NewUser(args)
 	if err != nil {
 		user = nil
+
 		return
 	}
 	if !user.HasIdentity() {
 		user, err = nil, fmt.Errorf("user identity is required")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -95,6 +101,7 @@ func (receiver User) ID() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.id
+
 	return
 }
 
@@ -102,6 +109,7 @@ func (receiver User) Identity() (
 	iD typeObject.ID,
 ) {
 	iD = receiver.id
+
 	return
 }
 
@@ -109,6 +117,7 @@ func (receiver User) Name() (
 	name typeObject.Name,
 ) {
 	name = receiver.name
+
 	return
 }
 
@@ -116,6 +125,7 @@ func (receiver User) Email() (
 	email typeObject.Email,
 ) {
 	email = receiver.email
+
 	return
 }
 
@@ -123,6 +133,7 @@ func (receiver User) HasIdentity() (
 	hasIdentity bool,
 ) {
 	hasIdentity = receiver.id.GetValue() > 0
+
 	return
 }
 
@@ -130,6 +141,7 @@ func (receiver User) HasName() (
 	hasName bool,
 ) {
 	hasName = !receiver.name.GetIsNil() && receiver.name.GetValue() != ""
+
 	return
 }
 
@@ -137,6 +149,7 @@ func (receiver User) HasEmail() (
 	hasEmail bool,
 ) {
 	hasEmail = !receiver.email.GetIsNil() && receiver.email.GetValue() != ""
+
 	return
 }
 
@@ -144,6 +157,7 @@ func (receiver User) CanBeUsedAsSearchCondition() (
 	canBeUsedAsSearchCondition bool,
 ) {
 	canBeUsedAsSearchCondition = receiver.HasName() || receiver.HasEmail()
+
 	return
 }
 
@@ -152,18 +166,22 @@ func (receiver User) EnsureReadyToUpdate() (
 ) {
 	if !receiver.HasIdentity() {
 		err = fmt.Errorf("user identity is required")
+
 		return
 	}
 	if !receiver.HasName() {
 		err = fmt.Errorf("user name is required")
+
 		return
 	}
 	if !receiver.HasEmail() {
 		err = fmt.Errorf("user email is required")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -180,11 +198,13 @@ func (receiver *User) Rename(
 
 	name, err := typeObject.NewName(value, blacklist)
 	if err != nil {
+
 		return
 	}
 	receiver.name = name
 
 	err = nil
+
 	return
 }
 
@@ -196,10 +216,12 @@ func (receiver User) ValidateNameBlacklist(
 	value := receiver.name.GetValue()
 	if receiver.name.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	_, err = typeObject.NewName(&value, nameBlacklist)
+
 	return
 }
 
@@ -210,10 +232,12 @@ func (receiver *User) ChangeEmail(
 ) {
 	email, err := typeObject.NewEmail(value)
 	if err != nil {
+
 		return
 	}
 	receiver.email = email
 
 	err = nil
+
 	return
 }

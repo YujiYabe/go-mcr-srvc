@@ -17,6 +17,7 @@ func (receiver *PostgresClient) RunInTransaction(
 	err = receiver.Conn.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		return fn(context.WithValue(ctx, txContextKey{}, tx))
 	})
+
 	return
 }
 
@@ -27,8 +28,10 @@ func (receiver *PostgresClient) conn(
 ) {
 	if tx, ok := ctx.Value(txContextKey{}).(*gorm.DB); ok {
 		dB = tx.WithContext(ctx)
+
 		return
 	}
 	dB = receiver.Conn.WithContext(ctx)
+
 	return
 }

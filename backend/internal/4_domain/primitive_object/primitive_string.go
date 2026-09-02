@@ -41,6 +41,7 @@ func (receiver *PrimitiveString) WithValue(
 		s.value = valueString
 		s.isNil = isNil
 	}
+
 	return
 }
 
@@ -54,6 +55,7 @@ func (receiver *PrimitiveString) WithIsNil(
 	value = func(s *PrimitiveString) {
 		s.isNil = isNil
 	}
+
 	return
 }
 
@@ -67,6 +69,7 @@ func (receiver *PrimitiveString) WithMaxLength(
 	value = func(s *PrimitiveString) {
 		s.maxLength = length
 	}
+
 	return
 }
 
@@ -80,6 +83,7 @@ func (receiver *PrimitiveString) WithMinLength(
 	value = func(s *PrimitiveString) {
 		s.minLength = length
 	}
+
 	return
 }
 
@@ -93,6 +97,7 @@ func (receiver *PrimitiveString) WithCheckSpell(
 	value = func(s *PrimitiveString) {
 		s.spellList = spellList
 	}
+
 	return
 }
 
@@ -125,6 +130,7 @@ func (receiver PrimitiveString) GetIsNil() (
 	ok bool,
 ) {
 	ok = receiver.isNil
+
 	return
 }
 
@@ -138,6 +144,7 @@ func (receiver PrimitiveString) newErrorString(
 		"error: %s",
 		errString,
 	)
+
 	return
 }
 
@@ -147,9 +154,11 @@ func (receiver PrimitiveString) GetValue() (
 ) {
 	if receiver.GetIsNil() {
 		value = ""
+
 		return
 	}
 	value = receiver.value
+
 	return
 }
 
@@ -162,9 +171,11 @@ func (receiver PrimitiveString) ToInt() (
 	intValue, parseErr := strconv.ParseInt(receiver.GetValue(), 10, strconv.IntSize)
 	if parseErr != nil {
 		err = parseErr
+
 		return
 	}
 	value = int(intValue)
+
 	return
 }
 
@@ -177,9 +188,11 @@ func (receiver PrimitiveString) ToInt32() (
 	intValue, parseErr := strconv.ParseInt(receiver.GetValue(), 10, 32)
 	if parseErr != nil {
 		err = parseErr
+
 		return
 	}
 	value = int32(intValue)
+
 	return
 }
 
@@ -188,6 +201,7 @@ func (receiver PrimitiveString) ToInt64() (
 	err error,
 ) {
 	value, err = strconv.ParseInt(receiver.GetValue(), 10, 64)
+
 	return
 }
 
@@ -200,9 +214,11 @@ func (receiver PrimitiveString) ToUint() (
 	uintValue, parseErr := strconv.ParseUint(receiver.GetValue(), 10, strconv.IntSize)
 	if parseErr != nil {
 		err = parseErr
+
 		return
 	}
 	value = uint(uintValue)
+
 	return
 }
 
@@ -215,9 +231,11 @@ func (receiver PrimitiveString) ToUint32() (
 	uintValue, parseErr := strconv.ParseUint(receiver.GetValue(), 10, 32)
 	if parseErr != nil {
 		err = parseErr
+
 		return
 	}
 	value = uint32(uintValue)
+
 	return
 }
 
@@ -226,6 +244,7 @@ func (receiver PrimitiveString) ToUint64() (
 	err error,
 ) {
 	value, err = strconv.ParseUint(receiver.GetValue(), 10, 64)
+
 	return
 }
 
@@ -235,10 +254,12 @@ func (receiver PrimitiveString) Length() (
 ) {
 	if receiver.GetIsNil() {
 		value = 0
+
 		return
 	}
 
 	value = uint(utf8.RuneCountInString(receiver.value))
+
 	return
 }
 
@@ -247,6 +268,7 @@ func (receiver PrimitiveString) IsEmpty() (
 	isEmpty bool,
 ) {
 	isEmpty = receiver.Length() == 0
+
 	return
 }
 
@@ -255,6 +277,7 @@ func (receiver PrimitiveString) HasValue() (
 	hasValue bool,
 ) {
 	hasValue = !receiver.GetIsNil() && !receiver.IsEmpty()
+
 	return
 }
 
@@ -265,6 +288,7 @@ func (receiver PrimitiveString) Equal(
 	ok bool,
 ) {
 	ok = !receiver.GetIsNil() && receiver.value == value
+
 	return
 }
 
@@ -274,20 +298,24 @@ func (receiver PrimitiveString) Validation() (
 ) {
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if returnedErr := receiver.ValidationMax(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	if returnedErr := receiver.ValidationMin(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	err = receiver.ValidationSpell()
+
 	return
 }
 
@@ -298,20 +326,24 @@ func (receiver PrimitiveString) ValidationMax() (
 ) {
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if receiver.maxLength == nil {
 		err = nil
+
 		return
 	}
 
 	if receiver.Length() > *receiver.maxLength {
 		err = receiver.newErrorString("max limitation")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -322,20 +354,24 @@ func (receiver PrimitiveString) ValidationMin() (
 ) {
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if receiver.minLength == nil {
 		err = nil
+
 		return
 	}
 
 	if receiver.Length() < *receiver.minLength {
 		err = receiver.newErrorString("min limitation")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -346,16 +382,19 @@ func (receiver PrimitiveString) ValidationSpell() (
 ) {
 	if len(receiver.spellList) == 0 {
 		err = nil
+
 		return
 	}
 	for _, spell := range receiver.spellList {
 		if strings.Contains(receiver.value, spell) {
 			err = receiver.newErrorString("detect target spell : " + spell)
+
 			return
 		}
 	}
 
 	err = nil
+
 	return
 }
 

@@ -26,6 +26,7 @@ func NewGatewayExternal(
 		ToGRPC:   toGRPC,
 		ToPubSub: toPubSub,
 	}
+
 	return
 }
 

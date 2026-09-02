@@ -23,6 +23,7 @@ func NewGatewayDB(
 		ToPostgres: toPostgres,
 		ToRedis:    toRedis,
 	}
+
 	return
 }
 

@@ -20,10 +20,12 @@ func Delete(
 	var request openapi.ValidationWordRuleDelete
 	if returnedErr := echoContext.Bind(&request); returnedErr != nil {
 		err = errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))
+
 		return
 	}
 	if returnedErr := validateTargetTypeAndWord(request.TargetType, request.Word); returnedErr != nil {
 		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+
 		return
 	}
 
@@ -35,9 +37,11 @@ func Delete(
 	); returnedErr != nil {
 		logger.Logging(echoContext.Request().Context(), returnedErr)
 		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+
 		return
 	}
 
 	err = echoContext.NoContent(http.StatusNoContent)
+
 	return
 }

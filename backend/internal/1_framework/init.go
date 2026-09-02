@@ -42,19 +42,19 @@ func NewApp() (
 	config, err := env.Load()
 	if err != nil {
 		app = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	toPostgres, err := postgresClient.NewToPostgres(ctx, config.Database.DSN)
 	if err != nil {
 		app, err = nil, fmt.Errorf("new postgres client: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	toGRPC, err := grpcClient.NewToGRPC(ctx, config.Server.GRPCAddress)
 	if err != nil {
 		app, err = nil, fmt.Errorf("new grpc client: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	toPubSub, err := pubsubPublisher.NewToPubSub(
@@ -66,7 +66,7 @@ func NewApp() (
 	)
 	if err != nil {
 		app, err = nil, fmt.Errorf("new pubsub publisher: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	toGatewayDB := gatewayDB.NewGatewayDB(
@@ -117,7 +117,7 @@ func NewApp() (
 	}
 
 	err = nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 // Start ...
@@ -136,5 +136,6 @@ func (receiver *App) Start() (
 		}
 	}()
 	err = receiver.goEcho.Start()
+
 	return
 }

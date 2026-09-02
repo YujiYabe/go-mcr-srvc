@@ -39,7 +39,7 @@ func RefillUserGRPCToDomain(
 		},
 	)
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func RefillUserDomainToGRPC(
@@ -56,6 +56,7 @@ func RefillUserDomainToGRPC(
 		id32, convertErr := response.ID().ToUint32()
 		if convertErr != nil {
 			err = fmt.Errorf("convert user ID to uint32: %w", convertErr)
+
 			return
 		}
 		name := response.Name().GetValue()

@@ -20,11 +20,11 @@ func Post(
 	var request openapi.ValidationWordRuleCreate
 	if returnedErr := echoContext.Bind(&request); returnedErr != nil {
 		err = errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	if returnedErr := validateTargetTypeAndWord(request.TargetType, request.Word); returnedErr != nil {
 		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	if returnedErr := toController.AddValidationWord(
@@ -35,12 +35,12 @@ func Post(
 	); returnedErr != nil {
 		logger.Logging(echoContext.Request().Context(), returnedErr)
 		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	err = echoContext.JSON(
 		http.StatusCreated,
 		openapi.ValidationWordRule(request),
 	)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

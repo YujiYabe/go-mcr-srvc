@@ -70,7 +70,7 @@ func JWTMiddleware(
 			return next(c)
 		}
 	}
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 // JWTMiddleware validates the JWT token from the Authorization header
@@ -123,7 +123,7 @@ func JWTMiddlewareAuth0(
 			return next(c)
 		}
 	}
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func validateAndGetKey(
@@ -139,6 +139,7 @@ func validateAndGetKey(
 			"unexpected signing method: %v",
 			token.Header["alg"],
 		)
+
 		return
 	}
 
@@ -149,10 +150,12 @@ func validateAndGetKey(
 	)
 	if err != nil {
 		value = nil
+
 		return
 	}
 
 	value, err = cert, nil
+
 	return
 }
 
@@ -171,22 +174,22 @@ func getRSAPublicKey(
 	)
 	if err != nil {
 		publicKey, err = nil, fmt.Errorf("failed to get JWKS: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	// Extract the RSA public key for the token
 	key, err := jwks.Keyfunc(token)
 	if err != nil {
 		publicKey, err = nil, fmt.Errorf("failed to extract RSA key: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	rsaKey, ok := key.(*rsa.PublicKey)
 	if !ok {
 		publicKey, err = nil, fmt.Errorf("key is not an RSA public key")
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	publicKey, err = rsaKey, nil
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

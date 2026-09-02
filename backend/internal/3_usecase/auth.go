@@ -17,10 +17,12 @@ func (receiver *useCase) FetchAccessToken(
 ) {
 	accessToken = typeObject.AccessToken{}
 	if err = ensureContextReady(ctx, "FetchAccessToken"); err != nil {
+
 		return
 	}
 	if err = credential.EnsureReadyToAuthenticate(); err != nil {
 		err = fmt.Errorf("FetchAccessToken: %w", err)
+
 		return
 	}
 	accessToken, err = receiver.ToGatewayExternal.FetchAccessToken(
@@ -30,5 +32,6 @@ func (receiver *useCase) FetchAccessToken(
 	if err != nil {
 		err = fmt.Errorf("FetchAccessToken: %w", err)
 	}
+
 	return
 }

@@ -164,5 +164,6 @@ func newValidationWordRuleTestClient(
 	postgresClient, fn = &PostgresClient{Conn: gormDB}, func() {
 		_ = sqlDB.Close()
 	}
+
 	return
 }

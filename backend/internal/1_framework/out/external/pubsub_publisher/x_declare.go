@@ -50,6 +50,7 @@ func NewToPubSub(
 	}
 
 	toPubSub, err = pubsubPublisher, nil
+
 	return
 }
 
@@ -86,13 +87,13 @@ func open(
 		select {
 		case <-ctx.Done():
 			producer, err = nil, ctx.Err()
-			return //nolint:nakedret // Use the project-wide named return convention.
+			return
 		case <-time.After(retryBackoff(attempt)):
 		}
 	}
 
 	producer, err = nil, fmt.Errorf("retry count over: %w", lastErr)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func retryBackoff(
@@ -102,9 +103,11 @@ func retryBackoff(
 ) {
 	if attempt >= 4 {
 		duration = 5 * time.Second
+
 		return
 	}
 
 	duration = time.Duration(attempt+1) * time.Second
+
 	return
 }

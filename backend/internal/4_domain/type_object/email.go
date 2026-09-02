@@ -49,16 +49,19 @@ func (receiver *Email) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	err = receiver.Validation()
+
 	return
 }
 func (receiver Email) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }
 
@@ -68,6 +71,7 @@ func (receiver *Email) ErrorString(
 	err error,
 ) {
 	err = fmt.Errorf("error: %s", errString)
+
 	return
 }
 
@@ -75,6 +79,7 @@ func (receiver Email) GetIsNil() (
 	ok bool,
 ) {
 	ok = receiver.content.GetIsNil()
+
 	return
 }
 
@@ -83,13 +88,16 @@ func (receiver Email) Validation() (
 ) {
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if !emailRegexp.MatchString(receiver.GetValue()) {
 		err = fmt.Errorf("invalid email format: %s", receiver.GetValue())
+
 		return
 	}
 	err = nil
+
 	return
 }

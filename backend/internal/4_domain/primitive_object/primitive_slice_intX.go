@@ -28,6 +28,7 @@ func (receiver *PrimitiveSliceInt) WithValue(
 		s.value = valueIntSlice
 		s.isNil = isNil
 	}
+
 	return
 }
 
@@ -40,6 +41,7 @@ func (receiver *PrimitiveSliceInt) WithIsNil(
 	value = func(s *PrimitiveSliceInt) {
 		s.isNil = isNil
 	}
+
 	return
 }
 
@@ -52,6 +54,7 @@ func (receiver *PrimitiveSliceInt) WithMaxLength(
 	option = func(s *PrimitiveSliceInt) {
 		s.maxLength = value
 	}
+
 	return
 }
 
@@ -64,6 +67,7 @@ func (receiver *PrimitiveSliceInt) WithMinLength(
 	option = func(s *PrimitiveSliceInt) {
 		s.minLength = value
 	}
+
 	return
 }
 
@@ -91,6 +95,7 @@ func (receiver PrimitiveSliceInt) GetIsNil() (
 	ok bool,
 ) {
 	ok = receiver.isNil
+
 	return
 }
 
@@ -100,10 +105,12 @@ func (receiver PrimitiveSliceInt) Count() (
 ) {
 	if receiver.GetIsNil() {
 		value = 0
+
 		return
 	}
 
 	value = len(receiver.value)
+
 	return
 }
 
@@ -112,6 +119,7 @@ func (receiver PrimitiveSliceInt) IsEmpty() (
 	isEmpty bool,
 ) {
 	isEmpty = receiver.Count() == 0
+
 	return
 }
 
@@ -123,17 +131,20 @@ func (receiver PrimitiveSliceInt) HasValue(
 ) {
 	if receiver.GetIsNil() {
 		hasValue = false
+
 		return
 	}
 
 	for _, content := range receiver.value {
 		if content.Equal(value) {
 			hasValue = true
+
 			return
 		}
 	}
 
 	hasValue = false
+
 	return
 }
 
@@ -147,6 +158,7 @@ func (receiver *PrimitiveSliceInt) CheckNil(
 	if value != nil {
 		isNil = false
 	}
+
 	return
 }
 
@@ -160,6 +172,7 @@ func (receiver PrimitiveSliceInt) newErrorString(
 		"error: %s",
 		errString,
 	)
+
 	return
 }
 
@@ -170,27 +183,32 @@ func (receiver PrimitiveSliceInt) Validation() (
 ) {
 	if receiver.isNil {
 		err = nil
+
 		return
 	}
 
 	if returnedErr := receiver.ValidationMax(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	if returnedErr := receiver.ValidationMin(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	for _, value := range receiver.value {
 		if returnedErr := value.Validation(); returnedErr != nil {
 			err = returnedErr
+
 			return
 		}
 	}
 
 	err = nil
+
 	return
 }
 
@@ -201,20 +219,24 @@ func (receiver PrimitiveSliceInt) ValidationMax() (
 ) {
 	if receiver.maxLength == nil {
 		err = nil
+
 		return
 	}
 
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if receiver.Count() > int(*receiver.maxLength) {
 		err = receiver.newErrorString("max limitation")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -224,20 +246,24 @@ func (receiver PrimitiveSliceInt) ValidationMin() (
 ) {
 	if receiver.minLength == nil {
 		err = nil
+
 		return
 	}
 
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if receiver.Count() < int(*receiver.minLength) {
 		err = receiver.newErrorString("min limitation")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -248,10 +274,12 @@ func (receiver PrimitiveSliceInt) GetValue() (
 ) {
 	if receiver.isNil {
 		primitiveIntXs = nil
+
 		return
 	}
 
 	primitiveIntXs = receiver.value
+
 	return
 }
 
@@ -259,6 +287,7 @@ func (receiver PrimitiveSliceInt) GetValue() (
 // SortDesc sorts the slice in descending order
 func (receiver *PrimitiveSliceInt) SortDesc() {
 	if receiver.isNil || len(receiver.value) == 0 {
+
 		return
 	}
 
@@ -277,6 +306,7 @@ func (receiver *PrimitiveSliceInt) SortDesc() {
 // SortAsc sorts the slice in ascending order
 func (receiver *PrimitiveSliceInt) SortAsc() {
 	if receiver.isNil || len(receiver.value) == 0 {
+
 		return
 	}
 
@@ -296,6 +326,7 @@ func (receiver *PrimitiveSliceInt) ToSliceInt() (
 ) {
 	if receiver.isNil {
 		values = nil
+
 		return
 	}
 
@@ -304,6 +335,7 @@ func (receiver *PrimitiveSliceInt) ToSliceInt() (
 		result[index] = value.GetValue()
 	}
 	values = result
+
 	return
 
 }

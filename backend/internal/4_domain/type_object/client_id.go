@@ -37,9 +37,11 @@ func (receiver *ClientID) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -47,5 +49,6 @@ func (receiver ClientID) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }

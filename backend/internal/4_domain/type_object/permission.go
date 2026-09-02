@@ -44,9 +44,11 @@ func (receiver *Permission) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -54,6 +56,7 @@ func (receiver Permission) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }
 
@@ -63,6 +66,7 @@ func (receiver *Permission) ErrorString(
 	err error,
 ) {
 	err = fmt.Errorf("error: %s", errString)
+
 	return
 }
 
@@ -70,5 +74,6 @@ func (receiver Permission) GetIsNil() (
 	ok bool,
 ) {
 	ok = receiver.content.GetIsNil()
+
 	return
 }

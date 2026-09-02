@@ -37,6 +37,7 @@ func (receiver *fakeGatewayDB) RunInTransaction(
 ) {
 	receiver.runInTransactionCalled = true
 	err = fn(ctx)
+
 	return
 }
 
@@ -48,6 +49,7 @@ func (receiver *fakeGatewayDB) GetUserList(
 ) {
 	receiver.getListCalled = true
 	userList, err = groupObject.UserList{}, receiver.getListErr
+
 	return
 }
 
@@ -60,6 +62,7 @@ func (receiver *fakeGatewayDB) GetUserListByCondition(
 ) {
 	receiver.getByConditionCalled = true
 	userList, err = groupObject.UserList{}, receiver.getByConditionErr
+
 	return
 }
 
@@ -72,6 +75,7 @@ func (receiver *fakeGatewayDB) UpdateUser(
 	receiver.updateUserCalled = true
 	receiver.calls = append(receiver.calls, "update_user")
 	err = receiver.updateUserErr
+
 	return
 }
 
@@ -84,6 +88,7 @@ func (receiver *fakeGatewayDB) UpdateUserEmployment(
 	receiver.updateEmploymentCalled = true
 	receiver.calls = append(receiver.calls, "update_user_employment")
 	err = receiver.updateUserEmploymentErr
+
 	return
 }
 
@@ -97,6 +102,7 @@ func (receiver *fakeGatewayDB) GetValidationWords(
 ) {
 	receiver.getValidationWordsCalled = true
 	words, err = receiver.validationWords, receiver.getValidationWordsErr
+
 	return
 }
 
@@ -110,6 +116,7 @@ func (receiver *fakeGatewayDB) AddValidationWord(
 ) {
 	receiver.addValidationWordCalled = true
 	err = receiver.validationWordUpdateErr
+
 	return
 }
 
@@ -124,6 +131,7 @@ func (receiver *fakeGatewayDB) UpdateValidationWord(
 ) {
 	receiver.updateValidationWordCalled = true
 	err = receiver.validationWordUpdateErr
+
 	return
 }
 
@@ -137,6 +145,7 @@ func (receiver *fakeGatewayDB) DeleteValidationWord(
 ) {
 	receiver.deleteValidationWordCalled = true
 	err = receiver.validationWordUpdateErr
+
 	return
 }
 
@@ -159,9 +168,11 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 	receiver.fetchAccessTokenCalled = true
 	if receiver.fetchAccessTokenErr != nil {
 		accessToken, err = typeObject.AccessToken{}, receiver.fetchAccessTokenErr
+
 		return
 	}
 	accessToken, err = typeObject.NewAccessToken(stringPointer("access-token"))
+
 	return
 }
 
@@ -174,6 +185,7 @@ func (receiver *fakeGatewayExternal) GetUserViaGRPC(
 ) {
 	receiver.viaGRPCCalled = true
 	userList, err = groupObject.UserList{}, receiver.viaGRPCErr
+
 	return
 }
 
@@ -184,6 +196,7 @@ func (receiver *fakeGatewayExternal) PublishTestTopic(
 ) {
 	receiver.publishTestTopicCalled = true
 	err = receiver.publishTestTopicErr
+
 	return
 }
 
@@ -220,6 +233,7 @@ func newTestUser(
 	}
 
 	user = *newUser
+
 	return
 }
 
@@ -241,6 +255,7 @@ func newTestCredential(
 	}
 
 	credential = *newCredential
+
 	return
 }
 
@@ -269,6 +284,7 @@ func newTestUserEmployment(
 	}
 
 	userEmployment = *newUserEmployment
+
 	return
 }
 
@@ -278,6 +294,7 @@ func intPointer(
 	valuePointer *int,
 ) {
 	valuePointer = &value
+
 	return
 }
 
@@ -287,5 +304,6 @@ func stringPointer(
 	valuePointer *string,
 ) {
 	valuePointer = &value
+
 	return
 }

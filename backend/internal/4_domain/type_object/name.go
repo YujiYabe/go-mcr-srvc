@@ -44,9 +44,11 @@ func (receiver *Name) setValue(
 	)
 	if returnedErr := receiver.content.Validation(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 	err = nil
+
 	return
 }
 
@@ -54,6 +56,7 @@ func (receiver Name) GetValue() (
 	value string,
 ) {
 	value = receiver.content.GetValue()
+
 	return
 }
 
@@ -61,5 +64,6 @@ func (receiver Name) GetIsNil() (
 	ok bool,
 ) {
 	ok = receiver.content.GetIsNil()
+
 	return
 }

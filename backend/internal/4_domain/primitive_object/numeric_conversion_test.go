@@ -62,6 +62,7 @@ func TestPrimitiveIntXToUint32(
 					if err == nil {
 						t.Fatal("expected an error")
 					}
+
 					return
 				}
 

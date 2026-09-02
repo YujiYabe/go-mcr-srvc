@@ -7,6 +7,7 @@ func NewDomain() (
 	toDomain ToDomain,
 ) {
 	toDomain = &domain{}
+
 	return
 }
 

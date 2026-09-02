@@ -118,7 +118,7 @@ func newRequestContextForTest(
 		t.Fatalf("new request context: %v", err)
 	}
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func assertRequestContextForTest(
@@ -166,10 +166,12 @@ func findHeaderValue(
 	for _, header := range headers {
 		if header.Key == key {
 			value = string(header.Value)
+
 			return
 		}
 	}
 
 	value = ""
+
 	return
 }

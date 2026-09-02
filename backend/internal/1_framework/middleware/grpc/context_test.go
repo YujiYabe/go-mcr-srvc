@@ -110,7 +110,7 @@ func newContextForTest(
 		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func assertRequestContextForTest(

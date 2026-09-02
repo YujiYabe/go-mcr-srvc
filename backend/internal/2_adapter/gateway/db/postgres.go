@@ -14,6 +14,7 @@ func (receiver *GatewayDB) RunInTransaction(
 	err error,
 ) {
 	err = receiver.ToPostgres.RunInTransaction(ctx, fn)
+
 	return
 }
 
@@ -27,6 +28,7 @@ func (receiver *GatewayDB) GetUserList(
 	userList, err = receiver.ToPostgres.GetUserList(
 		ctx,
 	)
+
 	return
 }
 
@@ -54,6 +56,7 @@ func (receiver *GatewayDB) UpdateUser(
 	err error,
 ) {
 	err = receiver.ToPostgres.UpdateUser(ctx, newUser)
+
 	return
 }
 
@@ -64,6 +67,7 @@ func (receiver *GatewayDB) UpdateUserEmployment(
 	err error,
 ) {
 	err = receiver.ToPostgres.UpdateUserEmployment(ctx, userEmployment)
+
 	return
 }
 
@@ -88,7 +92,7 @@ func (receiver *GatewayDB) GetValidationWords(
 	words, err = receiver.ToPostgres.GetValidationWords(ctx, targetType, isBlacklist)
 	if err != nil {
 		words = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	if receiver.ToRedis != nil {
@@ -98,6 +102,7 @@ func (receiver *GatewayDB) GetValidationWords(
 	}
 
 	err = nil
+
 	return
 }
 
@@ -111,11 +116,13 @@ func (receiver *GatewayDB) AddValidationWord(
 ) {
 	if returnedErr := receiver.ToPostgres.AddValidationWord(ctx, targetType, isBlacklist, word); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
 	err = nil
+
 	return
 }
 
@@ -130,11 +137,13 @@ func (receiver *GatewayDB) UpdateValidationWord(
 ) {
 	if returnedErr := receiver.ToPostgres.UpdateValidationWord(ctx, targetType, isBlacklist, oldWord, newWord); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
 	err = nil
+
 	return
 }
 
@@ -148,11 +157,13 @@ func (receiver *GatewayDB) DeleteValidationWord(
 ) {
 	if returnedErr := receiver.ToPostgres.DeleteValidationWord(ctx, targetType, isBlacklist, word); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	receiver.deleteValidationWordsCache(ctx, targetType, isBlacklist)
 	err = nil
+
 	return
 }
 
@@ -162,6 +173,7 @@ func (receiver *GatewayDB) deleteValidationWordsCache(
 	isBlacklist bool,
 ) {
 	if receiver.ToRedis == nil {
+
 		return
 	}
 

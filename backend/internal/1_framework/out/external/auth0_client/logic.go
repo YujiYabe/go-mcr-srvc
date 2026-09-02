@@ -30,7 +30,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	req, err := http.NewRequestWithContext(
@@ -40,7 +40,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 		bytes.NewBuffer(jsonData),
 	)
 	if err != nil {
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -48,12 +48,12 @@ func (receiver *Auth0Client) FetchAccessToken(
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
 		err = fmt.Errorf("auth0 token request failed: status %d", resp.StatusCode)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	var tokenResponse struct {
@@ -61,12 +61,12 @@ func (receiver *Auth0Client) FetchAccessToken(
 	}
 
 	if err = json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	accessToken, err = typeObject.NewAccessToken(
 		&tokenResponse.AccessToken,
 	)
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }

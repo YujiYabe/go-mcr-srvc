@@ -22,7 +22,7 @@ func ContextToMetadata(
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
 		ctxResult = ctx
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	metaDataMap := map[string]string{}
@@ -53,7 +53,7 @@ func ContextToMetadata(
 	ctx = metadata.NewOutgoingContext(ctx, metadataCollection)
 
 	ctxResult = ctx
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func MetadataToContext(
@@ -64,7 +64,7 @@ func MetadataToContext(
 	metadataCollection, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		ctxResult = ctx
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	newRequestContextArgs := &middlewareRequestContext.NewRequestContextArgs{}
@@ -146,7 +146,7 @@ func MetadataToContext(
 	if err != nil {
 		logger.Logging(ctx, err)
 		ctxResult = ctx
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	ctx = context.WithValue(
@@ -164,7 +164,7 @@ func MetadataToContext(
 	)
 
 	ctxResult = ctx
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func UnaryServerInterceptor() (
@@ -183,5 +183,6 @@ func UnaryServerInterceptor() (
 
 		return handler(ctx, req)
 	}
+
 	return
 }

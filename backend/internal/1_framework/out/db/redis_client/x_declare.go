@@ -30,5 +30,6 @@ func NewToRedis(
 	redisClient.Conn = conn
 
 	toRedis = redisClient
+
 	return
 }

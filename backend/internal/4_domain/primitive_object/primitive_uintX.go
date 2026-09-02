@@ -40,6 +40,7 @@ func NewPrimitiveUIntX[T UIntX](
 	}
 
 	primitiveUIntX = primitive
+
 	return
 }
 
@@ -49,9 +50,11 @@ func (receiver PrimitiveUIntX[T]) GetValue() (
 ) {
 	if receiver.GetIsNil() {
 		value = 0
+
 		return
 	}
 	value = receiver.value
+
 	return
 }
 
@@ -60,6 +63,7 @@ func (receiver PrimitiveUIntX[T]) IsZero() (
 	isZero bool,
 ) {
 	isZero = receiver.GetValue() == 0
+
 	return
 }
 
@@ -68,6 +72,7 @@ func (receiver PrimitiveUIntX[T]) HasValue() (
 	hasValue bool,
 ) {
 	hasValue = !receiver.GetIsNil()
+
 	return
 }
 
@@ -78,6 +83,7 @@ func (receiver PrimitiveUIntX[T]) Equal(
 	ok bool,
 ) {
 	ok = !receiver.GetIsNil() && receiver.value == value
+
 	return
 }
 
@@ -87,10 +93,12 @@ func (receiver PrimitiveUIntX[T]) DigitCount() (
 ) {
 	if receiver.GetIsNil() {
 		value = 0
+
 		return
 	}
 
 	value = uint(len(strconv.FormatUint(uint64(receiver.value), 10)))
+
 	return
 }
 
@@ -99,15 +107,18 @@ func (receiver PrimitiveUIntX[T]) Validation() (
 ) {
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if returnedErr := receiver.ValidationMaxDigit(); returnedErr != nil {
 		err = returnedErr
+
 		return
 	}
 
 	err = receiver.ValidationMinDigit()
+
 	return
 }
 
@@ -116,20 +127,24 @@ func (receiver PrimitiveUIntX[T]) ValidationMaxDigit() (
 ) {
 	if receiver.maxDigit == nil {
 		err = nil
+
 		return
 	}
 
 	if receiver.GetIsNil() {
 		err = nil
+
 		return
 	}
 
 	if receiver.DigitCount() > *receiver.maxDigit {
 		err = receiver.newErrorString("max limitation")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -138,6 +153,7 @@ func (receiver PrimitiveUIntX[T]) GetIsNil() (
 	ok bool,
 ) {
 	ok = receiver.isNil
+
 	return
 }
 
@@ -151,6 +167,7 @@ func (receiver PrimitiveUIntX[T]) newErrorString(
 		"error: %s",
 		errString,
 	)
+
 	return
 }
 
@@ -160,6 +177,7 @@ func (receiver PrimitiveUIntX[T]) ValidationMinDigit() (
 ) {
 	if receiver.minDigit == nil { // 下限値なし
 		err = nil
+
 		return
 	}
 
@@ -167,15 +185,18 @@ func (receiver PrimitiveUIntX[T]) ValidationMinDigit() (
 	if receiver.GetIsNil() {
 		// receiver.setErrorString("is nil")
 		err = nil
+
 		return
 	}
 
 	if receiver.DigitCount() < *receiver.minDigit {
 		err = receiver.newErrorString("min limitation")
+
 		return
 	}
 
 	err = nil
+
 	return
 }
 
@@ -189,6 +210,7 @@ func (receiver *PrimitiveUIntX[T]) CheckNil(
 	if value != nil {
 		isNil = false
 	}
+
 	return
 }
 
@@ -200,6 +222,7 @@ func (receiver *PrimitiveUIntX[T]) WithIsNil(
 	value = func(s *PrimitiveUIntX[T]) {
 		s.isNil = isNil
 	}
+
 	return
 }
 
@@ -212,6 +235,7 @@ func (receiver *PrimitiveUIntX[T]) WithMaxDigit(
 	option = func(s *PrimitiveUIntX[T]) {
 		s.maxDigit = value
 	}
+
 	return
 }
 
@@ -224,6 +248,7 @@ func (receiver *PrimitiveUIntX[T]) WithMinDigit(
 	option = func(s *PrimitiveUIntX[T]) {
 		s.minDigit = value
 	}
+
 	return
 }
 
@@ -243,6 +268,7 @@ func (receiver *PrimitiveUIntX[T]) WithValue(
 		s.value = valueIntX
 		s.isNil = isNil
 	}
+
 	return
 }
 
@@ -251,6 +277,7 @@ func (receiver PrimitiveUIntX[T]) GetString() (
 	value string,
 ) {
 	value = receiver.ToString()
+
 	return
 }
 
@@ -259,8 +286,10 @@ func (receiver PrimitiveUIntX[T]) ToString() (
 ) {
 	value = ""
 	if receiver.GetIsNil() {
+
 		return
 	}
 	value = strconv.FormatUint(uint64(receiver.value), 10)
+
 	return
 }

@@ -18,6 +18,7 @@ func (receiver UserList) Content() (
 	users []User,
 ) {
 	users = receiver.content
+
 	return
 }
 
@@ -25,6 +26,7 @@ func (receiver UserList) IsEmpty() (
 	isEmpty bool,
 ) {
 	isEmpty = len(receiver.content) == 0
+
 	return
 }
 
@@ -32,6 +34,7 @@ func (receiver UserList) Count() (
 	value int,
 ) {
 	value = len(receiver.content)
+
 	return
 }
 
@@ -42,17 +45,20 @@ func (receiver UserList) ContainsIdentity(
 ) {
 	if id.GetValue() <= 0 {
 		ok = false
+
 		return
 	}
 
 	for _, user := range receiver.content {
 		if user.Identity().GetValue() == id.GetValue() {
 			ok = true
+
 			return
 		}
 	}
 
 	ok = false
+
 	return
 }
 
@@ -63,17 +69,20 @@ func (receiver UserList) ContainsEmail(
 ) {
 	if email.GetIsNil() || email.GetValue() == "" {
 		ok = false
+
 		return
 	}
 
 	for _, user := range receiver.content {
 		if user.Email().GetValue() == email.GetValue() {
 			ok = true
+
 			return
 		}
 	}
 
 	ok = false
+
 	return
 }
 
@@ -84,16 +93,19 @@ func (receiver *UserList) Append(
 ) {
 	if user.HasIdentity() && receiver.ContainsIdentity(user.Identity()) {
 		err = fmt.Errorf("user identity is duplicated")
+
 		return
 	}
 	if user.HasEmail() && receiver.ContainsEmail(user.Email()) {
 		err = fmt.Errorf("user email is duplicated")
+
 		return
 	}
 
 	receiver.content = append(receiver.content, user)
 
 	err = nil
+
 	return
 }
 
@@ -109,12 +121,14 @@ func (receiver UserList) EnsureNoDuplicateEmail() (
 		email := user.Email().GetValue()
 		if _, ok := known[email]; ok {
 			err = fmt.Errorf("user email is duplicated")
+
 			return
 		}
 		known[email] = struct{}{}
 	}
 
 	err = nil
+
 	return
 }
 
@@ -127,6 +141,7 @@ func NewUserList(
 	err = nil
 	userList = UserList{}
 	if args == nil {
+
 		return
 	}
 
@@ -134,11 +149,13 @@ func NewUserList(
 		user, returnedErr := NewUser(&args)
 		if returnedErr != nil {
 			err = returnedErr
+
 			return
 		}
 
 		if returnedErr := userList.Append(*user); returnedErr != nil {
 			err = returnedErr
+
 			return
 		}
 	}
@@ -155,6 +172,7 @@ func ReconstructUserList(
 	err = nil
 	userList = UserList{}
 	if args == nil {
+
 		return
 	}
 
@@ -162,11 +180,13 @@ func ReconstructUserList(
 		user, returnedErr := ReconstructUser(&args)
 		if returnedErr != nil {
 			err = returnedErr
+
 			return
 		}
 
 		if returnedErr := userList.Append(*user); returnedErr != nil {
 			err = returnedErr
+
 			return
 		}
 	}

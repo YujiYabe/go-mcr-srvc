@@ -25,7 +25,7 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 ) {
 	if receiver.Conn == nil {
 		err = fmt.Errorf("pubsub producer is not initialized")
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	message := UserMessage{
@@ -37,7 +37,7 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 	jsonData, err := json.Marshal(message)
 	if err != nil {
 		err = fmt.Errorf("marshal pubsub message: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	// Add headers to the message
@@ -57,12 +57,13 @@ func (receiver *PubsubPublisher) PublishTestTopic(
 
 	if err != nil {
 		err = fmt.Errorf("produce pubsub message: %w", err)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	// メッセージ送信を確実にするため、完了を待つ
 	receiver.Conn.Flush(receiver.flushTimeoutMS)
 
 	err = nil
+
 	return
 }

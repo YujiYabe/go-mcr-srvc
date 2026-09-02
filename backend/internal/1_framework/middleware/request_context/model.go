@@ -78,61 +78,61 @@ func NewRequestContext(
 	requestContext.requestStartTime, err = typeObject.NewRequestStartTime(args.RequestStartTime)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.traceID, err = typeObject.NewTraceID(args.TraceID)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.clientIP, err = typeObject.NewClientIP(args.ClientIP)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.userAgent, err = typeObject.NewUserAgent(args.UserAgent)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.locale, err = typeObject.NewLocale(args.Locale)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.timeZone, err = typeObject.NewTimeZone(args.TimeZone)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.userID, err = typeObject.NewUserID(args.UserID)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.accessToken, err = typeObject.NewAccessToken(args.AccessToken)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.tenantID, err = typeObject.NewTenantID(args.TenantID)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestContext.permissionList, err = typeObject.NewPermissionList(args.PermissionList)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	requestStartTime := requestContext.requestStartTime
@@ -142,16 +142,17 @@ func NewRequestContext(
 	requestContext.timeOutMillSecond, err = typeObject.NewTimeOutMillSecond(&timeoutMillSecond)
 	if err != nil {
 		requestContext = nil
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
 
 func (receiver RequestContext) TimeOutMillSecond() (
 	timeOutMillSecond typeObject.TimeOutMillSecond,
 ) {
 	timeOutMillSecond = receiver.timeOutMillSecond
+
 	return
 }
 
@@ -159,6 +160,7 @@ func (receiver RequestContext) RequestStartTime() (
 	requestStartTime typeObject.RequestStartTime,
 ) {
 	requestStartTime = receiver.requestStartTime
+
 	return
 }
 
@@ -166,6 +168,7 @@ func (receiver RequestContext) TraceID() (
 	traceID typeObject.TraceID,
 ) {
 	traceID = receiver.traceID
+
 	return
 }
 
@@ -173,6 +176,7 @@ func (receiver RequestContext) ClientIP() (
 	clientIP typeObject.ClientIP,
 ) {
 	clientIP = receiver.clientIP
+
 	return
 }
 
@@ -180,6 +184,7 @@ func (receiver RequestContext) UserAgent() (
 	userAgent typeObject.UserAgent,
 ) {
 	userAgent = receiver.userAgent
+
 	return
 }
 
@@ -187,6 +192,7 @@ func (receiver RequestContext) UserID() (
 	userID typeObject.UserID,
 ) {
 	userID = receiver.userID
+
 	return
 }
 
@@ -194,6 +200,7 @@ func (receiver RequestContext) AccessToken() (
 	accessToken typeObject.AccessToken,
 ) {
 	accessToken = receiver.accessToken
+
 	return
 }
 
@@ -201,6 +208,7 @@ func (receiver RequestContext) TenantID() (
 	tenantID typeObject.TenantID,
 ) {
 	tenantID = receiver.tenantID
+
 	return
 }
 
@@ -208,6 +216,7 @@ func (receiver RequestContext) Locale() (
 	locale typeObject.Locale,
 ) {
 	locale = receiver.locale
+
 	return
 }
 
@@ -215,6 +224,7 @@ func (receiver RequestContext) TimeZone() (
 	timeZone typeObject.TimeZone,
 ) {
 	timeZone = receiver.timeZone
+
 	return
 }
 
@@ -222,5 +232,6 @@ func (receiver RequestContext) PermissionList() (
 	permissionList typeObject.PermissionList,
 ) {
 	permissionList = receiver.permissionList
+
 	return
 }

@@ -42,7 +42,7 @@ func fetchAccessToken(
 			http.StatusBadRequest,
 			err,
 		)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	//-------------------------
@@ -56,12 +56,12 @@ func fetchAccessToken(
 			http.StatusBadRequest,
 			err,
 		)
-		return //nolint:nakedret // Use the project-wide named return convention.
+		return
 	}
 
 	err = c.JSON(
 		http.StatusOK,
 		accessToken.GetValue(),
 	)
-	return //nolint:nakedret // Use the project-wide named return convention.
+	return
 }
