@@ -17,18 +17,20 @@ func Get(
 ) (
 	err error,
 ) {
-	if err := validateTargetType(params.TargetType); err != nil {
-		return errorJSON(echoContext, http.StatusBadRequest, err)
+	if returnedErr := validateTargetType(params.TargetType); returnedErr != nil {
+		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+		return
 	}
 
-	words, err := toController.GetValidationWords(
+	words, returnedErr := toController.GetValidationWords(
 		echoContext.Request().Context(),
 		params.TargetType,
 		params.IsBlacklist,
 	)
-	if err != nil {
-		logger.Logging(echoContext.Request().Context(), err)
-		return errorJSON(echoContext, http.StatusBadRequest, err)
+	if returnedErr != nil {
+		logger.Logging(echoContext.Request().Context(), returnedErr)
+		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+		return
 	}
 
 	response := make([]openapi.ValidationWordRule, 0, len(words))
@@ -40,5 +42,6 @@ func Get(
 		})
 	}
 
-	return echoContext.JSON(http.StatusOK, response)
+	err = echoContext.JSON(http.StatusOK, response)
+	return
 }

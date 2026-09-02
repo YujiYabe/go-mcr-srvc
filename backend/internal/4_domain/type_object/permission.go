@@ -42,16 +42,22 @@ func (receiver *Permission) setValue(
 		primitiveString.WithMinLength(&permissionMinLength),
 		primitiveString.WithCheckSpell(permissionCheckSpell),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver Permission) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+
+	return
 }
 
 func (receiver *Permission) ErrorString(
@@ -59,11 +65,15 @@ func (receiver *Permission) ErrorString(
 ) (
 	err error,
 ) {
-	return fmt.Errorf("error: %s", errString)
+	err = fmt.Errorf("error: %s", errString)
+
+	return
 }
 
 func (receiver Permission) GetIsNil() (
 	ok bool,
 ) {
-	return receiver.content.GetIsNil()
+	ok = receiver.content.GetIsNil()
+
+	return
 }

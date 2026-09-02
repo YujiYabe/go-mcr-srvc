@@ -28,10 +28,12 @@ func (receiver *PrimitiveSliceString) WithValue(
 		isNil = false
 		resValue = value
 	}
-	return func(s *PrimitiveSliceString) {
+	option = func(s *PrimitiveSliceString) {
 		s.value = resValue
 		s.isNil = isNil
 	}
+
+	return
 }
 
 // ______________________________________
@@ -40,9 +42,11 @@ func (receiver *PrimitiveSliceString) WithIsNil(
 ) (
 	value PrimitiveSliceStringOption,
 ) {
-	return func(s *PrimitiveSliceString) {
+	value = func(s *PrimitiveSliceString) {
 		s.isNil = isNil
 	}
+
+	return
 }
 
 // ______________________________________
@@ -51,9 +55,11 @@ func (receiver *PrimitiveSliceString) WithMaxLength(
 ) (
 	option PrimitiveSliceStringOption,
 ) {
-	return func(s *PrimitiveSliceString) {
+	option = func(s *PrimitiveSliceString) {
 		s.MaxLength = value
 	}
+
+	return
 }
 
 // ______________________________________
@@ -62,9 +68,11 @@ func (receiver *PrimitiveSliceString) WithMinLength(
 ) (
 	option PrimitiveSliceStringOption,
 ) {
-	return func(s *PrimitiveSliceString) {
+	option = func(s *PrimitiveSliceString) {
 		s.MinLength = value
 	}
+
+	return
 }
 
 // ______________________________________
@@ -92,16 +100,22 @@ func (receiver PrimitiveSliceString) GetValue() (
 	primitiveStrings []PrimitiveString,
 ) {
 	if receiver.isNil {
-		return []PrimitiveString{}
+		primitiveStrings = []PrimitiveString{}
+
+		return
 	}
-	return receiver.value
+	primitiveStrings = receiver.value
+
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveSliceString) GetIsNil() (
 	ok bool,
 ) {
-	return receiver.isNil
+	ok = receiver.isNil
+
+	return
 }
 
 // ______________________________________
@@ -109,17 +123,23 @@ func (receiver PrimitiveSliceString) Count() (
 	value int,
 ) {
 	if receiver.GetIsNil() {
-		return 0
+		value = 0
+
+		return
 	}
 
-	return len(receiver.value)
+	value = len(receiver.value)
+
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveSliceString) IsEmpty() (
 	isEmpty bool,
 ) {
-	return receiver.Count() == 0
+	isEmpty = receiver.Count() == 0
+
+	return
 }
 
 // ______________________________________
@@ -129,16 +149,22 @@ func (receiver PrimitiveSliceString) HasValue(
 	hasValue bool,
 ) {
 	if receiver.GetIsNil() {
-		return false
+		hasValue = false
+
+		return
 	}
 
 	for _, content := range receiver.value {
 		if content.Equal(value) {
-			return true
+			hasValue = true
+
+			return
 		}
 	}
 
-	return false
+	hasValue = false
+
+	return
 }
 
 // ______________________________________
@@ -160,24 +186,34 @@ func (receiver PrimitiveSliceString) Validation() (
 	err error,
 ) {
 	if receiver.isNil {
-		return nil
+		err = nil
+
+		return
 	}
 
-	if err := receiver.ValidationMaxLength(); err != nil {
-		return err
+	if returnedErr := receiver.ValidationMaxLength(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 
-	if err := receiver.ValidationMinLength(); err != nil {
-		return err
+	if returnedErr := receiver.ValidationMinLength(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 
 	for _, value := range receiver.value {
-		if err := value.Validation(); err != nil {
-			return err
+		if returnedErr := value.Validation(); returnedErr != nil {
+			err = returnedErr
+
+			return
 		}
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 // ______________________________________
@@ -185,17 +221,23 @@ func (receiver PrimitiveSliceString) ValidationMaxLength() (
 	err error,
 ) {
 	if receiver.MaxLength == nil { // 上限値なし
-		return nil
+		err = nil
+
+		return
 	}
 
 	if uint(receiver.Count()) > *receiver.MaxLength {
-		return fmt.Errorf(
+		err = fmt.Errorf(
 			"PrimitiveSliceString: length exceeds maximum allowed (%d)",
 			*receiver.MaxLength,
 		)
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 // ______________________________________
@@ -203,17 +245,23 @@ func (receiver PrimitiveSliceString) ValidationMinLength() (
 	err error,
 ) {
 	if receiver.MinLength == nil { // 下限値なし
-		return nil
+		err = nil
+
+		return
 	}
 
 	if uint(receiver.Count()) < *receiver.MinLength {
-		return fmt.Errorf(
+		err = fmt.Errorf(
 			"PrimitiveSliceString: length is less than minimum required (%d)",
 			*receiver.MinLength,
 		)
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 // ______________________________________
@@ -225,7 +273,9 @@ func (receiver *PrimitiveSliceString) ToSliceString() (
 	for index, value := range receiver.value {
 		result[index] = value.GetValue()
 	}
-	return result
+	values = result
+
+	return
 }
 
 // ______________________________________
@@ -238,5 +288,7 @@ func ExtractFirstIndexFromSliceString(
 	if len(value) != 0 {
 		firstString = value[0]
 	}
-	return &firstString
+	valuePointer = &firstString
+
+	return
 }

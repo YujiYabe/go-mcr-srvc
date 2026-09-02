@@ -20,19 +20,26 @@ func (receiver *RedisClient) GetValidationWords(
 	hit bool,
 	err error,
 ) {
+	words = nil
 	result, err := receiver.Conn.Get(ctx, validationWordsCacheKey(targetType, isBlacklist)).Result()
 	if errors.Is(err, redis.Nil) {
-		return nil, false, nil
+		words, hit, err = nil, false, nil
+
+		return
 	}
 	if err != nil {
-		return nil, false, err
+		words, hit = nil, false
+
+		return
 	}
 
 	if err := json.Unmarshal([]byte(result), &words); err != nil {
 		return nil, false, err
 	}
 
-	return words, true, nil
+	hit, err = true, nil
+
+	return
 }
 
 func (receiver *RedisClient) SetValidationWords(
@@ -45,15 +52,18 @@ func (receiver *RedisClient) SetValidationWords(
 ) {
 	value, err := json.Marshal(words)
 	if err != nil {
-		return err
+
+		return
 	}
 
-	return receiver.Conn.Set(
+	err = receiver.Conn.Set(
 		ctx,
 		validationWordsCacheKey(targetType, isBlacklist),
 		value,
 		0,
 	).Err()
+
+	return
 }
 
 func (receiver *RedisClient) DeleteValidationWordsCache(
@@ -63,7 +73,9 @@ func (receiver *RedisClient) DeleteValidationWordsCache(
 ) (
 	err error,
 ) {
-	return receiver.Conn.Del(ctx, validationWordsCacheKey(targetType, isBlacklist)).Err()
+	err = receiver.Conn.Del(ctx, validationWordsCacheKey(targetType, isBlacklist)).Err()
+
+	return
 }
 
 func validationWordsCacheKey(
@@ -72,9 +84,11 @@ func validationWordsCacheKey(
 ) (
 	key string,
 ) {
-	return fmt.Sprintf(
+	key = fmt.Sprintf(
 		"validation:word_rules:%s:%s",
 		targetType,
 		domain.ValidationWordRuleTypeFromBlacklistFlag(isBlacklist),
 	)
+
+	return
 }

@@ -118,7 +118,7 @@ func newRequestContextForTest(
 		t.Fatalf("new request context: %v", err)
 	}
 
-	return requestContext
+	return
 }
 
 func assertRequestContextForTest(
@@ -165,9 +165,13 @@ func findHeaderValue(
 ) {
 	for _, header := range headers {
 		if header.Key == key {
-			return string(header.Value)
+			value = string(header.Value)
+
+			return
 		}
 	}
 
-	return ""
+	value = ""
+
+	return
 }

@@ -18,5 +18,6 @@ func (receiver *GatewayExternal) GetUserViaGRPC(
 		ctx,
 		reqUser,
 	)
+
 	return
 }

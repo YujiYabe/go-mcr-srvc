@@ -48,7 +48,9 @@ func newE2ETestEcho(
 		},
 	)
 
-	return echoEcho
+	echo = echoEcho
+
+	return
 }
 
 func TestOpenAPIE2E_V1UsersGet(
@@ -332,7 +334,9 @@ func (receiver *fakeController) GetUserList(
 	userList groupObject.UserList,
 	err error,
 ) {
-	return groupObject.UserList{}, nil
+	userList, err = groupObject.UserList{}, nil
+
+	return
 }
 
 func (receiver *fakeController) GetUserListByCondition(
@@ -345,7 +349,9 @@ func (receiver *fakeController) GetUserListByCondition(
 	receiver.getUserListByConditionCalled = true
 	receiver.lastReqUser = reqUser
 
-	return receiver.userList, nil
+	resUserList, err = receiver.userList, nil
+
+	return
 }
 
 func (receiver *fakeController) FetchAccessToken(
@@ -355,7 +361,9 @@ func (receiver *fakeController) FetchAccessToken(
 	accessToken typeObject.AccessToken,
 	err error,
 ) {
-	return typeObject.AccessToken{}, nil
+	accessToken, err = typeObject.AccessToken{}, nil
+
+	return
 }
 
 func (receiver *fakeController) GetUserListViaGRPC(
@@ -365,7 +373,9 @@ func (receiver *fakeController) GetUserListViaGRPC(
 	resUserList groupObject.UserList,
 	err error,
 ) {
-	return groupObject.UserList{}, nil
+	resUserList, err = groupObject.UserList{}, nil
+
+	return
 }
 
 func (receiver *fakeController) UpdateUser(
@@ -374,7 +384,9 @@ func (receiver *fakeController) UpdateUser(
 ) (
 	err error,
 ) {
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *fakeController) UpdateUserProfileWithPrimaryEmployment(
@@ -384,7 +396,9 @@ func (receiver *fakeController) UpdateUserProfileWithPrimaryEmployment(
 ) (
 	err error,
 ) {
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *fakeController) PublishTestTopic(
@@ -394,7 +408,9 @@ func (receiver *fakeController) PublishTestTopic(
 ) {
 	receiver.publishTestTopicCalled = true
 
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *fakeController) GetValidationWords(
@@ -409,7 +425,9 @@ func (receiver *fakeController) GetValidationWords(
 	receiver.lastTargetType = targetType
 	receiver.lastIsBlacklist = isBlacklist
 
-	return receiver.validationWords, nil
+	words, err = receiver.validationWords, nil
+
+	return
 }
 
 func (receiver *fakeController) AddValidationWord(
@@ -425,7 +443,9 @@ func (receiver *fakeController) AddValidationWord(
 	receiver.lastIsBlacklist = isBlacklist
 	receiver.lastWord = word
 
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *fakeController) UpdateValidationWord(
@@ -443,7 +463,9 @@ func (receiver *fakeController) UpdateValidationWord(
 	receiver.lastOldWord = oldWord
 	receiver.lastNewWord = newWord
 
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *fakeController) DeleteValidationWord(
@@ -459,5 +481,7 @@ func (receiver *fakeController) DeleteValidationWord(
 	receiver.lastIsBlacklist = isBlacklist
 	receiver.lastWord = word
 
-	return nil
+	err = nil
+
+	return
 }

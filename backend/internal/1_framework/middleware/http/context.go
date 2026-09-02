@@ -13,7 +13,7 @@ import (
 func ContextMiddleware() (
 	middlewareFunc echo.MiddlewareFunc,
 ) {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
+	middlewareFunc = func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			clientIP := c.RealIP()
 			userAgent := c.Request().UserAgent()
@@ -73,4 +73,5 @@ func ContextMiddleware() (
 			return next(c)
 		}
 	}
+	return
 }

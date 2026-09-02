@@ -6,7 +6,9 @@ import groupObject "backend/internal/4_domain/group_object"
 func NewDomain() (
 	toDomain ToDomain,
 ) {
-	return &domain{}
+	toDomain = &domain{}
+
+	return
 }
 
 type (

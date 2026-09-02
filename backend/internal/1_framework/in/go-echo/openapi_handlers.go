@@ -24,11 +24,13 @@ func (receiver *ServerInterfaceImpl) V1UsersGet(
 ) (
 	err error,
 ) {
-	return v1users.Get(
+	err = v1users.Get(
 		echoContext,
 		receiver.Controller,
 		getUsersParams,
 	)
+
+	return
 }
 
 // V1UsersPost は /v1/users POST エンドポイントの実装
@@ -45,7 +47,9 @@ func (receiver *ServerInterfaceImpl) V1UsersPost(
 		)
 	}
 	user.Id = 3 // 仮に新しいユーザーIDを割り当て
-	return ctx.JSON(http.StatusCreated, user)
+	err = ctx.JSON(http.StatusCreated, user)
+
+	return
 }
 
 // V1HealthGet は /v1/health GET エンドポイントの実装
@@ -54,7 +58,9 @@ func (receiver *ServerInterfaceImpl) V1HealthGet(
 ) (
 	err error,
 ) {
-	return ctx.String(http.StatusOK, "OK")
+	err = ctx.String(http.StatusOK, "OK")
+
+	return
 }
 
 // V1ToPubsubGet は /v1/to-pubsub GET エンドポイントの実装
@@ -63,10 +69,12 @@ func (receiver *ServerInterfaceImpl) V1ToPubsubGet(
 ) (
 	err error,
 ) {
-	return v1ToPubsub.Get(
+	err = v1ToPubsub.Get(
 		echoContext,
 		receiver.Controller,
 	)
+
+	return
 }
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesGet(
@@ -75,11 +83,13 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesGet(
 ) (
 	err error,
 ) {
-	return v1ValidationWordRules.Get(
+	err = v1ValidationWordRules.Get(
 		echoContext,
 		receiver.Controller,
 		params,
 	)
+
+	return
 }
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPost(
@@ -87,10 +97,12 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPost(
 ) (
 	err error,
 ) {
-	return v1ValidationWordRules.Post(
+	err = v1ValidationWordRules.Post(
 		echoContext,
 		receiver.Controller,
 	)
+
+	return
 }
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPut(
@@ -98,10 +110,12 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesPut(
 ) (
 	err error,
 ) {
-	return v1ValidationWordRules.Put(
+	err = v1ValidationWordRules.Put(
 		echoContext,
 		receiver.Controller,
 	)
+
+	return
 }
 
 func (receiver *ServerInterfaceImpl) V1ValidationWordRulesDelete(
@@ -109,8 +123,10 @@ func (receiver *ServerInterfaceImpl) V1ValidationWordRulesDelete(
 ) (
 	err error,
 ) {
-	return v1ValidationWordRules.Delete(
+	err = v1ValidationWordRules.Delete(
 		echoContext,
 		receiver.Controller,
 	)
+
+	return
 }

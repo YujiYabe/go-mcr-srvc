@@ -37,6 +37,7 @@ func Logging(
 	// テスト中であればロギングしない
 	if flag.Lookup("test.v") != nil {
 		log.Println("run under go test")
+
 		return
 	}
 
@@ -68,13 +69,17 @@ func logWriter() (
 ) {
 	env := normalizedEnv()
 	if env == envLocal {
-		return zerolog.ConsoleWriter{
+		writer = zerolog.ConsoleWriter{
 			Out:        os.Stdout,
 			TimeFormat: zerolog.TimeFieldFormat,
 		}
+
+		return
 	}
 
-	return os.Stdout
+	writer = os.Stdout
+
+	return
 }
 
 func logLevel() (
@@ -82,10 +87,14 @@ func logLevel() (
 ) {
 	env := normalizedEnv()
 	if env == envProd {
-		return zerolog.InfoLevel
+		level = zerolog.InfoLevel
+
+		return
 	}
 
-	return zerolog.DebugLevel
+	level = zerolog.DebugLevel
+
+	return
 }
 
 func normalizedEnv() (
@@ -97,10 +106,12 @@ func normalizedEnv() (
 		),
 	)
 	if env == "" || env == envLCL {
-		return envDefault
+		env = envDefault
+
+		return
 	}
 
-	return env
+	return
 }
 
 func appendContextFields(
@@ -149,10 +160,11 @@ func appendContextFields(
 			requestContext.TimeZone().GetValue(),
 		)
 
-		return updatedLoggerContext
+		return
 	}
 
-	return appendContextValueFields(ctx, updatedLoggerContext)
+	updatedLoggerContext = appendContextValueFields(ctx, updatedLoggerContext)
+	return
 }
 
 func appendContextValueFields(
@@ -186,7 +198,7 @@ func appendContextValueFields(
 		)
 	}
 
-	return updatedLoggerContext
+	return
 }
 
 func appendStringField(
@@ -197,8 +209,12 @@ func appendStringField(
 	updatedLoggerContext zerolog.Context,
 ) {
 	if fieldValue == "" {
-		return loggerContext
+		updatedLoggerContext = loggerContext
+
+		return
 	}
 
-	return loggerContext.Str(fieldName, fieldValue)
+	updatedLoggerContext = loggerContext.Str(fieldName, fieldValue)
+
+	return
 }

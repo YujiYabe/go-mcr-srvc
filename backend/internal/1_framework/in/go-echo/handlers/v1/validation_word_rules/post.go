@@ -18,25 +18,29 @@ func Post(
 	err error,
 ) {
 	var request openapi.ValidationWordRuleCreate
-	if err := echoContext.Bind(&request); err != nil {
-		return errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))
+	if returnedErr := echoContext.Bind(&request); returnedErr != nil {
+		err = errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))
+		return
 	}
-	if err := validateTargetTypeAndWord(request.TargetType, request.Word); err != nil {
-		return errorJSON(echoContext, http.StatusBadRequest, err)
+	if returnedErr := validateTargetTypeAndWord(request.TargetType, request.Word); returnedErr != nil {
+		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+		return
 	}
 
-	if err := toController.AddValidationWord(
+	if returnedErr := toController.AddValidationWord(
 		echoContext.Request().Context(),
 		request.TargetType,
 		request.IsBlacklist,
 		request.Word,
-	); err != nil {
-		logger.Logging(echoContext.Request().Context(), err)
-		return errorJSON(echoContext, http.StatusBadRequest, err)
+	); returnedErr != nil {
+		logger.Logging(echoContext.Request().Context(), returnedErr)
+		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+		return
 	}
 
-	return echoContext.JSON(
+	err = echoContext.JSON(
 		http.StatusCreated,
 		openapi.ValidationWordRule(request),
 	)
+	return
 }

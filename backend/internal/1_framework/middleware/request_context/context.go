@@ -9,6 +9,7 @@ func GetRequestContext(
 ) (
 	value *RequestContext,
 ) {
+	value = nil
 	requestContext, ok := ctx.Value(RequestContextContextName).(RequestContext)
 	if ok {
 		value = &requestContext

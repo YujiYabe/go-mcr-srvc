@@ -29,12 +29,16 @@ func NewToPostgres(
 ) {
 	conn, err := open(ctx, dsn, 30)
 	if err != nil {
-		return nil, err
+		toPostgres = nil
+
+		return
 	}
 
 	postgresClient := new(PostgresClient)
 	postgresClient.Conn = conn
-	return postgresClient, nil
+	toPostgres, err = postgresClient, nil
+
+	return
 }
 
 func open(
@@ -51,16 +55,16 @@ func open(
 			return nil, err
 		}
 
-		db, err := gorm.Open(
+		db, returnedErr := gorm.Open(
 			postgres.Open(dsn),
 			&gorm.Config{},
 		)
-		if err == nil {
+		if returnedErr == nil {
 			return db, nil
 		}
 
-		lastErr = err
-		logger.Logging(ctx, err)
+		lastErr = returnedErr
+		logger.Logging(ctx, returnedErr)
 
 		if attempt == count {
 			break
@@ -68,12 +72,14 @@ func open(
 
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			dB, err = nil, ctx.Err()
+			return
 		case <-time.After(retryBackoff(attempt)):
 		}
 	}
 
-	return nil, fmt.Errorf("retry count over: %w", lastErr)
+	dB, err = nil, fmt.Errorf("retry count over: %w", lastErr)
+	return
 }
 
 func retryBackoff(
@@ -81,9 +87,13 @@ func retryBackoff(
 ) (
 	duration time.Duration,
 ) {
-	backoff := time.Duration(attempt+1) * time.Second
-	if backoff > 5*time.Second {
-		return 5 * time.Second
+	if attempt >= 4 {
+		duration = 5 * time.Second
+
+		return
 	}
-	return backoff
+
+	duration = time.Duration(attempt+1) * time.Second
+
+	return
 }

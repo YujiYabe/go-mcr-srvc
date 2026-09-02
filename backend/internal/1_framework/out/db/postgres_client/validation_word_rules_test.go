@@ -161,7 +161,9 @@ func newValidationWordRuleTestClient(
 		t.Fatalf("failed to open gorm mock db: %v", err)
 	}
 
-	return &PostgresClient{Conn: gormDB}, mock, func() {
+	postgresClient, fn = &PostgresClient{Conn: gormDB}, func() {
 		_ = sqlDB.Close()
 	}
+
+	return
 }

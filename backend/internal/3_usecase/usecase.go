@@ -15,5 +15,7 @@ func ensureContextReady(
 		return fmt.Errorf("%s: context is not ready: %w", usecaseName, err)
 	}
 
-	return nil
+	err = nil
+
+	return
 }

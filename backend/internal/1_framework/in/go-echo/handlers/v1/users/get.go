@@ -40,20 +40,23 @@ func Get(
 	)
 	if ctxWithTimeout.Err() != nil {
 		logger.Logging(ctxWithTimeout, ctxWithTimeout.Err())
-		return echoContext.JSON(
+		err = echoContext.JSON(
 			http.StatusRequestTimeout,
 			[]openapi.User{},
 		)
+		return
 	}
 	if requestErr != nil {
 		logger.Logging(ctxWithTimeout, requestErr)
-		return echoContext.JSON(http.StatusBadRequest, requestErr)
+		err = echoContext.JSON(http.StatusBadRequest, requestErr)
+		return
 	}
 
-	return echoContext.JSON(
+	err = echoContext.JSON(
 		http.StatusOK,
 		responseList,
 	)
+	return
 }
 
 func handleUsersRequest(
@@ -74,7 +77,8 @@ func handleUsersRequest(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return nil, err
+		responseList = nil
+		return
 	}
 
 	userList, err := toController.GetUserListByCondition(
@@ -83,7 +87,7 @@ func handleUsersRequest(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return nil, err
+		return
 	}
 
 	for _, user := range userList.Content() {
@@ -100,5 +104,5 @@ func handleUsersRequest(
 		)
 	}
 
-	return responseList, nil
+	return
 }

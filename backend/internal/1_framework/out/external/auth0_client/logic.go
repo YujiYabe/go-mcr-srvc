@@ -20,6 +20,7 @@ func (receiver *Auth0Client) FetchAccessToken(
 	accessToken typeObject.AccessToken,
 	err error,
 ) {
+	accessToken = typeObject.AccessToken{}
 	payload := map[string]string{
 		"client_id":     credential.ClientID().GetValue(),
 		"client_secret": credential.ClientSecret().GetValue(),

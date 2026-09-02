@@ -10,7 +10,9 @@ func (receiver *GatewayExternal) PublishTestTopic(
 ) (
 	err error,
 ) {
-	return receiver.ToPubSub.PublishTestTopic(
+	err = receiver.ToPubSub.PublishTestTopic(
 		ctx,
 	)
+
+	return
 }

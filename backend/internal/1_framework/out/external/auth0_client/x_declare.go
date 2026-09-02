@@ -24,5 +24,6 @@ func NewToAuth0(
 		audience:  audience,
 		grantType: grantType,
 	}
+
 	return
 }

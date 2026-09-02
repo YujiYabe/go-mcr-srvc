@@ -15,10 +15,14 @@ func validateTargetTypeAndWord(
 ) (
 	err error,
 ) {
-	if err := validateTargetType(targetType); err != nil {
-		return err
+	if returnedErr := validateTargetType(targetType); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
-	return validateWord(word)
+	err = validateWord(word)
+
+	return
 }
 
 func validateTargetType(
@@ -27,9 +31,13 @@ func validateTargetType(
 	err error,
 ) {
 	if strings.TrimSpace(targetType) == "" {
-		return fmt.Errorf("targetType is required")
+		err = fmt.Errorf("targetType is required")
+
+		return
 	}
-	return nil
+	err = nil
+
+	return
 }
 
 func validateWord(
@@ -38,9 +46,13 @@ func validateWord(
 	err error,
 ) {
 	if strings.TrimSpace(word) == "" {
-		return fmt.Errorf("word is required")
+		err = fmt.Errorf("word is required")
+
+		return
 	}
-	return nil
+	err = nil
+
+	return
 }
 
 func errorJSON(
@@ -50,8 +62,10 @@ func errorJSON(
 ) (
 	errResult error,
 ) {
-	return echoContext.JSON(status, openapi.Error{
+	errResult = echoContext.JSON(status, openapi.Error{
 		Code:    status,
 		Message: err.Error(),
 	})
+
+	return
 }

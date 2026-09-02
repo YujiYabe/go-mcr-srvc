@@ -41,17 +41,20 @@ func NewApp() (
 	ctx := context.Background()
 	config, err := env.Load()
 	if err != nil {
-		return nil, err
+		app = nil
+		return
 	}
 
 	toPostgres, err := postgresClient.NewToPostgres(ctx, config.Database.DSN)
 	if err != nil {
-		return nil, fmt.Errorf("new postgres client: %w", err)
+		app, err = nil, fmt.Errorf("new postgres client: %w", err)
+		return
 	}
 
 	toGRPC, err := grpcClient.NewToGRPC(ctx, config.Server.GRPCAddress)
 	if err != nil {
-		return nil, fmt.Errorf("new grpc client: %w", err)
+		app, err = nil, fmt.Errorf("new grpc client: %w", err)
+		return
 	}
 
 	toPubSub, err := pubsubPublisher.NewToPubSub(
@@ -62,7 +65,8 @@ func NewApp() (
 		config.PubSub.SampleUserName,
 	)
 	if err != nil {
-		return nil, fmt.Errorf("new pubsub publisher: %w", err)
+		app, err = nil, fmt.Errorf("new pubsub publisher: %w", err)
+		return
 	}
 
 	toGatewayDB := gatewayDB.NewGatewayDB(
@@ -112,7 +116,8 @@ func NewApp() (
 		),
 	}
 
-	return app, nil
+	err = nil
+	return
 }
 
 // Start ...
@@ -130,5 +135,7 @@ func (receiver *App) Start() (
 			logger.Logging(ctx, err)
 		}
 	}()
-	return receiver.goEcho.Start()
+	err = receiver.goEcho.Start()
+
+	return
 }

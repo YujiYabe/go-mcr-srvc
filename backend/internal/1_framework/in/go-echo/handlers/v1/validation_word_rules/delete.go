@@ -18,22 +18,30 @@ func Delete(
 	err error,
 ) {
 	var request openapi.ValidationWordRuleDelete
-	if err := echoContext.Bind(&request); err != nil {
-		return errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))
+	if returnedErr := echoContext.Bind(&request); returnedErr != nil {
+		err = errorJSON(echoContext, http.StatusBadRequest, fmt.Errorf("invalid request"))
+
+		return
 	}
-	if err := validateTargetTypeAndWord(request.TargetType, request.Word); err != nil {
-		return errorJSON(echoContext, http.StatusBadRequest, err)
+	if returnedErr := validateTargetTypeAndWord(request.TargetType, request.Word); returnedErr != nil {
+		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+
+		return
 	}
 
-	if err := toController.DeleteValidationWord(
+	if returnedErr := toController.DeleteValidationWord(
 		echoContext.Request().Context(),
 		request.TargetType,
 		request.IsBlacklist,
 		request.Word,
-	); err != nil {
-		logger.Logging(echoContext.Request().Context(), err)
-		return errorJSON(echoContext, http.StatusBadRequest, err)
+	); returnedErr != nil {
+		logger.Logging(echoContext.Request().Context(), returnedErr)
+		err = errorJSON(echoContext, http.StatusBadRequest, returnedErr)
+
+		return
 	}
 
-	return echoContext.NoContent(http.StatusNoContent)
+	err = echoContext.NoContent(http.StatusNoContent)
+
+	return
 }

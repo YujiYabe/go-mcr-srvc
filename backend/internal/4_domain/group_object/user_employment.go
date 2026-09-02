@@ -41,27 +41,32 @@ func NewUserEmployment(
 
 	userEmployment.userID, err = typeObject.NewID(args.UserID)
 	if err != nil {
-		return nil, err
+		userEmployment = nil
+		return
 	}
 
 	userEmployment.companyID, err = typeObject.NewID(args.CompanyID)
 	if err != nil {
-		return nil, err
+		userEmployment = nil
+		return
 	}
 
 	userEmployment.departmentID, err = typeObject.NewID(args.DepartmentID)
 	if err != nil {
-		return nil, err
+		userEmployment = nil
+		return
 	}
 
 	userEmployment.positionID, err = typeObject.NewID(args.PositionID)
 	if err != nil {
-		return nil, err
+		userEmployment = nil
+		return
 	}
 
 	userEmployment.officeLocationID, err = typeObject.NewID(args.OfficeLocationID)
 	if err != nil {
-		return nil, err
+		userEmployment = nil
+		return
 	}
 
 	if args.EmployeeCode != nil {
@@ -74,72 +79,99 @@ func NewUserEmployment(
 		userEmployment.isPrimary = *args.IsPrimary
 	}
 
-	return userEmployment, nil
+	err = nil
+	return
 }
 
 func (receiver UserEmployment) UserID() (
 	iD typeObject.ID,
 ) {
-	return receiver.userID
+	iD = receiver.userID
+
+	return
 }
 
 func (receiver UserEmployment) CompanyID() (
 	iD typeObject.ID,
 ) {
-	return receiver.companyID
+	iD = receiver.companyID
+
+	return
 }
 
 func (receiver UserEmployment) DepartmentID() (
 	iD typeObject.ID,
 ) {
-	return receiver.departmentID
+	iD = receiver.departmentID
+
+	return
 }
 
 func (receiver UserEmployment) PositionID() (
 	iD typeObject.ID,
 ) {
-	return receiver.positionID
+	iD = receiver.positionID
+
+	return
 }
 
 func (receiver UserEmployment) OfficeLocationID() (
 	iD typeObject.ID,
 ) {
-	return receiver.officeLocationID
+	iD = receiver.officeLocationID
+
+	return
 }
 
 func (receiver UserEmployment) EmployeeCode() (
 	value string,
 ) {
-	return receiver.employeeCode
+	value = receiver.employeeCode
+
+	return
 }
 
 func (receiver UserEmployment) EmploymentType() (
 	value string,
 ) {
-	return receiver.employmentType
+	value = receiver.employmentType
+
+	return
 }
 
 func (receiver UserEmployment) IsPrimary() (
 	isPrimary bool,
 ) {
-	return receiver.isPrimary
+	isPrimary = receiver.isPrimary
+
+	return
 }
 
 func (receiver UserEmployment) EnsureReadyToAssign() (
 	err error,
 ) {
 	if receiver.userID.GetValue() <= 0 {
-		return fmt.Errorf("user employment user identity is required")
+		err = fmt.Errorf("user employment user identity is required")
+
+		return
 	}
 	if receiver.companyID.GetValue() <= 0 {
-		return fmt.Errorf("user employment company identity is required")
+		err = fmt.Errorf("user employment company identity is required")
+
+		return
 	}
 	if receiver.departmentID.GetValue() <= 0 {
-		return fmt.Errorf("user employment department identity is required")
+		err = fmt.Errorf("user employment department identity is required")
+
+		return
 	}
 	if receiver.positionID.GetValue() <= 0 {
-		return fmt.Errorf("user employment position identity is required")
+		err = fmt.Errorf("user employment position identity is required")
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }

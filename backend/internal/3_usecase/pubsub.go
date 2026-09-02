@@ -10,12 +10,16 @@ func (receiver *useCase) PublishTestTopic(
 ) (
 	err error,
 ) {
-	if err := ensureContextReady(ctx, "PublishTestTopic"); err != nil {
-		return err
+	if returnedErr := ensureContextReady(ctx, "PublishTestTopic"); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 	if err := receiver.ToGatewayExternal.PublishTestTopic(ctx); err != nil {
 		return fmt.Errorf("PublishTestTopic: %w", err)
 	}
 
-	return nil
+	err = nil
+
+	return
 }

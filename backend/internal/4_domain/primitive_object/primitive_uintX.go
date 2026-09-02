@@ -39,7 +39,9 @@ func NewPrimitiveUIntX[T UIntX](
 		option(primitive)
 	}
 
-	return primitive
+	primitiveUIntX = primitive
+
+	return
 }
 
 // 共通メソッド
@@ -47,23 +49,31 @@ func (receiver PrimitiveUIntX[T]) GetValue() (
 	value T,
 ) {
 	if receiver.GetIsNil() {
-		return 0
+		value = 0
+
+		return
 	}
-	return receiver.value
+	value = receiver.value
+
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveUIntX[T]) IsZero() (
 	isZero bool,
 ) {
-	return receiver.GetValue() == 0
+	isZero = receiver.GetValue() == 0
+
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveUIntX[T]) HasValue() (
 	hasValue bool,
 ) {
-	return !receiver.GetIsNil()
+	hasValue = !receiver.GetIsNil()
+
+	return
 }
 
 // ______________________________________
@@ -72,7 +82,9 @@ func (receiver PrimitiveUIntX[T]) Equal(
 ) (
 	ok bool,
 ) {
-	return !receiver.GetIsNil() && receiver.value == value
+	ok = !receiver.GetIsNil() && receiver.value == value
+
+	return
 }
 
 // ______________________________________
@@ -80,49 +92,69 @@ func (receiver PrimitiveUIntX[T]) DigitCount() (
 	value uint,
 ) {
 	if receiver.GetIsNil() {
-		return 0
+		value = 0
+
+		return
 	}
 
-	return uint(len(strconv.FormatUint(uint64(receiver.value), 10)))
+	value = uint(len(strconv.FormatUint(uint64(receiver.value), 10)))
+
+	return
 }
 
 func (receiver PrimitiveUIntX[T]) Validation() (
 	err error,
 ) {
 	if receiver.GetIsNil() {
-		return nil
+		err = nil
+
+		return
 	}
 
-	if err := receiver.ValidationMaxDigit(); err != nil {
-		return err
+	if returnedErr := receiver.ValidationMaxDigit(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 
-	return receiver.ValidationMinDigit()
+	err = receiver.ValidationMinDigit()
+
+	return
 }
 
 func (receiver PrimitiveUIntX[T]) ValidationMaxDigit() (
 	err error,
 ) {
 	if receiver.maxDigit == nil {
-		return nil
+		err = nil
+
+		return
 	}
 
 	if receiver.GetIsNil() {
-		return nil
+		err = nil
+
+		return
 	}
 
 	if receiver.DigitCount() > *receiver.maxDigit {
-		return receiver.newErrorString("max limitation")
+		err = receiver.newErrorString("max limitation")
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveUIntX[T]) GetIsNil() (
 	ok bool,
 ) {
-	return receiver.isNil
+	ok = receiver.isNil
+
+	return
 }
 
 // ______________________________________
@@ -131,10 +163,12 @@ func (receiver PrimitiveUIntX[T]) newErrorString(
 ) (
 	err error,
 ) {
-	return fmt.Errorf(
+	err = fmt.Errorf(
 		"error: %s",
 		errString,
 	)
+
+	return
 }
 
 // ______________________________________
@@ -142,20 +176,28 @@ func (receiver PrimitiveUIntX[T]) ValidationMinDigit() (
 	err error,
 ) {
 	if receiver.minDigit == nil { // 下限値なし
-		return nil
+		err = nil
+
+		return
 	}
 
 	// 下限値ありでかつnilの場合エラーとする
 	if receiver.GetIsNil() {
 		// receiver.setErrorString("is nil")
-		return nil
+		err = nil
+
+		return
 	}
 
 	if receiver.DigitCount() < *receiver.minDigit {
-		return receiver.newErrorString("min limitation")
+		err = receiver.newErrorString("min limitation")
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 // ______________________________________
@@ -168,6 +210,7 @@ func (receiver *PrimitiveUIntX[T]) CheckNil(
 	if value != nil {
 		isNil = false
 	}
+
 	return
 }
 
@@ -176,9 +219,11 @@ func (receiver *PrimitiveUIntX[T]) WithIsNil(
 ) (
 	value PrimitiveUIntXOption[T],
 ) {
-	return func(s *PrimitiveUIntX[T]) {
+	value = func(s *PrimitiveUIntX[T]) {
 		s.isNil = isNil
 	}
+
+	return
 }
 
 // ______________________________________
@@ -187,9 +232,11 @@ func (receiver *PrimitiveUIntX[T]) WithMaxDigit(
 ) (
 	option PrimitiveUIntXOption[T],
 ) {
-	return func(s *PrimitiveUIntX[T]) {
+	option = func(s *PrimitiveUIntX[T]) {
 		s.maxDigit = value
 	}
+
+	return
 }
 
 // ______________________________________
@@ -198,9 +245,11 @@ func (receiver *PrimitiveUIntX[T]) WithMinDigit(
 ) (
 	option PrimitiveUIntXOption[T],
 ) {
-	return func(s *PrimitiveUIntX[T]) {
+	option = func(s *PrimitiveUIntX[T]) {
 		s.minDigit = value
 	}
+
+	return
 }
 
 // ______________________________________
@@ -215,18 +264,32 @@ func (receiver *PrimitiveUIntX[T]) WithValue(
 		valueIntX = *value
 	}
 
-	return func(s *PrimitiveUIntX[T]) {
+	option = func(s *PrimitiveUIntX[T]) {
 		s.value = valueIntX
 		s.isNil = isNil
 	}
+
+	return
 }
 
 // ______________________________________
 func (receiver PrimitiveUIntX[T]) GetString() (
 	value string,
 ) {
+	value = receiver.ToString()
+
+	return
+}
+
+func (receiver PrimitiveUIntX[T]) ToString() (
+	value string,
+) {
+	value = ""
 	if receiver.GetIsNil() {
-		return ""
+
+		return
 	}
-	return fmt.Sprintf("%d", receiver.value)
+	value = strconv.FormatUint(uint64(receiver.value), 10)
+
+	return
 }

@@ -44,20 +44,28 @@ func (receiver *TimeOutMillSecond) setValue(
 		primitiveIntX.WithMaxDigit(&timeOutMillSecondMaxDigit),
 		primitiveIntX.WithMinDigit(&timeOutMillSecondMinDigit),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver TimeOutMillSecond) GetValue() (
 	value int64,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+
+	return
 }
 
 func (receiver TimeOutMillSecond) GetString() (
 	value string,
 ) {
-	return receiver.content.GetString()
+	value = receiver.content.GetString()
+
+	return
 }

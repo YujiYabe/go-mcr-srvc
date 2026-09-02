@@ -38,10 +38,11 @@ func fetchAccessToken(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return c.JSON(
+		err = c.JSON(
 			http.StatusBadRequest,
 			err,
 		)
+		return
 	}
 
 	//-------------------------
@@ -51,14 +52,16 @@ func fetchAccessToken(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return c.JSON(
+		err = c.JSON(
 			http.StatusBadRequest,
 			err,
 		)
+		return
 	}
 
-	return c.JSON(
+	err = c.JSON(
 		http.StatusOK,
 		accessToken.GetValue(),
 	)
+	return
 }

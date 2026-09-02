@@ -24,9 +24,12 @@ func (receiver *Server) GetUserListByCondition(
 	v1GetUserListByConditionResponse *grpcParameter.GetUserListByConditionResponse,
 	err error,
 ) {
+	v1GetUserListByConditionResponse = nil
+	err = nil
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
-		return nil, ctx.Err()
+		v1GetUserListByConditionResponse, err = nil, ctx.Err()
+		return
 	}
 
 	timeoutMillSecond := requestContext.TimeOutMillSecond().GetValue()
@@ -52,12 +55,13 @@ func (receiver *Server) GetUserListByCondition(
 	select {
 	case <-done:
 		// 処理が完了した場合
-		return v1GetUserListByConditionResponse, err
+		return
 
 	case <-ctx.Done():
 		// タイムアウトした場合
 		logger.Logging(ctx, ctx.Err())
-		return nil, ctx.Err()
+		v1GetUserListByConditionResponse, err = nil, ctx.Err()
+		return
 	}
 }
 
@@ -76,7 +80,8 @@ func (receiver *Server) getUserListByCondition(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return nil, err
+		getUserListByConditionResponse = nil
+		return
 	}
 
 	responseList, err := receiver.Controller.GetUserListByCondition(
@@ -85,14 +90,20 @@ func (receiver *Server) getUserListByCondition(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return nil, err
+		getUserListByConditionResponse = nil
+		return
 	}
 
 	v1UserParameterArray := &grpcParameter.V1UserParameterArray{}
-	v1UserParameterArray.Users = grpcMiddleware.RefillUserDomainToGRPC(
+	v1UserParameterArray.Users, err = grpcMiddleware.RefillUserDomainToGRPC(
 		ctx,
 		responseList,
 	)
+	if err != nil {
+		logger.Logging(ctx, err)
+		getUserListByConditionResponse = nil
+		return
+	}
 
 	getUserListByConditionResponse.V1UserParameterArray = v1UserParameterArray
 

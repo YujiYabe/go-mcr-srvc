@@ -19,10 +19,14 @@ func (receiver *useCase) GetValidationWords(
 
 	words, err = receiver.ToGatewayDB.GetValidationWords(ctx, targetType, isBlacklist)
 	if err != nil {
-		return nil, fmt.Errorf("GetValidationWords: %w", err)
+		words, err = nil, fmt.Errorf("GetValidationWords: %w", err)
+
+		return
 	}
 
-	return words, nil
+	err = nil
+
+	return
 }
 
 func (receiver *useCase) AddValidationWord(
@@ -33,8 +37,10 @@ func (receiver *useCase) AddValidationWord(
 ) (
 	err error,
 ) {
-	if err := ensureContextReady(ctx, "AddValidationWord"); err != nil {
-		return err
+	if returnedErr := ensureContextReady(ctx, "AddValidationWord"); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 
 	if err := receiver.ToGatewayDB.AddValidationWord(
@@ -46,7 +52,9 @@ func (receiver *useCase) AddValidationWord(
 		return fmt.Errorf("AddValidationWord: %w", err)
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *useCase) UpdateValidationWord(
@@ -58,8 +66,10 @@ func (receiver *useCase) UpdateValidationWord(
 ) (
 	err error,
 ) {
-	if err := ensureContextReady(ctx, "UpdateValidationWord"); err != nil {
-		return err
+	if returnedErr := ensureContextReady(ctx, "UpdateValidationWord"); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 
 	if err := receiver.ToGatewayDB.UpdateValidationWord(
@@ -72,7 +82,9 @@ func (receiver *useCase) UpdateValidationWord(
 		return fmt.Errorf("UpdateValidationWord: %w", err)
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver *useCase) DeleteValidationWord(
@@ -83,8 +95,10 @@ func (receiver *useCase) DeleteValidationWord(
 ) (
 	err error,
 ) {
-	if err := ensureContextReady(ctx, "DeleteValidationWord"); err != nil {
-		return err
+	if returnedErr := ensureContextReady(ctx, "DeleteValidationWord"); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 
 	if err := receiver.ToGatewayDB.DeleteValidationWord(
@@ -96,5 +110,7 @@ func (receiver *useCase) DeleteValidationWord(
 		return fmt.Errorf("DeleteValidationWord: %w", err)
 	}
 
-	return nil
+	err = nil
+
+	return
 }

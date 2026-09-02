@@ -21,7 +21,7 @@ func JWTMiddleware(
 ) (
 	middlewareFunc echo.MiddlewareFunc,
 ) {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
+	middlewareFunc = func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			authHeader := c.Request().Header.Get("Authorization")
 			if authHeader == "" {
@@ -70,6 +70,7 @@ func JWTMiddleware(
 			return next(c)
 		}
 	}
+	return
 }
 
 // JWTMiddleware validates the JWT token from the Authorization header
@@ -78,7 +79,7 @@ func JWTMiddlewareAuth0(
 ) (
 	middlewareFunc echo.MiddlewareFunc,
 ) {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
+	middlewareFunc = func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			authHeader := c.Request().Header.Get("Authorization")
 			if authHeader == "" {
@@ -122,6 +123,7 @@ func JWTMiddlewareAuth0(
 			return next(c)
 		}
 	}
+	return
 }
 
 func validateAndGetKey(
@@ -133,10 +135,12 @@ func validateAndGetKey(
 ) {
 	// Tokenの署名方式を確認
 	if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
-		return nil, fmt.Errorf(
+		value, err = nil, fmt.Errorf(
 			"unexpected signing method: %v",
 			token.Header["alg"],
 		)
+
+		return
 	}
 
 	// Auth0から公開鍵を取得し、検証に使用
@@ -145,10 +149,14 @@ func validateAndGetKey(
 		token,
 	)
 	if err != nil {
-		return nil, err
+		value = nil
+
+		return
 	}
 
-	return cert, nil
+	value, err = cert, nil
+
+	return
 }
 
 // getRSAPublicKey fetches the RSA public key from Auth0 JWKS URL
@@ -165,19 +173,23 @@ func getRSAPublicKey(
 		keyfunc.Options{},
 	)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get JWKS: %w", err)
+		publicKey, err = nil, fmt.Errorf("failed to get JWKS: %w", err)
+		return
 	}
 
 	// Extract the RSA public key for the token
 	key, err := jwks.Keyfunc(token)
 	if err != nil {
-		return nil, fmt.Errorf("failed to extract RSA key: %w", err)
+		publicKey, err = nil, fmt.Errorf("failed to extract RSA key: %w", err)
+		return
 	}
 
 	rsaKey, ok := key.(*rsa.PublicKey)
 	if !ok {
-		return nil, fmt.Errorf("key is not an RSA public key")
+		publicKey, err = nil, fmt.Errorf("key is not an RSA public key")
+		return
 	}
 
-	return rsaKey, nil
+	publicKey, err = rsaKey, nil
+	return
 }

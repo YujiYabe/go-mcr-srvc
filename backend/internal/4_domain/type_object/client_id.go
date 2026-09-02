@@ -35,14 +35,20 @@ func (receiver *ClientID) setValue(
 		primitiveString.WithMaxLength(&clientIDMaxLength),
 		primitiveString.WithMinLength(&clientIDMinLength),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver ClientID) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+
+	return
 }

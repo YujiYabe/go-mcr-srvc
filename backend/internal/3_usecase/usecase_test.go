@@ -36,7 +36,9 @@ func (receiver *fakeGatewayDB) RunInTransaction(
 	err error,
 ) {
 	receiver.runInTransactionCalled = true
-	return fn(ctx)
+	err = fn(ctx)
+
+	return
 }
 
 func (receiver *fakeGatewayDB) GetUserList(
@@ -46,7 +48,9 @@ func (receiver *fakeGatewayDB) GetUserList(
 	err error,
 ) {
 	receiver.getListCalled = true
-	return groupObject.UserList{}, receiver.getListErr
+	userList, err = groupObject.UserList{}, receiver.getListErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) GetUserListByCondition(
@@ -57,7 +61,9 @@ func (receiver *fakeGatewayDB) GetUserListByCondition(
 	err error,
 ) {
 	receiver.getByConditionCalled = true
-	return groupObject.UserList{}, receiver.getByConditionErr
+	userList, err = groupObject.UserList{}, receiver.getByConditionErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) UpdateUser(
@@ -68,7 +74,9 @@ func (receiver *fakeGatewayDB) UpdateUser(
 ) {
 	receiver.updateUserCalled = true
 	receiver.calls = append(receiver.calls, "update_user")
-	return receiver.updateUserErr
+	err = receiver.updateUserErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) UpdateUserEmployment(
@@ -79,7 +87,9 @@ func (receiver *fakeGatewayDB) UpdateUserEmployment(
 ) {
 	receiver.updateEmploymentCalled = true
 	receiver.calls = append(receiver.calls, "update_user_employment")
-	return receiver.updateUserEmploymentErr
+	err = receiver.updateUserEmploymentErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) GetValidationWords(
@@ -91,7 +101,9 @@ func (receiver *fakeGatewayDB) GetValidationWords(
 	err error,
 ) {
 	receiver.getValidationWordsCalled = true
-	return receiver.validationWords, receiver.getValidationWordsErr
+	words, err = receiver.validationWords, receiver.getValidationWordsErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) AddValidationWord(
@@ -103,7 +115,9 @@ func (receiver *fakeGatewayDB) AddValidationWord(
 	err error,
 ) {
 	receiver.addValidationWordCalled = true
-	return receiver.validationWordUpdateErr
+	err = receiver.validationWordUpdateErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) UpdateValidationWord(
@@ -116,7 +130,9 @@ func (receiver *fakeGatewayDB) UpdateValidationWord(
 	err error,
 ) {
 	receiver.updateValidationWordCalled = true
-	return receiver.validationWordUpdateErr
+	err = receiver.validationWordUpdateErr
+
+	return
 }
 
 func (receiver *fakeGatewayDB) DeleteValidationWord(
@@ -128,7 +144,9 @@ func (receiver *fakeGatewayDB) DeleteValidationWord(
 	err error,
 ) {
 	receiver.deleteValidationWordCalled = true
-	return receiver.validationWordUpdateErr
+	err = receiver.validationWordUpdateErr
+
+	return
 }
 
 type fakeGatewayExternal struct {
@@ -149,9 +167,13 @@ func (receiver *fakeGatewayExternal) FetchAccessToken(
 ) {
 	receiver.fetchAccessTokenCalled = true
 	if receiver.fetchAccessTokenErr != nil {
-		return typeObject.AccessToken{}, receiver.fetchAccessTokenErr
+		accessToken, err = typeObject.AccessToken{}, receiver.fetchAccessTokenErr
+
+		return
 	}
-	return typeObject.NewAccessToken(stringPointer("access-token"))
+	accessToken, err = typeObject.NewAccessToken(stringPointer("access-token"))
+
+	return
 }
 
 func (receiver *fakeGatewayExternal) GetUserViaGRPC(
@@ -162,7 +184,9 @@ func (receiver *fakeGatewayExternal) GetUserViaGRPC(
 	err error,
 ) {
 	receiver.viaGRPCCalled = true
-	return groupObject.UserList{}, receiver.viaGRPCErr
+	userList, err = groupObject.UserList{}, receiver.viaGRPCErr
+
+	return
 }
 
 func (receiver *fakeGatewayExternal) PublishTestTopic(
@@ -171,7 +195,9 @@ func (receiver *fakeGatewayExternal) PublishTestTopic(
 	err error,
 ) {
 	receiver.publishTestTopicCalled = true
-	return receiver.publishTestTopicErr
+	err = receiver.publishTestTopicErr
+
+	return
 }
 
 func TestEnsureContextReadyReturnsCanceledError(
@@ -206,7 +232,9 @@ func newTestUser(
 		t.Fatalf("failed to create user: %v", err)
 	}
 
-	return *newUser
+	user = *newUser
+
+	return
 }
 
 func newTestCredential(
@@ -226,7 +254,9 @@ func newTestCredential(
 		t.Fatalf("failed to create credential: %v", err)
 	}
 
-	return *newCredential
+	credential = *newCredential
+
+	return
 }
 
 func newTestUserEmployment(
@@ -253,7 +283,9 @@ func newTestUserEmployment(
 		t.Fatalf("failed to create user employment: %v", err)
 	}
 
-	return *newUserEmployment
+	userEmployment = *newUserEmployment
+
+	return
 }
 
 func intPointer(
@@ -261,7 +293,9 @@ func intPointer(
 ) (
 	valuePointer *int,
 ) {
-	return &value
+	valuePointer = &value
+
+	return
 }
 
 func stringPointer(
@@ -269,5 +303,7 @@ func stringPointer(
 ) (
 	valuePointer *string,
 ) {
-	return &value
+	valuePointer = &value
+
+	return
 }

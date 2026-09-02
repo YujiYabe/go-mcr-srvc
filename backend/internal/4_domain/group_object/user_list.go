@@ -17,19 +17,25 @@ type NewUserListArgs struct {
 func (receiver UserList) Content() (
 	users []User,
 ) {
-	return receiver.content
+	users = receiver.content
+
+	return
 }
 
 func (receiver UserList) IsEmpty() (
 	isEmpty bool,
 ) {
-	return len(receiver.content) == 0
+	isEmpty = len(receiver.content) == 0
+
+	return
 }
 
 func (receiver UserList) Count() (
 	value int,
 ) {
-	return len(receiver.content)
+	value = len(receiver.content)
+
+	return
 }
 
 func (receiver UserList) ContainsIdentity(
@@ -38,16 +44,22 @@ func (receiver UserList) ContainsIdentity(
 	ok bool,
 ) {
 	if id.GetValue() <= 0 {
-		return false
+		ok = false
+
+		return
 	}
 
 	for _, user := range receiver.content {
 		if user.Identity().GetValue() == id.GetValue() {
-			return true
+			ok = true
+
+			return
 		}
 	}
 
-	return false
+	ok = false
+
+	return
 }
 
 func (receiver UserList) ContainsEmail(
@@ -56,16 +68,22 @@ func (receiver UserList) ContainsEmail(
 	ok bool,
 ) {
 	if email.GetIsNil() || email.GetValue() == "" {
-		return false
+		ok = false
+
+		return
 	}
 
 	for _, user := range receiver.content {
 		if user.Email().GetValue() == email.GetValue() {
-			return true
+			ok = true
+
+			return
 		}
 	}
 
-	return false
+	ok = false
+
+	return
 }
 
 func (receiver *UserList) Append(
@@ -74,15 +92,21 @@ func (receiver *UserList) Append(
 	err error,
 ) {
 	if user.HasIdentity() && receiver.ContainsIdentity(user.Identity()) {
-		return fmt.Errorf("user identity is duplicated")
+		err = fmt.Errorf("user identity is duplicated")
+
+		return
 	}
 	if user.HasEmail() && receiver.ContainsEmail(user.Email()) {
-		return fmt.Errorf("user email is duplicated")
+		err = fmt.Errorf("user email is duplicated")
+
+		return
 	}
 
 	receiver.content = append(receiver.content, user)
 
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver UserList) EnsureNoDuplicateEmail() (
@@ -96,12 +120,16 @@ func (receiver UserList) EnsureNoDuplicateEmail() (
 
 		email := user.Email().GetValue()
 		if _, ok := known[email]; ok {
-			return fmt.Errorf("user email is duplicated")
+			err = fmt.Errorf("user email is duplicated")
+
+			return
 		}
 		known[email] = struct{}{}
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 func NewUserList(
@@ -110,19 +138,25 @@ func NewUserList(
 	userList UserList,
 	err error,
 ) {
+	err = nil
 	userList = UserList{}
 	if args == nil {
+
 		return
 	}
 
 	for _, args := range args.Content {
-		user, err := NewUser(&args)
-		if err != nil {
-			return userList, err
+		user, returnedErr := NewUser(&args)
+		if returnedErr != nil {
+			err = returnedErr
+
+			return
 		}
 
-		if err := userList.Append(*user); err != nil {
-			return userList, err
+		if returnedErr := userList.Append(*user); returnedErr != nil {
+			err = returnedErr
+
+			return
 		}
 	}
 
@@ -135,19 +169,25 @@ func ReconstructUserList(
 	userList UserList,
 	err error,
 ) {
+	err = nil
 	userList = UserList{}
 	if args == nil {
+
 		return
 	}
 
 	for _, args := range args.Content {
-		user, err := ReconstructUser(&args)
-		if err != nil {
-			return userList, err
+		user, returnedErr := ReconstructUser(&args)
+		if returnedErr != nil {
+			err = returnedErr
+
+			return
 		}
 
-		if err := userList.Append(*user); err != nil {
-			return userList, err
+		if returnedErr := userList.Append(*user); returnedErr != nil {
+			err = returnedErr
+
+			return
 		}
 	}
 

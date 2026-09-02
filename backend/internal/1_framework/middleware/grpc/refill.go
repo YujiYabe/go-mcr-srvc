@@ -2,6 +2,7 @@ package grpc_middleware
 
 import (
 	"context"
+	"fmt"
 
 	grpcParameter "backend/internal/1_framework/parameter/grpc"
 	groupObject "backend/internal/4_domain/group_object"
@@ -46,11 +47,18 @@ func RefillUserDomainToGRPC(
 	userList groupObject.UserList,
 ) (
 	v1UserParameterList []*grpcParameter.V1UserParameter,
+	err error,
 ) {
+	err = nil
 	v1UserParameterList = []*grpcParameter.V1UserParameter{}
 
 	for _, response := range userList.Content() {
-		id32 := uint32(response.ID().GetValue())
+		id32, convertErr := response.ID().ToUint32()
+		if convertErr != nil {
+			err = fmt.Errorf("convert user ID to uint32: %w", convertErr)
+
+			return
+		}
 		name := response.Name().GetValue()
 		email := response.Email().GetValue()
 		v1UserParameter := &grpcParameter.V1UserParameter{

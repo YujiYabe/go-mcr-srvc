@@ -42,20 +42,28 @@ func (receiver *Name) setValue(
 		primitiveString.WithMinLength(&nameMinLength),
 		primitiveString.WithCheckSpell(spellList),
 	)
-	if err := receiver.content.Validation(); err != nil {
-		return err
+	if returnedErr := receiver.content.Validation(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
-	return nil
+	err = nil
+
+	return
 }
 
 func (receiver Name) GetValue() (
 	value string,
 ) {
-	return receiver.content.GetValue()
+	value = receiver.content.GetValue()
+
+	return
 }
 
 func (receiver Name) GetIsNil() (
 	ok bool,
 ) {
-	return receiver.content.GetIsNil()
+	ok = receiver.content.GetIsNil()
+
+	return
 }

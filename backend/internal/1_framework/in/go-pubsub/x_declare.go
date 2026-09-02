@@ -30,13 +30,15 @@ func NewGoPubSub(
 ) (
 	goPubSub *GoPubSub,
 ) {
-	return &GoPubSub{
+	goPubSub = &GoPubSub{
 		Controller:       controller,
 		bootstrapServers: bootstrapServers,
 		consumerGroupID:  consumerGroupID,
 		testTopic:        testTopic,
 		otherTopic:       otherTopic,
 	}
+
+	return
 }
 
 // NewKafkaConsumer ...
@@ -49,12 +51,14 @@ func NewKafkaConsumer(
 	consumer *kafka.Consumer,
 	err error,
 ) {
+	err = nil
 	consumer = &kafka.Consumer{}
 	maxRetries := 20
 
 	for retryIndex := 0; retryIndex < maxRetries; retryIndex++ {
-		if err := ctx.Err(); err != nil {
-			return nil, err
+		if returnedErr := ctx.Err(); returnedErr != nil {
+			consumer, err = nil, returnedErr
+			return
 		}
 
 		consumer, err = kafka.NewConsumer(
@@ -69,15 +73,18 @@ func NewKafkaConsumer(
 		}
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			consumer, err = nil, ctx.Err()
+			return
 		case <-time.After(retryBackoff(uint(retryIndex))):
 		}
 	}
 	if err != nil {
-		return nil, fmt.Errorf("create kafka consumer after retries: %w", err)
+		consumer, err = nil, fmt.Errorf("create kafka consumer after retries: %w", err)
+		return
 	}
 
-	return consumer, nil
+	err = nil
+	return
 }
 
 func retryBackoff(
@@ -85,9 +92,13 @@ func retryBackoff(
 ) (
 	duration time.Duration,
 ) {
-	backoff := time.Duration(attempt+1) * time.Second
-	if backoff > 5*time.Second {
-		return 5 * time.Second
+	if attempt >= 4 {
+		duration = 5 * time.Second
+
+		return
 	}
-	return backoff
+
+	duration = time.Duration(attempt+1) * time.Second
+
+	return
 }

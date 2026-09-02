@@ -49,7 +49,9 @@ func NewToPubSub(
 		pubsubPublisher.Conn = conn
 	}
 
-	return pubsubPublisher, nil
+	toPubSub, err = pubsubPublisher, nil
+
+	return
 }
 
 func open(
@@ -66,17 +68,17 @@ func open(
 			return nil, err
 		}
 
-		conn, err := kafka.NewProducer(
+		conn, returnedErr := kafka.NewProducer(
 			&kafka.ConfigMap{
 				"bootstrap.servers": bootstrapServers,
 			},
 		)
-		if err == nil {
+		if returnedErr == nil {
 			return conn, nil
 		}
 
-		lastErr = err
-		logger.Logging(ctx, err)
+		lastErr = returnedErr
+		logger.Logging(ctx, returnedErr)
 
 		if attempt == count {
 			break
@@ -84,12 +86,14 @@ func open(
 
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			producer, err = nil, ctx.Err()
+			return
 		case <-time.After(retryBackoff(attempt)):
 		}
 	}
 
-	return nil, fmt.Errorf("retry count over: %w", lastErr)
+	producer, err = nil, fmt.Errorf("retry count over: %w", lastErr)
+	return
 }
 
 func retryBackoff(
@@ -97,9 +101,13 @@ func retryBackoff(
 ) (
 	duration time.Duration,
 ) {
-	backoff := time.Duration(attempt+1) * time.Second
-	if backoff > 5*time.Second {
-		return 5 * time.Second
+	if attempt >= 4 {
+		duration = 5 * time.Second
+
+		return
 	}
-	return backoff
+
+	duration = time.Duration(attempt+1) * time.Second
+
+	return
 }

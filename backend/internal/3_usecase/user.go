@@ -15,7 +15,9 @@ func (receiver *useCase) GetUserList(
 	userList groupObject.UserList,
 	err error,
 ) {
+	userList = groupObject.UserList{}
 	if err = ensureContextReady(ctx, "GetUserList"); err != nil {
+
 		return
 	}
 	userList, err = receiver.ToGatewayDB.GetUserList(ctx)
@@ -33,11 +35,14 @@ func (receiver *useCase) GetUserListByCondition(
 	resUserList groupObject.UserList,
 	err error,
 ) {
+	resUserList = groupObject.UserList{}
 	if err = ensureContextReady(ctx, "GetUserListByCondition"); err != nil {
+
 		return
 	}
 	if !reqUser.CanBeUsedAsSearchCondition() {
 		err = fmt.Errorf("GetUserListByCondition: user search condition is required")
+
 		return
 	}
 
@@ -48,6 +53,7 @@ func (receiver *useCase) GetUserListByCondition(
 	if err != nil {
 		err = fmt.Errorf("GetUserListByCondition: %w", err)
 	}
+
 	return
 }
 
@@ -57,8 +63,9 @@ func (receiver *useCase) UpdateUser(
 ) (
 	err error,
 ) {
-	if err := ensureContextReady(ctx, "UpdateUser"); err != nil {
-		return err
+	if returnedErr := ensureContextReady(ctx, "UpdateUser"); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
 		return fmt.Errorf("UpdateUser: %w", err)
@@ -69,7 +76,8 @@ func (receiver *useCase) UpdateUser(
 		true,
 	)
 	if err != nil {
-		return fmt.Errorf("UpdateUser: %w", err)
+		err = fmt.Errorf("UpdateUser: %w", err)
+		return
 	}
 	if err := newUser.ValidateNameBlacklist(nameBlacklist); err != nil {
 		return fmt.Errorf("UpdateUser: %w", err)
@@ -84,7 +92,8 @@ func (receiver *useCase) UpdateUser(
 		return fmt.Errorf("UpdateUser: %w", err)
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *useCase) GetUserListViaGRPC(
@@ -94,11 +103,14 @@ func (receiver *useCase) GetUserListViaGRPC(
 	resUserList groupObject.UserList,
 	err error,
 ) {
+	resUserList = groupObject.UserList{}
 	if err = ensureContextReady(ctx, "GetUserListViaGRPC"); err != nil {
+
 		return
 	}
 	if !reqUser.CanBeUsedAsSearchCondition() {
 		err = fmt.Errorf("GetUserListViaGRPC: user search condition is required")
+
 		return
 	}
 	resUserList, err = receiver.ToGatewayExternal.GetUserViaGRPC(
@@ -108,6 +120,7 @@ func (receiver *useCase) GetUserListViaGRPC(
 	if err != nil {
 		err = fmt.Errorf("GetUserListViaGRPC: %w", err)
 	}
+
 	return
 }
 
@@ -118,8 +131,9 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 ) (
 	err error,
 ) {
-	if err := ensureContextReady(ctx, "UpdateUserProfileWithPrimaryEmployment"); err != nil {
-		return err
+	if returnedErr := ensureContextReady(ctx, "UpdateUserProfileWithPrimaryEmployment"); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 	if err := newUser.EnsureReadyToUpdate(); err != nil {
 		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
@@ -130,7 +144,8 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 		true,
 	)
 	if err != nil {
-		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
+		err = fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
+		return
 	}
 	if err := newUser.ValidateNameBlacklist(nameBlacklist); err != nil {
 		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
@@ -151,5 +166,6 @@ func (receiver *useCase) UpdateUserProfileWithPrimaryEmployment(
 		return fmt.Errorf("UpdateUserProfileWithPrimaryEmployment: %w", err)
 	}
 
-	return nil
+	err = nil
+	return
 }

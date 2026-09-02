@@ -28,7 +28,9 @@
 	"words": [
 		"confluentinc",
 		"dbname",
+		"golangci",
 		"gorm",
+		"govulncheck",
 		"keyfunc",
 		"Localstack",
 		"logrus",

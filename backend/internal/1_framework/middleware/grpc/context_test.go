@@ -105,11 +105,12 @@ func newContextForTest(
 		t.Fatalf("new request context: %v", err)
 	}
 
-	return context.WithValue(
+	ctx = context.WithValue(
 		context.Background(),
 		middlewareRequestContext.RequestContextContextName,
 		*requestContext,
 	)
+	return
 }
 
 func assertRequestContextForTest(

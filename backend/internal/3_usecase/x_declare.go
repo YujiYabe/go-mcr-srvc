@@ -15,11 +15,13 @@ func NewUseCase(
 ) (
 	toUseCase ToUseCase,
 ) {
-	return &useCase{
+	toUseCase = &useCase{
 		ToDomain:          toDomain,
 		ToGatewayDB:       toGatewayDB,
 		ToGatewayExternal: toGatewayExternal,
 	}
+
+	return
 }
 
 type (

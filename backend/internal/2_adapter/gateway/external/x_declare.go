@@ -21,11 +21,13 @@ func NewGatewayExternal(
 ) (
 	gatewayExternal *GatewayExternal,
 ) {
-	return &GatewayExternal{
+	gatewayExternal = &GatewayExternal{
 		ToAuth0:  toAuth0,
 		ToGRPC:   toGRPC,
 		ToPubSub: toPubSub,
 	}
+
+	return
 }
 
 type (

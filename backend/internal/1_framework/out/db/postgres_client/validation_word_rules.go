@@ -31,7 +31,8 @@ func (receiver *PostgresClient) GetValidationWords(
 		Order("word ASC").
 		Find(&records)
 	if result.Error != nil {
-		return nil, result.Error
+		words, err = nil, result.Error
+		return
 	}
 
 	words = make([]string, 0, len(records))
@@ -39,7 +40,8 @@ func (receiver *PostgresClient) GetValidationWords(
 		words = append(words, record.Word)
 	}
 
-	return words, nil
+	err = nil
+	return
 }
 
 func (receiver *PostgresClient) AddValidationWord(
@@ -58,7 +60,7 @@ func (receiver *PostgresClient) AddValidationWord(
 		Enabled:     true,
 	}
 
-	return receiver.conn(ctx).
+	err = receiver.conn(ctx).
 		Clauses(clause.OnConflict{
 			Columns: []clause.Column{
 				{Name: "target_type"},
@@ -74,6 +76,7 @@ func (receiver *PostgresClient) AddValidationWord(
 		Omit("CreatedAt", "UpdatedAt").
 		Create(&record).
 		Error
+	return
 }
 
 func (receiver *PostgresClient) UpdateValidationWord(
@@ -96,13 +99,16 @@ func (receiver *PostgresClient) UpdateValidationWord(
 			"updated_at": gorm.Expr("CURRENT_TIMESTAMP"),
 		})
 	if result.Error != nil {
-		return result.Error
+		err = result.Error
+		return
 	}
 	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
+		err = gorm.ErrRecordNotFound
+		return
 	}
 
-	return nil
+	err = nil
+	return
 }
 
 func (receiver *PostgresClient) DeleteValidationWord(
@@ -118,13 +124,19 @@ func (receiver *PostgresClient) DeleteValidationWord(
 		Where(&models.ValidationWordRule{Word: word}).
 		Delete(&models.ValidationWordRule{})
 	if result.Error != nil {
-		return result.Error
+		err = result.Error
+
+		return
 	}
 	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
+		err = gorm.ErrRecordNotFound
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 func validationWordRuleScope(
@@ -133,9 +145,11 @@ func validationWordRuleScope(
 ) (
 	fn func(*gorm.DB) *gorm.DB,
 ) {
-	return func(db *gorm.DB) *gorm.DB {
+	fn = func(db *gorm.DB) *gorm.DB {
 		return db.
 			Where(&models.ValidationWordRule{TargetType: targetType}).
 			Where("is_blacklist = ?", isBlacklist)
 	}
+
+	return
 }

@@ -11,7 +11,9 @@ type PrimaryEmploymentAssignmentPolicy struct{}
 func NewPrimaryEmploymentAssignmentPolicy() (
 	primaryEmploymentAssignmentPolicy *PrimaryEmploymentAssignmentPolicy,
 ) {
-	return &PrimaryEmploymentAssignmentPolicy{}
+	primaryEmploymentAssignmentPolicy = &PrimaryEmploymentAssignmentPolicy{}
+
+	return
 }
 
 func (receiver *PrimaryEmploymentAssignmentPolicy) EnsureAssignable(
@@ -21,17 +23,27 @@ func (receiver *PrimaryEmploymentAssignmentPolicy) EnsureAssignable(
 	err error,
 ) {
 	if !user.HasIdentity() {
-		return fmt.Errorf("user identity is required")
+		err = fmt.Errorf("user identity is required")
+
+		return
 	}
-	if err := userEmployment.EnsureReadyToAssign(); err != nil {
-		return err
+	if returnedErr := userEmployment.EnsureReadyToAssign(); returnedErr != nil {
+		err = returnedErr
+
+		return
 	}
 	if userEmployment.UserID().GetValue() != user.Identity().GetValue() {
-		return fmt.Errorf("primary employment must belong to the user")
+		err = fmt.Errorf("primary employment must belong to the user")
+
+		return
 	}
 	if !userEmployment.IsPrimary() {
-		return fmt.Errorf("primary employment assignment requires primary employment")
+		err = fmt.Errorf("primary employment assignment requires primary employment")
+
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }

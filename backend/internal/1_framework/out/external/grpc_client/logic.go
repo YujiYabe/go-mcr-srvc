@@ -17,6 +17,7 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 	resUserList groupObject.UserList,
 	err error,
 ) {
+	resUserList = groupObject.UserList{}
 
 	// クライアントの作成
 	client := grpcParameter.NewUserServiceClient(receiver.Conn)
@@ -58,8 +59,9 @@ func (receiver *GRPCClient) GetUserViaGRPC(
 		})
 	}
 
-	return groupObject.NewUserList(&groupObject.NewUserListArgs{
+	resUserList, err = groupObject.NewUserList(&groupObject.NewUserListArgs{
 		Content: userArgs,
 	})
+	return
 
 }

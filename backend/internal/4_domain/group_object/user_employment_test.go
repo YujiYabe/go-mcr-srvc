@@ -66,5 +66,7 @@ func newTestUserEmployment(
 		t.Fatalf("failed to create user employment: %v", err)
 	}
 
-	return *employment
+	value = *employment
+
+	return
 }

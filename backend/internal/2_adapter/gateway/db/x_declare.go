@@ -19,10 +19,12 @@ func NewGatewayDB(
 ) (
 	gatewayDB *GatewayDB,
 ) {
-	return &GatewayDB{
+	gatewayDB = &GatewayDB{
 		ToPostgres: toPostgres,
 		ToRedis:    toRedis,
 	}
+
+	return
 }
 
 type (

@@ -67,7 +67,8 @@ func HeaderToContext(
 	)
 	if err != nil {
 		logger.Logging(ctx, err)
-		return ctx
+		messageCtx = ctx
+		return
 	}
 
 	messageCtx = context.WithValue(
@@ -85,9 +86,10 @@ func ContextToHeader(
 ) (
 	headers []kafka.Header,
 ) {
+	headers = nil
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 	if requestContext == nil {
-		return headers
+		return
 	}
 	headers = []kafka.Header{}
 

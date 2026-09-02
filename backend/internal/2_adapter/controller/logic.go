@@ -14,6 +14,7 @@ func (receiver *controller) GetUserList(
 	err error,
 ) {
 	userList, err = receiver.UseCase.GetUserList(ctx)
+
 	return
 }
 
@@ -28,6 +29,7 @@ func (receiver *controller) GetUserListByCondition(
 		ctx,
 		reqUser,
 	)
+
 	return
 }
 
@@ -42,6 +44,7 @@ func (receiver *controller) FetchAccessToken(
 		ctx,
 		credential,
 	)
+
 	return
 }
 
@@ -56,6 +59,7 @@ func (receiver *controller) GetUserListViaGRPC(
 		ctx,
 		reqUser,
 	)
+
 	return
 }
 
@@ -65,10 +69,12 @@ func (receiver *controller) UpdateUser(
 ) (
 	err error,
 ) {
-	return receiver.UseCase.UpdateUser(
+	err = receiver.UseCase.UpdateUser(
 		ctx,
 		newUser,
 	)
+
+	return
 }
 
 func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
@@ -78,10 +84,12 @@ func (receiver *controller) UpdateUserProfileWithPrimaryEmployment(
 ) (
 	err error,
 ) {
-	return receiver.UseCase.UpdateUserProfileWithPrimaryEmployment(
+	err = receiver.UseCase.UpdateUserProfileWithPrimaryEmployment(
 		ctx,
 		newUser, userEmployment,
 	)
+
+	return
 }
 
 func (receiver *controller) PublishTestTopic(
@@ -89,7 +97,9 @@ func (receiver *controller) PublishTestTopic(
 ) (
 	err error,
 ) {
-	return receiver.UseCase.PublishTestTopic(ctx)
+	err = receiver.UseCase.PublishTestTopic(ctx)
+
+	return
 }
 
 func (receiver *controller) GetValidationWords(
@@ -100,10 +110,12 @@ func (receiver *controller) GetValidationWords(
 	words []string,
 	err error,
 ) {
-	return receiver.UseCase.GetValidationWords(
+	words, err = receiver.UseCase.GetValidationWords(
 		ctx,
 		targetType, isBlacklist,
 	)
+
+	return
 }
 
 func (receiver *controller) AddValidationWord(
@@ -114,12 +126,14 @@ func (receiver *controller) AddValidationWord(
 ) (
 	err error,
 ) {
-	return receiver.UseCase.AddValidationWord(
+	err = receiver.UseCase.AddValidationWord(
 		ctx,
 		targetType,
 		isBlacklist,
 		word,
 	)
+
+	return
 }
 
 func (receiver *controller) UpdateValidationWord(
@@ -131,13 +145,15 @@ func (receiver *controller) UpdateValidationWord(
 ) (
 	err error,
 ) {
-	return receiver.UseCase.UpdateValidationWord(
+	err = receiver.UseCase.UpdateValidationWord(
 		ctx,
 		targetType,
 		isBlacklist,
 		oldWord,
 		newWord,
 	)
+
+	return
 }
 
 func (receiver *controller) DeleteValidationWord(
@@ -148,10 +164,12 @@ func (receiver *controller) DeleteValidationWord(
 ) (
 	err error,
 ) {
-	return receiver.UseCase.DeleteValidationWord(
+	err = receiver.UseCase.DeleteValidationWord(
 		ctx,
 		targetType,
 		isBlacklist,
 		word,
 	)
+
+	return
 }

@@ -33,7 +33,7 @@ func (receiver *PostgresClient) ReplaceUser(
 		return nil
 	})
 
-	return err
+	return
 }
 
 func (receiver *PostgresClient) AddUser(
@@ -48,10 +48,12 @@ func (receiver *PostgresClient) AddUser(
 		Email:    email,
 	}
 
-	return tx.
+	err = tx.
 		Omit("Auth0UserID", "CreatedAt", "UpdatedAt").
 		Create(&record).
 		Error
+
+	return
 }
 
 func (receiver *PostgresClient) DeleteUser(
@@ -60,7 +62,9 @@ func (receiver *PostgresClient) DeleteUser(
 ) (
 	err error,
 ) {
-	return tx.Delete(&models.User{}, userID).Error
+	err = tx.Delete(&models.User{}, userID).Error
+
+	return
 }
 
 func (receiver *PostgresClient) GetUserList(
@@ -69,6 +73,8 @@ func (receiver *PostgresClient) GetUserList(
 	userList groupObject.UserList,
 	err error,
 ) {
+	userList = groupObject.UserList{}
+	err = nil
 	users := []models.User{} // SQL結果保存用
 
 	result := receiver.conn(ctx).
@@ -94,9 +100,10 @@ func (receiver *PostgresClient) GetUserList(
 		})
 	}
 
-	return groupObject.ReconstructUserList(&groupObject.NewUserListArgs{
+	userList, err = groupObject.ReconstructUserList(&groupObject.NewUserListArgs{
 		Content: userArgs,
 	})
+	return
 }
 
 func (receiver *PostgresClient) GetUser(
@@ -130,7 +137,8 @@ func (receiver *PostgresClient) GetUser(
 		return
 	}
 
-	return *newUser, nil
+	user, err = *newUser, nil
+	return
 }
 
 func (receiver *PostgresClient) UpdateUser(
@@ -139,8 +147,9 @@ func (receiver *PostgresClient) UpdateUser(
 ) (
 	err error,
 ) {
-	if err := newUser.EnsureReadyToUpdate(); err != nil {
-		return err
+	if returnedErr := newUser.EnsureReadyToUpdate(); returnedErr != nil {
+		err = returnedErr
+		return
 	}
 
 	record := models.User{
@@ -157,13 +166,17 @@ func (receiver *PostgresClient) UpdateUser(
 		Select("full_name", "email").
 		Updates(&record)
 	if result.Error != nil {
-		return result.Error
+		err = result.Error
+		return
 	}
 	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
+		err = gorm.ErrRecordNotFound
+		return
 	}
 
-	return nil
+	err = nil
+
+	return
 }
 
 // GetUserListByCondition ...
@@ -174,6 +187,7 @@ func (receiver *PostgresClient) GetUserListByCondition(
 	resUserList groupObject.UserList,
 	err error,
 ) {
+	resUserList = groupObject.UserList{}
 	// logger.Logging(
 	// 	ctx,
 	// 	middlewareRequestContext.GetRequestContext(ctx).TraceID.GetValue(),
