@@ -22,7 +22,6 @@ func Get(
 ) (
 	err error,
 ) {
-	err = nil //nolint:wastedassign // Explicitly initialize the named return value.
 	ctx := echoContext.Request().Context()
 	requestContext := middlewareRequestContext.GetRequestContext(ctx)
 
