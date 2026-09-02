@@ -32,10 +32,11 @@ func Get(
 		time.Duration(timeoutMillSecond)*time.Millisecond,
 	)
 	defer cancel() // コンテキストのキャンセルを必ず呼び出す
-	done := make(chan struct{})
-
-	responseList := []openapi.User{}
-	var requestErr error
+	type usersRequestResult struct {
+		responseList []openapi.User
+		err          error
+	}
+	resultChannel := make(chan usersRequestResult, 1)
 
 	// 通常の GET request であれば handler 内で同期的に処理してもよいが、
 	// マイクロサービス化すると controller/usecase の先で DB だけでなく
@@ -50,27 +51,29 @@ func Get(
 	// request context の期限を超えた場合は HTTP request として明示的に
 	// StatusRequestTimeout を返せるようにしている。
 	go func() {
-		responseList, requestErr = handleUsersRequest(
+		responseList, requestErr := handleUsersRequest(
 			ctxWithTimeout,
 			getUsersParams,
 			toController,
 		)
-		if requestErr != nil {
-			logger.Logging(ctxWithTimeout, requestErr)
-			_ = echoContext.JSON(http.StatusBadRequest, requestErr)
-			return
+		resultChannel <- usersRequestResult{
+			responseList: responseList,
+			err:          requestErr,
 		}
-
-		close(done)
 	}()
 
 	// タイムアウトまたは処理完了を待つ
 	select {
-	case <-done:
+	case result := <-resultChannel:
 		// 処理が完了した場合
+		if result.err != nil {
+			logger.Logging(ctxWithTimeout, result.err)
+			return echoContext.JSON(http.StatusBadRequest, result.err)
+		}
+
 		return echoContext.JSON(
 			http.StatusOK,
-			responseList,
+			result.responseList,
 		)
 
 	case <-ctxWithTimeout.Done():
@@ -78,7 +81,7 @@ func Get(
 		// タイムアウトした場合
 		return echoContext.JSON(
 			http.StatusRequestTimeout,
-			responseList,
+			[]openapi.User{},
 		)
 	}
 
